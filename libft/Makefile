@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+         #
+#    By: lchee-ti <lchee-ti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:55:31 by mliyuan           #+#    #+#              #
-#    Updated: 2024/11/11 19:15:03 by mliyuan          ###   ########.fr        #
+#    Updated: 2024/12/17 16:53:28 by lchee-ti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,8 @@ MANDATORY	=		ft_atoi.c						\
 					ft_putchar_fd.c					\
 					ft_putstr_fd.c					\
 					ft_putendl_fd.c					\
-					ft_putnbr_fd.c	
+					ft_putnbr_fd.c					\
+					ft_strcmp.c
 					
 FT_PRINTF	=		ft_printf.c 					\
 					ft_printchar.c 					\
