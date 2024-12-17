@@ -38,9 +38,6 @@ $(DEBUG):	$(LIBFT) $(OBJS)
 $(LIBFT):
 			@make -C $(LIBFTDIR) all
 
-$(MLX):
-			@make -C $(MLXDIR) all
-
 all: 		$(NAME)
 
 debug:		$(DEBUG)
