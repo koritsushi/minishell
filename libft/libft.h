@@ -96,7 +96,7 @@ void		clear_lst(t_gnl_list **lst);
 int			ft_newline(t_gnl_list *lst);
 int			ft_len_newline(t_gnl_list *lst);
 void		\
-dealloc(t_gnl_list **linked_list, t_gnl_list *clean_node, char *buffer);
+dealloc(t_gnl_list **linked_list, t_gnl_list **clean_node, char **buffer);
 void		append_str(t_gnl_list *lst, char *str);
 t_gnl_list	*ft_llstlast(t_gnl_list *lst);
 
