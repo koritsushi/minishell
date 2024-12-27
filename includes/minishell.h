@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchee-ti <lchee-ti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yuurin98 <yuurin98@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2024/12/17 16:35:44 by lchee-ti         ###   ########.fr       */
+/*   Updated: 2024/12/28 01:39:57 by yuurin98         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@
 # include <termios.h>
 # include <curses.h>
 # include <term.h>
+# include <stdbool.h>
 
+/*builtins*/
+int	ft_echo(char **args);
+int	ft_pwd(void);
 
 #endif
