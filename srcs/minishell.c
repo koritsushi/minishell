@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/01/07 14:51:59 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/01/07 16:24:09 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ int	main(int argc, char **argv)
 		{
 			break ;
 		}
-		printf("%s", text);
+		ft_putstr_fd(text, 1);
 		if (ft_strncmp(text, "exit", 4) == 0)
 		{
 			free(text);
-			printf("minishell exited!\n");
+			ft_putstr_fd("minishell exited!\n", 1);
 			break ;
 		}
 	}
