@@ -9,7 +9,10 @@
 #    Updated: 2024/11/11 15:04:47 by mliyuan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-SRCS 		=	srcs/minishell.c srcs/signals.c
+SRCS 		=	srcs/minishell.c 	\
+				srcs/lexical.c		\
+				srcs/parsing.c		\
+				srcs/signals.c		
 
 OBJS		=	$(SRCS:%.c=%.o)
 
