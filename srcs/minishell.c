@@ -6,13 +6,11 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/01/09 23:33:50 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/01/11 13:26:11 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-volatile int g_unblock_sigquit = 0;
 
 int	ft_isspace(char *str)
 {
