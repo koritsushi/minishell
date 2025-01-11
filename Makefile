@@ -11,6 +11,7 @@
 # **************************************************************************** #
 SRCS 		=	srcs/minishell.c 	\
 				srcs/lexical.c		\
+				srcs/tokenizer.c	\
 				srcs/parsing.c		\
 				srcs/signals.c		
 
