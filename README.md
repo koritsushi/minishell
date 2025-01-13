@@ -10,7 +10,7 @@ recreate a shell with mini function of a bash shell in linux/unix
 	rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay
 	add_history,
 	printf,
-	malloc, free
+	malloc, free,
 	write,
 	access, open, read, close,
 	fork,
@@ -28,4 +28,4 @@ recreate a shell with mini function of a bash shell in linux/unix
 	perror, isatty, ttyname, ttyslot, ioctl,
 	getenv, 
 	tcsetattr, tcgetattr, tgetent, tgetflag,
-	tgetnum, tgetstr, tgoto, tputs
+	tgetnum, tgetstr, tgoto, tputs.
