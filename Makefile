@@ -25,19 +25,21 @@ COMPILE		=	gcc
 CCFLAGS		=	-Wall -Wextra -Werror
 DEBUG		=	-ggdb3
 FSAN		=	-fsanitize=address
+READINC		= 	-I/usr/include
+READLIB		= 	-L/usr/lib/x86_64-linux-gnu/libreadline.a
 
 %.o: %.c
-			$(COMPILE) $(CCFLAGS) $(DEBUG) -I. -c $< -o $(<:.c=.o)
+			$(COMPILE) $(CCFLAGS) $(DEBUG) $(READINC) -I. -c $< -o $(<:.c=.o)
 
 $(NAME): $(LIBFT) $(OBJS)
 			@cp $(LIBFT) $(NAME)
-			ar rcs $(NAME) $(OBJS) $(LIBFT) 
-			$(COMPILE) $(CCFLAGS) $(NAME) -o $(PROGRAM)
+			ar rcs $(NAME) $(OBJS) $(LIBFT)
+			$(COMPILE) $(CCFLAGS) $(NAME) -lreadline $(READLIB) -o $(PROGRAM)
 
 $(DEBUG):	$(LIBFT) $(OBJS)
 			@cp $(LIBFT) $(NAME)
 			ar rcs $(NAME) $(OBJS) $(LIBFT) 
-			$(COMPILE) $(CCFLAGS) $(FSAN) $(NAME) -o $(PROGRAM)
+			$(COMPILE) $(CCFLAGS) $(FSAN) $(NAME) -o $(PROGRAM) 
 
 $(LIBFT):
 			@make -C $(LIBFTDIR) all

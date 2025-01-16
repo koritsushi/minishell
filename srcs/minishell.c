@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/01/16 14:57:52 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/01/16 16:07:22 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ int	main(int argc, char **argv)
 	block_signal(SIGQUIT);
 	while (1)
 	{
-		ft_putstr_fd("\033[34mminishell> \033[0m", 1);
-		text = get_next_line(0);
+		text = readline("\033[34mminishell> \033[0m");
 		if (text == NULL)
 			exit(ENOMEM);
 		if (ft_strncmp(text, "exit", 4) == 0)
@@ -47,6 +46,7 @@ int	main(int argc, char **argv)
 			break ;
 		}
 		ft_putstr_fd(text, 1);
+		ft_putstr_fd("\n", 1);
 	}
 	return (0);
 }
