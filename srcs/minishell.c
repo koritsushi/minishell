@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/01/11 13:26:11 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/01/16 14:57:52 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int argc, char **argv)
 {
 	char	*text;
 
-	if (argc > 1 && ft_strncmp(argv[1], "minishell", 9) != 0)
+	if (argc > 1 && ft_strncmp(argv[0], "minishell", 9) != 0)
 		exit(127);
 	set_signal_action();
 	block_signal(SIGQUIT);
@@ -46,11 +46,7 @@ int	main(int argc, char **argv)
 			ft_putstr_fd("\033[32mminishell exited!\033[0m\n", 1);
 			break ;
 		}
-		if (ft_isspace(text) == 0)
-		{
-			ft_putstr_fd(text, 1);
-			ft_putstr_fd("\n", 1);
-		}
+		ft_putstr_fd(text, 1);
 	}
 	return (0);
 }
