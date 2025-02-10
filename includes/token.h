@@ -14,4 +14,7 @@
 # define TOKEN_H
 # include "includes/minishell.h"
 
+char	**ft_split_shell(char *str, char *set);
+
+
 #endif

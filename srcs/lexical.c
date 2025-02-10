@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexical.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/01/11 14:17:40 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/02/07 11:28:20 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,3 +23,8 @@
 	' | ' pipe
 	' $ ' environment variables 
 */
+
+// int	start_scan(char **argv)
+// {
+// 	ft_split() // new type of ft_split that checks for space && ascii 9 - 13
+// }

@@ -9,11 +9,13 @@
 #    Updated: 2024/11/11 15:04:47 by mliyuan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-SRCS 		=	srcs/minishell.c 	\
-				srcs/lexical.c		\
-				srcs/token.c		\
-				srcs/parsing.c		\
-				srcs/signals.c		
+SRCS 		=	srcs/lexical.c					\
+				srcs/token_utils_split.c		\
+				srcs/token.c					\
+				srcs/parsing.c					\
+				srcs/signals.c					\
+				srcs/main-test-token_split.c
+#				srcs/minishell.c 	
 
 OBJS		=	$(SRCS:%.c=%.o)
 
@@ -25,7 +27,7 @@ COMPILE		=	gcc
 CCFLAGS		=	-Wall -Wextra -Werror
 DEBUG		=	-ggdb3
 FSAN		=	-fsanitize=address
-READINC		= 	-I/usr/include
+READINC		= 	-I/usr/include./	
 READLIB		= 	-L/usr/lib/x86_64-linux-gnu/libreadline.a
 
 %.o: %.c
@@ -34,7 +36,9 @@ READLIB		= 	-L/usr/lib/x86_64-linux-gnu/libreadline.a
 $(NAME): $(LIBFT) $(OBJS)
 			@cp $(LIBFT) $(NAME)
 			ar rcs $(NAME) $(OBJS) $(LIBFT)
-			$(COMPILE) $(CCFLAGS) $(NAME) -lreadline $(READLIB) -o $(PROGRAM)
+			$(COMPILE) $(CCFLAGS) $(NAME) -lreadline -o $(PROGRAM)
+#			$(COMPILE) $(CCFLAGS) $(NAME) -lreadline $(READLIB) -o $(PROGRAM)
+
 
 $(DEBUG):	$(LIBFT) $(OBJS)
 			@cp $(LIBFT) $(NAME)
@@ -49,6 +53,7 @@ all: 		$(NAME)
 debug:		$(DEBUG)
 
 clean:
+			@make clean -C $(LIBFTDIR)
 			@rm -rf $(OBJS)
 
 fclean:		clean
