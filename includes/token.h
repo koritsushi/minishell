@@ -16,5 +16,10 @@
 
 char	**ft_split_shell(char *str, char *set);
 
+/*debug testing only*/
+int	count_str(char *str, char *set);
+int	count_chr(char *str, char *set, int *ptr);
+
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/10 17:36:49 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/11 14:21:23 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ int	is_target(char *str, char c)
 	return (0);
 }
 
-/* hello w\0*/
-
 /*
  * counts the number of words in the provided str 
  * set = set of delimiiters
@@ -33,14 +31,23 @@ int	is_target(char *str, char c)
 int	count_str(char *str, char *set)
 {
 	int		wc;
+	int		flag;
 
 	wc = 0;
+	flag = 0;
+	if (str[0] && !is_target(set, str[0]))
+		wc++;
 	while (str[0])
 	{
-		if (str[1] && is_target(set, str[1]) && \
-			!is_target(set, str[0]))
+		if (flag == 0 && str[0] == '\'')
+			flag = 1;
+		else if (flag == 1 && str[0] == '\'')
+			flag = 0;
+		if (str[1] && !flag && is_target(set, str[0]) && \
+			!is_target(set, str[1]))
 			wc++;
-		else if (str[1] == '\0' && !is_target(set, str[0]))
+		else if (str[1] && !flag && !is_target(set, str[0]) && \
+			str[1] == '\'')
 			wc++;
 		str++;
 	}
@@ -48,19 +55,44 @@ int	count_str(char *str, char *set)
 }
 
 /*
- * set = set of delimiters (" 	\n\v\f\r")
+ * a combo function to increment stuff and set flag value
+ * increment str++ & count++
+ * if flag != -1, returns value set in flag
+ */
+static int	increment_val(int flag, int *count, char **str)
+{
+	(*count)++;
+	if (str)
+		(*str)++;
+	if (flag != -1)
+		return (flag);
+	return (0);
+}
+
+/*
+ * set = set of delimiters (" \t\n\v\f\r")
  * counts the number of characters and stop when delimiters detected
  */
-int	count_chr(char *str, char *set)
+int	count_chr(char *str, char *set, int *flag)
 {
 	int	count;
 
 	count = 0;
-	while (str[0] && !is_target(set, str[0]))
+	if (*flag == 0 && str[0] == '\'')
+		*flag = increment_val(1, &count, &str);
+	else if (*flag == 1 && str[0] == '\'')
 	{
-		count++;
-		str++;
+		*flag = 0;
+		return (count + 1);
 	}
+	while (str[0] && *flag)
+	{
+		if (str[0] == '\'')
+			return (count + 1);
+		increment_val(-1, &count, &str);
+	}
+	while (str[0] && !(*flag) && !is_target(set, str[0]) && str[0] != '\'')
+		increment_val(-1, &count, &str);
 	return (count);
 }
 
@@ -73,23 +105,25 @@ char	**ft_split_shell(char *str, char *set)
 	char	**res;
 	int		i;
 	int		x;
+	int		f;
 
 	if (!str || !set)
 		return (NULL);
 	while (str[0] && is_target(set, str[0]))
 		str++;
 	i = 0;
+	f = 0;
 	res = (char **)malloc(sizeof(char *) * (count_str(str, set) + 1));
 	while (str[0] && count_str(str, set))
 	{
 		x = 0;
-		res[i] = (char *)malloc(sizeof(char) * (count_chr(str, set) + 1));
-		while (count_chr(str, set))
+		res[i] = (char *)malloc(sizeof(char) * (count_chr(str, set, &f) + 1));
+		f = 0;
+		while (count_chr(str, set, &f))
 			res[i][x++] = *str++;
-		res[i][x] = '\0';
+		res[i++][x] = '\0';
 		while (is_target(set, str[0]))
 			str++;
-		i++;
 	}
 	res[i] = NULL;
 	return (res);
