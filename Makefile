@@ -17,6 +17,7 @@ SRCS 		=	srcs/lexical.c					\
 				srcs/signals.c					\
 				srcs/main-test-token_split.c	\
 				srcs/debug.c					\
+				srcs/utils_free.c					\
 #				srcs/minishell.c 	
 
 OBJS		=	$(SRCS:%.c=%.o)

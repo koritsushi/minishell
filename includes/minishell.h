@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/02/12 09:09:44 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/12 10:29:42 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 
 /*for debug purposes only*/
 void	debug_print(char **res);
+
+void	free_chr_ptr(void **ptr);
 
 
 #endif

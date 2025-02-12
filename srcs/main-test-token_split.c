@@ -38,4 +38,6 @@ int	main(int ac, char **av)
 	t_token	lst;
 	get_cmd_line(str, &lst);
 
+	free_chr_ptr((void **)lst.data);
+	free(lst.datatype);
 }

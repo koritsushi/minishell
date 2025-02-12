@@ -144,7 +144,7 @@ void	recombine_cmd(char **res, t_token *lst)
 }
 
 /*
- * splits input by PIPE, stores result in linked list & returns list
+ * splits input by PIPE & REDIR, stores result in allocated t_token pointer
  * uses malloc
  */
 void	get_cmd_line(char *str, t_token *lst)
@@ -174,5 +174,6 @@ void	get_cmd_line(char *str, t_token *lst)
 	while (++i < count_op + 2)
 		printf("%s| %d\n", lst->data[i], lst->datatype[i]);
 	/*--------------debug_end--------------*/
+	free_chr_ptr((void **)res);
 	return ;
 }
