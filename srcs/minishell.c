@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/02/07 08:03:56 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/11 17:13:13 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv)
 	block_signal(SIGQUIT);
 	while (1)
 	{
-		text = readline("\033[34mminishell> \033[0m");
+		text = readline("\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼 > \033[0m");
 		if (text == NULL)
 			exit(ENOMEM);
 		if (ft_strncmp(text, "exit", 4) == 0)

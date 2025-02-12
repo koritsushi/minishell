@@ -6,14 +6,17 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/11 14:21:23 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/12 08:42:26 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/token.h"
 
+/* checks if char c == members in str */
 int	is_target(char *str, char c)
 {
+	if (!str)
+		return (0);
 	while (str[0])
 	{
 		if (str[0] == c)
@@ -91,7 +94,7 @@ int	count_chr(char *str, char *set, int *flag)
 			return (count + 1);
 		increment_val(-1, &count, &str);
 	}
-	while (str[0] && !(*flag) && !is_target(set, str[0]) && str[0] != '\'')
+	while (str[0] && !(*flag) && !is_target(set, str[0]))// && str[0] != '\'')
 		increment_val(-1, &count, &str);
 	return (count);
 }
@@ -99,6 +102,7 @@ int	count_chr(char *str, char *set, int *flag)
 /*
  * set = set of delimiters: " \t\n\v\f\r"
  * splits string into individual char* when *set is detected
+ * uses malloc
  */
 char	**ft_split_shell(char *str, char *set)
 {

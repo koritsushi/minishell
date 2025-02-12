@@ -11,10 +11,12 @@
 # **************************************************************************** #
 SRCS 		=	srcs/lexical.c					\
 				srcs/token_utils_split.c		\
+				srcs/token_utils_split2.c		\
 				srcs/token.c					\
 				srcs/parsing.c					\
 				srcs/signals.c					\
-				srcs/main-test-token_split.c
+				srcs/main-test-token_split.c	\
+				srcs/debug.c					\
 #				srcs/minishell.c 	
 
 OBJS		=	$(SRCS:%.c=%.o)
