@@ -24,83 +24,6 @@ int	init_token_list(t_token *lst, int size)
 	return (1);
 }
 
-/*
- * copy src to dest with length defined in len
- * start = the index to start copy
- */
-void	copy_cmd(char **dest, char *src, int *start, int len)
-{
-	int	i;
-	int	x;
-
-	i = 0;
-	x = 0;
-	if (!dest || !src)
-		return ;
-	if (*start > 0)
-		(*dest)[(*start)++] = ' ';
-	while (i++ < len)
-		(*dest)[(*start)++] = src[x++];
-	(*dest)[*start] = '\0';
-}
-
-/*
- * wrapper function for malloc enough size to copy data over 
- * int i = index to start scanning res
- */
-int	allocate_str(char **res, char **data, int i)
-{
-	int	count;
-
-	count = 0;
-	if (!data)
-	{
-		perror("Error! data pointer not found!\n");
-		return (0);
-	}
-	while (res[i] && !is_target("<>|", res[i][0]))
-	{
-		count++;
-		count += ft_strlen(res[i++]);
-	}
-	*data = (char *)malloc(sizeof(char) * count);
-	if (!(*data))
-	{
-		perror("Memory allocation failed!\n");
-		return (0);
-	}
-	return (1);
-}
-
-void	identify_op(char *str, unsigned char *datatype)
-{
-	if (!str)
-	{
-		*datatype = END;
-		return ;
-	}
-	if (str[0] && is_target("<", str[0]))
-	{
-		if (str[1] && is_target("<", str[1]) && str[2] == '\0')
-			*datatype = HEREDOC;
-		else if (str[1] == '\0' && is_target("<", str[0]))
-			*datatype = INFILE;
-		else
-			*datatype = ERR;
-	}
-	else if (str[0] && is_target(">", str[0]))
-	{
-		if (str[1] && is_target(">", str[1]) && str[2] == '\0')
-			*datatype = OUTFILE_A;
-		else if (str[1] == '\0' && is_target(">", str[0]))
-			*datatype = OUTFILE;
-		else
-			*datatype = ERR;
-	}
-	else
-		*datatype = WORD;
-}
-
 /* scans input and assigns datatype according to operator sign */
 void	assign_datatype(t_token *lst, char **res)
 {
@@ -112,17 +35,24 @@ void	assign_datatype(t_token *lst, char **res)
 	identify_op(res[i], &lst->datatype[x++]);
 	while (res[i])
 	{
-		while (res[i] && !is_target("<>|", res[i][0]))
+		while (res[i])// && !is_target("<>|", res[i][0]))
+		{
+			if (is_target("<>|", res[i][0]) && res[i][1] == '\0')
+				break ;
 			i++;
-		identify_op(res[i++], &lst->datatype[x++]);
+		}
+		if (res[i])
+			identify_op(res[i++], &lst->datatype[x++]);
+		else
+			lst->datatype[x] = END;
 	}
 }
 
 void	recombine_cmd(char **res, t_token *lst)
 {
-	int i;
-	int	x;
-	int	start;
+	int		i;
+	int		x;
+	int		start;
 
 	i = 0;
 	x = 0;
@@ -130,12 +60,14 @@ void	recombine_cmd(char **res, t_token *lst)
 	{
 		allocate_str(res, &lst->data[x], i);
 		start = 0;
-		while (res[i] && !is_target("<>|", res[i][0]))
+		while (res[i])// && !is_target("<>|", res[i][0]))
 		{
+			if (is_target("<>|", res[i][0]) && is_all_op("<>|", res[i]))
+				break ;
 			copy_cmd(&lst->data[x], res[i], &start, ft_strlen(res[i]));
 			i++;
 		}
-		printf("str%d=%s| start= %d\n", x, lst->data[x], start);
+		// // printf("str%d=%s| start= %d\n", x, lst->data[x], start);
 		x++;
 		while (res[i] && is_target("<>|", res[i][0]))
 			i++;
@@ -144,36 +76,69 @@ void	recombine_cmd(char **res, t_token *lst)
 }
 
 /*
+ * counts number of string combos for malloc later
+ * checks if < << is at beginning, process entire line til pipe
+ * if infile at middle, all strings after < are filenames
+ */
+void	get_malloc_size(int *count_op, int *pipe_flag, char **res)
+{
+	int	i;
+
+	i = -1;
+	*count_op = 0;
+	*pipe_flag = 0;
+	if (!res[0] || !res)
+		return ;
+	/* check if has pipe, pipe_flag=1 */
+
+	/* below only apply if pipe_flag=0 */
+	if (is_target("<", res[0][0])) // checks beginning
+	{
+		(*count_op)++;
+		i++; //0
+		if (res[i + 1] && res[i + 2])
+			(*count_op)++;
+	}
+	while (res[++i])
+	{
+		printf("i=%d\n", i);
+		if (is_target("<>|", res[i][0]))
+			(*count_op)++;
+		if (is_target("|", res[i][0]))
+			(*pipe_flag) = 1;
+		// i++;
+	}
+}
+
+/*
  * splits input by PIPE & REDIR, stores result in allocated t_token pointer
  * uses malloc
  */
 void	get_cmd_line(char *str, t_token *lst)
 {
+	(void)	lst;
 	char	**res;
-	int		i;
+	int		pipe_flag;
 	int		count_op;
 
-	if (!str)
+	if (!str || !str[0])
 		return ;
 	res = ft_split_shell(str, " \t\n\v\f\r");
-	count_op = 0;
-	i = 0;
-	while (res[i])
-	{
-		if (is_target("<>|", res[i++][0]))
-			count_op++;
-	}
-	if (!init_token_list(lst, count_op + 2))
+	debug_print(res);
+
+	get_malloc_size(&count_op, &pipe_flag, res);
+	printf("op=%d f=%d\n", count_op, pipe_flag);
+	if (!init_token_list(lst, (count_op + 1 + pipe_flag)))
 		return ;
-	assign_datatype(lst, res);
+
 	recombine_cmd(res, lst);
+	// assign_datatype(lst, res);
 
 	/*-------------debug_start-------------*/
-	printf("\n\n");
-	i = -1;
-	while (++i < count_op + 2)
-		printf("%s| %d\n", lst->data[i], lst->datatype[i]);
+	// printf("\n-------\n");
+	// int i = -1;
+	// while (++i < count_op + 2)
+	// 	printf("%s| \n", lst->data[i]);//, lst->datatype[i]);
 	/*--------------debug_end--------------*/
 	free_chr_ptr((void **)res);
-	return ;
 }

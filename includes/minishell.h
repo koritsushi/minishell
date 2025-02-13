@@ -6,13 +6,14 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/02/12 10:29:42 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/12 18:29:22 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "../libft/libft.h"
+# include "token.h"
 # include "signals.h"
 # include <errno.h>
 # include <strings.h>
@@ -24,6 +25,7 @@
 /*for debug purposes only*/
 void	debug_print(char **res);
 
+/* free memory allocations */
 void	free_chr_ptr(void **ptr);
 
 

@@ -25,12 +25,6 @@ enum e_type
 	END
 };
 
-enum	e_var
-{
-	OP = 0,
-	CHR = 1
-};
-
 typedef struct s_token
 {
 	unsigned char	*datatype; //datatype
@@ -39,15 +33,25 @@ typedef struct s_token
 } t_token;
 
 
-void	get_cmd_line(char *str, t_token *lst);
 char	**ft_split_shell(char *str, char *set);
 int		is_target(char *str, char c);
 
+void	get_cmd_line(char *str, t_token *lst);
+void	copy_cmd(char **dest, char *src, int *start, int len);
+void	identify_op(char *str, unsigned char *datatype);
+int		is_all_op(char *set, char *str);
+
+int		allocate_str(char **res, char **data, int i);
+
+
+/* free memory allocations*/
+void	free_all(t_token *lst);
 
 /*debug testing only*/
 int	count_str(char *str, char *set);
 int	count_chr(char *str, char *set, int *ptr);
-
+// int	has_pipes(char *set, char **res);
+int	if_target_exist(char *set, char *str);
 
 
 #endif

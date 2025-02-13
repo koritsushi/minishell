@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/12 08:42:26 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/13 08:00:22 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int	count_chr(char *str, char *set, int *flag)
 /*
  * set = set of delimiters: " \t\n\v\f\r"
  * splits string into individual char* when *set is detected
+ * if *set not found, will return back the str
  * uses malloc
  */
 char	**ft_split_shell(char *str, char *set)

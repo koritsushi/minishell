@@ -10,14 +10,15 @@
 #                                                                              #
 # **************************************************************************** #
 SRCS 		=	srcs/lexical.c					\
-				srcs/token_utils_split.c		\
-				srcs/token_utils_split2.c		\
 				srcs/token.c					\
+				srcs/token_utils.c				\
+				srcs/token_utils_split.c		\
+				srcs/token_utils_operator.c		\
 				srcs/parsing.c					\
 				srcs/signals.c					\
-				srcs/main-test-token_split.c	\
 				srcs/debug.c					\
-				srcs/utils_free.c					\
+				srcs/utils_free.c				\
+				srcs/main-test-token_split.c	\
 #				srcs/minishell.c 	
 
 OBJS		=	$(SRCS:%.c=%.o)
@@ -46,7 +47,7 @@ $(NAME): $(LIBFT) $(OBJS)
 $(DEBUG):	$(LIBFT) $(OBJS)
 			@cp $(LIBFT) $(NAME)
 			ar rcs $(NAME) $(OBJS) $(LIBFT) 
-			$(COMPILE) $(CCFLAGS) $(FSAN) $(NAME) -o $(PROGRAM) 
+			$(COMPILE) $(CCFLAGS) $(FSAN) $(NAME) -lreadline -o $(PROGRAM) 
 
 $(LIBFT):
 			@make -C $(LIBFTDIR) all

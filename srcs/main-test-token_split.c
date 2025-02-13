@@ -33,11 +33,43 @@ int	main(int ac, char **av)
 	// }
 
 	/*-------------------split_with_pipes-------------------*/
-	char str[] = "cmd1 -f -g < infile | cmd2 'some flags' | no | cmd3 >> outfile";
-	// char str[] = "< infile cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile";
-	t_token	lst;
-	get_cmd_line(str, &lst);
+	// char str[] = "cmd1 -f -g < infile |cmd2 'some flags' | no | cmd3 > outfile"; //ok
+	// char str[] = "cmd1 c < cmd1"; //pending
+	// char str[] = "grep cat < infile infile2 infile3"; //pending
+	char str[] = "grep cat <\n"; //pending
+	// char str[] = "< infile cmd1 -f -g"; //ok
+	// char str[] = "< infile cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile"; //nok
+	// char str[] = "";
+	// char del[] = " \t\n\v\f\r";
 
-	free_chr_ptr((void **)lst.data);
-	free(lst.datatype);
+	char **res = ft_split_shell(str, "|"); //count
+	char **infile = ft_split_shell(res[0], "<"); //if true, +1
+	int i = 0;
+	while (res && res[i])
+		i++;
+	char **outfile = ft_split_shell(res[--i], ">"); //if true, +1
+	i = 0;
+	while (res[i])
+		i++;
+	if (infile[1])
+		i++;
+	if (outfile[1])
+		i++;
+	printf("count=%d+1\n", i);
+
+
+	// debug_print(res);
+	// printf("\n");
+	debug_print(infile);
+	debug_print(outfile);
+
+	free(res);
+	free(infile);
+	free(outfile);
+	// printf("%d\n", has_pipes("|", res));
+
+	// t_token	lst;
+	// get_cmd_line(str, &lst);
+
+	// free_all(&lst);
 }
