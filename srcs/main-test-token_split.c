@@ -33,14 +33,14 @@ int	main(int ac, char **av)
 	// }
 
 	/*-------------------split_with_pipes-------------------*/
-	// char str[] = "cmd1 -f -g < infile |cmd2 'some flags' | no | cmd3 > outfile"; //ok
-	// char str[] = "cmd1 c < cmd1"; //pending
+	char str[] = "cmd1 -f -g < infile |cmd2 'some flags' | no | cmd3 > outfile"; //ok
+	// char str[] = "cmd1 c < infile1 < infile2| cmd2 | cmd3"; //pending
 	// char str[] = "grep cat < infile infile2 infile3"; //pending
-	char str[] = "grep cat <\n"; //pending
+	// char str[] = "grep cat <\n"; //pending
 	// char str[] = "< infile cmd1 -f -g"; //ok
 	// char str[] = "< infile cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile"; //nok
-	// char str[] = "";
-	// char del[] = " \t\n\v\f\r";
+	// char str[] = "cat";
+	char del[] = " \t\n\v\f\r";
 
 	char **res = ft_split_shell(str, "|"); //count
 	char **infile = ft_split_shell(res[0], "<"); //if true, +1
@@ -51,16 +51,31 @@ int	main(int ac, char **av)
 	i = 0;
 	while (res[i])
 		i++;
-	if (infile[1])
+
+	/*check: if infile[1] is splittable by space, if infile[1++]: check if splittable by space*/
+	if (infile[1]) //if there are more than 1 infile, count til reach end
+	{
 		i++;
+		char **infile_next = ft_split_shell(infile[1], del);
+		if (infile_next[1])
+		{
+			int x = 1;
+			while (infile_next[x++])
+				i++;
+		}
+	}
+
+	// x = 1;
+	/*same as outfile*/
 	if (outfile[1])
 		i++;
 	printf("count=%d+1\n", i);
-
+	debug_print(res);
 
 	// debug_print(res);
-	// printf("\n");
+	printf("\n");
 	debug_print(infile);
+	printf("\n");
 	debug_print(outfile);
 
 	free(res);

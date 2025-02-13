@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/13 11:53:39 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/13 14:55:03 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,3 +120,38 @@ int	allocate_str(char **res, char **data, int i)
 	}
 	return (1);
 }
+
+
+// int	allocate_str(char **res, char **data, int i)
+// {
+// 	int	count;
+// 	int	x;
+
+// 	x = 0;
+// 	count = 0;
+// 	if (!data)
+// 	{
+// 		perror("Error! data pointer not found!\n");
+// 		return (0);
+// 	}
+// 	while (res[i] && !is_target("<>|", res[i][0]))
+// 	{
+// 		count++;
+// 		count += ft_strlen(res[i++]);
+// 	}
+// 	if (res[i] && (is_target("<>|", res[i][0])) && !is_all_op("<>|", res[i]))
+// 	{
+// 		while (res[i][x] && is_target("<>|", res[i][x]))
+// 			x++;
+// 		count++;
+// 		count += ft_strlen(&res[i++][x]);
+// 	}
+// 	printf("alloc_count=%d\n", count);
+// 	*data = (char *)malloc(sizeof(char) * count);
+// 	if (!(*data))
+// 	{
+// 		perror("Memory allocation failed!\n");
+// 		return (0);
+// 	}
+// 	return (1);
+// }

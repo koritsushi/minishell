@@ -75,39 +75,56 @@ void	recombine_cmd(char **res, t_token *lst)
 	lst->data[x] = NULL;
 }
 
+static int	count_str_array(char **res)
+{
+	int i;
+
+	i = 0;
+	while (res[i])
+		i++;
+	return (i - 1);
+}
+
 /*
  * counts number of string combos for malloc later
  * checks if < << is at beginning, process entire line til pipe
  * if infile at middle, all strings after < are filenames
  */
-void	get_malloc_size(int *count_op, int *pipe_flag, char **res)
+void	get_malloc_size(int *count_op, int *pipe_flag, char *str)
 {
-	int	i;
+	int		i;
+	char	**res;
+	char	**file[2];
 
 	i = -1;
 	*count_op = 0;
 	*pipe_flag = 0;
-	if (!res[0] || !res)
+	if (!str)
 		return ;
-	/* check if has pipe, pipe_flag=1 */
+	res = ft_split_shell(str, "|");
+	file[IN] = ft_split_shell(res[0], "<");
+	i = count_str_array(res);
+	file[OUT] = ft_split_shell(res[i], ">");
 
-	/* below only apply if pipe_flag=0 */
-	if (is_target("<", res[0][0])) // checks beginning
-	{
-		(*count_op)++;
-		i++; //0
-		if (res[i + 1] && res[i + 2])
-			(*count_op)++;
-	}
-	while (res[++i])
-	{
-		printf("i=%d\n", i);
-		if (is_target("<>|", res[i][0]))
-			(*count_op)++;
-		if (is_target("|", res[i][0]))
-			(*pipe_flag) = 1;
-		// i++;
-	}
+	// /* check if has pipe, pipe_flag=1 */
+
+	// /* below only apply if pipe_flag=0 */
+	// if (is_target("<", res[0][0])) // checks beginning
+	// {
+	// 	(*count_op)++;
+	// 	i++; //0
+	// 	if (res[i + 1] && res[i + 2])
+	// 		(*count_op)++;
+	// }
+	// while (res[++i])
+	// {
+	// 	printf("i=%d\n", i);
+	// 	if (is_target("<>|", res[i][0]))
+	// 		(*count_op)++;
+	// 	if (is_target("|", res[i][0]))
+	// 		(*pipe_flag) = 1;
+	// 	// i++;
+	// }
 }
 
 /*
@@ -124,14 +141,15 @@ void	get_cmd_line(char *str, t_token *lst)
 	if (!str || !str[0])
 		return ;
 	res = ft_split_shell(str, " \t\n\v\f\r");
+	// res = ft_split_shell(str, "|");
 	debug_print(res);
 
-	get_malloc_size(&count_op, &pipe_flag, res);
-	printf("op=%d f=%d\n", count_op, pipe_flag);
-	if (!init_token_list(lst, (count_op + 1 + pipe_flag)))
-		return ;
+	// get_malloc_size(&count_op, &pipe_flag, str);
+	// printf("op=%d f=%d\n", count_op, pipe_flag);
+	// if (!init_token_list(lst, (count_op + 1 + pipe_flag)))
+	// 	return ;
 
-	recombine_cmd(res, lst);
+	// recombine_cmd(res, lst);
 	// assign_datatype(lst, res);
 
 	/*-------------debug_start-------------*/

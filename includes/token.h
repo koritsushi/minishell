@@ -25,6 +25,12 @@ enum e_type
 	END
 };
 
+enum e_utils
+{
+	IN = 0,
+	OUT = 1
+};
+
 typedef struct s_token
 {
 	unsigned char	*datatype; //datatype

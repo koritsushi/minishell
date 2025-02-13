@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:09:44 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/12 19:21:22 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/13 15:42:31 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static void	identify_op_outfile(unsigned char *datatype, char *str)
 
 void	identify_op(char *str, unsigned char *datatype)
 {
-    if (!str || !str[0])
-        return ;
+	if (!str || !str[0])
+		return ;
 	if (str[0] && is_target("<", str[0]))
 		identify_op_infile(datatype, str);
 	else if (str[0] && is_target(">", str[0]))
