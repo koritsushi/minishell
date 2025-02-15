@@ -12,6 +12,6 @@
 
 #ifndef TOKEN_H
 # define TOKEN_H
-# include "includes/minishell.h"
+# include "minishell.h"
 
 #endif

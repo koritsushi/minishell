@@ -12,6 +12,6 @@
 
 #ifndef PARSING_H
 # define PARSING_H
-# include "includes/minishell.h"
+# include "minishell.h"
 
 #endif

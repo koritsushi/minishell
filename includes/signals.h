@@ -12,7 +12,7 @@
 
 #ifndef SIGNALS_H
 # define SIGNALS_H
-# include "includes/minishell.h"
+# include "minishell.h"
 # include <signal.h>
 
 void	set_signal_action(void);
