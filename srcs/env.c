@@ -23,7 +23,7 @@ void	env()
 
 }
 
-void	getenv()
+void	print_env()
 {
 	
 }

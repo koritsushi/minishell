@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/02/18 22:33:09 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/02/18 22:41:13 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ char	*getpwd(void)
 	ret = getcwd(buffer, PATH_MAX);
 	if (ret == NULL)
 	{
-		printf("-minishell: pwd: get working directory fail!, error:%s\n", sterror(errno));
+		free(ret);
+		printf("-minishell: pwd: get working directory fail!, error:%s\n", strerror(errno));
 		return (NULL);
 	}
-	return (buffer);
+	return (ret);
 }
 
 void	printpath(void)
@@ -65,8 +66,8 @@ void	chgwd(char *dir)
 		return ;
 	}
 	free(cdir);
-	if (chdir(path) == -1)
-		printf("cd : %s: No such file or directory, error:%s", dir, sterror(errno););
+	if (chdir(dir) == -1)
+		printf("cd : %s: No such file or directory, error:%s", dir, strerror(errno));
 }
 
 /*	echo (option -n Only)
