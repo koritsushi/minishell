@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/02/18 21:59:25 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/02/18 22:33:09 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ char	*getpwd(void)
 	ret = getcwd(buffer, PATH_MAX);
 	if (ret == NULL)
 	{
-		printf("get working directory fail\n", 1);
-		return (sterror(errno));
+		printf("-minishell: pwd: get working directory fail!, error:%s\n", sterror(errno));
+		return (NULL);
 	}
 	return (buffer);
 }
