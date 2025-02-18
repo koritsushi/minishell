@@ -14,7 +14,9 @@ SRCS 		=	srcs/minishell.c 	\
 				srcs/token.c		\
 				srcs/parsing.c		\
 				srcs/signals.c		\
-				srcs/builtins.c
+				srcs/builtins.c		\
+				srcs/env.c 			\
+				srcs/execution.c
 
 OBJS		=	$(SRCS:%.c=%.o)
 
