@@ -4,6 +4,11 @@ void	debug_print(char **res)
 {
 	int i = 0;
 
-	while (res[i])
+	if (!res)
+	{
+		printf("NULL\n");
+		return ;
+	}
+	while (res && res[i])
 		printf("%s\n", res[i++]);
 }

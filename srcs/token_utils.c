@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/13 14:55:03 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/26 10:02:54 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
  * copy src to dest with length defined in len
- * start = the index to start copy
+ * start = the index of dest to start copy to
  */
 void	copy_cmd(char **dest, char *src, int *start, int len)
 {
@@ -35,20 +35,34 @@ void	copy_cmd(char **dest, char *src, int *start, int len)
 	// printf("cpy=%s\n", *dest);
 }
 
+int	init_token_list(t_token *lst, int size)
+{
+	lst->datatype = (unsigned char *)malloc(sizeof(unsigned char) * size);
+	lst->data = (char **)malloc(sizeof(char *) * size);
+	while (--size >= 0)
+		lst->data[size] = NULL;
+	if (!lst->data || !lst->datatype)
+	{
+		perror("🚨 Memory allocation failed in init_token_list!");
+		return (0);
+	}
+	return (1);
+}
+
 /*
  * scans entire string and see if it has non-operators within the string
  * if contain non-operators, return (0)
  */
-int	is_all_op(char *op, char *str)
-{
-	while (str[0])
-	{
-		if (!is_target(op, str[0]))
-			return (0);
-		str++;
-	}
-	return (1);
-}
+// int	is_all_op(char *op, char *str)
+// {
+// 	while (str[0])
+// 	{
+// 		if (!is_target(op, str[0]))
+// 			return (0);
+// 		str++;
+// 	}
+// 	return (1);
+// }
 
 // int	if_target_exist(char *set, char *str)
 // {
@@ -84,44 +98,67 @@ int	is_all_op(char *op, char *str)
 // }
 
 /*
- * wrapper function for malloc enough size to copy data over 
- * int i = index to start scanning res
+ * wrapper function to calculate length of cmd_tail,
+ * and allocates enough size to copy to data 
+ * **dest/lst_data = destination to copy str to, which = lst.data
+ * str = the entire line of cmd/pipeline before splitted by outfile '>'
+ * uses malloc
  */
-int	allocate_str(char **res, char **data, int i)
+int	allocate_cmd_tail(char **dest, char **outfile)
 {
-	int	count;
-	int	x;
+	int		i;
+	int		len;
+	char	*cmd_tail;
 
-	x = 0;
-	count = 0;
-	if (!data)
+	i = 0;
+	len = ft_strlen(outfile[0]);
+	/*debug*/printf("tail=%s| %d\n", outfile[0], len);
+	while (outfile[i + 1])
+	{
+		cmd_tail = outfile[i + 1];
+		/* skips spaces */
+		while (is_target(" \t\n\v\f\r", cmd_tail[0]))
+			cmd_tail++;
+		/* skips to the 1st space detected */
+		cmd_tail = ft_strchr(cmd_tail, ' ');
+		if (cmd_tail)
+			len += ft_strlen(cmd_tail);
+		i++;
+		/*debug*/printf("tail=%s| %d+1\n", cmd_tail, len);
+	}
+	*dest = (char *)malloc(sizeof(char) * (len + 1));
+	if (!(*dest))
+	{
+		perror("allocate_str: Memory allocation failed!\n");
+		return (0);
+	}
+	return (1);
+}
+
+/*
+ * wrapper function to calculate length of str,
+ * and allocates enough size to copy to data 
+ * **dest = destination to copy str to, which = lst.data
+ * uses malloc
+ */
+int	allocate_str(char **dest, char *str)
+{
+	if (!dest)
 	{
 		perror("Error! data pointer not found!\n");
 		return (0);
 	}
-	while (res[i] && !is_target("<>|", res[i][0]))
+	*dest = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!(*dest))
 	{
-		count++;
-		count += ft_strlen(res[i++]);
-	}
-	if (res[i] && (is_target("<>|", res[i][0])) && !is_all_op("<>|", res[i]))
-	{
-		while (res[i][x] && is_target("<>|", res[i][x]))
-			x++;
-		count++;
-		count += ft_strlen(&res[i++][x]);
-	}
-	printf("alloc_count=%d\n", count);
-	*data = (char *)malloc(sizeof(char) * count);
-	if (!(*data))
-	{
-		perror("Memory allocation failed!\n");
+		perror("allocate_str: Memory allocation failed!\n");
 		return (0);
 	}
 	return (1);
 }
 
 
+/* allocate_str old version */
 // int	allocate_str(char **res, char **data, int i)
 // {
 // 	int	count;

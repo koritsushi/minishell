@@ -19,7 +19,7 @@ enum e_datatype
 	// WORD,		/* ascii 32-126, except ' "  */
 	NUM,		/* all digits */
 	OP,			/* all operators in general */
-	PIPE,		/* | */
+	// PIPE,		/* | */
 
 	/*---------------subs of WORD---------------*/
 	VAR,		/* starts with $, can be $<ID> or $? */
