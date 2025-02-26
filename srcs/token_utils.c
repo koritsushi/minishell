@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/26 10:02:54 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/26 22:32:05 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ void	copy_cmd(char **dest, char *src, int *start, int len)
 	// printf("cpy=%s\n", *dest);
 }
 
+/* 
+ * allocate spaces to store data for t_token list
+ * uses malloc
+ */
 int	init_token_list(t_token *lst, int size)
 {
 	lst->datatype = (unsigned char *)malloc(sizeof(unsigned char) * size);
@@ -98,21 +102,26 @@ int	init_token_list(t_token *lst, int size)
 // }
 
 /*
- * wrapper function to calculate length of cmd_tail,
- * and allocates enough size to copy to data 
+ * child function in extract_cmd_tail
+ * calculates length of cmd_tail & allocates enough size to copy to data 
  * **dest/lst_data = destination to copy str to, which = lst.data
  * str = the entire line of cmd/pipeline before splitted by outfile '>'
  * uses malloc
  */
-int	allocate_cmd_tail(char **dest, char **outfile)
+int	allocate_cmd_tail(char **dest, char **outfile, char c)
 {
 	int		i;
 	int		len;
 	char	*cmd_tail;
 
 	i = 0;
-	len = ft_strlen(outfile[0]);
-	/*debug*/printf("tail=%s| %d\n", outfile[0], len);
+	cmd_tail = outfile[0];
+	// while (cmd_tail[0] && is_target(" \t\n\v\f\r", cmd_tail[0]))
+		// cmd_tail++;
+	cmd_tail = skip_spaces(outfile[0], " \t\n\v\f\r");
+	cmd_tail = skip_if_symbol(cmd_tail, c, '>');
+	len = ft_strlen(cmd_tail);
+	/*debug*/printf("tail=%s| %d\n", cmd_tail, len);
 	while (outfile[i + 1])
 	{
 		cmd_tail = outfile[i + 1];
@@ -124,7 +133,7 @@ int	allocate_cmd_tail(char **dest, char **outfile)
 		if (cmd_tail)
 			len += ft_strlen(cmd_tail);
 		i++;
-		/*debug*/printf("tail=%s| %d+1\n", cmd_tail, len);
+		/*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
 	}
 	*dest = (char *)malloc(sizeof(char) * (len + 1));
 	if (!(*dest))

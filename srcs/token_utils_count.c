@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/26 11:47:03 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/26 13:37:01 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ int	get_malloc_size(char **res, char **infile)//, char **outfile, char *str)
 		while (is_target(" \t\n\v\f\r", line[0]))
 			line++;
 		tmp = ft_split_shell(line, ">");
-		printf("------\noutfile:\n");
-		debug_print(tmp);
+		// printf("------\noutfile:\n");
+		// debug_print(tmp);
 
 		/* cmd1 > out2 > out3 */
 		/* > out1 > out2 cmd1*/
@@ -117,18 +117,13 @@ int	get_malloc_size(char **res, char **infile)//, char **outfile, char *str)
 		/* > out1 */
 
 		/* if splittable '>' */
-			/*if line[0] != '>', pass_all++ */
-			/*if line[0] == '>' && has_more_str_all, pass_all++ */
+			/* pass_all++ */
+			/*if line[0] == '>' && has_more_str_all, i++ */
 
 		/* if not splittable '>' */
-			/*if line[0] == '>'*/
-			/*if line[0] != '>'*/
+			/*if line[0] == '>' && has_more_str_all, i++ */
 
 /*----------------------------------------------*/
-		/* if line[0] == '>' */
-			/* has_more_strs, i++ || !has_more_strs, skip */
-
-		/* if line[0] != '>' */
 		if (tmp && tmp[1])
 		{
 			i += count_str_array(&tmp[1]);

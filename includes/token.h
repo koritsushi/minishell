@@ -48,26 +48,37 @@ typedef struct	s_env
 
 
 char	**ft_split_shell(char *str, char *set);
+
+/* ---------------------for_checking---------------------- */
 int		is_target(char *str, char c);
-
-void	get_cmd_line(char *str, t_token *lst);
-void	copy_cmd(char **dest, char *src, int *start, int len);
-void	identify_op(char *str, unsigned char *datatype);
-// int		is_all_op(char *set, char *str);
-
-int		allocate_str(char **dest, char *str);
-int		allocate_cmd_tail(char **dest, char **outfile);
-
-int		get_malloc_size(char **res, char **infile);
-int		count_str_array(char **res);
 int		has_more_str(char *str, char *set);
 int		has_more_str_all(char **str, char *set);
 
-char	*truncate_input(char *str);
+void	get_cmd_line(char *str, t_token *lst);
+// void	copy_cmd(char **dest, char *src, int *start, int len);
+// void	identify_op(char *str, unsigned char *datatype);
+// int		is_all_op(char *set, char *str);
 
+/* -------------------count_&_mallocs---------------------- */
+int		count_str_array(char **res);
+int		get_malloc_size(char **res, char **infile);
+int		allocate_str(char **dest, char *str);
+int		allocate_cmd_tail(char **dest, char **outfile, char c);
 int		init_token_list(t_token *lst, int size);
 
-/* free memory allocations*/
+char	*skip_if_symbol(char *str, char c, char symbol);
+// char	*skip_if_symbol(char *str, char *set, char c, char symbol);
+char	*skip_spaces(char *str, char *set);
+
+void	extract_infile(char **lst_data, char **res, char **infile);
+void	extract_cmd_head(char **lst_data, char **res, char **infile);
+
+
+
+char	*truncate_input(char *str);
+
+
+/* -----------------free_memory_allocations----------------- */
 void	free_all(t_token *lst);
 void	free_multiple_ptr(int x, ...);
 
