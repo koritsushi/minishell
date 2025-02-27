@@ -85,8 +85,6 @@ void	extract_cmd_tail(char **lst_data, char *str, char **outfile)
 		// cmd_tail = outfile[i];
 		/* travel to the first space detected */
 		cmd_tail = skip_spaces(outfile[i], " \t\n\v\f\r");
-		// while (cmd_tail[0] && is_target(" \t\n\v\f\r", cmd_tail[0]))
-			// cmd_tail++;
 		cmd_tail = ft_strchr(cmd_tail, ' ');
 		cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
 		/*debug*/printf("***cmd_tail=%s| %zu\n", cmd_tail, ft_strlen(cmd_tail));
@@ -193,12 +191,15 @@ void	process_cmd(t_token *lst, char **res, char **infile)// char **outfile)//cha
 		// extract_cmd_head(&lst->data[i++], res, infile);
 
 	/* pipes */
-	if (infile[1])// || (res[0][0] == '<' && has_more_str(infile[0], " \t\n\v\f\r") && !has_more_str(infile[0], ">"))) /* && no outfile in 1st line*/
-	{
-		// x = 1;
-		if (res[1])
-			extract_outfile(&lst->data[i++], "|"); /*add pipe*/
-	}
+	// if (!infile[1] && res[1] && !has_more_str(infile[0], " \t\n\v\f\r"))// || (res[0][0] == '<' && has_more_str(infile[0], " \t\n\v\f\r") && !has_more_str(infile[0], ">"))) /* && no outfile in 1st line*/
+	// {
+	// 	// x = 1;
+	// 	/* cmd1 < infile*/
+	// 	/* cmd1 < infile|*/
+	// 	/* < infile |*/
+	// 	/* < infile cmd1|*/
+	// 	extract_outfile(&lst->data[i++], "|"); /*add pipe*/
+	// }
 	/*----------- copy in betweens -----------*/
 	/* infile[1] for to apply only when there's infile */
 	/* for this condition, extract_cmd_head should do the extracting including > outfile */
