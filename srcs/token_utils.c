@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/26 22:32:05 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/27 08:20:28 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,15 +113,16 @@ int	allocate_cmd_tail(char **dest, char **outfile, char c)
 	int		i;
 	int		len;
 	char	*cmd_tail;
+	char	**infile_check;
 
 	i = 0;
-	cmd_tail = outfile[0];
-	// while (cmd_tail[0] && is_target(" \t\n\v\f\r", cmd_tail[0]))
-		// cmd_tail++;
 	cmd_tail = skip_spaces(outfile[0], " \t\n\v\f\r");
 	cmd_tail = skip_if_symbol(cmd_tail, c, '>');
-	len = ft_strlen(cmd_tail);
-	/*debug*/printf("tail=%s| %d\n", cmd_tail, len);
+	/* split,skip by infiles */
+	infile_check = ft_split_shell(cmd_tail, "<");
+	len = ft_strlen(infile_check[0]);
+	/*debug*/printf("tail=%s| %d\n", infile_check[0], len);
+	free_chr_ptr((void **)infile_check);
 	while (outfile[i + 1])
 	{
 		cmd_tail = outfile[i + 1];
