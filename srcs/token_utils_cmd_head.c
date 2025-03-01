@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:18:26 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/27 07:24:26 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/27 14:05:05 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,32 +62,26 @@ char	*skip_spaces(char *str, char *set)
  */
 char	*skip_if_symbol(char *str, char c, char symbol)
 {
-	// while (str[0] && is_target(set, str[0]))
-		// str++;
 	if (c == symbol)
 	{
 		str = ft_strchr(str, ' ');
 		str = skip_spaces(str, " \t\n\v\f\r");
-		// while (str[0] && is_target(" \t\n\v\f\r", str[0]))
-			// str++;
 	}
 	return (str);
 }
 
 /* extracts command properly skipping the infiles */
 /* can update **res to *str (follow extract_cmd_tail)*/
-void	extract_cmd_head(char **lst_data, char **res, char **infile)
-{
-	char	*cmd_head;
-	char	**cmd_head_fin;
+// void	extract_cmd_head(char **lst_data, char **res, char **infile)
+// {
+// 	char	*cmd_head;
+// 	char	**cmd_head_fin;
 
-	cmd_head = infile[0];
-	// while (is_target(" \t\n\v\f\r", cmd_head[0]))
-		// cmd_head++;
-	cmd_head = skip_spaces(cmd_head, " \t\n\v\f\r");
-	cmd_head = skip_if_symbol(cmd_head, res[0][0], '<');
-	cmd_head_fin = ft_split_shell(cmd_head, ">");
-	allocate_str(lst_data, cmd_head_fin[0]);
-	ft_strlcpy(*lst_data, cmd_head_fin[0], ft_strlen(cmd_head_fin[0]) + 1);
-	free_chr_ptr((void **)cmd_head_fin);
-}
+// 	cmd_head = infile[0];
+// 	cmd_head = skip_spaces(cmd_head, " \t\n\v\f\r");
+// 	cmd_head = skip_if_symbol(cmd_head, res[0][0], '<');
+// 	cmd_head_fin = ft_split_shell(cmd_head, ">");
+// 	allocate_str(lst_data, cmd_head_fin[0]);
+// 	ft_strlcpy(*lst_data, cmd_head_fin[0], ft_strlen(cmd_head_fin[0]) + 1);
+// 	free_chr_ptr((void **)cmd_head_fin);
+// }

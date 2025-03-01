@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:26:21 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/22 09:20:21 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/27 19:01:25 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ char	*search_rstr(char *str, char c, int len)
 	while (str[0] && --len >= 0)
 	{
 		if (str[len] == c)
+		{
+			if (str[len - 1] && str[len - 1] == c)
+				return (&str[len - 1]);
 			return (&str[len]);
+		}
 	}
 	return (str);
 }
@@ -27,8 +31,9 @@ char	*search_rstr(char *str, char c, int len)
 /* 
  * child function for truncate_input
  * searches for '<' in str and returns pointer to the last infile '<' occured
+ * eg. ... | cmd1 <infile | ...  truncates to start from ->  cmd1 <infile | ...
  */
-char	*truncate_last_infile(char *str)
+char	*truncate_infile_back(char *str)
 {
 	int		len;
 	int		i;
@@ -54,8 +59,9 @@ char	*truncate_last_infile(char *str)
 /*
  * child function to truncate_input
  * if str[0] == '<', truncates beginning of str to last occurence of '<'
+ * truncate_infile_front
  */
-char	*truncate_begin_infile(char *str)
+static char	*truncate_infile_front(char *str)
 {
 	char	*new;
 
@@ -68,12 +74,13 @@ char	*truncate_input(char *str)
 {
 	char	*new;
 
-	new = truncate_last_infile(str);
-	// /*debug*/printf("trunc_tail=%s\n", new);
+	new = truncate_infile_back(str);
+	/*debug*/printf("trunc_tail=%s\n", new);
 	if (new[0] == '<')
 	{
-		new = truncate_begin_infile(new);
-		// /*debug*/printf("trunc_head=%s\n", new);
+		new = truncate_infile_front(new);
+		/*debug*/printf("trunc_head=%s\n", new);
 	}
+	new = skip_spaces(new, " \t\n\v\f\r");
 	return (new);
 }

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/26 13:37:01 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/27 18:52:31 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	has_more_str(char *str, char *set)
 	if (check && check[1])
 	{
 		res = 1;
-		printf("has_more_str=%s\n", check[1]);
+		// printf("has_more_str=%s\n", check[1]);
 	}
 	free_chr_ptr((void **)check);
 	return (res);

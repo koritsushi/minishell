@@ -55,6 +55,8 @@ int		has_more_str(char *str, char *set);
 int		has_more_str_all(char **str, char *set);
 
 void	get_cmd_line(char *str, t_token *lst);
+void	assign_datatype(unsigned char *datatype, char **res, char **infile);
+
 // void	copy_cmd(char **dest, char *src, int *start, int len);
 // void	identify_op(char *str, unsigned char *datatype);
 // int		is_all_op(char *set, char *str);
@@ -67,11 +69,11 @@ int		allocate_cmd_tail(char **dest, char **outfile, char c);
 int		init_token_list(t_token *lst, int size);
 
 char	*skip_if_symbol(char *str, char c, char symbol);
-// char	*skip_if_symbol(char *str, char *set, char c, char symbol);
 char	*skip_spaces(char *str, char *set);
+char	*search_rstr(char *str, char c, int len);
 
 void	extract_infile(char **lst_data, char **res, char **infile);
-void	extract_cmd_head(char **lst_data, char **res, char **infile);
+// void	extract_cmd_head(char **lst_data, char **res, char **infile);
 
 
 
@@ -88,7 +90,6 @@ int		count_str(char *str, char *set);
 int		count_chr(char *str, char *set, int *ptr);
 int		if_target_exist(char *set, char *str);
 char	*truncate_last_infile(char *str);
-char	*search_rstr(char *str, char c, int len);
 void	debug_print(char **res);
 
 

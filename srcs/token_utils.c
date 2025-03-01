@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/27 08:20:28 by hsim             ###   ########.fr       */
+/*   Updated: 2025/02/27 14:15:58 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,10 @@ int	init_token_list(t_token *lst, int size)
 	lst->datatype = (unsigned char *)malloc(sizeof(unsigned char) * size);
 	lst->data = (char **)malloc(sizeof(char *) * size);
 	while (--size >= 0)
+	{
 		lst->data[size] = NULL;
+		lst->datatype[size] = -1;
+	}
 	if (!lst->data || !lst->datatype)
 	{
 		perror("🚨 Memory allocation failed in init_token_list!");

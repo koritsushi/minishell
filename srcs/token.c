@@ -112,7 +112,7 @@ void	process_cmd_tail(char **lst_data, char **res)
 
 	x = 0;
 	i = 0;
-	while (res[x])
+	while (res && res[x])
 	{
 		cmd_tail = skip_spaces(res[x], "< \t\n\v\f\r");
 		cmd_tail = skip_if_symbol(cmd_tail, res[x][0], '<');
@@ -120,12 +120,16 @@ void	process_cmd_tail(char **lst_data, char **res)
 			break ;
 		outfile = ft_split_shell(cmd_tail, ">");
 
+		/*__________splittable_________*/
+		/* < infile cmd > outfile */
+		/* < infile > outfile */
 		/* cmd > outfile1 */
 		/* cmd > outfile1 -k */
-		/* < infile cmd > outfile */
 		/* > outfile1 > outfile2 */
 		/* > outfile1 cmd1 > outfile2 -h */
+		/* > outfile1 cmd1 */
 
+		/*__________!splittable_________*/
 		/* >       outfile1 cmd */
 		/* > outfile1 cmd */
 		/* cmd */
@@ -133,6 +137,8 @@ void	process_cmd_tail(char **lst_data, char **res)
 		/* < infile <infile cmd */
 		/* < infile infile cmd */
 		/* cmd < infile1 infile2 -k */
+		/* cmd < infile > outfile */
+
 
 		/*debug*/printf("------\noutfile:\n");
 		/*debug*/debug_print(outfile);
@@ -176,30 +182,15 @@ void	process_cmd_tail(char **lst_data, char **res)
  */
 void	process_cmd(t_token *lst, char **res, char **infile)// char **outfile)//char *str)
 {
-	(void)	lst;
 	int		i;
 	int		x;
-	// int		k;
-	// char	**outfile;
 
 	/*----------- process_cmd_head || get_infiles -----------*/
 	i = 0;
 	x = 0;
 	if (infile[1] || res[0][0] == '<')
 		extract_infile(&lst->data[i++], res, infile);
-	// if (infile[1])// || (res[0][0] == '<' && has_more_str(infile[0], " \t\n\v\f\r")))
-		// extract_cmd_head(&lst->data[i++], res, infile);
 
-	/* pipes */
-	// if (!infile[1] && res[1] && !has_more_str(infile[0], " \t\n\v\f\r"))// || (res[0][0] == '<' && has_more_str(infile[0], " \t\n\v\f\r") && !has_more_str(infile[0], ">"))) /* && no outfile in 1st line*/
-	// {
-	// 	// x = 1;
-	// 	/* cmd1 < infile*/
-	// 	/* cmd1 < infile|*/
-	// 	/* < infile |*/
-	// 	/* < infile cmd1|*/
-	// 	extract_outfile(&lst->data[i++], "|"); /*add pipe*/
-	// }
 	/*----------- copy in betweens -----------*/
 	/* infile[1] for to apply only when there's infile */
 	/* for this condition, extract_cmd_head should do the extracting including > outfile */
@@ -253,15 +244,15 @@ void	get_cmd_line(char *str, t_token *lst)
 	debug_print(res);
 	/* ---------------- extract_cmd ---------------- */
 	process_cmd(lst, res, infile);
-	// assign_datatype(lst, res);
+	assign_datatype(lst->datatype, res, infile);
 
-	printf("------\nlst_data:\n");
-	debug_print(lst->data);
+	// printf("------\nlst_data:\n");
+	// debug_print(lst->data);
 	/*-------------debug_start-------------*/
-	// printf("\n-------\n");
-	// int i = -1;
-	// while (++i < count_op + 2)
-	// 	printf("%s| \n", lst->data[i]);//, lst->datatype[i]);
+	printf("------\n_____lst_data:_____\n");
+	int i = -1;
+	while (++i < count)
+		printf("%s-> %d\n", lst->data[i], lst->datatype[i]);
 	/*--------------debug_end--------------*/
 	free_multiple_ptr(2, res, infile);
 }
