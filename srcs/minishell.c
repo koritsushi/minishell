@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/02 17:56:30 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/02 18:25:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,14 @@ int	main(int argc, char **argv)
 			break ;
 		}
 		/*get_cmd_line*/
-		get_cmd_line(text, &lst);
+		if (*text)
+		{
+			get_cmd_line(text, &lst);
+			free_all(&lst);
+		}
 		// ft_putstr_fd(text, 1);
 		// ft_putstr_fd("\n", 1);
 		free(text);
-		free_all(&lst);
 	}
 	return (0);
 }
