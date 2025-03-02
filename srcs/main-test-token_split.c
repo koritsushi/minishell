@@ -34,7 +34,7 @@ int	main(int ac, char **av)
 
 	/* ________________________cmd_combo_tests________________________ */
 // /*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 'some flags' | no | cmd3 > outfile -a -b |>> outfile2 cmd -f -g";
-// /*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 | cmd3 > outfile -a -b | > outfile2 cmd -f -g";
+/*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 | cmd3 > outfile -a -b | > outfile2 cmd -f -g";
 // /*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 | cmd3 > outfile -a -b | > outfile2 >outfile3 cmd -f -g";
 // /*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 | cmd3 > outfile -a -b | >> outfile2 >outfile3";
 	// char str[] = "cmd1 c < infile1 < infile2| cmd2 <infile3 <infile4 | cmd3";
@@ -60,9 +60,9 @@ int	main(int ac, char **av)
 // /*********/char str[] = "< infile cmd1 -f -g > out >>out2 -k";// HIGHLIGHT
 	// char str[] = "<< infile cmd1 -f -g > out";
 			// char str[] = "< infile < infile2     << infile3 | cmd1 |cmd2 |cmd3 ";
-	// char str[] = "< infile | < infile2 |   << infile3   < infile5 cmd1 -f -g |cmd2 |cmd3 ";
+	// char str[] = "< infile | < infile2 |   < infile3   << infile5 cmd1 -f -g |cmd2 |cmd3 ";
 	// char str[] = "|  < infile  | cmd1 |cmd2 |cmd3 ";
-	char str[] = "<infile3 <infile0 | cmd1 | cmd2 | cmd3 > outf1 >out2>>out3";
+	// char str[] = "<infile3 <infile0 | cmd1 | cmd2 | cmd3 > outf1 >out2>>out3";
 
 	// char str[] = "< infile <infile2 <<infile3 cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile koko lala";
 	// char str[] = "< infile cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile koko lala";

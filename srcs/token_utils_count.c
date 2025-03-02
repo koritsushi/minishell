@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/02 08:57:54 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/02 18:40:57 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	count_cmd_tail_chr(char **outfile)
 		if (cmd_tail)
 			len += ft_strlen(cmd_tail);
 		i++;
-		/*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
+		// /*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
 	}
 	return (len);
 }
