@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:26:21 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/27 19:01:25 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/02 09:07:22 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*search_rstr(char *str, char c, int len)
  * searches for '<' in str and returns pointer to the last infile '<' occured
  * eg. ... | cmd1 <infile | ...  truncates to start from ->  cmd1 <infile | ...
  */
-char	*truncate_infile_back(char *str)
+static char	*truncate_infile_back(char *str)
 {
 	int		len;
 	int		i;
@@ -52,7 +52,6 @@ char	*truncate_infile_back(char *str)
 		}
 		i++;
 	}
-	/*or ft_memmove the original string*/
 	return (str);
 }
 
@@ -74,7 +73,8 @@ char	*truncate_input(char *str)
 {
 	char	*new;
 
-	new = truncate_infile_back(str);
+	new = skip_spaces(str, " \t\n\v\f\r");
+	new = truncate_infile_back(new);
 	/*debug*/printf("trunc_tail=%s\n", new);
 	if (new[0] == '<')
 	{

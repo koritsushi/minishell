@@ -5,203 +5,100 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/27 14:15:58 by hsim             ###   ########.fr       */
+/*   Created: 2025/02/26 17:18:26 by hsim              #+#    #+#             */
+/*   Updated: 2025/03/02 08:59:45 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/token.h"
 
 /*
- * copy src to dest with length defined in len
- * start = the index of dest to start copy to
+ * child function of extract_cmd
+ * int start = index position of where to copy over the text
+ * uses malloc
  */
-void	copy_cmd(char **dest, char *src, int *start, int len)
+void	extract_infile(char **lst_data, char **res, char **infile)
 {
-	int	i;
-	int	x;
+	int		i;
+	char	**infile_fin;
 
 	i = 0;
-	x = 0;
-	if (!dest || !src)
-		return ;
-	if (*start > 0)
-		(*dest)[(*start)++] = ' ';
-	while (is_target("<>|", src[x]))
-		x++;
-	while (i++ < len)
-		(*dest)[(*start)++] = src[x++];
-	(*dest)[*start] = '\0';
-	// printf("cpy=%s\n", *dest);
+	/*get to the last infile index*/
+	while (infile && infile[i + 1])
+		i++;
+	infile_fin = ft_split_shell(infile[i], " \t\n\v\f\r");
+	i = 0;
+	if (res[0][0] != '<' && infile[1])
+	{
+		while (infile_fin[i + 1] && infile_fin[i + 1][0] != '>')
+			i++;
+	}
+	allocate_str(lst_data, infile_fin[i]);
+	ft_strlcpy(*lst_data, infile_fin[i], ft_strlen(infile_fin[i]) + 1);
+
+	printf("------\ninfile:\n");
+	debug_print(infile);
+	printf("------\nINFILE=%s\n", *lst_data);
+
+	free_chr_ptr((void **)infile_fin);
+}
+
+/* skips if str[0] == *set */
+char	*skip_spaces(char *str, char *set)
+{
+	char	*tmp;
+
+	tmp = str;
+	while (tmp && tmp[0] && is_target(set, tmp[0]))
+		tmp++;
+	return (tmp);
 }
 
 /* 
- * allocate spaces to store data for t_token list
- * uses malloc
+ * child function for extract_cmd_head & process_cmd_tail
+ * *str = the string to check/iterate
+ * skips if str[0] == *set
+ * if char c == symbol, skips *str to the 1st occurence of spaces
  */
-int	init_token_list(t_token *lst, int size)
+char	*skip_if_symbol(char *str, char c, char symbol)
 {
-	lst->datatype = (unsigned char *)malloc(sizeof(unsigned char) * size);
-	lst->data = (char **)malloc(sizeof(char *) * size);
-	while (--size >= 0)
+	if (c == symbol)
 	{
-		lst->data[size] = NULL;
-		lst->datatype[size] = -1;
+		str = ft_strchr(str, ' ');
+		str = skip_spaces(str, " \t\n\v\f\r");
 	}
-	if (!lst->data || !lst->datatype)
-	{
-		perror("🚨 Memory allocation failed in init_token_list!");
-		return (0);
-	}
-	return (1);
+	return (str);
+}
+
+/* splits current *str by *set and see if there are strings after splitting */
+int	has_more_str(char *str, char *set)
+{
+	char	**check;
+	int		res;
+
+	res = 0;
+	check = ft_split_shell(str, set);
+	if (check && check[1])
+		res = 1;
+	free_chr_ptr((void **)check);
+	return (res);
 }
 
 /*
- * scans entire string and see if it has non-operators within the string
- * if contain non-operators, return (0)
+ * checks all pointer array **str by *set 
+ * and see if there are strings after splitting
  */
-// int	is_all_op(char *op, char *str)
-// {
-// 	while (str[0])
-// 	{
-// 		if (!is_target(op, str[0]))
-// 			return (0);
-// 		str++;
-// 	}
-// 	return (1);
-// }
-
-// int	if_target_exist(char *set, char *str)
-// {
-// 	while (str[0])
-// 	{
-// 		if (is_target(set, str[0]))
-// 			return (1);
-// 		str++;
-// 	}
-// 	return (0);
-// }
-
-/* runs through char**res pointer and checks if there are pipes ahead */
-// int	has_pipes(char *set, char **res)
-// {
-// 	int	i;
-// 	// int	x;
-
-// 	i = 0;
-// 	while (res[i])
-// 	{
-// 		char **scan = ft_split_shell(res[i], "|");
-// 		while (scan[i])
-// 		{
-// 			if (scan[i])
-// 		}
-// 		// x = 0;
-// 		// if (is_target(set, res[i][0]))
-// 		// 	return (1);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-/*
- * child function in extract_cmd_tail
- * calculates length of cmd_tail & allocates enough size to copy to data 
- * **dest/lst_data = destination to copy str to, which = lst.data
- * str = the entire line of cmd/pipeline before splitted by outfile '>'
- * uses malloc
- */
-int	allocate_cmd_tail(char **dest, char **outfile, char c)
+int	has_more_str_all(char **str, char *set)
 {
-	int		i;
-	int		len;
-	char	*cmd_tail;
-	char	**infile_check;
+	int	i;
 
 	i = 0;
-	cmd_tail = skip_spaces(outfile[0], " \t\n\v\f\r");
-	cmd_tail = skip_if_symbol(cmd_tail, c, '>');
-	/* split,skip by infiles */
-	infile_check = ft_split_shell(cmd_tail, "<");
-	len = ft_strlen(infile_check[0]);
-	/*debug*/printf("tail=%s| %d\n", infile_check[0], len);
-	free_chr_ptr((void **)infile_check);
-	while (outfile[i + 1])
+	while (str && str[i])
 	{
-		cmd_tail = outfile[i + 1];
-		/* skips spaces */
-		while (is_target(" \t\n\v\f\r", cmd_tail[0]))
-			cmd_tail++;
-		/* skips to the 1st space detected */
-		cmd_tail = ft_strchr(cmd_tail, ' ');
-		if (cmd_tail)
-			len += ft_strlen(cmd_tail);
+		if (has_more_str(str[i], set))
+			return (1);
 		i++;
-		/*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
 	}
-	*dest = (char *)malloc(sizeof(char) * (len + 1));
-	if (!(*dest))
-	{
-		perror("allocate_str: Memory allocation failed!\n");
-		return (0);
-	}
-	return (1);
+	return (0);
 }
 
-/*
- * wrapper function to calculate length of str,
- * and allocates enough size to copy to data 
- * **dest = destination to copy str to, which = lst.data
- * uses malloc
- */
-int	allocate_str(char **dest, char *str)
-{
-	if (!dest)
-	{
-		perror("Error! data pointer not found!\n");
-		return (0);
-	}
-	*dest = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
-	if (!(*dest))
-	{
-		perror("allocate_str: Memory allocation failed!\n");
-		return (0);
-	}
-	return (1);
-}
-
-
-/* allocate_str old version */
-// int	allocate_str(char **res, char **data, int i)
-// {
-// 	int	count;
-// 	int	x;
-
-// 	x = 0;
-// 	count = 0;
-// 	if (!data)
-// 	{
-// 		perror("Error! data pointer not found!\n");
-// 		return (0);
-// 	}
-// 	while (res[i] && !is_target("<>|", res[i][0]))
-// 	{
-// 		count++;
-// 		count += ft_strlen(res[i++]);
-// 	}
-// 	if (res[i] && (is_target("<>|", res[i][0])) && !is_all_op("<>|", res[i]))
-// 	{
-// 		while (res[i][x] && is_target("<>|", res[i][x]))
-// 			x++;
-// 		count++;
-// 		count += ft_strlen(&res[i++][x]);
-// 	}
-// 	printf("alloc_count=%d\n", count);
-// 	*data = (char *)malloc(sizeof(char) * count);
-// 	if (!(*data))
-// 	{
-// 		perror("Memory allocation failed!\n");
-// 		return (0);
-// 	}
-// 	return (1);
-// }

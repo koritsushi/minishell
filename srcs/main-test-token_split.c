@@ -33,7 +33,7 @@ int	main(int ac, char **av)
 	// }
 
 	/* ________________________cmd_combo_tests________________________ */
-/*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 'some flags' | no | cmd3 > outfile -a -b |>> outfile2 cmd -f -g";
+// /*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 'some flags' | no | cmd3 > outfile -a -b |>> outfile2 cmd -f -g";
 // /*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 | cmd3 > outfile -a -b | > outfile2 cmd -f -g";
 // /*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 | cmd3 > outfile -a -b | > outfile2 >outfile3 cmd -f -g";
 // /*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 | cmd3 > outfile -a -b | >> outfile2 >outfile3";
@@ -44,7 +44,7 @@ int	main(int ac, char **av)
 	// char str[] = "cmd1 c |< infile1 < infile2 | cmd3 > outfile1 | cmd4 > outfile2";
 	// char str[] = "cmd1 c |< infile1 < infile2 | cmd2 > outfile1 >outfile2 -k | cmd3 | cmd4 > outfile3 >outfile4 -f -g >outfile5 -k";
 	// char str[] = "cmd1 c |< infile1 | cmd2 c |< infile1 < infile2 | cmd3";
-// /*----here--*/char str[] = "grep cat < infile < infile1 < infile2 infile3 < infile4 infile5";
+/*----here--*/char str[] = "grep cat < infile < infile1 < infile2 infile3 < infile4 infile5";
 	// char str[] = "grep cat |<infile1 cmd1";
 // /*********/char str[] = "cmd1 << infile infile2 infile3 > out -k -l";// HIGHLIGHT
 
@@ -67,7 +67,7 @@ int	main(int ac, char **av)
 	// char str[] = "< infile cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile >> outfile2 koko lala";
 	// char str[] = "  < infile cmd1 -f -g infile2 | cmd2 'some flags' | no | cmd3 >> outfile koko lala";
 // char str[] = "  < infile cmd1 -f -g infile2 | cmd2 'some flags";
-	// char str[] = "  <infile   ";
+	// char str[] = "  <  infile   ";
 	// char str[] = "echo $VAR";
 	// char str[] = "cat";
 	// char del[] = " \t\n\v\f\r";

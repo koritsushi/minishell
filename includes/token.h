@@ -62,11 +62,15 @@ void	assign_datatype(unsigned char *datatype, char **res, char **infile);
 // int		is_all_op(char *set, char *str);
 
 /* -------------------count_&_mallocs---------------------- */
-int		count_str_array(char **res);
+// int		count_str_array(char **res);
+int		count_cmd_tail_chr(char **outfile);
+
 int		get_malloc_size(char **res, char **infile);
 int		allocate_str(char **dest, char *str);
 int		allocate_cmd_tail(char **dest, char **outfile, char c);
 int		init_token_list(t_token *lst, int size);
+int		malloc_chr_ptr(char **dest, int len);
+
 
 char	*skip_if_symbol(char *str, char c, char symbol);
 char	*skip_spaces(char *str, char *set);

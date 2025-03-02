@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/19 19:00:13 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/01 22:13:10 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	count_chr(char *str, char *set, int *flag)
 			return (count + 1);
 		increment_val(-1, &count, &str);
 	}
-	while (str[0] && !(*flag) && !is_target(set, str[0]))// && str[0] != '\'')
+	while (str[0] && !(*flag) && !is_target(set, str[0]))
 		increment_val(-1, &count, &str);
 	return (count);
 }

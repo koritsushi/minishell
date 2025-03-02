@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/27 18:52:31 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/02 08:57:54 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,42 +17,8 @@
  * number of arguments for malloc use later
  */
 
-/* splits current *str by *set and see if there are strings after splitting */
-int	has_more_str(char *str, char *set)
-{
-	char	**check;
-	int		res;
-
-	res = 0;
-	check = ft_split_shell(str, set);
-	if (check && check[1])
-	{
-		res = 1;
-		// printf("has_more_str=%s\n", check[1]);
-	}
-	free_chr_ptr((void **)check);
-	return (res);
-}
-
-int	has_more_str_all(char **str, char *set)
-{
-	int	i;
-
-	i = 0;
-	while (str && str[i])
-	{
-		if (has_more_str(str[i], set))
-		{
-			printf("has_more_str_all=1!\n");
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
 /* counts total string count in a double char array */
-int	count_str_array(char **res)
+static int	count_str_array(char **res)
 {
 	int	i;
 
@@ -63,7 +29,7 @@ int	count_str_array(char **res)
 }
 
 /* gets the correct infile count for malloc use */
-int	count_infile(char **res, char **infile)
+static int	count_infile(char **res, char **infile)
 {
 	int	x;
 	int	flag;
@@ -72,37 +38,55 @@ int	count_infile(char **res, char **infile)
 	x = 1;
 	flag = 1;
 	count = 0;
-	if (res[0][0] == '<' && !infile[1] && has_more_str(infile[0], " \t\n\v\f\r"))
+	if (res[0][0] == '<' && !infile[1] && \
+		has_more_str(infile[0], " \t\n\v\f\r"))
 		count++;
 	else if (res[0][0] != '<' && infile[1])
 		count++;
 	return (count);
 }
 
+/* counts number of chars in cmd_tail for malloc use */
+int	count_cmd_tail_chr(char **outfile)
+{
+	int		i;
+	int		len;
+	char	*cmd_tail;
+
+	i = 0;
+	len = 0;
+	while (outfile[i + 1])
+	{
+		cmd_tail = outfile[i + 1];
+		cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
+		/* skips to the 1st space detected */
+		cmd_tail = ft_strchr(cmd_tail, ' ');
+		if (cmd_tail)
+			len += ft_strlen(cmd_tail);
+		i++;
+		/*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
+	}
+	return (len);
+}
+
+// 24 lines!
 /*
- * *i counts number of string combos for malloc later
- * checks if < << is at beginning, process entire line til pipe
- * if infile at middle, all strings after < are filenames
+ * counts number of words in cmd_tail for malloc use
+ * *set = set of spaces to detect: ' \t\n\v\f\r'
  */
-int	get_malloc_size(char **res, char **infile)//, char **outfile, char *str)
+static int	count_cmd_tail(char **res, char *set)
 {
 	int		i;
 	int		x;
 	char	**tmp;
 	char	*line;
 
-	i = count_str_array(res); /* splitted by '|' */
-	i += count_str_array(&res[1]); /*count pipes*/
-	i += count_infile(res, infile);
-
 	x = 0;
-	/*count_outfiles*/
-	/* if splittable*/
+	i = 0;
 	while (res[x])
 	{
 		line = res[x];
-		while (is_target(" \t\n\v\f\r", line[0]))
-			line++;
+		line = skip_spaces(line, set);
 		tmp = ft_split_shell(line, ">");
 		// printf("------\noutfile:\n");
 		// debug_print(tmp);
@@ -110,10 +94,8 @@ int	get_malloc_size(char **res, char **infile)//, char **outfile, char *str)
 		/* cmd1 > out2 > out3 */
 		/* > out1 > out2 cmd1*/
 		/* > out1 cmd1 > out2*/
-
 		
 		/* > out1 > out2 > out3 */
-		/* > out1 > out2, count less 1*/
 		/* > out1 */
 
 		/* if splittable '>' */
@@ -123,18 +105,33 @@ int	get_malloc_size(char **res, char **infile)//, char **outfile, char *str)
 		/* if not splittable '>' */
 			/*if line[0] == '>' && has_more_str_all, i++ */
 
-/*----------------------------------------------*/
 		if (tmp && tmp[1])
 		{
 			i += count_str_array(&tmp[1]);
-			if (line[0] == '>' && has_more_str_all(tmp, " \t\n\v\f\r"))
+			if (line[0] == '>' && has_more_str_all(tmp, set))
 				i++;
 		}
-		else if (!tmp[1] && line[0] == '>' && has_more_str_all(tmp, " \t\n\v\f\r"))
+		else if (!tmp[1] && line[0] == '>' && has_more_str_all(tmp, set))
 			i++;
 		x++;
 		free_chr_ptr((void **)tmp);
 	}
+	return (i);
+}
+
+/*
+ * *i counts number of string combos for malloc later
+ * checks if < << is at beginning, process entire line til pipe
+ * if infile at middle, all strings after < are filenames
+ */
+int	get_malloc_size(char **res, char **infile)
+{
+	int		i;
+
+	i = count_str_array(res); /* splitted by '|' */
+	i += count_str_array(&res[1]); /*count pipes*/
+	i += count_infile(res, infile);
+	i += count_cmd_tail(res, " \t\n\v\f\r");
 
 	// printf("------\nres:\n");
 	// debug_print(res);
