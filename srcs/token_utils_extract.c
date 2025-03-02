@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 12:06:36 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/02 17:48:16 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/02 18:27:50 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ void	extract_infile(char **lst_data, char **res, char **infile)
 	allocate_str(lst_data, infile_fin[i]);
 	ft_strlcpy(*lst_data, infile_fin[i], ft_strlen(infile_fin[i]) + 1);
 
-	printf("------\ninfile:\n");
-	debug_print(infile);
-	printf("------\nINFILE=%s\n", *lst_data);
+    /*debug*/
+	// printf("------\ninfile:\n");
+	// debug_print(infile);
+	// printf("------\nINFILE=%s\n", *lst_data);
+    /*debug_end*/
 
 	free_chr_ptr((void **)infile_fin);
 }

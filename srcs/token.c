@@ -26,7 +26,7 @@ void	copy_cmd_tail(char **lst_data, int start, char **outfile)
 		cmd_tail = skip_spaces(outfile[i], " \t\n\v\f\r");
 		cmd_tail = ft_strchr(cmd_tail, ' ');
 		cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
-		/*debug*/printf("***cmd_tail=%s| %zu\n", cmd_tail, ft_strlen(cmd_tail));
+		// /*debug*/printf("***cmd_tail=%s| %zu\n", cmd_tail, ft_strlen(cmd_tail));
 		if (!cmd_tail)
 		{
 			printf("!cmd_tail, break!\n");
@@ -78,7 +78,7 @@ void	extract_cmd_tail(char **lst_data, char *str, char **outfile)
 		free_chr_ptr((void **)infile_check);
 	}
 	copy_cmd_tail(lst_data, start, &outfile[i]);
-	/*debug*/printf("tail_fin=%s\n", *lst_data);//, &(*lst_data)[start-3]);
+	// /*debug*/printf("tail_fin=%s\n", *lst_data);//, &(*lst_data)[start-3]);
 }
 
 // 15 lines!
@@ -109,8 +109,8 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 	/*__________start_here_________*/
 	outfile = ft_split_shell(cmd_tail, ">");
 
-	/*debug*/printf("------\noutfile:\n");
-	/*debug*/debug_print(outfile);
+	// /*debug*/printf("------\noutfile:\n");
+	// /*debug*/debug_print(outfile);
 
 	/*--------------extract_cmd_tail--------------*/
 	/* if splittable && has_more_str_all*/
@@ -169,8 +169,8 @@ void	process_cmd(t_token *lst, char **res, char **infile)// char **outfile)//cha
 			extract_outfile(&lst->data[i++], "|");
 	}
 
-	/*debug*/ printf("------\ninfile:\n");
-	/*debug*/ debug_print(infile);
+	// /*debug*/ printf("------\ninfile:\n");
+	// /*debug*/ debug_print(infile);
 }
 
 // 18 lines so far
@@ -201,9 +201,10 @@ void	get_cmd_line(char *str, t_token *lst)
 	if (!init_token_list(lst, (count + 1)))
 		return ;
 
-	/*debug*/printf("trunc=%s\ncount=%d+1\n", new, count);
-	/*debug*/printf("------\nres:\n");
-	/*debug*/debug_print(res);
+	// /*debug*/printf("trunc=%s\n", new);
+	/*debug*/printf("count=%d+1\n", count);
+	// /*debug*/printf("------\nres:\n");
+	// /*debug*/debug_print(res);
 	/* ---------------- extract_cmd ---------------- */
 	process_cmd(lst, res, infile);
 	assign_datatype(lst->datatype, res, infile);

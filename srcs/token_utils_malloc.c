@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/02 16:07:24 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/02 18:30:01 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	allocate_cmd_tail(char **dest, char **outfile, char c)
 	/* split,skip by infiles */
 	infile_check = ft_split_shell(cmd_tail, "<");
 	len = ft_strlen(infile_check[0]);
-	/*debug*/printf("tail=%s| %d\n", infile_check[0], len);
+	// /*debug*/printf("tail=%s| %d\n", infile_check[0], len);
 	free_chr_ptr((void **)infile_check);
 
 	/* count outfile & cmd_tail */
