@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:26:21 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/02 17:39:16 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/02 17:44:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 /* search for last occurence of char c up to len count, len=endpoint */
 char	*search_rstr(char *str, char c, int len)
 {
-	// printf("end=%s\n", &str[len]);
 	while (str[0] && --len >= 0)
 	{
 		if (str[len] == c)

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/02/12 18:48:38 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/02 17:56:30 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_isspace(char *str)
 int	main(int argc, char **argv)
 {
 	char	*text;
-	// t_token	lst;
+	t_token	lst;
 
 	if (argc > 1 && ft_strncmp(argv[0], "minishell", 9) != 0)
 		exit(127);
@@ -49,11 +49,11 @@ int	main(int argc, char **argv)
 			break ;
 		}
 		/*get_cmd_line*/
-		// get_cmd_line(text, &lst);
+		get_cmd_line(text, &lst);
 		// ft_putstr_fd(text, 1);
 		// ft_putstr_fd("\n", 1);
 		free(text);
-		// free_all(&lst);
+		free_all(&lst);
 	}
 	return (0);
 }

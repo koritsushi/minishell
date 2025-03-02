@@ -21,9 +21,9 @@ SRCS 		=	srcs/lexical.c					\
 				srcs/signals.c					\
 				srcs/debug.c					\
 				srcs/utils_free.c				\
-				srcs/main-test-token_split.c	\
 				srcs/token.c					\
-#				srcs/minishell.c 	
+				srcs/minishell.c 	
+#				srcs/main-test-token_split.c	\
 #				srcs/token_utils_operator.c		\
 
 OBJS		=	$(SRCS:%.c=%.o)

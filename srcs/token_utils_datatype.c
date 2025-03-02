@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 07:55:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/02 17:29:12 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/02 17:47:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	assign_datatype_outfile(char *str, unsigned char *datatype, int *i)
 	while (cmd_tail && cmd_tail[0])
 	{
 		cmd_tail = ft_strchr(cmd_tail, '>');
-		/*debug*/printf("datatype=%s\n", cmd_tail);
+		// /*debug*/printf("datatype=%s\n", cmd_tail);
 		if (!cmd_tail)
 			break ;
 		if (cmd_tail[1] == '>')
@@ -112,7 +112,7 @@ void	assign_datatype(unsigned char *datatype, char **res, char **infile)
 		/* skip spaces & infile symbol */
 		cmd_tail = skip_spaces(res[x], "< \t\n\v\f\r");
 		cmd_tail = skip_if_symbol(cmd_tail, res[x][0], '<');
-		/*debug*/printf("assign_datatype=%s\n", cmd_tail);
+		// /*debug*/printf("assign_datatype=%s\n", cmd_tail);
 		outfile = ft_split_shell(cmd_tail, ">");
 		if (!outfile)
 		{

@@ -211,10 +211,10 @@ void	get_cmd_line(char *str, t_token *lst)
 	/*-------------debug_start-------------*/
 	// printf("------\nlst_data:\n");
 	// debug_print(lst->data);
-	printf("------\n_____lst_data:_____\n");
+	printf("\n\033[102m_____lst_data:_____\033[0m\n");
 	int i = -1;
 	while (++i < count)
-		printf("%s-> %d\n", lst->data[i], lst->datatype[i]);
+		printf("\033[92m%s\033[0m [%d]\n", lst->data[i], lst->datatype[i]);
 	/*--------------debug_end--------------*/
 
 	free_multiple_ptr(2, res, infile);

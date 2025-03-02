@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 12:06:36 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/02 16:01:12 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/02 17:48:16 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ void	extract_outfile(char **lst_data, char *str)
 	allocate_str(lst_data, outfile_fin[0]);
 	ft_strlcpy(*lst_data, outfile_fin[0], ft_strlen(outfile_fin[0]) + 1);
 
-	/*debug*/ printf("------\noutfile_fin:\n");
-	/*debug*/ debug_print(outfile_fin);
+	// /*debug*/ printf("------\noutfile_fin:\n");
+	// /*debug*/ debug_print(outfile_fin);
 
 	free_chr_ptr((void **)outfile_fin);
 }
