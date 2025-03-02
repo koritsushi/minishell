@@ -13,6 +13,7 @@ SRCS 		=	srcs/lexical.c					\
 				srcs/token_utils.c				\
 				srcs/token_utils_malloc.c		\
 				srcs/token_utils_count.c		\
+				srcs/token_utils_extract.c		\
 				srcs/token_utils_datatype.c		\
 				srcs/token_utils_split.c		\
 				srcs/token_utils_truncate.c		\

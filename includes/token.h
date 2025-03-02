@@ -54,16 +54,17 @@ int		is_target(char *str, char c);
 int		has_more_str(char *str, char *set);
 int		has_more_str_all(char **str, char *set);
 
+/* -------------------extract_cmds---------------------- */
 void	get_cmd_line(char *str, t_token *lst);
 void	assign_datatype(unsigned char *datatype, char **res, char **infile);
-
-// void	copy_cmd(char **dest, char *src, int *start, int len);
-// void	identify_op(char *str, unsigned char *datatype);
-// int		is_all_op(char *set, char *str);
+void	extract_infile(char **lst_data, char **res, char **infile);
+void	extract_outfile(char **lst_data, char *str);
+void	process_outfile(char **lst_data, int *i, char *cmd_tail, char **outfile);
 
 /* -------------------count_&_mallocs---------------------- */
 // int		count_str_array(char **res);
 int		count_cmd_tail_chr(char **outfile);
+
 
 int		get_malloc_size(char **res, char **infile);
 int		allocate_str(char **dest, char *str);
@@ -76,8 +77,6 @@ char	*skip_if_symbol(char *str, char c, char symbol);
 char	*skip_spaces(char *str, char *set);
 char	*search_rstr(char *str, char c, int len);
 
-void	extract_infile(char **lst_data, char **res, char **infile);
-// void	extract_cmd_head(char **lst_data, char **res, char **infile);
 
 
 
