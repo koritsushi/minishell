@@ -1,4 +1,4 @@
-#include "includes/token.h"
+#include "includes/minishell.h"
 
 int	main(int ac, char **av)
 {
@@ -32,46 +32,91 @@ int	main(int ac, char **av)
 	// 	str++;
 	// }
 
+	/* ________________________vars_test________________________ */
+	// char str[] = "var =123";
+	// char str[] = "var= 123";
+	// char str[] = "var=| 123";
+	// char str[] = "var=123";
+	// char str[] = "var      = 123";
+	// char str[] = "echo hello | var=123 | cmd3";
+	// char str[] = "var=123<        > outfile";
+	// char str[] = "< infile var=123 > outfile";
+	// char str[] = "< infile	   var=123";
+	// char str[] = "       	var=123 < infile";
+	// char str[] = "               var=123 < infile";
+	// char str[] = "var=123 < infile <infile2 > outfile";
+	// char str[] = "var=123 < infile > outfile > outfile2";
+	// char str[] = "var=123 < infile <in2";
+	// char str[] = "var=123 > outfile >out2";
+	// char str[] = "awk 'BEGIN { x = 1 print x }'";
+	// char str[] = "var=\"123 's\"   	var=9020pq     ";
+	// char str[] = "var=9090 var=9020";
+	// char str[] = "var='9090' var='9020'";
+	// char str[] = "var=\"123 's\" 	var='9090\"1'";
+	char str[] = "var=\"123 's\" 	vars=90901 var='yo\"yo'";
+	// char str[] = "awk 'BEGIN { x=1 print x }' var=\"12'34\"";
+	// char str[] = "awk'BEGIN{x=1printx}'";
+	// char str[] = "awk 'BEGIN { x=1 '\"print x }' var=12\"34";
+	// char str[] = "awk ' BEGIN { x = 1 print x }' vars='opop'";
+	// char str[] = "awk 'BEGIN { x=1 print x }' |var=1234";
+	// char str[] = "awk \"BEGIN { x = 1 print x }\"        ";
+
+	/* ________________________syntax_error_test________________________ */
+	// char str[] = "cmd1 c < infile1 < infile2|\t\n\v\f\r| cmd2 <infile3 <infile4 | cmd3";
+	// char str[] = "cmd1 c < infile1 < infile2|  			| cmd2 <infile3 <infile4 | cmd3";
+	// char str[] = "cmd1 c < infile1 < infile2|cmd2 <infile3 <infile4 ||";
+	// char str[] = "<<<infile4";
+	// char str[] = "cmd1 c < infile1 << infile2 cmd2 <infile3|>> infile4";
+	// char str[] = "cmd1 c < infile1 << infile2 cmd2 < infile3 | < infile4";
+	// char str[] = "cmd1 c < infile1 < infile2 cmd2 <infile3 < >infile4";
+	// char str[] = "cmd1 c < infile1 < infile2 cmd2 <infile3 |>> infile4";
+	// char str[] = "cmd1 c < infile1 < infile2 && cmd2 <infile3 ";
+	// char str[] = "|";
+	// char str[] = ">>";
+	// char str[] = "<<";
+	// char str[] = "<<|";
+	// char str[] = "<|";
+
 	/* ________________________cmd_combo_tests________________________ */
 // /*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 'some flags' | no | cmd3 > outfile -a -b |>> outfile2 cmd -f -g";
-/*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 | cmd3 > outfile -a -b | > outfile2 cmd -f -g";
+// /*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 | cmd3 > outfile -a -b | > outfile2 cmd -f -g";
 // /*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 | cmd3 > outfile -a -b | > outfile2 >outfile3 cmd -f -g";
 // /*********/char str[] = "cmd1 -f -g < infile infile2 |cmd2 | cmd3 > outfile -a -b | >> outfile2 >outfile3";
-	// char str[] = "cmd1 c < infile1 < infile2| cmd2 <infile3 <infile4 | cmd3";
-	// char str[] = "cmd1 c |< infile1 < infile2 cmd2| cmd3";
-	// char str[] = "cmd1 -c < infile2 | cmd3> outfile1   ";
+// 	char str[] = "cmd1 c < infile1 < infile2| cmd2 <infile3 <infile4 | cmd3";
+// 	char str[] = "cmd1 c |< infile1 < infile2 cmd2| cmd3";
+// 	char str[] = "cmd1 -c < infile2 | cmd3> outfile1   ";
 // char str[] = "cmd1 c |< infile1 <<infile2 | cmd3> outfile1   ";
-	// char str[] = "cmd1 c |< infile1 < infile2 | cmd3 > outfile1 | cmd4 > outfile2";
-	// char str[] = "cmd1 c |< infile1 < infile2 | cmd2 > outfile1 >outfile2 -k | cmd3 | cmd4 > outfile3 >outfile4 -f -g >outfile5 -k";
-	// char str[] = "cmd1 c |< infile1 | cmd2 c |< infile1 < infile2 | cmd3";
+// 	char str[] = "cmd1 c |< infile1 < infile2 | cmd3 > outfile1 | cmd4 > outfile2";
+// 	char str[] = "cmd1 c |< infile1 < infile2 | cmd2 > outfile1 >outfile2 -k | cmd3 | cmd4 > outfile3 >outfile4 -f -g >outfile5 -k";
+// 	char str[] = "cmd1 c |< infile1 | cmd2 c |< infile1 < infile2 | cmd3";
 // /*----here--*/char str[] = "grep cat < infile < infile1 < infile2 infile3 << infile4 infile5";
-	// char str[] = "grep cat |<infile1 cmd1";
+// 	char str[] = "grep cat |<infile1 cmd1";
 // /*********/char str[] = "cmd1 << infile infile2 infile3 > out -k -l";// HIGHLIGHT
 
-	/* ________________________outfiles_tests________________________ */
+// 	/* ________________________outfiles_tests________________________ */
 // /*********/char str[] = "cmd1 -f -g >> out -k";// HIGHLIGHT
-			// char str[] = "cmd1 -f -g > outfile -k| cmd2 > outfile2";
-	// char str[] = "cmd1 -f -g > outfile1 > outfile2 >> out3 -p";
-	// char str[] = "> 	outfile";
-	// char str[] = ">>    outfile cmd -f -g";
-	// char str[] = "  >    outfile cmd -f -g >> outfile2 -h";
+// 			char str[] = "cmd1 -f -g > outfile -k| cmd2 > outfile2";
+// 	char str[] = "cmd1 -f -g > outfile1 > outfile2 >> out3 -p";
+// 	char str[] = "	> 	outfile";
+// 	char str[] = ">>    outfile cmd -f -g";
+// 	char str[] = "  >    outfile cmd -f -g >> outfile2 -h";
 
-	/* ________________________infiles_tests________________________ */
+// 	/* ________________________infiles_tests________________________ */
 // /*********/char str[] = "< infile cmd1 -f -g > out >>out2 -k";// HIGHLIGHT
-	// char str[] = "<< infile cmd1 -f -g > out";
-			// char str[] = "< infile < infile2     << infile3 | cmd1 |cmd2 |cmd3 ";
-	// char str[] = "< infile | < infile2 |   < infile3   << infile5 cmd1 -f -g |cmd2 |cmd3 ";
-	// char str[] = "|  < infile  | cmd1 |cmd2 |cmd3 ";
-	// char str[] = "<infile3 <infile0 | cmd1 | cmd2 | cmd3 > outf1 >out2>>out3";
+// 	char str[] = "<< infile cmd1 -f -g > out";
+// 			char str[] = "< infile < infile2     << infile3 | cmd1 |cmd2 |cmd3 ";
+// 	char str[] = "< infile | < infile2 |   < infile3   << infile5 cmd1 -f -g |cmd2 |cmd3 ";
+// 	char str[] = "|  < infile  | cmd1 |cmd2 |cmd3 ";
+// 	char str[] = "<infile3 <infile0 | cmd1 | cmd2 | cmd3 > outf1 >out2>>out3";
 
-	// char str[] = "< infile <infile2 <<infile3 cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile koko lala";
-	// char str[] = "< infile cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile koko lala";
-	// char str[] = "< infile cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile >> outfile2 koko lala";
-	// char str[] = "  < infile cmd1 -f -g infile2 | cmd2 'some flags' | no | cmd3 >> outfile koko lala";
+// 	char str[] = "< infile <infile2 <<infile3 cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile koko lala";
+// 	char str[] = "< infile cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile koko lala";
+// 	char str[] = "< infile cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile >> outfile2 koko lala";
+// 	char str[] = "  < infile cmd1 -f -g infile2 | cmd2 'some flags' | no | cmd3 >> outfile koko lala";
 // char str[] = "  < infile cmd1 -f -g infile2 | cmd2 'some flags";
-	// char str[] = "  <  infile   ";
+// 	char str[] = "  <  infile   ";
 	// char str[] = "echo $VAR";
-	// char str[] = "cat";
+// 	char str[] = "cat";
 	// char del[] = " \t\n\v\f\r";
 
 	// char **res = ft_split_shell(str, "|");
@@ -126,10 +171,27 @@ int	main(int ac, char **av)
 	// get_malloc_size(&count, new);
 	// printf("trunc=%s\ncount=%d+1\n", new, count);
 	
-	/*---------------------get_cmd_line-----------------------*/
+	/*---------------------syntax_check-----------------------*/
+	// check_syntax(str);
+	/*---------------------get_envs-----------------------*/
 	t_token	lst;
-	get_cmd_line(str, &lst);
-	free_all(&lst);
+	lst.vars = NULL;
+	
+	if (check_syntax(str))
+	{
+		get_variable(&lst.vars, str);
+	}
+	if (lst.vars && lst.vars->content)
+	{
+		debug_print_lst(lst.vars);
+		ft_lstclear(&lst.vars, free);
+	}
+
+	/*---------------------get_cmd_line-----------------------*/
+	// t_token	lst;
+	// /*parsing_check*/
+	// get_cmd_line(str, &lst);
+	// free_all(&lst);
 
 	/*---------------------lst_test-----------------------*/
 	// t_list text;

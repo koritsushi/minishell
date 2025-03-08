@@ -37,14 +37,15 @@ typedef struct s_token
 {
 	unsigned char	*datatype; //datatype
 	char			**data; //malloc string: "infile" "cmd1 -f -g -h" "cmd2" "outfile"
-	// struct s_token	*next;
-} t_token;
+	t_list			*vars;
+}	t_token;
 
-typedef struct	s_env
-{
-	char 			*data;
-	struct s_env	*next;
-} t_env;
+// typedef struct s_vars
+// {
+// 	void			*id;	// char *name
+// 	void			*data;	// char *content
+// 	struct s_vars	*next;
+// }	t_vars;
 
 
 char	**ft_split_shell(char *str, char *set);
@@ -94,6 +95,7 @@ int		count_chr(char *str, char *set, int *ptr);
 int		if_target_exist(char *set, char *str);
 char	*truncate_last_infile(char *str);
 void	debug_print(char **res);
+void	debug_print_lst(t_list *lst);
 
 
 #endif

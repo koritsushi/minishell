@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXICAL_H
-# define LEXICAL_H
+#ifndef EXPANSION_H
+# define EXPANSION_H
 # include "includes/minishell.h"
 
 enum e_datatype

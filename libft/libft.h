@@ -61,6 +61,9 @@ void		ft_putchar_fd(char c, int fd);
 void		ft_putendl_fd(char *s, int fd);
 void		ft_putnbr_fd(int n, int fd);
 
+//extra add-on
+int			ft_perror_fd(char *s, int fd, int value);
+
 // printf function
 int			ft_printf(const char *str, ...);
 

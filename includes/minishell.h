@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/02/12 18:29:22 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/02 18:56:38 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 # include "../libft/libft.h"
 # include "token.h"
+# include "parsing.h"
 # include "signals.h"
 # include <errno.h>
 # include <strings.h>

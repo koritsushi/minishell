@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+         #
+#    By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:55:31 by mliyuan           #+#    #+#              #
-#    Updated: 2024/11/11 19:15:03 by mliyuan          ###   ########.fr        #
+#    Updated: 2025/03/04 08:00:03 by hsim             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,8 @@ MANDATORY	=		ft_atoi.c						\
 					ft_putchar_fd.c					\
 					ft_putstr_fd.c					\
 					ft_putendl_fd.c					\
-					ft_putnbr_fd.c	
+					ft_putnbr_fd.c					\
+					ft_perror_fd.c	
 					
 FT_PRINTF	=		ft_printf.c 					\
 					ft_printchar.c 					\
@@ -81,8 +82,8 @@ DEBUG		=		-ggdb3
 
 all:	$(NAME)
 
-$(NAME):	$(OBJS)
-			@ar rcs $(NAME) $(OBJS)
+$(NAME):	$(OBJS) $(OBJS_BONUS)
+			@ar rcs $(NAME) $(OBJS) $(OBJS_BONUS)
 
 bonus:		$(OBJS_BONUS)
 			@ar rcs $(NAME) $(OBJS_BONUS)

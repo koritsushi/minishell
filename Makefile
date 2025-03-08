@@ -9,7 +9,7 @@
 #    Updated: 2024/11/11 15:04:47 by mliyuan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-SRCS 		=	srcs/lexical.c					\
+SRCS 		=	srcs/expansion.c					\
 				srcs/token_utils.c				\
 				srcs/token_utils_malloc.c		\
 				srcs/token_utils_count.c		\
@@ -17,14 +17,15 @@ SRCS 		=	srcs/lexical.c					\
 				srcs/token_utils_datatype.c		\
 				srcs/token_utils_split.c		\
 				srcs/token_utils_truncate.c		\
+				srcs/token.c					\
+				srcs/parsing_utils_check.c					\
 				srcs/parsing.c					\
 				srcs/signals.c					\
 				srcs/debug.c					\
 				srcs/utils_free.c				\
-				srcs/token.c					\
-				srcs/minishell.c 	
-#				srcs/main-test-token_split.c	\
+				srcs/main-test-token_split.c	\
 #				srcs/token_utils_operator.c		\
+				srcs/minishell.c 	
 
 OBJS		=	$(SRCS:%.c=%.o)
 

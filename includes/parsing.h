@@ -14,4 +14,17 @@
 # define PARSING_H
 # include "includes/minishell.h"
 
+// typedef struct s_vars
+// {
+// 	void			*data;	// char *content vars=123 va
+// 	struct s_vars	*next;
+// }	t_vars;
+
+int		check_syntax(char *str);
+char	*skip_if_quote(char *str, char symbol);
+
+
+int		get_variable(t_list **vars, char *str);
+
+
 #endif
