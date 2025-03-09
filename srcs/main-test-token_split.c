@@ -38,27 +38,33 @@ int	main(int ac, char **av)
 	// char str[] = "var=| 123";
 	// char str[] = "var=123";
 	// char str[] = "var      = 123";
-	// char str[] = "echo hello | var=123 | cmd3";
+	char str[] = "echo hello | var=cmd2| var=123 | cmd3";
+	// char str[] = "echo hello | cmd2| var=123 | cmd3";
+	// char str[] = "echo hello | cmd2| var=123 ";
 	// char str[] = "var=123<        > outfile";
 	// char str[] = "< infile var=123 > outfile";
-	// char str[] = "< infile	   var=123";
+	// char str[] = "< infile	< infile2   |var=123";
+	// char str[] = "< infile	< infile2 	var=123";
+	// char str[] = "	  > outfile > 	out2 	> out3	   var=123";
+	// char str[] = "	  > outfile >out2>out3	   var=123";
 	// char str[] = "       	var=123 < infile";
 	// char str[] = "               var=123 < infile";
 	// char str[] = "var=123 < infile <infile2 > outfile";
 	// char str[] = "var=123 < infile > outfile > outfile2";
 	// char str[] = "var=123 < infile <in2";
-	// char str[] = "var=123 > outfile >out2";
+	// char str[] = "var=123 var1='909>0' > outfile >out2";
 	// char str[] = "awk 'BEGIN { x = 1 print x }'";
 	// char str[] = "var=\"123 's\"   	var=9020pq     ";
 	// char str[] = "var=9090 var=9020";
 	// char str[] = "var='9090' var='9020'";
 	// char str[] = "var=\"123 's\" 	var='9090\"1'";
-	char str[] = "var=\"123 's\" 	vars=90901 var='yo\"yo'";
+	// char str[] = "var=\"123 's\" 	vars=90901 var='yo\"yo'";
 	// char str[] = "awk 'BEGIN { x=1 print x }' var=\"12'34\"";
-	// char str[] = "awk'BEGIN{x=1printx}'";
+	// char str[] = "awk'BEGIN{x=1printx}' | cmd1 | cmd2";
 	// char str[] = "awk 'BEGIN { x=1 '\"print x }' var=12\"34";
-	// char str[] = "awk ' BEGIN { x = 1 print x }' vars='opop'";
-	// char str[] = "awk 'BEGIN { x=1 print x }' |var=1234";
+	// char str[] = "awk ' BEGIN { x=1 print x }' vars='opop'";
+// /* ******* */char str[] = "awk 'BEGIN { x=1 print x }'    | 	var=1234 ";
+	// char str[] = "var=1234| awk 'BEGIN { x=1 print x }' ";
 	// char str[] = "awk \"BEGIN { x = 1 print x }\"        ";
 
 	/* ________________________syntax_error_test________________________ */
@@ -186,6 +192,7 @@ int	main(int ac, char **av)
 		debug_print_lst(lst.vars);
 		ft_lstclear(&lst.vars, free);
 	}
+	printf("updated_str=\033[92m%s\033[0m.\n", str);
 
 	/*---------------------get_cmd_line-----------------------*/
 	// t_token	lst;

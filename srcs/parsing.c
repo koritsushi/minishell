@@ -6,12 +6,13 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/08 11:48:24 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/09 12:55:37 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/parsing.h"
 
+/* if str[0] == quote, will skip it and return */
 char	*skip_if_quote(char *str, char symbol)
 {
 	char	*new;
@@ -58,8 +59,11 @@ int	check_var_syntax(char *str)
 	while (new && new[0])
 	{
 		if (new[0] != '=' && new[1] && is_target("'\"", new[1]))
+		{
+			if (is_target(str, '|'))
+				return (1);
 			return (ft_perror_fd("🚨 debug:Other cmd detected!\n", 2, 0));
-			// new = skip_if_quote(new, new[0]);
+		}
 		if (!new || !new[0])
 			return (ft_perror_fd("\033[90mEnd of string!\033[0m\n", 2, 0));
 		if (new[1] == '=' && \
@@ -195,31 +199,34 @@ void	check_replace_dup(t_list *vars, char *name, char *new, int *flag)
 	}
 }
 
-/* search for var name in linked list, replace data or add to list */
+// 18 lines!
+/*
+ * child function in process_vars,
+ * searches & replace duplicate var name in linked list, 
+ * or add new var entry to list
+ */
 void	extract_vars(t_list **vars, char *str)
 {
 	int		flag;
-	char	*tmp;
+	char	*name;
 	char	*new;
-	// t_list	*head;
 
 	/* scan through string */
 	/* search for name in linked list, if found, replace */
 	while (str && str[0])
 	{
-		// head = *vars;
 		flag = 0;
 		str = skip_spaces(str, " \t\n\v\f\r");
 		/* get_var_name */
-		/*count & copy variable name*/
-		get_var_name(&tmp, str);
-		/*debug*/printf("var_name=%s\n", tmp);
+		get_var_name(&name, str);
+		/*debug*/printf("var_name=%s\n", name);
 		/*debug*/printf("var_len=%d\n", count_malloc_vars(str));
+		/*count & copy variable name*/
 		malloc_chr_ptr(&new, count_malloc_vars(str) + 1);
 		copy_vars(new, str, count_malloc_vars(str));
 
 		/*search in all linked list*/
-		check_replace_dup(*vars, tmp, new, &flag);
+		check_replace_dup(*vars, name, new, &flag);
 		if (!flag)
 		{
 			/*if !found && !flag*/
@@ -229,7 +236,7 @@ void	extract_vars(t_list **vars, char *str)
 		}
 		/*free variable name*/
 		free(new);
-		free(tmp);
+		free(name);
 		/*skips new to the next var*/
 		/*debug*/printf("before: str=%s\n", str);
 		str = find_next_var(str);
@@ -238,7 +245,30 @@ void	extract_vars(t_list **vars, char *str)
 	}
 }
 
-/* child function to get_variables, saves variables in linked list */
+/*
+ * child function in process_vars,
+ * skips all < infile & > outfile redirections, updates *new */
+static void	skip_redirs(char *str, char **new)
+{
+	while (str[0] == '<' || str[0] == '>')
+	{
+		*new = str;
+		*new = skip_spaces(*new, "<> \t\n\v\f\r");
+		/*debug*/printf("skip_spaces=%s\n", *new);
+		*new = skip_if_symbol(*new, str[0], '<');
+		/*debug*/printf("skip_< =%s\n", *new);
+		*new = skip_if_symbol(*new, str[0], '>');
+		/*debug*/printf("skip_> =%s\n", *new);
+		str = skip_spaces(str, "<> \t\n\v\f\r");
+		while (str[0] && !is_target(" \t\n\v\f\r", str[0]))
+			str++;
+		str = skip_spaces(str, " \t\n\v\f\r");
+		/*debug*/printf("str =%s\n", str);
+	}
+}
+
+// 17 lines!
+/* child function in get_variables, saves variables in linked list */
 void	process_vars(t_list **vars, char *str)
 {
 	char	*new;
@@ -258,29 +288,105 @@ void	process_vars(t_list **vars, char *str)
 	/* if var1 var2, save both var	*/
 	/* save var: skip ' " quotes	*/
 	new = str;
-	new = skip_spaces(new, "<> \t\n\v\f\r");
-	new = skip_if_symbol(new, str[0], '<');
-	new = skip_if_symbol(new, str[0], '>');
+	skip_redirs(str, &new);
 	/*debug*/printf("vars_before=%s\n", new);
+	/* if at beginning < > */
 	if (has_more_str(new, "<>"))
 	{
 		tmp = ft_split_shell(new, "<>");
 		fin = ft_split_shell(tmp[0], " \t\n\v\f\r");
 		new = ft_strdup(fin[0]);
-		/*debug*/printf("fin[0]=%s|\n", fin[0]);
+		/*debug*/printf("fin[0]:%s.\n", fin[0]);
+		extract_vars(vars, fin[0]);
 		free_chr_ptr((void **)tmp);
 		free_chr_ptr((void **)fin);
 	}
 	else
-	{
 		extract_vars(vars, new);
-		/* split by spaces */
-		/* search for name in linked list, if found, replace */
-		// new = ft_strdup(new);
-	}
-	// ft_lstadd_back(vars, ft_lstnew(new));
 }
 
+/*
+ * child function in replace_var_space, 
+ * if is empty spaces after last pipe '|', replace last pipe with spaces ' '
+ */
+static void	replace_last_pipe(char *str)
+{
+	char	*new;
+
+	if (ft_strrchr(str, '|'))
+	{
+		new = ft_strrchr(str, '|');
+		/*debug*/printf("end_:\033[90m%s\033[0m.\n", new);
+		while (new[1] && is_target(" \t\n\v\f\r", new[1]))
+			new++;
+		if (new[1] == '\0')
+		{
+			new = ft_strrchr(str, '|');
+			new[0] = ' ';
+		}
+	}
+}
+
+/*
+ * child function in replace_var_space,
+ * writes entire quoted area to spaces ' ' if quote symbol ' " detected
+ */
+void	replace_quote_space(char **str)
+{
+	char	*new;
+	int		i;
+
+	new = *str;
+	i = 0;
+	if (new[0] && is_target("'\"", new[0]))
+	{
+		i = (int)(ft_strchr(&new[1], new[0]) - &new[0]);
+		while (i >= 0)
+			new[i--] = ' ';
+		/*debug*/printf("i=%d, %s\n", i, new);
+	}
+}
+
+// 25 lines!!
+/* overwrites var assignment in str (eg var=123) to blank space ' ' */
+void	replace_var_space(char *str)
+{
+	char	*new;
+
+	/* searches location of '=' */
+	/* reverse search the space before '=' */
+	/* fill all with ' ' until isalnum || !| && spaces*/
+
+	new = str;
+	while (new && new[0])
+	{
+		if (new[0] == '\'' || new[0] == '"')
+			new = skip_if_quote(new, new[0]) - 1;
+		else if (new[0] == '=')
+		{
+			while (new[0 - 1] && !is_target(" \t\n\v\f\r", new[0 - 1]))
+				new--;
+			while (new[0] && !is_target("<>|", new[0]))
+			{
+				if (is_target("\'\"", new[0]))
+					replace_quote_space(&new);
+				else if (!is_target(" \t\n\v\f\r", new[0]))
+					new[0] = ' ';
+				new++;
+			}
+			if (new[0] == '|')
+				new[0] = ' ';
+		}
+		/*debug*/printf("replace_var_sp:\033[90m%s\033[0m.\n", new);
+		new++;
+	}
+	replace_last_pipe(str);
+}
+
+/*
+ * checks if variable syntax is correct,
+ * overwrite & save if variable has existed
+ */
 int	get_variable(t_list **vars, char *str)
 {
 	(void)	vars;
@@ -296,7 +402,8 @@ int	get_variable(t_list **vars, char *str)
 		/* if no pipes, copy_vars */
 		if (!is_target(new, '|')) //put a flag for multiple_cmd
 			process_vars(vars, new); //only extract the last one
+		/* update_str '=' with ' '*/
+		replace_var_space(str);
 	}
-	/* update_str '=' with ' '*/
 	return (1);
 }
