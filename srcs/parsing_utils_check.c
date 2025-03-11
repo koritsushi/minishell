@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:28:58 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/11 15:57:45 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/11 16:04:11 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	if_double_symbol(char **res, char symbol, int steps)
 	while (tmp && tmp[0] && is_target(tmp, symbol))
 	{
 		tmp = ft_strchr(tmp, symbol);
-		/*debug*/printf("*******tmp:%s\n", tmp);
+		// /*debug*/printf("*******tmp:%s\n", tmp);
 		if (tmp[1] && tmp[1] == symbol)
 		{
 			tmp += steps;

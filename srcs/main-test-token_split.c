@@ -53,7 +53,7 @@ int	main(int ac, char **av)
 	// char str[] = "var=123 < infile <infile2 > outfile";
 	// char str[] = "var=123 < infile > outfile > outfile2";
 	// char str[] = "var=123 < infile <in2";
-	char str[] = "var=\"12'3\" var1='9\"090' > outfile >out2";
+	// char str[] = "var=\"12'3\" var1='9\"090' > outfile >out2";
 	// char str[] = "var=\"12'3\" > outfile >out2";
 	// char str[] = "var=123 var1='90> 90'  	> 	 outfile >out2";
 	// char str[] = "var=123 var1='90> 	90'  	";
@@ -75,7 +75,7 @@ int	main(int ac, char **av)
 	// char str[] = "awk 'BEGIN { x=1 '\"print x }' var=12\"34";
 	// char str[] = "awk ' BEGIN { x=1 print x }' vars='opop'";
 // /* ******* */char str[] = "awk 'BEGIN { x=1 print x }'    | 	var=1234 ";
-	char str[] = "var=1234| awk 'BEGIN { x=1 print x }' ";
+	// char str[] = "var=1234| awk 'BEGIN { x=1 print x }' ";
 	// char str[] = "awk \"BEGIN { x = 1 print x }\"        ";
 
 	/* ________________________syntax_error_test________________________ */
@@ -117,20 +117,20 @@ int	main(int ac, char **av)
 // 	char str[] = "	> 	outfile";
 // 	char str[] = ">>    outfile cmd -f -g";
 // 	char str[] = "  >    outfile cmd -f -g >> outfile2 -h";
-// 	char str[] = "  <    infile cmd -f -g << infile2 cmd2";
+	// char str[] = "  <    infile cmd -f -g << infile2 -k | >>out";
 
 // 	/* ________________________infiles_tests________________________ */
 // /*********/char str[] = "< infile cmd1 -f -g > out >>out2 -k";// HIGHLIGHT
 // 	char str[] = "<< infile cmd1 -f -g > out";
 // 			char str[] = "< infile < infile2     << infile3 | cmd1 |cmd2 |cmd3 ";
-// 	char str[] = "< infile | < infile2 |   < infile3   << infile5 cmd1 -f -g |cmd2 |cmd3 ";
+	// char str[] = "< infile | < infile2 |   < infile3 cmd1  <infile2 << infile5 cmd2 -f -g |cmd2 |cmd3 ";
 // 	char str[] = "|  < infile  | cmd1 |cmd2 |cmd3 ";
-// 	char str[] = "<infile3 <infile0 | cmd1 | cmd2 | cmd3 > outf1 >out2>>out3";
+	char str[] = "<infile1 <infile2 | cmd1 | cmd2 | cmd3 > outf1 >out2>>out3";
 
 	// char str[] = "< infile <infile2 <<infile3 cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile koko lala";
 // 	char str[] = "< infile cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile koko lala";
 // 	char str[] = "< infile cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile >> outfile2 koko lala";
-// 	char str[] = "  < infile cmd1 -f -g infile2 | cmd2 'some flags' | no | cmd3 >> outfile koko lala";
+// 	char str[] = "  < infile cmd1 -f -g -k | cmd2 'some flags' | no | cmd3 >> outfile koko lala";
 // char str[] = "  < infile cmd1 -f -g infile2 | cmd2 'some flags";
 // 	char str[] = "  <  infile   ";
 	// char str[] = "echo $VAR";
@@ -206,26 +206,26 @@ int	main(int ac, char **av)
 	// /*debug*/printf("%s\n", ft_strnstr(str, "var", 4));
 
 	/*---------------------get_envs-----------------------*/
-	t_token	lst;
-	lst.vars = NULL;
+	// t_token	lst;
+	// lst.vars = NULL;
 	
-	if (check_syntax(str))
-	{
-		get_variable(&lst.vars, str);
-	}
-	if (lst.vars && lst.vars->content)
-	{
-		// /*debug*/printf("yayaya:%s\n", (char *)lst.vars->content);
-		debug_print_lst(lst.vars);
-		ft_lstclear(&lst.vars, free);
-	}
-	printf("updated_str=\033[92m%s\033[0m.\n", str);
+	// if (check_syntax(str))
+	// {
+	// 	get_variable(&lst.vars, str);
+	// }
+	// if (lst.vars && lst.vars->content)
+	// {
+	// 	// /*debug*/printf("yayaya:%s\n", (char *)lst.vars->content);
+	// 	debug_print_lst(lst.vars);
+	// 	ft_lstclear(&lst.vars, free);
+	// }
+	// printf("updated_str=\033[92m%s\033[0m.\n", str);
 
 	/*---------------------get_cmd_line-----------------------*/
-	// t_token	lst;
-	// /*parsing_check*/
-	// get_cmd_line(str, &lst);
-	// free_all(&lst);
+	t_token	lst;
+	/*parsing_check*/
+	get_cmd_line(str, &lst);
+	free_all(&lst);
 
 	/*---------------------lst_test-----------------------*/
 	// t_list text;

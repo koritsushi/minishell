@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 07:55:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/02 17:47:35 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/11 19:08:50 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static void	assign_datatype_cmd_tail(char *str, unsigned char *datatype, int *i,
 	}
 }
 
+// 25 lines!
 /* scans input and assigns datatype according to operator sign */
 void	assign_datatype(unsigned char *datatype, char **res, char **infile)
 {
@@ -94,7 +95,6 @@ void	assign_datatype(unsigned char *datatype, char **res, char **infile)
 	/* cmd */
 
 	/* cmd < infile > outfile */
-
 	/* < infile */
 
 	x = -1;
@@ -112,7 +112,6 @@ void	assign_datatype(unsigned char *datatype, char **res, char **infile)
 		/* skip spaces & infile symbol */
 		cmd_tail = skip_spaces(res[x], "< \t\n\v\f\r");
 		cmd_tail = skip_if_symbol(cmd_tail, res[x][0], '<');
-		// /*debug*/printf("assign_datatype=%s\n", cmd_tail);
 		outfile = ft_split_shell(cmd_tail, ">");
 		if (!outfile)
 		{
@@ -122,27 +121,6 @@ void	assign_datatype(unsigned char *datatype, char **res, char **infile)
 
 		/*--------------assign_cmd_tail--------------*/
 		assign_datatype_cmd_tail(cmd_tail, datatype, &i, outfile);
-		// /* if splittable */
-		// if (outfile[1] && (cmd_tail[0] != '>' || \
-		// 	(cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r"))))
-		// {
-		// 	datatype[i++] = WORD;
-		// }
-		// /* if not splittable && has_more_str_all */
-		// // else if (!outfile[1] && has_more_str_all(outfile, " \t\n\v\f\r"))
-		// else if (!outfile[1])
-		// {
-		// 	/* cmd1 cmd2 */
-		// 	/* cmd1 */
-		// 	/* > out1 cmd */
-		// 	/* if begin with >, check if has_more_str_all */
-		// 	/* if theres no <>, only single cmd, copy over */
-		// 	/* if begin with < (one_line_condition), do not extract */
-		// 	if (cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r")) //&& cmd_tail[1] != '>'
-		// 		datatype[i++] = WORD;
-		// 	else if (cmd_tail[0] && cmd_tail[0] != '>')
-		// 		datatype[i++] = WORD;
-		// }
 
 		/*--------------assign_outfiles--------------*/
 		/* use ft_strchr */

@@ -123,6 +123,7 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 		/* if begin with >, check if has_more_str_all */
 		/* if theres no <>, only single cmd, copy over */
 		/* if begin with < (one_line_condition), do not extract */
+		// /*debug*/printf("extract_cmd_tail:%s\n", cmd_tail);
 		if (cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r"))
 			extract_cmd_tail(&lst_data[(*i)++], cmd_tail, outfile);
 		if (cmd_tail[0] && !is_target("<>", cmd_tail[0]))
