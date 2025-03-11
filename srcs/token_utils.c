@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:18:26 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/04 18:07:59 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/11 09:44:09 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int	has_more_str(char *str, char *set)
 	check = ft_split_shell(str, set);
 	if (check && check[1])
 		res = 1;
-	free_chr_ptr((void **)check);
+	if (check)
+		free_chr_ptr((void **)check);
 	return (res);
 }
 

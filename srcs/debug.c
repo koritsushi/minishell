@@ -20,7 +20,7 @@ void	debug_print_lst(t_list *lst)
 	tmp = lst;
 	while (tmp != NULL)
 	{
-		/*debug*/printf("v:\033[92m%s\033[0m.\n", (char*)tmp->content);
+		/*debug*/printf("v:\033[93m%s\033[0m.\n", (char*)tmp->content);
 		tmp = tmp->next;
 	}
 }

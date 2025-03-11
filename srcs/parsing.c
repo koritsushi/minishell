@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/09 12:55:37 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/11 14:36:09 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ char	*skip_if_quote(char *str, char symbol)
 	new = str;
 	if (str[0] == symbol) // ' "
 	{
-		/*debug*/printf("skip \033[35m%c\033[0m =\033[90m%s\033[0m\n", symbol, new);
+		// /*debug*/printf("skip \033[35m%c\033[0m =\033[90m%s\033[0m\n", symbol, new);
 		new = ft_strchr(new + 1, symbol);
-		printf("after_skip=\033[90m%s\033[0m.\n", new);
+		// /*debug*/printf("after_skip_quote=\033[90m%s\033[0m.\n", new);
 		if (new && new[1] && is_target(" \t\n\v\f\r", new[1]))
 			new = skip_spaces(new + 1, " \t\n\v\f\r");
 	}
@@ -74,7 +74,7 @@ int	check_var_syntax(char *str)
 		/* check if_errors , return */
 		/* else if after '=' is ' or " , skip*/
 		/* new++ & continue */
-		else if (new[1] == '=' && (new[2] == '\'' || new[2] == '"'))
+		else if (new[1] == '=' && (new[2] == '\'' || new[2] == '\"'))
 			new = skip_if_quote(new + 2, new[2]);
 		new++;
 	}
@@ -91,11 +91,12 @@ void	get_var_name(char **dest, char *str)
 	char	*new;
 	int		len;
 
+	/*debug*/printf("------\nget_var_name:\n");
 	len = 0;
 	new = skip_spaces(str, " \t\n\v\f\r"); //optional
 	while (new[len] && new[len] != '=')
 		len++;
-	/*debug*/printf("len=%d, leftover=%s\n", len, &new[len]);
+	// /*debug*/printf("len=%d, leftover=%s\n", len, &new[len]);
 	if (new && malloc_chr_ptr(dest, (len + 1)))
 		ft_strlcpy(*dest, new, len + 1);
 }
@@ -135,8 +136,8 @@ int	count_malloc_vars(char *str)
 	{
 		if (str[i] == '\'' || str[i] == '"')
 		{
-			printf("count_malloc_vars: i=%d, %s.\n", i, &str[i]);
-			printf("%d+1\n", (int)(ft_strchr(&str[i + 1], str[i]) - &str[i]));
+			// printf("count_malloc_vars: i=%d, %s.\n", i, &str[i]);
+			// printf("%d+1\n", (int)(ft_strchr(&str[i + 1], str[i]) - &str[i]));
 			i += (int)(ft_strchr(&str[i + 1], str[i]) - &str[i]);
 			return (i + 1 - 2);
 		}
@@ -180,21 +181,27 @@ void	copy_vars(char *dest, char *src, int len)
 void	check_replace_dup(t_list *vars, char *name, char *new, int *flag)
 {
 	t_list	*head;
+	char	**tmp;
+	size_t	len;
 
 	head = vars;
-	while (head)
+	while (head && !*flag)
 	{
+		tmp = ft_split_shell(head->content, "=");
+		/*debug*/printf("check_replace_dup name:%s, %s\n", tmp[0], name);
 		/*if found*/
-		if (ft_strnstr(head->content, name, ft_strlen(head->content)))
+		len = ft_strlen(name);
+		if (ft_strlen(tmp[0]) > len)
+			len = ft_strlen(tmp[0]);
+		if (ft_strncmp(head->content, name, len) == 0)
 		{
-			/* trunc new up to first spaces skipping""*/
-			/* frees old pointer */
+			/*debug*/printf("check_replace_dup:found! name:%s\n", (char *)head->content);
 			free(head->content);
 			/*overwrite*/
 			head->content = ft_strdup(new);
 			*flag = 1;
-			break ;
 		}
+		free_chr_ptr((void **)tmp);
 		head = head->next;
 	}
 }
@@ -219,15 +226,16 @@ void	extract_vars(t_list **vars, char *str)
 		str = skip_spaces(str, " \t\n\v\f\r");
 		/* get_var_name */
 		get_var_name(&name, str);
-		/*debug*/printf("var_name=%s\n", name);
-		/*debug*/printf("var_len=%d\n", count_malloc_vars(str));
+		/*debug*/printf("var_name=%s, var_len=%d\n", name, count_malloc_vars(str));
 		/*count & copy variable name*/
 		malloc_chr_ptr(&new, count_malloc_vars(str) + 1);
 		copy_vars(new, str, count_malloc_vars(str));
-
+		/*debug*/printf("copy_vars:%s\n", new);
+		/*debug*/printf("---------\ncheck_replace_dup:\n");
 		/*search in all linked list*/
 		check_replace_dup(*vars, name, new, &flag);
-		if (!flag)
+		/*debug*/printf("---------\n");
+		if (flag == 0)
 		{
 			/*if !found && !flag*/
 			/* trunc new up to first spaces skipping""*/
@@ -267,13 +275,14 @@ static void	skip_redirs(char *str, char **new)
 	}
 }
 
-// 17 lines!
+// 19 lines!
 /* child function in get_variables, saves variables in linked list */
 void	process_vars(t_list **vars, char *str)
 {
 	char	*new;
 	char	**tmp;
 	char	**fin;
+	int		x;
 
 	/*split infile & outfile*/
 	/* <infile var=123 > outfile */
@@ -283,21 +292,31 @@ void	process_vars(t_list **vars, char *str)
 	/* var=123 < infile */
 	/* > outfile var=123 */
 	/* var=123 > outfile*/
+	/* var=123 var2=456 > outfile >out2 */
 
 	/* if var var, save last var	*/
 	/* if var1 var2, save both var	*/
 	/* save var: skip ' " quotes	*/
 	new = str;
 	skip_redirs(str, &new);
-	/*debug*/printf("vars_before=%s\n", new);
+	/*debug*/printf("vars_before=%s.\n", new);
 	/* if at beginning < > */
 	if (has_more_str(new, "<>"))
 	{
+		x = 0;
 		tmp = ft_split_shell(new, "<>");
 		fin = ft_split_shell(tmp[0], " \t\n\v\f\r");
-		new = ft_strdup(fin[0]);
-		/*debug*/printf("fin[0]:%s.\n", fin[0]);
-		extract_vars(vars, fin[0]);
+
+		/*debug*/printf("--------\ntmp:\n");
+		/*debug*/debug_print(tmp);
+		/*debug*/printf("--------\nfin:\n");
+		/*debug*/debug_print(fin);
+	
+		while (fin && fin[x])
+			extract_vars(vars, fin[x++]);
+
+		// /*debug*/printf("tmp[0]:%s.\n", tmp[0]);
+		// extract_vars(vars, tmp[0]);
 		free_chr_ptr((void **)tmp);
 		free_chr_ptr((void **)fin);
 	}
@@ -362,7 +381,7 @@ void	replace_var_space(char *str)
 	{
 		if (new[0] == '\'' || new[0] == '"')
 			new = skip_if_quote(new, new[0]) - 1;
-		else if (new[0] == '=')
+		else if (new && new[0] == '=')
 		{
 			while (new[0 - 1] && !is_target(" \t\n\v\f\r", new[0 - 1]))
 				new--;
@@ -377,7 +396,7 @@ void	replace_var_space(char *str)
 			if (new[0] == '|')
 				new[0] = ' ';
 		}
-		/*debug*/printf("replace_var_sp:\033[90m%s\033[0m.\n", new);
+			// /*debug*/printf("replace_var_sp:\033[90m%s\033[0m.\n", new);
 		new++;
 	}
 	replace_last_pipe(str);
@@ -389,7 +408,6 @@ void	replace_var_space(char *str)
  */
 int	get_variable(t_list **vars, char *str)
 {
-	(void)	vars;
 	char	*new;
 
 	new = skip_spaces(str, " \t\n\v\f\r");

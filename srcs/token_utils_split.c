@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/01 22:13:10 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/11 14:28:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,30 +35,32 @@ int	count_str(char *str, char *set)
 {
 	int		wc;
 	int		flag;
+	char	symbol;
 
 	wc = 0;
 	flag = 0;
+	symbol = '\0';
 	if (str[0] && !is_target(set, str[0]))
-		wc++;
+		wc++; //if there's word, count
 	while (str[0])
 	{
-		if (flag == 0 && str[0] == '\'')
-			flag = 1;
-		else if (flag == 1 && str[0] == '\'')
-			flag = 0;
+		// /*debug*/printf("count_str_enter:%s, flag:%d\n", str, flag);
 		if (str[1] && !flag && is_target(set, str[0]) && \
-			!is_target(set, str[1]))
+			!is_target(set, str[1])) // if !flag && str[0] == spaces, str[1] !spaces
 			wc++;
-		else if (str[1] && !flag && !is_target(set, str[0]) && \
-			str[1] == '\'')
-			wc++;
+		if (!flag && str[0] && is_target("'\"", str[0]))
+			symbol = str[0];
+		if (!flag && str[0] == symbol && str[0 - 1])
+			flag = 1;
+		else if (flag && str[0] == symbol)
+			flag = 0;
 		str++;
 	}
 	return (wc);
 }
 
 /*
- * a combo function to increment stuff and set flag value
+ * a combo function to increment count & str and set flag value
  * increment str++ & count++
  * if flag != -1, returns value set in flag
  */
@@ -75,27 +77,36 @@ static int	increment_val(int flag, int *count, char **str)
 /*
  * set = set of delimiters (" \t\n\v\f\r")
  * counts the number of characters and stop when delimiters detected
+ * if flag == 1, ignore *set, else: stop upon *set
  */
 int	count_chr(char *str, char *set, int *flag)
 {
-	int	count;
+	int		count;
+	char	symbol;
 
+	/* var='90 > 90' */
+	/* cmd1 cmd2 */
+	/* '90 > 90'= var */
+
+	// /*debug*/printf("count_chr_str entry:%s\n", str);
 	count = 0;
-	if (*flag == 0 && str[0] == '\'')
-		*flag = increment_val(1, &count, &str);
-	else if (*flag == 1 && str[0] == '\'')
+	symbol = '\0';
+	while (str[0] && (!is_target(set, str[0]) || (*flag == 1)))
 	{
-		*flag = 0;
-		return (count + 1);
+		if (*flag == 0 && str[0] && is_target("'\'\"", str[0])) // if is first encounter to '
+			symbol = str[0];
+		if (*flag == 0 && str[0] == symbol) // if is first encounter to '
+			*flag = increment_val(1, &count, &str); // increment & set flag to 1
+		else if (*flag == 1 && str[0] == symbol)
+			*flag = 0;
+		if (*flag)
+			increment_val(-1, &count, &str);
+		else if (!*flag && !is_target(set, str[0]))
+			increment_val(-1, &count, &str);
+		/* if flag == 1, ignore sets */
+		/* if flag != 1, stop upon sets */
 	}
-	while (str[0] && *flag)
-	{
-		if (str[0] == '\'')
-			return (count + 1);
-		increment_val(-1, &count, &str);
-	}
-	while (str[0] && !(*flag) && !is_target(set, str[0]))
-		increment_val(-1, &count, &str);
+	// /*debug*/printf("flag:%d, stopped:%s, %d\n", *flag, str, count);
 	return (count);
 }
 
@@ -111,24 +122,28 @@ char	**ft_split_shell(char *str, char *set)
 	int		i;
 	int		x;
 	int		f;
+	int		count;
 
 	if (!str || !set)
 		return (NULL);
-	while (str[0] && is_target(set, str[0]))
-		str++;
 	i = 0;
 	f = 0;
+	str = skip_spaces(str, set);
 	res = (char **)malloc(sizeof(char *) * (count_str(str, set) + 1));
+	/*debug*/printf("\033[102mcount_str= %d+1\033[0m\n", count_str(str, set));
 	while (str[0] && count_str(str, set))
 	{
+		// /*debug*/printf("split_enter:%s\n", str);
 		x = 0;
-		res[i] = (char *)malloc(sizeof(char) * (count_chr(str, set, &f) + 1));
 		f = 0;
-		while (count_chr(str, set, &f))
+		count = count_chr(str, set, &f);
+		res[i] = (char *)malloc(sizeof(char) * (count + 1));
+		while (x < count)
 			res[i][x++] = *str++;
-		res[i++][x] = '\0';
-		while (is_target(set, str[0]))
-			str++;
+		res[i][x] = '\0';
+		// /*debug*/printf("\033[103msplit_stopped:%s\033[0m\n", str);
+		i++;
+		str = skip_spaces(str, set);
 	}
 	res[i] = NULL;
 	return (res);

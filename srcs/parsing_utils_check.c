@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:28:58 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/04 21:49:22 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/11 14:34:43 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int	match_condition(char **res, char *tmp, char symbol)
 {
+	if (!tmp)
+		return (0);
 	if (tmp[1] == symbol)
 		return (1);
 	else if (tmp[1] && tmp[1] == '=')
@@ -22,7 +24,7 @@ static int	match_condition(char **res, char *tmp, char symbol)
 		return (1);
 	else if (symbol != '|')
 	{
-		/*debug*/printf("hi= %s\n", tmp);
+		// /*debug*/printf("hi= %s\n", tmp);
 		if (tmp[1] && is_target("<>|", tmp[1]))
 			return (1);
 		else if (res[1] && is_target("<>|", res[1][0]))
@@ -137,8 +139,9 @@ int	check_syntax(char *str)
 
 	flag = 1;
 	res = ft_split_shell(str, " \t\n\v\f\r");
-	// /*debug*/printf("--------\n");
+	// /*debug*/printf("--------\nres:\n");
 	// /*debug*/debug_print(res);
+	// /*debug*/printf("--------\n");
 
 	if (!check_symbols(res))
 		flag = 0;
