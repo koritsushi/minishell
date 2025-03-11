@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/11 15:09:27 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/11 19:17:07 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,8 +243,8 @@ void	extract_vars(t_list **vars, char *str)
 		free(name);
 		/*skips new to the next var*/
 		str = find_next_var(str);
-		if (str && str[0])
-		/*debug*/printf("find_next_var: str=\033[92m%s\033[0m.\n", str);
+		// if (str && str[0])
+		// /*debug*/printf("find_next_var: str=\033[92m%s\033[0m.\n", str);
 	}
 }
 
