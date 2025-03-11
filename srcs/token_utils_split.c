@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/11 14:28:35 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/11 14:41:46 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ char	**ft_split_shell(char *str, char *set)
 	f = 0;
 	str = skip_spaces(str, set);
 	res = (char **)malloc(sizeof(char *) * (count_str(str, set) + 1));
-	/*debug*/printf("\033[102mcount_str= %d+1\033[0m\n", count_str(str, set));
+	// /*debug*/printf("\033[102mcount_str= %d+1\033[0m\n", count_str(str, set));
 	while (str[0] && count_str(str, set))
 	{
 		// /*debug*/printf("split_enter:%s\n", str);

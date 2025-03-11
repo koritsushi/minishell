@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/11 14:36:09 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/11 14:43:32 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	get_var_name(char **dest, char *str)
 	char	*new;
 	int		len;
 
-	/*debug*/printf("------\nget_var_name:\n");
+	// /*debug*/printf("------\nget_var_name:\n");
 	len = 0;
 	new = skip_spaces(str, " \t\n\v\f\r"); //optional
 	while (new[len] && new[len] != '=')
@@ -107,15 +107,13 @@ void	get_var_name(char **dest, char *str)
  */
 char	*find_next_var(char *str)
 {
-	// char	*new;
-
 	while (str && str[0])
 	{
 		if (str[0] == '\'' || str[0] == '"')
 		{
-			/*debug*/printf("\nbf_new=%s, str[0]=%c\n", str + 1, str[0]);
+			// /*debug*/printf("\nbf_new=%s, str[0]=%c\n", str + 1, str[0]);
 			str = skip_if_quote(str, str[0]);
-			/*debug*/printf("new=%s\n\n", str);
+			// /*debug*/printf("new=%s\n\n", str);
 			if (str[0] == '\'' || str[0] == '"')
 				return (str + 1);
 			return (str);
@@ -188,14 +186,14 @@ void	check_replace_dup(t_list *vars, char *name, char *new, int *flag)
 	while (head && !*flag)
 	{
 		tmp = ft_split_shell(head->content, "=");
-		/*debug*/printf("check_replace_dup name:%s, %s\n", tmp[0], name);
+		// /*debug*/printf("check_replace_dup name:%s, %s\n", tmp[0], name);
 		/*if found*/
 		len = ft_strlen(name);
 		if (ft_strlen(tmp[0]) > len)
 			len = ft_strlen(tmp[0]);
 		if (ft_strncmp(head->content, name, len) == 0)
 		{
-			/*debug*/printf("check_replace_dup:found! name:%s\n", (char *)head->content);
+			// /*debug*/printf("check_replace_dup:found! name:%s\n", (char *)head->content);
 			free(head->content);
 			/*overwrite*/
 			head->content = ft_strdup(new);
@@ -226,27 +224,24 @@ void	extract_vars(t_list **vars, char *str)
 		str = skip_spaces(str, " \t\n\v\f\r");
 		/* get_var_name */
 		get_var_name(&name, str);
-		/*debug*/printf("var_name=%s, var_len=%d\n", name, count_malloc_vars(str));
+		// /*debug*/printf("var_name=%s, var_len=%d\n", name, count_malloc_vars(str));
 		/*count & copy variable name*/
 		malloc_chr_ptr(&new, count_malloc_vars(str) + 1);
 		copy_vars(new, str, count_malloc_vars(str));
-		/*debug*/printf("copy_vars:%s\n", new);
-		/*debug*/printf("---------\ncheck_replace_dup:\n");
-		/*search in all linked list*/
+		// /*debug*/printf("copy_vars:%s\n", new);
+		// /*debug*/printf("---------\ncheck_replace_dup:\n");
 		check_replace_dup(*vars, name, new, &flag);
-		/*debug*/printf("---------\n");
+		// /*debug*/printf("---------\n");
 		if (flag == 0)
 		{
 			/*if !found && !flag*/
-			/* trunc new up to first spaces skipping""*/
-			/*debug*/printf("saved: new=\033[96m%s\033[0m.\n", new);
+			// /*debug*/printf("saved: new=\033[96m%s\033[0m.\n", new);
 			ft_lstadd_back(vars, ft_lstnew(ft_strdup(new)));
 		}
 		/*free variable name*/
 		free(new);
 		free(name);
 		/*skips new to the next var*/
-		/*debug*/printf("before: str=%s\n", str);
 		str = find_next_var(str);
 		if (str && str[0])
 		/*debug*/printf("find_next_var: str=\033[92m%s\033[0m.\n", str);
@@ -299,7 +294,6 @@ void	process_vars(t_list **vars, char *str)
 	/* save var: skip ' " quotes	*/
 	new = str;
 	skip_redirs(str, &new);
-	/*debug*/printf("vars_before=%s.\n", new);
 	/* if at beginning < > */
 	if (has_more_str(new, "<>"))
 	{
@@ -307,16 +301,15 @@ void	process_vars(t_list **vars, char *str)
 		tmp = ft_split_shell(new, "<>");
 		fin = ft_split_shell(tmp[0], " \t\n\v\f\r");
 
-		/*debug*/printf("--------\ntmp:\n");
-		/*debug*/debug_print(tmp);
-		/*debug*/printf("--------\nfin:\n");
-		/*debug*/debug_print(fin);
+		// /*debug*/printf("--------\ntmp:\n");
+		// /*debug*/debug_print(tmp);
+		// /*debug*/printf("--------\nfin:\n");
+		// /*debug*/debug_print(fin);
 	
 		while (fin && fin[x])
 			extract_vars(vars, fin[x++]);
 
 		// /*debug*/printf("tmp[0]:%s.\n", tmp[0]);
-		// extract_vars(vars, tmp[0]);
 		free_chr_ptr((void **)tmp);
 		free_chr_ptr((void **)fin);
 	}
@@ -362,7 +355,7 @@ void	replace_quote_space(char **str)
 		i = (int)(ft_strchr(&new[1], new[0]) - &new[0]);
 		while (i >= 0)
 			new[i--] = ' ';
-		/*debug*/printf("i=%d, %s\n", i, new);
+		// /*debug*/printf("i=%d, %s\n", i, new);
 	}
 }
 
