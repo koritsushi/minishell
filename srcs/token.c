@@ -173,20 +173,21 @@ void	process_cmd(t_token *lst, char **res, char **infile)// char **outfile)//cha
 	// /*debug*/ debug_print(infile);
 }
 
-// 18 lines so far
+// 20 lines so far
 /*
  * splits input by PIPE & REDIR, stores result in allocated t_token pointer
  * uses malloc
  */
-void	get_cmd_line(char *str, t_token *lst)
+int	get_cmd_line(char *str, t_token *lst)
 {
 	int		count;
 	char	*new;
 	char	**infile;
 	char	**res;
 
+	str = skip_spaces(str, " \t\n\v\f\r");
 	if (!str || !str[0])
-		return ;
+		return (0);
 	/* ---------------- format string ---------------- */
 	/* search & truncate string to last infile < sign */
 	/* removes env (VAR="1 2 3") during get_cmds*/
@@ -194,12 +195,12 @@ void	get_cmd_line(char *str, t_token *lst)
 	res = ft_split_shell(new, "|");
 	infile = ft_split_shell(res[0], "<");
 	if (!res || !infile)
-		return ;
+		return (0);
 
 	/* ---------------- get_malloc_size ---------------- */
 	count = get_malloc_size(res, infile);
 	if (!init_token_list(lst, (count + 1)))
-		return ;
+		return (0);
 
 	// /*debug*/printf("trunc=%s\n", new);
 	/*debug*/printf("count=%d+1\n", count);
@@ -219,4 +220,5 @@ void	get_cmd_line(char *str, t_token *lst)
 	/*--------------debug_end--------------*/
 
 	free_multiple_ptr(2, res, infile);
+	return (1);
 }

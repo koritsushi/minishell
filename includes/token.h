@@ -56,7 +56,7 @@ int		has_more_str(char *str, char *set);
 int		has_more_str_all(char **str, char *set);
 
 /* -------------------extract_cmds---------------------- */
-void	get_cmd_line(char *str, t_token *lst);
+int		get_cmd_line(char *str, t_token *lst);
 void	assign_datatype(unsigned char *datatype, char **res, char **infile);
 void	extract_infile(char **lst_data, char **res, char **infile);
 void	extract_outfile(char **lst_data, char *str);

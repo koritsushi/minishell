@@ -75,7 +75,7 @@ int	main(int ac, char **av)
 	// char str[] = "awk 'BEGIN { x=1 '\"print x }' var=12\"34";
 	// char str[] = "awk ' BEGIN { x=1 print x }' vars='opop'";
 // /* ******* */char str[] = "awk 'BEGIN { x=1 print x }'    | 	var=1234 ";
-	// char str[] = "var=1234| awk 'BEGIN { x=1 print x }' ";
+	char str[] = "var=1234| awk 'BEGIN { x=1 print x }' ";
 	// char str[] = "awk \"BEGIN { x = 1 print x }\"        ";
 
 	/* ________________________syntax_error_test________________________ */
@@ -117,6 +117,7 @@ int	main(int ac, char **av)
 // 	char str[] = "	> 	outfile";
 // 	char str[] = ">>    outfile cmd -f -g";
 // 	char str[] = "  >    outfile cmd -f -g >> outfile2 -h";
+// 	char str[] = "  <    infile cmd -f -g << infile2 cmd2";
 
 // 	/* ________________________infiles_tests________________________ */
 // /*********/char str[] = "< infile cmd1 -f -g > out >>out2 -k";// HIGHLIGHT
