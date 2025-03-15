@@ -206,7 +206,7 @@ int	get_cmd_line(char *str, t_token *lst, t_list *vars)
 		return (0);
 
 	// /*debug*/printf("trunc=%s\n", new);
-	/*debug*/printf("count=%d+1\n", count);
+	/*debug*/printf("get_cmd_line:count=%d+1, %s.\n", count, str);
 	// /*debug*/printf("------\nres:\n");
 	// /*debug*/debug_print(res);
 	/* ---------------- extract_cmd ---------------- */

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/13 15:31:09 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/15 12:34:43 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,18 @@ static int	count_str_array(char **res)
 /* gets the correct infile count for malloc use */
 static int	count_infile(char **res, char **infile)
 {
-	int	count;
+	int		count;
+	char	**in_fin;
 
 	count = 0;
+	in_fin = ft_split_shell(infile[0], ">");
 	if (res[0][0] == '<' && !infile[1] && \
-		has_more_str(infile[0], " \t\n\v\f\r"))
+		has_more_str(in_fin[0], " \t\n\v\f\r"))
 		count++;
 	else if (res[0][0] != '<' && infile[1])
 		count++;
+
+	free_chr_ptr((void **)in_fin);
 	return (count);
 }
 
@@ -124,17 +128,21 @@ int	get_malloc_size(char **res, char **infile)
 {
 	int		i;
 
+	/* <infile >outfile*/
+	i = 0;
 	i = count_str_array(res); /* splitted by '|' */
+	// /*debug*/printf("------\ncount_res: %d\n", i);
 	i += count_str_array(&res[1]); /*count pipes*/
+	// /*debug*/printf("count_pipe: %d\n", i);
 	i += count_infile(res, infile);
+	// /*debug*/printf("count_infile: %d\n", i);
 	i += count_cmd_tail(res, " \t\n\v\f\r");
+	// /*debug*/printf("count_cmd_tail: %d\n", i);
 
-	// printf("------\nres:\n");
-	// debug_print(res);
-	// printf("------\ninfile:\n");
-	// debug_print(infile);
-	// printf("------\noutfile:\n");
-	// debug_print(outfile);
+	// /*debug*/printf("------\nres:\n");
+	// /*debug*/debug_print(res);
+	// /*debug*/printf("------\ninfile:\n");
+	// /*debug*/debug_print(infile);
 
 	return (i);
 }

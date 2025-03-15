@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/12 18:54:14 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/15 12:13:53 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,14 @@ int	check_var_syntax(char *str)
 	new = str;
 
 	/* mix in/out files */
-	if (has_mix_redirs(str))
+	if (has_mix_redirs(new))
+		return (1);
+	if (!ft_isalpha(new[0]))
 		return (0);
 	/* truncate to var=1234*/
 	while (new && new[0])
 	{
-		if (new[0] != '=' && new[1] && is_target("'\"", new[1]))
+		if (new[0] != '=' && new[1] && is_target("\'\"", new[1]))
 		{
 			if (is_target(str, '|'))
 				return (1);
@@ -411,7 +413,7 @@ int	get_variable(t_list **vars, char *str)
 	if (check_var_syntax(new))
 	{
 		/* if no pipes, copy_vars */
-		if (!is_target(new, '|')) //put a flag for multiple_cmd
+		if (!is_target(new, '|') && !has_mix_redirs(new)) //put a flag for multiple_cmd
 			process_vars(vars, new); //only extract the last one
 		/* update_str '=' with ' '*/
 		replace_var_space(str);
