@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/11 19:19:07 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/12 13:15:56 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,9 @@ int	main(int argc, char **argv)
 				/*debug*/printf("\033[103m_____vars_list:_____\033[0m\n");
 				debug_print_lst(lst.vars);
 			}
-			if (get_cmd_line(text, &lst))
+			if (get_cmd_line(text, &lst, lst.vars))
 				free_all(&lst);
-			/* expansion */
-			/* run pipes */
+			/* run pipex */
 		}
 		free(text);
 	}

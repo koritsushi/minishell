@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 17:58:29 by hsim              #+#    #+#             */
-/*   Updated: 2025/02/25 07:45:19 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/14 21:39:16 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,15 @@ void	free_chr_ptr(void **ptr)
 void	free_multiple_ptr(int x, ...)
 {
 	va_list	args;
+	// char	**tmp;
 
 	va_start(args, x);
+	// tmp = NULL;
 	while (x > 0)
 	{
+		// tmp = va_arg(args, char **);
+		// if (tmp)
+			// free_chr_ptr((void **)(tmp));
 		free_chr_ptr((void **)(va_arg(args, char **)));
 		x--;
 	}

@@ -6,13 +6,13 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/11 19:17:07 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/12 18:54:14 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/parsing.h"
 
-/* if str[0] == quote, will skip it and return */
+/* if str[0] == symbol, will skip to the next occurence of symbol and return */
 char	*skip_if_quote(char *str, char symbol)
 {
 	char	*new;
@@ -416,5 +416,6 @@ int	get_variable(t_list **vars, char *str)
 		/* update_str '=' with ' '*/
 		replace_var_space(str);
 	}
+	/*debug*/printf("updated_str:%s.\n", str);
 	return (1);
 }

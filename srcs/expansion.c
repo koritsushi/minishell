@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/03 20:55:22 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/14 22:23:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,3 +23,58 @@
 	' | ' pipe
 	' $ ' environment variables 
 */
+
+/*
+ * checks if there are $var in string and corresponding entry in t_list vars
+ * yes: replace with content
+ * no : replace with spaces ' '
+ */
+void	shell_var_expansion(char **cmd_line, t_list vars)
+{
+	char	**tmp;
+	char	**fin;
+	char	*str;
+	(void)	vars;
+
+	str = *cmd_line;
+	while (str && str[0])
+	{
+		if (str[0] == '\'')
+			str = ft_strchr(str + 1, '\'');
+		else if (str[0] == '$' && ft_isalpha(str[1]))
+		{
+			tmp = ft_split_shell(str, "$");
+			// /*debug*/printf("-----\nsplit:fin:\n");
+			fin = ft_split_shell(tmp[0], " \'\"\t\n\v\f\r");
+			// /*debug*/printf("-----\nshell_var_expansion:tmp:\n");
+			// /*debug*/debug_print(tmp);
+			// /*debug*/printf(".....\nfin:\n");
+			// /*debug*/debug_print(fin);
+			// /*debug*/printf("-----\n");
+			/*debug*/printf("var_name:%s\n", fin[0]);
+			check_shell_var(&vars, fin[0], cmd_line);
+			free_multiple_ptr(2, tmp, fin);
+			str = *cmd_line;
+		}
+		str++;
+	}
+}
+
+int	cmd_expansion(char **lst_data, t_list *vars)
+{
+	int	x;
+	if (!lst_data || !*lst_data || !vars)
+	{
+		/*debug*/printf("no expansion!\n");
+		return (0);
+	}
+	x = -1;
+	while (lst_data[++x])
+	{
+		shell_var_expansion(&lst_data[x], *vars);
+		/* {}	brace_expansion	*/
+		/* ~	tilde_expansion	*/
+		/* " '	quote_removal	*/
+	}
+	return (1);
+}

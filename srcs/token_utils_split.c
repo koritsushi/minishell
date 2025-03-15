@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/11 14:41:46 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/15 11:46:03 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	count_str(char *str, char *set)
 		if (str[1] && !flag && is_target(set, str[0]) && \
 			!is_target(set, str[1])) // if !flag && str[0] == spaces, str[1] !spaces
 			wc++;
-		if (!flag && str[0] && is_target("'\"", str[0]))
+		if (!flag && str[0] && is_target("'\"", str[0]) && !is_target(set, '\"') && !is_target(set, '\''))
 			symbol = str[0];
 		if (!flag && str[0] == symbol && str[0 - 1])
 			flag = 1;
@@ -93,7 +93,7 @@ int	count_chr(char *str, char *set, int *flag)
 	symbol = '\0';
 	while (str[0] && (!is_target(set, str[0]) || (*flag == 1)))
 	{
-		if (*flag == 0 && str[0] && is_target("'\'\"", str[0])) // if is first encounter to '
+		if (*flag == 0 && str[0] && is_target("'\'\"", str[0]) && !is_target(set, '"') && !is_target(set, '\'')) // if is first encounter to '
 			symbol = str[0];
 		if (*flag == 0 && str[0] == symbol) // if is first encounter to '
 			*flag = increment_val(1, &count, &str); // increment & set flag to 1

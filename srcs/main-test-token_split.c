@@ -39,6 +39,9 @@ int	main(int ac, char **av)
 	// char str[] = "var=| 123";
 	// char str[] = "var=123";
 	// char str[] = "var      = 123";
+	// char str[] = "echo $var\" hello\"";
+	char str[] = "$var\" hello\"";
+	// char str[] = "var=123 | echo $var";
 	// char str[] = "echo hello | var=cmd2| var=123 | cmd3";
 	// char str[] = "echo hello | cmd2| var=123 | cmd3";
 	// char str[] = "echo hello | cmd2| var=123 ";
@@ -125,7 +128,7 @@ int	main(int ac, char **av)
 // 			char str[] = "< infile < infile2     << infile3 | cmd1 |cmd2 |cmd3 ";
 	// char str[] = "< infile | < infile2 |   < infile3 cmd1  <infile2 << infile5 cmd2 -f -g |cmd2 |cmd3 ";
 // 	char str[] = "|  < infile  | cmd1 |cmd2 |cmd3 ";
-	char str[] = "<infile1 <infile2 | cmd1 | cmd2 | cmd3 > outf1 >out2>>out3";
+	// char str[] = "<infile1 <infile2 | cmd1 | cmd2 | cmd3 > outf1 >out2>>out3";
 
 	// char str[] = "< infile <infile2 <<infile3 cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile koko lala";
 // 	char str[] = "< infile cmd1 -f -g | cmd2 'some flags' | no | cmd3 > outfile koko lala";
@@ -194,7 +197,9 @@ int	main(int ac, char **av)
 	// /*debug*/printf("count_chr=%d\n", count_chr(str, " \t\n\v\f\r", &flag));
 	
 	/*---------------------count_str_debug-----------------------*/
-	// /*debug*/printf("count_str=%d\n", count_str(str, " \t\n\v\f\r"));
+	int	flag = 0;
+	/*debug*/printf("str:%s\n", str);
+	/*debug*/printf("count_str:%d, chr:%d\n", count_str(str, " \"\t\n\v\f\r"), count_chr(str, " \"\t\n\v\f\r", &flag));
 	
 	/*---------------------syntax_check-----------------------*/
 	// /*debug*/printf("entry:%s\n", str);
@@ -222,10 +227,27 @@ int	main(int ac, char **av)
 	// printf("updated_str=\033[92m%s\033[0m.\n", str);
 
 	/*---------------------get_cmd_line-----------------------*/
-	t_token	lst;
-	/*parsing_check*/
-	get_cmd_line(str, &lst);
-	free_all(&lst);
+	// t_token	lst;
+	// /*parsing_check*/
+	// get_cmd_line(str, &lst);
+	// free_all(&lst);
+
+	/*---------------------cmd_expansion-----------------------*/
+	// t_token	lst;
+	// lst.vars = NULL;
+	
+	// if (check_syntax(str))
+	// {
+	// 	get_variable(&lst.vars, str);
+	// 	if (get_cmd_line(str, &lst, lst.vars))
+	// 		free_all(&lst);
+	// }
+	// if (lst.vars && lst.vars->content)
+	// {
+	// 	// /*debug*/printf("yayaya:%s\n", (char *)lst.vars->content);
+	// 	debug_print_lst(lst.vars);
+	// 	ft_lstclear(&lst.vars, free);
+	// }
 
 	/*---------------------lst_test-----------------------*/
 	// t_list text;

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 12:06:36 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/02 18:27:50 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/13 15:31:50 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ void	extract_infile(char **lst_data, char **res, char **infile)
 /* get & saves outfile string into lst_data */
 void	extract_outfile(char **lst_data, char *str)
 {
-	int		i;
+	// int		i;
 	char	**outfile_fin;
 
-	i = 0;
+	// i = 0;
 	outfile_fin = ft_split_shell(str, " \t\n\v\f\r");
 	allocate_str(lst_data, outfile_fin[0]);
 	ft_strlcpy(*lst_data, outfile_fin[0], ft_strlen(outfile_fin[0]) + 1);

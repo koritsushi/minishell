@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/11 18:47:56 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/13 15:31:09 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,8 @@ static int	count_str_array(char **res)
 /* gets the correct infile count for malloc use */
 static int	count_infile(char **res, char **infile)
 {
-	int	x;
-	int	flag;
 	int	count;
 
-	x = 1;
-	flag = 1;
 	count = 0;
 	if (res[0][0] == '<' && !infile[1] && \
 		has_more_str(infile[0], " \t\n\v\f\r"))

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:28:58 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/11 16:04:11 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/13 15:32:02 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,9 @@ int	check_symbols(char **res)
 
 int	check_unclosed_quote(char *str)
 {
-	int		flag;
 	char	*new;
 
 	new = str;
-	flag = 0;
 	while (new && new[0])
 	{
 		// /*debug*/printf("enter=%s\n", new);
@@ -144,9 +142,7 @@ int	check_syntax(char *str)
 	// /*debug*/debug_print(res);
 	// /*debug*/printf("--------\n");
 
-	if (!check_symbols(res))
-		flag = 0;
-	if (!check_unclosed_quote(str))
+	if (!check_symbols(res) || !check_unclosed_quote(str))
 		flag = 0;
 	free_chr_ptr((void **)res);
 	return (flag);

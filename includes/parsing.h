@@ -25,6 +25,7 @@ char	*skip_if_quote(char *str, char symbol);
 
 
 int		get_variable(t_list **vars, char *str);
+void	get_var_name(char **dest, char *str);
 
 
 #endif
