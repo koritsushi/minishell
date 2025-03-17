@@ -38,6 +38,10 @@ int	main(int ac, char **av)
 	// char str[] = "var= 123";
 	// char str[] = "var=| 123";
 	// char str[] = "var=123";
+	char str[] = "var=123 cmd1 | cmd2 var=123 | var=123";
+	char str[] = "var=123 ^var=5 var=8";
+	char str[] = "var=99 ^var=123 cmd1 v=1 | cmd2 var=123 | var=123";
+	char str[] = "cmd1| var=123";
 	// char str[] = "var      = 123";
 	// char str[] = "echo $var\" hello\"";
 	char str[] = "$var\" hello\"";
@@ -76,9 +80,12 @@ int	main(int ac, char **av)
 	// char str[] = "awk 'BEGIN { x=1 print x }' var=\"12'34\"";
 	// char str[] = "awk'BEGIN{x=1printx}' | cmd1 | cmd2";
 	// char str[] = "awk 'BEGIN { x=1 '\"print x }' var=12\"34";
+	// char str[] = "vars='opop' awk ' BEGIN { x=1 print x }'";
 	// char str[] = "awk ' BEGIN { x=1 print x }' vars='opop'";
-// /* ******* */char str[] = "awk 'BEGIN { x=1 print x }'    | 	var=1234 ";
+// /* ******* */char str[] = "awk 'BEGIN { x = 1 print x }'    | 	var=1234 ";
 	// char str[] = "var=1234| awk 'BEGIN { x=1 print x }' ";
+	// char str[] = "var=1234 0var=tt > outfile";
+	// char str[] = "var=1234 0var=tt < infile";
 	// char str[] = "awk \"BEGIN { x = 1 print x }\"        ";
 
 	/* ________________________syntax_error_test________________________ */

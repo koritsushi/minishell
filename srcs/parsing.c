@@ -6,13 +6,17 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/15 12:13:53 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/17 17:09:52 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/parsing.h"
 
-/* if str[0] == symbol, will skip to the next occurence of symbol and return */
+/*
+ * if str[0] == symbol, will skip to the next occurence of symbol
+ * and skips all following spaces
+ * returns skipped result
+ */
 char	*skip_if_quote(char *str, char symbol)
 {
 	char	*new;
@@ -42,7 +46,44 @@ int	has_mix_redirs(char *str)
 	return (0);
 }
 
-int	check_var_syntax(char *str)
+/*
+ * child function in check_var_syntax
+ * checks if any word/variable name starts from non-alphabets && doesnt have '='
+ * changes flag value if true
+ */
+static int	has_non_alpha(char *str)
+{
+	char	*new;
+	char	**tmp;
+	char	**fin;
+	int		i;
+	int		res;
+
+	new = skip_redirs(str);
+	tmp = ft_split_shell(new, "<>");
+	fin = ft_split_shell(tmp[0], " \t\n\v\f\r");
+	res = 0;
+	i = -1;
+	while (fin && fin[++i] && !res)
+	{
+		if ((fin[i][0] && !ft_isalpha(fin[i][0])) || !is_target(fin[i], '='))
+		{
+			res = 1;
+			/*debug*/printf("has_non_alpha:%s\n", fin[i]);
+		}
+	}
+	/* var=90 var2=56 ^var=6 */
+	/* ^var=6 */
+	free_multiple_ptr(2, tmp, fin);
+	return (res);
+}
+
+// 17 lines!
+/*
+ * child function in get_variable,
+ * checks if variable assigned syntax formatted correctly
+ */
+int	check_var_syntax(char *str, int *flag)
 {
 	char	*new;
 
@@ -53,21 +94,23 @@ int	check_var_syntax(char *str)
 	new = str;
 
 	/* mix in/out files */
-	if (has_mix_redirs(new))
-		return (1);
-	if (!ft_isalpha(new[0]))
-		return (0);
-	/* truncate to var=1234*/
-	while (new && new[0])
+	/*debug*/printf("enter:%s\n", new);
+	if (has_mix_redirs(new) || has_non_alpha(new))
+		*flag = 1;
+	/* skips infile outfile at head */
+	new = skip_redirs(new);
+	while (new && new[0] && !(*flag))
 	{
-		if (new[0] != '=' && new[1] && is_target("\'\"", new[1]))
-		{
-			if (is_target(str, '|'))
-				return (1);
-			return (ft_perror_fd("🚨 debug:Other cmd detected!\n", 2, 0));
-		}
-		if (!new || !new[0])
-			return (ft_perror_fd("\033[90mEnd of string!\033[0m\n", 2, 0));
+		/* contains cmd/word other than assignment string (cmd var=90, echo 'op=9')*/
+		// if (new[0] != '=' && new[1] && is_target("\'\"", new[1])) // echo 'op=9'
+		// {
+		// 	if (!is_target(str, '|'))
+		// 		*flag = 1;
+		// 	// return (1);
+		// }
+		// else if (!new || !new[0])
+		// 	return (ft_perror_fd("\033[90mEnd of string!\033[0m\n", 2, 0));
+		// ' '=' '
 		if (new[1] == '=' && \
 			((new[0] && is_target(" \t\n\v\f\r<>|&", new[0])) || \
 			(new[2] && is_target(" \t\n\v\f\r<>|&", new[2]))))
@@ -104,6 +147,7 @@ void	get_var_name(char **dest, char *str)
 }
 
 /*
+ * child function in extract_vars
  * trunc current variable to the beginning of next variable
  * if encounter ' ", skip; if encounter spaces, break
  */
@@ -252,24 +296,30 @@ void	extract_vars(t_list **vars, char *str)
 
 /*
  * child function in process_vars,
- * skips all < infile & > outfile redirections, updates *new */
-static void	skip_redirs(char *str, char **new)
+ * skips all < infile & > outfile redirections that are at the beginning of str,
+ * returns result to char*
+ */
+char	*skip_redirs(char *str)//, char **new)
 {
+	char	*new;
+
+	new = str;
 	while (str[0] == '<' || str[0] == '>')
 	{
-		*new = str;
-		*new = skip_spaces(*new, "<> \t\n\v\f\r");
-		/*debug*/printf("skip_spaces=%s\n", *new);
-		*new = skip_if_symbol(*new, str[0], '<');
-		/*debug*/printf("skip_< =%s\n", *new);
-		*new = skip_if_symbol(*new, str[0], '>');
-		/*debug*/printf("skip_> =%s\n", *new);
+		new = skip_spaces(new, "<> \t\n\v\f\r");
+		/*debug*/printf("skip_spaces=%s\n", new);
+		new = skip_if_symbol(new, str[0], '<');
+		/*debug*/printf("skip_< =%s\n", new);
+		new = skip_if_symbol(new, str[0], '>');
+		/*debug*/printf("skip_> =%s\n", new);
 		str = skip_spaces(str, "<> \t\n\v\f\r");
 		while (str[0] && !is_target(" \t\n\v\f\r", str[0]))
 			str++;
 		str = skip_spaces(str, " \t\n\v\f\r");
 		/*debug*/printf("str =%s\n", str);
+		new = str;
 	}
+	return (new);
 }
 
 // 19 lines!
@@ -294,8 +344,9 @@ void	process_vars(t_list **vars, char *str)
 	/* if var var, save last var	*/
 	/* if var1 var2, save both var	*/
 	/* save var: skip ' " quotes	*/
-	new = str;
-	skip_redirs(str, &new);
+	// new = str;
+	new = skip_redirs(str);
+	// skip_redirs(str, &new);
 	/* if at beginning < > */
 	if (has_more_str(new, "<>"))
 	{
@@ -320,104 +371,30 @@ void	process_vars(t_list **vars, char *str)
 }
 
 /*
- * child function in replace_var_space, 
- * if is empty spaces after last pipe '|', replace last pipe with spaces ' '
- */
-static void	replace_last_pipe(char *str)
-{
-	char	*new;
-
-	if (ft_strrchr(str, '|'))
-	{
-		new = ft_strrchr(str, '|');
-		/*debug*/printf("end_:\033[90m%s\033[0m.\n", new);
-		while (new[1] && is_target(" \t\n\v\f\r", new[1]))
-			new++;
-		if (new[1] == '\0')
-		{
-			new = ft_strrchr(str, '|');
-			new[0] = ' ';
-		}
-	}
-}
-
-/*
- * child function in replace_var_space,
- * writes entire quoted area to spaces ' ' if quote symbol ' " detected
- */
-void	replace_quote_space(char **str)
-{
-	char	*new;
-	int		i;
-
-	new = *str;
-	i = 0;
-	if (new[0] && is_target("'\"", new[0]))
-	{
-		i = (int)(ft_strchr(&new[1], new[0]) - &new[0]);
-		while (i >= 0)
-			new[i--] = ' ';
-		// /*debug*/printf("i=%d, %s\n", i, new);
-	}
-}
-
-// 25 lines!!
-/* overwrites var assignment in str (eg var=123) to blank space ' ' */
-void	replace_var_space(char *str)
-{
-	char	*new;
-
-	/* searches location of '=' */
-	/* reverse search the space before '=' */
-	/* fill all with ' ' until isalnum || !| && spaces*/
-
-	new = str;
-	while (new && new[0])
-	{
-		if (new[0] == '\'' || new[0] == '"')
-			new = skip_if_quote(new, new[0]) - 1;
-		else if (new && new[0] == '=')
-		{
-			while (new[0 - 1] && !is_target(" \t\n\v\f\r", new[0 - 1]))
-				new--;
-			while (new[0] && !is_target("<>|", new[0]))
-			{
-				if (is_target("\'\"", new[0]))
-					replace_quote_space(&new);
-				else if (!is_target(" \t\n\v\f\r", new[0]))
-					new[0] = ' ';
-				new++;
-			}
-			if (new[0] == '|')
-				new[0] = ' ';
-		}
-			// /*debug*/printf("replace_var_sp:\033[90m%s\033[0m.\n", new);
-		new++;
-	}
-	replace_last_pipe(str);
-}
-
-/*
  * checks if variable syntax is correct,
  * overwrite & save if variable has existed
  */
 int	get_variable(t_list **vars, char *str)
 {
 	char	*new;
+	int		flag;
 
+	flag = 0;
 	new = skip_spaces(str, " \t\n\v\f\r");
 	if (new[0] && !is_target(new, '='))
 		return (0);
 	/* check_var_syntax */
 	/* if ok, copy to vars & update str */
-	if (check_var_syntax(new))
+	if (check_var_syntax(new, &flag))
 	{
 		/* if no pipes, copy_vars */
-		if (!is_target(new, '|') && !has_mix_redirs(new)) //put a flag for multiple_cmd
-			process_vars(vars, new); //only extract the last one
+		/*debug*/printf("check_var_syntax:enter! new:%s, str:%s\n", new, str);
+		if (!is_target(new, '|') && !has_mix_redirs(new) && !flag) //put a flag for multiple_cmd
+			process_vars(vars, new); //if syntax ok && no '|'
 		/* update_str '=' with ' '*/
 		replace_var_space(str);
 	}
+	/*debug*/printf("check_var_syntax:flag:%d\n", flag);
 	/*debug*/printf("updated_str:%s.\n", str);
 	return (1);
 }

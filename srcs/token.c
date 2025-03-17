@@ -206,7 +206,7 @@ int	get_cmd_line(char *str, t_token *lst, t_list *vars)
 		return (0);
 
 	// /*debug*/printf("trunc=%s\n", new);
-	/*debug*/printf("get_cmd_line:count=%d+1, %s.\n", count, str);
+	/*debug*/printf("get_cmd_line:\033[93mcount=%d+1\033[0m, %s.\n", count, str);
 	// /*debug*/printf("------\nres:\n");
 	// /*debug*/debug_print(res);
 	/* ---------------- extract_cmd ---------------- */
@@ -219,6 +219,7 @@ int	get_cmd_line(char *str, t_token *lst, t_list *vars)
 	// debug_print(lst->data);
 	printf("\n\033[102m_____lst_data:_____\033[0m\n");
 	int i = -1;
+	// while (lst->data[++i])
 	while (++i < count)
 		printf("\033[92m%s\033[0m. [%d]\n", lst->data[i], lst->datatype[i]);
 	/*--------------debug_end--------------*/
