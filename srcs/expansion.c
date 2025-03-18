@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/18 12:59:19 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/18 14:00:34 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	shell_var_expansion(char **cmd_line, t_list *vars)
 	str = *cmd_line;
 	while (str && str[0])
 	{
-		/*debug*/printf("shell_var_expansion:ent:%s\n", str);
+		// /*debug*/printf("shell_var_expansion:ent:%s\n", str);
 		if (str[0] == '\'')
 			str = ft_strchr(str + 1, '\'') + 1;
 		else if (str[0] == '$' && ft_isalpha(str[1]))

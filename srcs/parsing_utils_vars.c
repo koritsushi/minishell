@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:12:43 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/18 12:12:35 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/18 17:53:22 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,35 +150,54 @@ void	copy_vars(char *dest, char *src, int len)
 }
 
 /*
- * child function in extract_vars,
- * search for var name in linked list, & replace data if dup found
+ * child function in check_replace_dup,
+ * overwrites existing var entry in linked list
  */
-void	check_replace_dup(t_list *vars, char *name, char *new, int *flag)
+static int	overwrite_existing_var(t_list *head, char *str, int export_id)
 {
-	t_list	*head;
-	char	**tmp;
-	size_t	len;
+	/*debug*/printf("check_replace_dup:found! str:%s\n", (char *)head->content);
+	free(head->content);
+	/*overwrite*/
+	head->content = ft_strdup(str);
+	/*debug*/printf("def:export_id:%d\n", export_id);
+	if (head->export_id < 1 && export_id >= 1)
+		head->export_id = export_id;
+	else if (head->export_id == 1)
+		head->export_id = 2;
+	return (1);
+}
 
-	head = vars;
-	while (head && !*flag)
+// 21 lines
+/*
+ * child function in extract_vars,
+ * search for var name in linked list,
+ * replace data & sets flag to 1 if duplicate found
+ */
+int	check_replace_dup(t_list *vars, char *name, char *new, int export_id)
+{
+	size_t	len;
+	char	**tmp;
+	int		flag;
+
+	flag = 0;
+	while (vars && !flag)
 	{
-		tmp = ft_split_shell(head->content, "=");
-		// /*debug*/printf("check_replace_dup name:%s, %s\n", tmp[0], name);
-		/*if found*/
-		len = ft_strlen(name);
+		len = 0;
+		tmp = ft_split_shell(vars->content, "=");
+		/*debug*/printf("check_replace_dup name:%s, %s.\n", tmp[0], name);
+		while (name[len] && !is_target(" \t\n\v\f\r", name[len]))
+			len++;
+		/*debug*/printf("h:%s, %zu %zu\n", new, ft_strlen(tmp[0]), len);
 		if (ft_strlen(tmp[0]) > len)
 			len = ft_strlen(tmp[0]);
-		if (ft_strncmp(head->content, name, len) == 0)
-		{
-			// /*debug*/printf("check_replace_dup:found! name:%s\n", (char *)head->content);
-			free(head->content);
-			/*overwrite*/
-			head->content = ft_strdup(new);
-			*flag = 1;
-		}
+		if (ft_strncmp(vars->content, name, len) == 0 && !is_target(new, '='))
+			flag = 1;
+		else if (!flag && ft_strncmp(vars->content, name, len) == 0 && is_target(new, '='))
+			flag = overwrite_existing_var(vars, new, export_id);
 		free_chr_ptr((void **)tmp);
-		head = head->next;
+		vars = vars->next;
 	}
+	return (flag);
 }
 
 // 19 lines!
@@ -187,7 +206,7 @@ void	check_replace_dup(t_list *vars, char *name, char *new, int *flag)
  * searches & replace duplicate var name in linked list, 
  * or add new var entry to list
  */
-void	extract_vars(t_list **vars, char *str)
+void	extract_vars(t_list **vars, char *str, int export_id)
 {
 	int		flag;
 	char	*name;
@@ -209,13 +228,17 @@ void	extract_vars(t_list **vars, char *str)
 		copy_vars(new, str, count_malloc_vars(str));
 		// /*debug*/printf("copy_vars:%s\n", new);
 		// /*debug*/printf("---------\ncheck_replace_dup:\n");
-		check_replace_dup(*vars, name, new, &flag);
+		flag = check_replace_dup(*vars, name, new, export_id);
 		// /*debug*/printf("---------\n");
-		if (flag == 0)
+		if (flag == 0) // if no duplicates
 		{
 			/*if !found && !flag*/
 			// /*debug*/printf("saved: new=\033[96m%s\033[0m.\n", new);
 			ft_lstadd_back(vars, ft_lstnew(ft_strdup(new)));
+			t_list *tmp = ft_lstlast((*vars));
+			tmp->export_id = export_id;
+			if (!is_target(new, '='))
+				tmp->export_id = 1;
 		}
 		/*free variable name*/
 		free(new);

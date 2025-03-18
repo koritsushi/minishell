@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/18 12:15:28 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/18 16:31:08 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 /*
  * if str[0] == symbol, will skip to the next occurence of symbol
- * if flag == 1, will skip all following spaces
+ * if flag == 1, will skip all spaces followed after result
  * returns skipped result
  */
 char	*skip_if_quote(char *str, char symbol, int flag)
@@ -67,8 +67,14 @@ char	*skip_redirs(char *str)//, char **new)
 }
 
 // 19 lines!
-/* child function in get_variables, saves variables in linked list */
-void	process_vars(t_list **vars, char *str)
+/*
+ * child function in get_variables, saves variables in linked list
+ * types of export_id values~
+ * export_id: 0 [var=text] none
+ * export_id: 1 [export var] export only
+ * export_id: 2 [export var=, export var=1] export && env
+ */
+void	process_vars(t_list **vars, char *str, int export_id)
 {
 	char	*new;
 	char	**tmp;
@@ -89,6 +95,8 @@ void	process_vars(t_list **vars, char *str)
 	/* if var1 var2, save both var	*/
 	/* save var: skip ' " quotes	*/
 	// new = str;
+	if (!str)
+		return ;
 	new = skip_redirs(str);
 	// skip_redirs(str, &new);
 	/* if at beginning < > */
@@ -104,14 +112,14 @@ void	process_vars(t_list **vars, char *str)
 		// /*debug*/debug_print(fin);
 	
 		while (fin && fin[x])
-			extract_vars(vars, fin[x++]);
+			extract_vars(vars, fin[x++], export_id);
 
 		// /*debug*/printf("tmp[0]:%s.\n", tmp[0]);
 		free_chr_ptr((void **)tmp);
 		free_chr_ptr((void **)fin);
 	}
 	else
-		extract_vars(vars, new);
+		extract_vars(vars, new, export_id);
 }
 
 /*
@@ -134,11 +142,18 @@ int	get_variable(t_list **vars, char *str)
 		/* if no pipes, copy_vars */
 		// /*debug*/printf("check_var_syntax:enter! new:%s, str:%s\n", new, str);
 		if (!is_target(new, '|') && !has_mix_redirs(new) && !flag) //put a flag for multiple_cmd
-			process_vars(vars, new); //if syntax ok && no '|'
-		/* update_str '=' with ' '*/
-		replace_var_space(str);
+			process_vars(vars, new, 0); //if syntax ok && no '|'
+		replace_var_space(new);
 	}
-	// /*debug*/printf("check_var_syntax:flag:%d\n", flag);
+	/* check if its export */
+	new = skip_spaces(new, " \t\n\v\f\r");
+	if (ft_strncmp(new, "export", 6) == 0 && !is_target(new, '|'))
+	{
+		/*follow same process, just that == 1*/
+		new = skip_if_symbol(new, 'c', 'c');
+		/*debug*/printf("handle_Export!:%s\n", new);
+		process_vars(vars, new, 2);
+	}
 	/*debug*/printf("updated_str:%s.\n", str);
 	return (1);
 }

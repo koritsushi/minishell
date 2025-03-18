@@ -107,6 +107,7 @@ t_gnl_list	*ft_llstlast(t_gnl_list *lst);
 typedef struct s_list
 {
 	void			*content;
+	int				export_id;
 	struct s_list	*next;
 }					t_list;
 

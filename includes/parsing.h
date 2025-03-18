@@ -25,7 +25,7 @@ int		has_mix_redirs(char *str);
 int		get_variable(t_list **vars, char *str);
 int 	get_var_name(char **dest, char *str);
 void	replace_var_space(char *str);
-void	extract_vars(t_list **vars, char *str);
+void	extract_vars(t_list **vars, char *str, int export_id);
 
 
 
