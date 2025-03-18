@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:12:43 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/18 17:53:22 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/18 18:40:31 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ static int	overwrite_existing_var(t_list *head, char *str, int export_id)
 	return (1);
 }
 
-// 21 lines
+// 24 lines
 /*
  * child function in extract_vars,
  * search for var name in linked list,
@@ -191,13 +191,34 @@ int	check_replace_dup(t_list *vars, char *name, char *new, int export_id)
 		if (ft_strlen(tmp[0]) > len)
 			len = ft_strlen(tmp[0]);
 		if (ft_strncmp(vars->content, name, len) == 0 && !is_target(new, '='))
+		{
 			flag = 1;
-		else if (!flag && ft_strncmp(vars->content, name, len) == 0 && is_target(new, '='))
+			vars->export_id = 2;
+		}
+		else if (ft_strncmp(vars->content, name, len) == 0 && is_target(new, '='))
 			flag = overwrite_existing_var(vars, new, export_id);
 		free_chr_ptr((void **)tmp);
 		vars = vars->next;
 	}
 	return (flag);
+}
+
+/*
+ * child function in extract_vars,
+ * adds new var entry to the end of linked list
+ * updates export_id to respective values
+ */
+static void	add_var_entry(t_list **vars, char *new, int export_id)
+{
+	t_list *tmp;
+
+	/*if !found && !flag*/
+	// /*debug*/printf("saved: new=\033[96m%s\033[0m.\n", new);
+	ft_lstadd_back(vars, ft_lstnew(ft_strdup(new)));
+	tmp = ft_lstlast(*vars);
+	tmp->export_id = export_id;
+	if (!is_target(new, '='))
+		tmp->export_id = 1;
 }
 
 // 19 lines!
@@ -231,19 +252,10 @@ void	extract_vars(t_list **vars, char *str, int export_id)
 		flag = check_replace_dup(*vars, name, new, export_id);
 		// /*debug*/printf("---------\n");
 		if (flag == 0) // if no duplicates
-		{
-			/*if !found && !flag*/
-			// /*debug*/printf("saved: new=\033[96m%s\033[0m.\n", new);
-			ft_lstadd_back(vars, ft_lstnew(ft_strdup(new)));
-			t_list *tmp = ft_lstlast((*vars));
-			tmp->export_id = export_id;
-			if (!is_target(new, '='))
-				tmp->export_id = 1;
-		}
+			add_var_entry(vars, new, export_id);
 		/*free variable name*/
 		free(new);
 		free(name);
-		/*skips new to the next var*/
 		str = find_next_var(str);
 		// if (str && str[0])
 		// /*debug*/printf("find_next_var: str=\033[92m%s\033[0m.\n", str);

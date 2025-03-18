@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/18 16:31:08 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/18 18:45:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int	get_variable(t_list **vars, char *str)
 
 	flag = 0;
 	new = skip_spaces(str, " \t\n\v\f\r");
-	if (new[0] && !is_target(new, '='))
+	if (new[0] && !is_target(new, '=') && ft_strncmp(new, "export", 6) != 0)
 		return (0);
 	/* check_var_syntax */
 	/* if ok, copy to vars & update str */
