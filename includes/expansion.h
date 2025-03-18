@@ -38,7 +38,7 @@
 // };
 
 int 	cmd_expansion(char **lst_data, t_list *vars);
-void	shell_var_expansion(char **cmd_line, t_list vars);
-void	check_shell_var(t_list *vars, char *name, char **cmd_line);
+void	shell_var_expansion(char **cmd_line, t_list *vars);
+void	check_shell_var(t_list *vars, char *name, char **cmd_line, char *str);
 
 #endif

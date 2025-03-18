@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:35:28 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/17 17:33:38 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/18 11:59:49 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,23 @@
  * child function in replace_var_space, 
  * if is empty spaces after last pipe '|', replace last pipe with spaces ' '
  */
-void	replace_last_pipe(char *str)
-{
-	char	*new;
+// void	replace_last_pipe(char *str)
+// {
+// 	char	*new;
 
-	if (ft_strrchr(str, '|'))
-	{
-		new = ft_strrchr(str, '|');
-		/*debug*/printf("end_:\033[90m%s\033[0m.\n", new);
-		while (new[1] && is_target(" \t\n\v\f\r", new[1]))
-			new++;
-		if (new[1] == '\0')
-		{
-			new = ft_strrchr(str, '|');
-			new[0] = ' ';
-		}
-	}
-}
+// 	if (ft_strrchr(str, '|'))
+// 	{
+// 		new = ft_strrchr(str, '|');
+// 		/*debug*/printf("end_:\033[90m%s\033[0m.\n", new);
+// 		while (new[1] && is_target(" \t\n\v\f\r", new[1]))
+// 			new++;
+// 		if (new[1] == '\0')
+// 		{
+// 			new = ft_strrchr(str, '|');
+// 			new[0] = ' ';
+// 		}
+// 	}
+// }
 
 /*
  * child function in replace_var_space,
@@ -88,14 +88,14 @@ static char	*skip_if_no_assign(char *str)
  * starts overwrite var assignment (eg var=90) with space ' '
  * if var name is valid (var[0] starts with alphabet)
  */
-char	*overwrite_with_space(char *str, int *i)
+static char	*overwrite_with_space(char *str, int *i)
 {
 	char	*new;
 
 	if (!str)
 		return (str);
 	new = skip_spaces(str - (*i), " \t\n\v\f\r");
-	/*debug*/printf("overwrite_with_space:%s. %d\n", new, *i);
+	// /*debug*/printf("overwrite_with_space:%s. %d\n", new, *i);
 	if (!ft_isalpha(new[0]) && new[0] != '|')
 	{
 		// new = skip_if_symbol(new, 'c', 'c');
@@ -139,17 +139,17 @@ void	replace_var_space(char *str)
 
 	new = str;
 	i = 0;
-	/*debug*/printf("replace_var_space:enter:%s\n", new);
+	// /*debug*/printf("replace_var_space:enter:%s\n", new);
 	while (new && new[0])
 	{
 	// 	/* reset i count if encounter spaces/'" */
 		new = skip_if_no_assign(new);
-		/*debug*/printf("replace_var_space:%s\n", new);
+		// /*debug*/printf("replace_var_space:%s\n", new);
 		if (new && new[0] && is_target(" \'\"\t\n\v\f\r", new[0]))
 			i = 0;
 		if (new && new[0] && is_target("\'\"", new[0]))
 		{
-			new = skip_if_quote(new, new[0]);
+			new = skip_if_quote(new, new[0], 1);
 			if (new[0] && !is_target("\'\"", new[0]))
 				new -= 1;
 		}

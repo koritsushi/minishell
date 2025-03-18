@@ -6,13 +6,13 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:18:26 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/11 09:44:09 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/18 10:19:01 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/token.h"
 
-/* skips if str[0] == *set */
+/* skips if str[0] == *set, stops when str[0] != *set */
 char	*skip_spaces(char *str, char *set)
 {
 	char	*tmp;

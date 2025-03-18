@@ -44,6 +44,8 @@ int	main(int ac, char **av)
 	char str[] = "cmd1| var=123";
 	// char str[] = "var      = 123";
 	// char str[] = "echo $var\" hello\"";
+	char str[] = "echo '$r'$var";
+	char str[] = "'rr$r'$var$r";
 	char str[] = "$var\" hello\"";
 	// char str[] = "var=123 | echo $var";
 	// char str[] = "echo hello | var=cmd2| var=123 | cmd3";

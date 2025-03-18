@@ -14,14 +14,19 @@
 # define PARSING_H
 # include "includes/minishell.h"
 
+/*__________functions for syntax error checks__________*/
 int		check_syntax(char *str);
-char	*skip_if_quote(char *str, char symbol);
+int		check_var_syntax(char *str, int *flag);
+char	*skip_if_quote(char *str, char symbol, int flag);
 char	*skip_redirs(char *str);
+int		has_mix_redirs(char *str);
 
 /*__________functions to extract variable assignments__________*/
 int		get_variable(t_list **vars, char *str);
-void	get_var_name(char **dest, char *str);
+int 	get_var_name(char **dest, char *str);
 void	replace_var_space(char *str);
+void	extract_vars(t_list **vars, char *str);
+
 
 
 #endif
