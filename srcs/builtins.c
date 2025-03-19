@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/18 15:24:40 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/03/20 00:07:54 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	printpath(void)
 	if user try to change into same directory
 	should have no changes and straight return
 	if user tries to input signal from keyboard
-	such as CTRL-V, it will return error
+	such as CTRL-V where c Program read as NULL, it will return error
 */
 void	chgwd(char *dir)
 {
