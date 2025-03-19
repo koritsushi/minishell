@@ -15,14 +15,23 @@
 /*	env
 	used doubly linked-list to store env
 	copy env from bash shell then stored a copy in minishell
-	print out env from minishell 
-	if update env only minishell own copy of env
 */
-void	env()
+void env_init(t_list *lst, char **env)
 {
 
 }
 
+/*
+	if update env only minishell own copy of env
+*/
+void	env(t_list *lst)
+{
+	
+}
+
+/*
+	print out env from minishell 
+*/
 void	print_env()
 {
 	
