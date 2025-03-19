@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/02/18 22:41:13 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/03/18 15:24:40 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@
 	first parameter require a buffer with define size
 	second parameter require a size_t/int/long size 
 	same as define size in buffer variable
-	PATH_MAX is define as 4096 in builins.h
-	PATH_MAX is not used from header <limits.h> as 
-	it has variant define size in different operating system
-	
+	PATHMX is define as 4096 in builins.h
+	PATHMX is to similate PATH_MAX from header <limits.h>
+	PATH_MAX was not used due to variable define size in different operating system
 	Reference
 	https://manual.cs50.io/3/getcwd
 	https://sites.uclouvain.be/SystInfo/manpages/man3/getcwd.3posix.html
@@ -29,13 +28,12 @@
 */
 char	*getpwd(void)
 {
-	char	buffer[PATH_MAX];
+	char	buffer[PATHMX];
 	char	*ret;
 
-	ret = getcwd(buffer, PATH_MAX);
+	ret = getcwd(buffer, PATHMX);
 	if (ret == NULL)
 	{
-		free(ret);
 		printf("-minishell: pwd: get working directory fail!, error:%s\n", strerror(errno));
 		return (NULL);
 	}
@@ -45,6 +43,7 @@ char	*getpwd(void)
 void	printpath(void)
 {
 	ft_putstr_fd(getpwd(), 1);
+	ft_putstr_fd("\n", 1);
 }
 
 /*	cd
@@ -57,15 +56,13 @@ void	printpath(void)
 */
 void	chgwd(char *dir)
 {
-	char	*cdir;
+	char *curr_dir;
 
-	cdir = getpwd();
-	if (strncmp(cdir, dir, ft_strlen(cdir)))
-	{
-		free(cdir);
+	curr_dir = getpwd();
+	if (curr_dir == NULL)
 		return ;
-	}
-	free(cdir);
+	if (strncmp(curr_dir, dir, ft_strlen(dir)) == 0)
+		return ;
 	if (chdir(dir) == -1)
 		printf("cd : %s: No such file or directory, error:%s", dir, strerror(errno));
 }
@@ -96,8 +93,10 @@ void	echo(int argc, char **args)
 		ft_putstr_fd("\n", 1);
 }
 
-// int main (int arc, char **argv)
-// {
-//     echo(arc, argv);
-//     return (0);
-// }
+/*
+int	main(int argc, char **argv)
+{
+	chgwd(argv[1]);
+	return (argc);
+}
+*/
