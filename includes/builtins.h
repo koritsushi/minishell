@@ -6,13 +6,13 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:59 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/02/18 22:09:19 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/02/21 17:35:50 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
-# define PATH_MAX 4096
+# define PATHMX 4096
 # include "minishell.h"
 
 
