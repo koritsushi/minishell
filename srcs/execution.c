@@ -14,5 +14,14 @@
 
 // int	execution()
 // {
+/*
+int access() function to check in fork child of execution
+instead of checking and parsing before execution
+execve() can run executable of compile programs of builtins
+so question here is that do we run builins within minishell
+or execve it like cmds but recognize it as local lib
+*/
+int	execution()
+{
 	
 // }
