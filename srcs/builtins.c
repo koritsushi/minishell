@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/22 13:14:00 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/03/22 19:24:33 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	ft_pwd(void)
 		return (-1);
 	printf("%s\n", pwd);
 	free(pwd);
+	return (0);
 }
 
 /*	cd
@@ -69,8 +70,6 @@ int	ft_cd(char *dir)
 	curr_dir = getpwd();
 	if (curr_dir == NULL)
 		return (-1);
-	// if (ft_strcmp(curr_dir, dir) == 0)
-	// 	return (0);
 	if (chdir(dir) == -1)
 		printf("Minishell: cd : %s: %s\n", dir, strerror(errno));
 	return (0);
@@ -89,42 +88,42 @@ int	ft_echo(int argc, char **args)
 	int	nl;
 	int	i;
 
-	nl = 1;
-	i = 1;
-	if (argc == 0)
-		return (printf("\n") * -1);
+	nl = 0;
+	if (argc == 2 || args == NULL)
+		return (printf("\n"));
 	if (ft_strncmp(args[1], "-n", 2) == 0)
-		nl = 0;
-	while (i + nl < argc)
+		nl = 1;
+	i = 1 + nl;
+	while (args[i] != NULL && i + nl < argc)
 	{
-		if (strncmp(args[1], "-n", 2) == 0)
-			i++;
 		ft_putstr_fd(args[i++], 1);
-		ft_putstr_fd(" ", 1);
+		if (args[i] != NULL)
+			ft_putstr_fd(" ", 1);
 	}
-	if (nl == 1)
+	if (nl == 0)
 		ft_putstr_fd("\n", 1);
 	return (0);
 }
 
 
-int	main(int argc, char **argv)
-{
-	char *str;
-
-	if (strcmp(argv[1], "echo") == 0)
-	{
-		ft_echo(argc, argv+1);
-	}
-	else if (strcmp(argv[1], "pwd") == 0)
-	{
-		ft_pwd();
-	}	
-	else if (strcmp(argv[1], "cd") == 0)
-	{
-		ft_pwd();
-		ft_cd(argv[1]);
-		ft_pwd();
-	}
-	return (argc);
-}
+// int	main(int argc, char **argv)
+// {
+// 	if (argc > 1)
+// 	{
+// 		if (strcmp(argv[1], "echo") == 0)
+// 		{
+// 			ft_echo(argc, argv+1);
+// 		}
+// 		else if (strcmp(argv[1], "pwd") == 0)
+// 		{
+// 			ft_pwd();
+// 		}	
+// 		else if (strcmp(argv[1], "cd") == 0)
+// 		{
+// 			ft_pwd();
+// 			ft_cd(argv[2]);
+// 			ft_pwd();
+// 		}
+// 	}
+// 	return (0);
+// }
