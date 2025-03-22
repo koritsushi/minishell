@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:59 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/19 19:49:54 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/03/21 18:31:02 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include "minishell.h"
 
 char	*getpwd(void);
-void	printpath(void);
-void	chgwd(char *dir);
-void	echo(int argc, char **args);
+int		ft_pwd(void);
+int		ft_cd(char *dir);
+int		ft_echo(int argc, char **args);
 
 #endif

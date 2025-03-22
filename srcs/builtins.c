@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/20 00:07:54 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/03/22 13:14:00 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,32 @@
 	https://sites.uclouvain.be/SystInfo/manpages/man3/getcwd.3posix.html
 	https://stackoverflow.com/questions/9449241/where-is-path-max-defined-in-linux
 	https://insanecoding.blogspot.com/2007/11/pathmax-simply-isnt.html
-	https://pubs.opengroup.org/onlinepubs/7908799/xsh/getcwd.html
+	https://man7.org/linux/man-pages/man3/getcwd.3.html
 */
 char	*getpwd(void)
 {
-	char	buffer[PATHMX];
+	char	*buffer;
 	char	*ret;
 
+	buffer = NULL;
 	ret = getcwd(buffer, PATHMX);
 	if (ret == NULL)
 	{
-		printf("-minishell: pwd: get working directory fail!, error:%s\n", strerror(errno));
+		printf("-minishell: pwd: %s\n", strerror(errno));
 		return (NULL);
 	}
 	return (ret);
 }
 
-void	printpath(void)
+int	ft_pwd(void)
 {
-	ft_putstr_fd(getpwd(), 1);
-	ft_putstr_fd("\n", 1);
+	char	*pwd;
+
+	pwd = getpwd();
+	if (pwd == NULL)
+		return (-1);
+	printf("%s\n", pwd);
+	free(pwd);
 }
 
 /*	cd
@@ -53,18 +59,21 @@ void	printpath(void)
 	should have no changes and straight return
 	if user tries to input signal from keyboard
 	such as CTRL-V where c Program read as NULL, it will return error
+	will update env OLDPWD and PWD var when changing directory
+	not yet handle ~ or no arguments might need expansion
 */
-void	chgwd(char *dir)
+int	ft_cd(char *dir)
 {
 	char *curr_dir;
 
 	curr_dir = getpwd();
 	if (curr_dir == NULL)
-		return ;
-	if (strncmp(curr_dir, dir, ft_strlen(dir)) == 0)
-		return ;
+		return (-1);
+	// if (ft_strcmp(curr_dir, dir) == 0)
+	// 	return (0);
 	if (chdir(dir) == -1)
-		printf("cd : %s: No such file or directory, error:%s", dir, strerror(errno));
+		printf("Minishell: cd : %s: %s\n", dir, strerror(errno));
+	return (0);
 }
 
 /*	echo (option -n Only)
@@ -75,28 +84,47 @@ void	chgwd(char *dir)
     loop based on how many argument count
     ft_putstr_fd will do nothing if arg is NULL
 */
-void	echo(int argc, char **args)
+int	ft_echo(int argc, char **args)
 {
+	int	nl;
 	int	i;
 
+	nl = 1;
 	i = 1;
-	if (argc == 1)
-		return (ft_putstr_fd("\n", 1));
-	while (i < argc)
+	if (argc == 0)
+		return (printf("\n") * -1);
+	if (ft_strncmp(args[1], "-n", 2) == 0)
+		nl = 0;
+	while (i + nl < argc)
 	{
 		if (strncmp(args[1], "-n", 2) == 0)
 			i++;
 		ft_putstr_fd(args[i++], 1);
 		ft_putstr_fd(" ", 1);
 	}
-	if (strncmp(args[1], "-n", 2) != 0)
+	if (nl == 1)
 		ft_putstr_fd("\n", 1);
+	return (0);
 }
 
-/*
+
 int	main(int argc, char **argv)
 {
-	chgwd(argv[1]);
+	char *str;
+
+	if (strcmp(argv[1], "echo") == 0)
+	{
+		ft_echo(argc, argv+1);
+	}
+	else if (strcmp(argv[1], "pwd") == 0)
+	{
+		ft_pwd();
+	}	
+	else if (strcmp(argv[1], "cd") == 0)
+	{
+		ft_pwd();
+		ft_cd(argv[1]);
+		ft_pwd();
+	}
 	return (argc);
 }
-*/
