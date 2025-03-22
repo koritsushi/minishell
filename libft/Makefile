@@ -6,7 +6,7 @@
 #    By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:55:31 by mliyuan           #+#    #+#              #
-#    Updated: 2024/11/11 19:15:03 by mliyuan          ###   ########.fr        #
+#    Updated: 2025/03/21 14:39:56 by mliyuan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ MANDATORY	=		ft_atoi.c						\
 					ft_strlcpy.c					\
 					ft_strlen.c						\
 					ft_strmapi.c					\
+					ft_strcmp.c						\
 					ft_strncmp.c					\
 					ft_strnstr.c					\
 					ft_strrchr.c					\
