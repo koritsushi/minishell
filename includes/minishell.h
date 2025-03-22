@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/02/18 22:08:39 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/03/20 14:11:03 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,33 @@
 # include "builtins.h"
 # include "env.h"
 # include "signals.h"
+
+
+typedef struct s_exec
+{
+	int			pipes[1024][2];
+	int			infile_fd;
+	int			outfile_fd;
+	int			here_doc;
+	char		**cmd_paths;
+	char		***cmd_args;
+	int			cmd_count;
+	int			index;
+}				t_exec;
+
+typedef struct s_env
+{
+	int				exported;
+	char			*env;
+	char			*content;
+	struct s_env 	*next;
+}					t_env;
+
+typedef struct s_minishell
+{
+	int				signal;
+	struct s_exec	exec;
+	struct s_env	env;
+}					t_ms;
 
 #endif
