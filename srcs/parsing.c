@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/18 18:45:35 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/26 13:16:33 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,8 @@ int	get_variable(t_list **vars, char *str)
 		/* if no pipes, copy_vars */
 		// /*debug*/printf("check_var_syntax:enter! new:%s, str:%s\n", new, str);
 		if (!is_target(new, '|') && !has_mix_redirs(new) && !flag) //put a flag for multiple_cmd
-			process_vars(vars, new, 0); //if syntax ok && no '|'
-		replace_var_space(new);
+			process_vars(vars, new, 0);
+		// replace_var_space(new);
 	}
 	/* check if its export */
 	new = skip_spaces(new, " \t\n\v\f\r");
@@ -153,6 +153,7 @@ int	get_variable(t_list **vars, char *str)
 		new = skip_if_symbol(new, 'c', 'c');
 		/*debug*/printf("handle_Export!:%s\n", new);
 		process_vars(vars, new, 2);
+		// new = overwrite_export_line(new);
 	}
 	/*debug*/printf("updated_str:%s.\n", str);
 	return (1);

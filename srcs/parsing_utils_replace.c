@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:35:28 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/18 11:59:49 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/18 22:15:57 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	replace_quote_space(char **str)
  * checks if 1st word has '=', if none, skips to the next pipe '|'
  * skips all spaces before start checking
  */
-static char	*skip_if_no_assign(char *str)
+char	*skip_if_no_assign(char *str)
 {
 	char	*new;
 
@@ -98,7 +98,7 @@ static char	*overwrite_with_space(char *str, int *i)
 	// /*debug*/printf("overwrite_with_space:%s. %d\n", new, *i);
 	if (!ft_isalpha(new[0]) && new[0] != '|')
 	{
-		// new = skip_if_symbol(new, 'c', 'c');
+		new = skip_if_symbol(new, 'c', 'c');
 		*i = 0;
 		return (skip_if_symbol(new, 'c', 'c'));
 		// /*debug*/printf("overwrite_with_space:!alpha:%s\n", new);
@@ -124,6 +124,15 @@ static char	*overwrite_with_space(char *str, int *i)
 	return (new);
 }
 
+char	*overwrite_export_line(char *str)
+{
+	if (!str)
+		return (str);
+	while (str[0] && !is_target("|", str[0]))
+		*str++ = ' ';
+	return (str);
+}
+
 // 22 lines!!
 /* overwrites var assignment in str (eg var=123) to blank space ' ' */
 void	replace_var_space(char *str)
@@ -143,8 +152,12 @@ void	replace_var_space(char *str)
 	while (new && new[0])
 	{
 	// 	/* reset i count if encounter spaces/'" */
-		new = skip_if_no_assign(new);
-		// /*debug*/printf("replace_var_space:%s\n", new);
+		// if (ft_strncmp(new, "export", 6) == 0)
+			// new = overwrite_export_line(new);
+			/* overwrite_spaces_up_to_pipe_| */
+		// else
+			new = skip_if_no_assign(new);
+		/*debug*/printf("replace_var_space:skip:%s\n", new);
 		if (new && new[0] && is_target(" \'\"\t\n\v\f\r", new[0]))
 			i = 0;
 		if (new && new[0] && is_target("\'\"", new[0]))

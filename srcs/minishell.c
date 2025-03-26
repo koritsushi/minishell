@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/18 13:50:20 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/26 11:14:07 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,10 @@ int	main(int argc, char **argv)
 			get_variable(&lst.vars, text);
 			if (lst.vars && lst.vars->content)
 			{
+				/*debug*/printf("\033[90m_____export_id definition:_____\033[0m\n");
+				/*debug*/printf("\033[90m0:[0]env_list && [0]export_list\033[0m\n");
+				/*debug*/printf("\033[90m1:[0]env_list && [1]export_list\033[0m\n");
+				/*debug*/printf("\033[90m2:[1]env_list && [1]export_list\033[0m\n");
 				/*debug*/printf("\033[103m_____vars_list:_____\033[0m\n");
 				debug_print_lst(lst.vars);
 			}

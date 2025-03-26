@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:12:43 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/18 18:40:31 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/18 22:20:11 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,8 @@ int	check_replace_dup(t_list *vars, char *name, char *new, int export_id)
 		if (ft_strncmp(vars->content, name, len) == 0 && !is_target(new, '='))
 		{
 			flag = 1;
-			vars->export_id = 2;
+			if (vars->export_id == 0)
+				vars->export_id = 2;
 		}
 		else if (ft_strncmp(vars->content, name, len) == 0 && is_target(new, '='))
 			flag = overwrite_existing_var(vars, new, export_id);
