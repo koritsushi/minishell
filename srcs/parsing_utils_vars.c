@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:12:43 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/18 22:20:11 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/26 13:57:45 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,13 @@ int get_var_name(char **dest, char *str)
 	new = skip_spaces(str, " \t\n\v\f\r"); //optional
 	while (new[len] && new[len] != '=')
 		len++;
-	// /*debug*/printf("len=%d, leftover=%s\n", len, &new[len]);
+	/*debug*/printf("len=%d, leftover=%s.\n", len, &new[len]);
 	if (new && malloc_chr_ptr(dest, (len + 1)))
 		ft_strlcpy(*dest, new, len + 1);
-	new += len + 1;
+	/*debug*/printf("new_bf=%s.\n", new);
+	if (new[len] == '=')
+		new += 1;
+	new += len;
 	/*debug*/printf("get_var_name:af:%s.\n", new);
 	if (new[0] == '$' && new[1] && is_self_assigned(new, *dest))
 	{

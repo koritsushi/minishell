@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/26 13:16:33 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/26 14:41:59 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ char	*skip_redirs(char *str)//, char **new)
 /*
  * child function in get_variables, saves variables in linked list
  * types of export_id values~
- * export_id: 0 [var=text] none
- * export_id: 1 [export var] export only
- * export_id: 2 [export var=, export var=1] export && env
+ * export_id: 0 (var=text) none
+ * export_id: 1 (export var) export only
+ * export_id: 2 (export var=, export var=1) export && env
  */
 void	process_vars(t_list **vars, char *str, int export_id)
 {
@@ -94,11 +94,9 @@ void	process_vars(t_list **vars, char *str, int export_id)
 	/* if var var, save last var	*/
 	/* if var1 var2, save both var	*/
 	/* save var: skip ' " quotes	*/
-	// new = str;
 	if (!str)
-		return ;
-	new = skip_redirs(str);
-	// skip_redirs(str, &new);
+	return ;
+	new = str;
 	/* if at beginning < > */
 	if (has_more_str(new, "<>"))
 	{
@@ -106,10 +104,10 @@ void	process_vars(t_list **vars, char *str, int export_id)
 		tmp = ft_split_shell(new, "<>");
 		fin = ft_split_shell(tmp[0], " \t\n\v\f\r");
 
-		// /*debug*/printf("--------\ntmp:\n");
-		// /*debug*/debug_print(tmp);
-		// /*debug*/printf("--------\nfin:\n");
-		// /*debug*/debug_print(fin);
+		/*debug*/printf("--------\ntmp:\n");
+		/*debug*/debug_print(tmp);
+		/*debug*/printf("--------\nfin:\n");
+		/*debug*/debug_print(fin);
 	
 		while (fin && fin[x])
 			extract_vars(vars, fin[x++], export_id);
@@ -122,9 +120,10 @@ void	process_vars(t_list **vars, char *str, int export_id)
 		extract_vars(vars, new, export_id);
 }
 
+// 18 lines!
 /*
  * checks if variable syntax is correct,
- * overwrite & save if variable has existed
+ * overwrite & save if variable exists
  */
 int	get_variable(t_list **vars, char *str)
 {
@@ -133,28 +132,33 @@ int	get_variable(t_list **vars, char *str)
 
 	flag = 0;
 	new = skip_spaces(str, " \t\n\v\f\r");
+	new = skip_redirs(new);
+
+	/*debug*/printf("get_variable:ent:%s.\n", new);
 	if (new[0] && !is_target(new, '=') && ft_strncmp(new, "export", 6) != 0)
 		return (0);
-	/* check_var_syntax */
-	/* if ok, copy to vars & update str */
 	if (check_var_syntax(new, &flag))
 	{
 		/* if no pipes, copy_vars */
 		// /*debug*/printf("check_var_syntax:enter! new:%s, str:%s\n", new, str);
-		if (!is_target(new, '|') && !has_mix_redirs(new) && !flag) //put a flag for multiple_cmd
+		if (!is_target(new, '|') && !flag) //put a flag for multiple_cmd  // && !has_mix_redirs(new)
+		{
+			if (ft_strncmp(new, "export", 6) == 0)
+				new = skip_if_symbol(new, 'c', 'c');
 			process_vars(vars, new, 0);
+		}
 		// replace_var_space(new);
 	}
-	/* check if its export */
-	new = skip_spaces(new, " \t\n\v\f\r");
-	if (ft_strncmp(new, "export", 6) == 0 && !is_target(new, '|'))
-	{
-		/*follow same process, just that == 1*/
-		new = skip_if_symbol(new, 'c', 'c');
-		/*debug*/printf("handle_Export!:%s\n", new);
-		process_vars(vars, new, 2);
-		// new = overwrite_export_line(new);
-	}
+	// /* check if its export */
+	// new = skip_spaces(new, " \t\n\v\f\r");
+	// if (ft_strncmp(new, "export", 6) == 0 && !is_target(new, '|'))
+	// {
+	// 	/*follow same process, just that == 1*/
+	// 	new = skip_if_symbol(new, 'c', 'c');
+	// 	/*debug*/printf("handle_Export!:%s\n", new);
+	// 	process_vars(vars, new, 2);
+	// 	// new = overwrite_export_line(new);
+	// }
 	/*debug*/printf("updated_str:%s.\n", str);
 	return (1);
 }

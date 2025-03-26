@@ -32,6 +32,11 @@ int	main(int ac, char **av)
 	// 	str++;
 	// }
 
+	/* ________________________export_test________________________ */
+	// char str[] = "export y < infile";
+	// char str[] = "export y > outfile";
+	// char str[] = "> outfile > out2 export y";
+	// char str[] = "< infile1 < infile2 export y";
 	/* ________________________vars_test________________________ */
 	// char str[] = "var";
 	// char str[] = "var =123";
@@ -83,7 +88,7 @@ int	main(int ac, char **av)
 	// char str[] = "awk'BEGIN{x=1printx}' | cmd1 | cmd2";
 	// char str[] = "awk 'BEGIN { x=1 '\"print x }' var=12\"34";
 	// char str[] = "vars='opop' awk ' BEGIN { x=1 print x }'";
-	// char str[] = "awk ' BEGIN { x=1 print x }' vars='opop'";
+	// char str[] = "awk ' BEGIN { x=1; print x }' vars='opop'";
 // /* ******* */char str[] = "awk 'BEGIN { x = 1 print x }'    | 	var=1234 ";
 	// char str[] = "var=1234| awk 'BEGIN { x=1 print x }' ";
 	// char str[] = "var=1234 0var=tt > outfile";

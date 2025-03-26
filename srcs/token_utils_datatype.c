@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 07:55:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/11 19:08:50 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/26 13:54:12 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ static void	assign_datatype_cmd_tail(char *str, unsigned char *datatype, int *i,
 }
 
 // 25 lines!
-/* scans input and assigns datatype according to operator sign */
+/*
+ * considered as lexing process
+ * scans input and assigns datatype according to operator sign
+ */
 void	assign_datatype(unsigned char *datatype, char **res, char **infile)
 {
 	int		x;

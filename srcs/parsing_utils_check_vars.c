@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/18 22:02:46 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/26 14:41:21 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@
  * child function in check_var_syntax
  * checks str if has both < and > redirs
  */
-int	has_mix_redirs(char *str)
-{
-	int	flag;
+// int	has_mix_redirs(char *str)
+// {
+// 	int	flag;
 
-	flag = 0;
-	if (str && str[0] && is_target(str, '<'))
-		flag = 1;
-	if (str && str[0] && is_target(str, '>'))
-		return (flag == 1);
-	return (0);
-}
+// 	flag = 0;
+// 	if (str && str[0] && is_target(str, '<'))
+// 		flag = 1;
+// 	if (str && str[0] && is_target(str, '>'))
+// 		return (flag == 1);
+// 	return (0);
+// }
 
 /*
  * child function in check_var_syntax
@@ -50,6 +50,8 @@ static int	has_non_alpha(char *str)
 	i = -1;
 	while (fin && fin[++i] && !res)
 	{
+		if (ft_strncmp(fin[i], "export", 6) == 0)
+			break ;
 		if ((fin[i][0] && !ft_isalpha(fin[i][0])) || !is_target(fin[i], '='))
 		{
 			res = 1;
@@ -66,6 +68,7 @@ static int	has_non_alpha(char *str)
 /*
  * child function in get_variable,
  * checks if variable assigned syntax formatted correctly
+ * update flag=1 if starts with non_alpha
  */
 int	check_var_syntax(char *str, int *flag)
 {
@@ -75,12 +78,13 @@ int	check_var_syntax(char *str, int *flag)
 	/* has other cmds */
 	/* syntax incorrect: have spaces before/after '=' */
 	/* '=' happen before ' " */
-	new = str;
 	/* mix in/out files */
-	if (has_mix_redirs(new) || has_non_alpha(new))
+	// if (has_mix_redirs(new) || has_non_alpha(new))
+	new = str;
+	if (has_non_alpha(new))
 		*flag = 1;
 	/* skips infile outfile at head */
-	new = skip_redirs(new);
+	// new = skip_redirs(new);
 	while (new && new[0] && !(*flag))
 	{
 		if (new[1] == '=' && \
