@@ -87,6 +87,7 @@ char	*truncate_input(char *str);
 /* -----------------free_memory_allocations----------------- */
 void	free_all(t_token *lst);
 void	free_multiple_ptr(int x, ...);
+void	free_multiple_ptr_single(int x, ...);
 
 
 /*debug testing only*/

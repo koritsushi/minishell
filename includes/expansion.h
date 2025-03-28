@@ -37,8 +37,14 @@
 // 	EOT			/* end of token */
 // };
 
-int 	cmd_expansion(char **lst_data, t_list *vars);
+
+int		cmd_expansion(char **lst_data, t_list *vars);
 void	shell_var_expansion(char **cmd_line, t_list *vars);
 void	check_shell_var(t_list *vars, char *name, char **cmd_line, char *str);
+
+int		has_valid_brace_content(char *str);
+int		get_expansion_count(char *str);
+void	perform_brace_expansion(char **cmd_line, int malloc_size);
+
 
 #endif

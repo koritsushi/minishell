@@ -14,6 +14,15 @@
 # define PARSING_H
 # include "includes/minishell.h"
 
+typedef struct s_env
+{
+	int				exported;
+	char			*env;
+	char			*content;
+	struct s_env	*next;
+}	t_env;
+
+
 /*__________functions for syntax error checks__________*/
 int		check_syntax(char *str);
 int		check_var_syntax(char *str, int *flag);

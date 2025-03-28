@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/18 14:00:34 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/27 21:15:29 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,48 @@
 	' | ' pipe
 	' $ ' environment variables 
 */
+
+/*
+ * checks if there are braces expansion {,} in cmd_line
+ * yes: expand and replace the cmd_line by freeing & re-malloc
+ */
+void	brace_expansion(char **cmd_line)
+{
+	char	*str;
+	int		x;
+	int		flag;
+	int		len;
+
+	str = *cmd_line;
+	flag = 0;
+	/* cmd_line is the entire pipeline */
+	/* if str[0] == {, 
+	 * check if has } and ',' in between
+	 * if encounter spaces ' ', dont expand
+	 */
+	x = 0;
+	while (str && str[0] && !flag)
+	{
+		if (str[0] && is_target(" \t\n\v\f\r", str[0]))
+			x = 0;
+		if (str[0] == '\'')
+			str = ft_strchr(str + 1, '\'') + 1;
+		else if (str[0] == '$' && str[1] == '{')
+			str += 2;
+		else if (str[0] == '{' && str[1] != '{' && has_valid_brace_content(str))
+		{
+			len = ft_strlen(*cmd_line) - 2;
+			len += get_expansion_count(str - x);
+			/*debug*/printf("\033[93mvalid brace!! %d+1\033[0m\n", len);
+			perform_brace_expansion(cmd_line, len);
+			flag = 1; //temporary
+			// str = *cmd_line;
+		}
+		else
+			str++;
+		x++;
+	}
+}
 
 /*
  * checks if there are $var in string and corresponding entry in t_list vars
@@ -70,8 +112,11 @@ int	cmd_expansion(char **lst_data, t_list *vars)
 	x = -1;
 	while (lst_data && lst_data[++x])
 	{
+		/*debug*/printf("cmd_expansion:ent:%s\n", lst_data[x]);
 		shell_var_expansion(&lst_data[x], vars);
+		brace_expansion(&lst_data[x]);
 		/* {}	brace_expansion	*/
+		/* ${}	shell_var_brace_expansion	*/
 		/* ~	tilde_expansion	*/
 		/* " '	quote_removal	*/
 	}
