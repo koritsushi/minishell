@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/27 21:15:29 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/29 22:16:34 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	brace_expansion(char **cmd_line)
 	x = 0;
 	while (str && str[0] && !flag)
 	{
+		/*debug*/printf("\033[93mbrace_expansion:ent:\033[0m%s.\n", str);
 		if (str[0] && is_target(" \t\n\v\f\r", str[0]))
 			x = 0;
 		if (str[0] == '\'')
@@ -59,6 +60,8 @@ void	brace_expansion(char **cmd_line)
 			perform_brace_expansion(cmd_line, len);
 			flag = 1; //temporary
 			// str = *cmd_line;
+			// x = 0;
+			// len = 0;
 		}
 		else
 			str++;

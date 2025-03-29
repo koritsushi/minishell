@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:12:43 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/26 13:57:45 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/28 08:44:29 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ static void	add_var_entry(t_list **vars, char *new, int export_id)
 		tmp->export_id = 1;
 }
 
-// 19 lines!
+// 18 lines!
 /*
  * child function in process_vars,
  * searches & replace duplicate var name in linked list, 
@@ -258,8 +258,7 @@ void	extract_vars(t_list **vars, char *str, int export_id)
 		if (flag == 0) // if no duplicates
 			add_var_entry(vars, new, export_id);
 		/*free variable name*/
-		free(new);
-		free(name);
+		free_multiple_ptr_single(2, new, name);
 		str = find_next_var(str);
 		// if (str && str[0])
 		// /*debug*/printf("find_next_var: str=\033[92m%s\033[0m.\n", str);

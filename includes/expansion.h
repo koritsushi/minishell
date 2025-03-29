@@ -43,6 +43,8 @@ void	shell_var_expansion(char **cmd_line, t_list *vars);
 void	check_shell_var(t_list *vars, char *name, char **cmd_line, char *str);
 
 int		has_valid_brace_content(char *str);
+int		is_valid_brace_start(char *str);
+
 int		get_expansion_count(char *str);
 void	perform_brace_expansion(char **cmd_line, int malloc_size);
 

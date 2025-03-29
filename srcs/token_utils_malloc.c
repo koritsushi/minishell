@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/02 18:30:01 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/29 09:18:03 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,23 @@ int	init_token_list(t_token *lst, int size)
 	return (1);
 }
 
-/* mallocs a char * by size defined in len, returns error message if fail */
+/*
+ * mallocs a char * by size defined in len, fills all with \0
+ * returns error message if malloc fails
+ */
 int	malloc_chr_ptr(char **dest, int len)
 {
+	int	x;
+
+	x = 0;
 	*dest = (char *)malloc(sizeof(char) * len);
 	if (!(*dest))
 	{
 		perror("allocate_str: Memory allocation failed!\n");
 		return (0);
 	}
+	while (x < len)
+		(*dest)[x++] = '\0';
 	return (1);
 }
 
