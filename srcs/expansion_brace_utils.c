@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 22:54:34 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/29 22:58:22 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/30 09:08:23 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ static int	count_brace_content(char *str)
 		}
 		else
 		{
-			/*debug*/printf("tmp=\033[93m%c\033[0m%s\n", str[0], str+1);
+			// /*debug*/printf("tmp=\033[93m%c\033[0m%s. \033[93mlen=%d\033[0m\n", str[0], str+1, len);
+			/*debug*/printf("tmp=\033[93m%c\033[0m%s.\n", str[0], str+1);
 			len++;
 		}
 		if (str)
@@ -82,13 +83,14 @@ int	get_expansion_count(char *str)
 	/* {,}a{,}b */
 	/* 8-2=6, 5x1=5, 11*/
 
-	/*debug*/printf("get_expansion_count:ent:%s.\n", str);
+	// /*debug*/printf("get_expansion_count:ent:%s.\n", str);
 	len = 0;
 	flag = 0;
 	comma = 0;
 	str = skip_spaces(str, " \t\n\v\f\r");
 	comma = count_brace_comma(str);
 	len = count_brace_content(str);
-	// /*debug*/printf("len=%d\n", len);
+	/*debug*/printf("comma=%d len=%d\n", comma, len);
 	return (len * comma);
+
 }

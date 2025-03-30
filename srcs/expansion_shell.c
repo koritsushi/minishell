@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/29 22:55:55 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/30 08:31:11 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,4 +173,3 @@ void	check_shell_var(t_list *vars, char *name, char **cmd_line, char *str)
 		/*debug*/printf("notfound! updated:%s.\n", *cmd_line);
 	}
 }
-

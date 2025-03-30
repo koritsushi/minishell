@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 15:29:13 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/29 22:59:36 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/30 09:37:53 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,21 +69,23 @@ int	is_valid_brace_start(char *str)
  */
 static char	*get_brace_outer(char *str, char symbol)
 {
+	int		x;
 	int		len;
 	char	*new;
 
+	/*debug*/printf("get_brace_outer:ent:%s\n", str);
 	if (!str)
 		return (str);
 	len = 0;
-	while ((str[len] == symbol && str[len + 1] == symbol) || \
-		str[len] != symbol)
+	while (str[len] && str[len] != symbol) //((str[len] == symbol && str[len + 1] == symbol) ||
 		len++;
+	/*debug*/printf("get_brace_outer:len:%d\n", len);
 	if (!malloc_chr_ptr(&new, len + 1))
 		return (0);
-	len = 0;
-	while (str[0] != symbol || (str[0] == symbol && str[1] == symbol))
-		new[len++] = *str++;
-	new[len] = '\0';
+	x = 0;
+	while (str[0] && x < len && (str[0] != symbol))// || (str[0] == symbol && str[1] == symbol)))
+		new[x++] = *str++;
+	// new[len] = '\0';
 	return (new);
 }
 
@@ -124,16 +126,10 @@ char	*copy_brace_expansion(char *src, char *dest, int *x, int malloc_size)
 	char	*tail;
 
 	/*debug*/printf("copy_brace_expansion:ent:\033[93m%s\033[0m.\n", src);
-	/*debug*/printf("copy_brace_expansion:dest:\033[93m%s\033[0m.x=%d\n", &dest[*x], *x);
 	flag = 0;
-	// head = get_brace_outer(src, '{');
 	head = get_brace_head(src);
-	/* src need to move to valid_brace_start */
 	while (!is_valid_brace_start(src))
 		src++;
-	// src = ft_strchr(src, '{');
-	// while (src[0] == '{')
-		// src++;
 	tail = get_brace_outer(ft_strchr(src, '}') + 1, ' ');
 	/*debug*/printf("src=%s.\nget_brace_head:\033[93m%s\033[0m.\nget_brace_tail:\033[93m%s\033[0m.\n", src, head, tail);
 	while (src && src[0] && *x < malloc_size)
@@ -167,35 +163,32 @@ char	*copy_brace_expansion(char *src, char *dest, int *x, int malloc_size)
  */
 void	perform_brace_expansion(char **cmd_line, int malloc_size)
 {
+	int		flag;
 	int		len;
 	int		x;
 	char	*str;
 	char	*new;
 	/* calculate new malloc string */
-	/* front a{,}e back */
-	/* front a{r,o}e back */
-	/* are aoe */
-	/* a{,}e=5-2=3, 3+ 2x1=2, 3+2=5 */
 	/* front a{b,c,d}e back */
-	/* 9-2=7, 2*2=4, 7+4=11 */
-	/* 9, +2 */
 	/* front abe ace ade back*/
 	/* 7, 2*2=4, 7+4=11 */
 
 	x = 0;
 	len = 0;
+	flag = 0;
 	str = *cmd_line;
 	malloc_chr_ptr(&new, malloc_size + 1);
 	while (str && str[0] && x < malloc_size)
 	{
 		if (str[0] && is_target(" \t\n\v\f\r", str[0]))
 			len = -1;
-		if (str[0] == '{' && str[1] != '{')
+		if (str[0] == '{' && is_valid_brace_start(str + 1) && !flag) //&& str[1] != '{' 
 		{
 			/*debug*/printf("x=%d len=%d %c\n", x, len, str[0]);
 			x -= len;
 			copy_brace_expansion(str - len, new, &x, malloc_size);
 			str = ft_strchr(str, ' ');
+			flag = 1;
 			/*debug*/printf("str:%s.\n", str);
 		}
 		else
