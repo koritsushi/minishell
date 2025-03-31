@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/30 08:47:16 by hsim             ###   ########.fr       */
+/*   Updated: 2025/03/31 08:44:36 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 	' $ ' environment variables 
 */
 
+// 25 lines!
 /*
  * checks if there are braces expansion {,} in cmd_line
  * yes: expand and replace the cmd_line by freeing & re-malloc
@@ -32,18 +33,16 @@ void	brace_expansion(char **cmd_line)
 {
 	char	*str;
 	int		x;
-	int		flag; //remove
 	int		len;
 
 	str = *cmd_line;
-	flag = 0; //remove
 	/* cmd_line is the entire pipeline */
 	/* if str[0] == {, 
 	 * check if has } and ',' in between
 	 * if encounter spaces ' ', dont expand
 	 */
 	x = 0;
-	while (str && str[0] && !flag)
+	while (str && str[0])
 	{
 		// /*debug*/printf("\033[93mbrace_expansion:ent:\033[0m%s.\n", str);
 		if (str[0] && is_target(" \t\n\v\f\r", str[0]))
@@ -54,12 +53,11 @@ void	brace_expansion(char **cmd_line)
 			str += 2;
 		else if (str[0] == '{' && str[1] != '{' && has_valid_brace_content(str))
 		{
-			len = ft_strlen(*cmd_line) - 2;
+			len = ft_strlen(*cmd_line) - 2 + get_expansion_count(str - x);
 			/*debug*/printf("\033[93mbrace_expansion:\033[0mstr:%s. x:%d\n", str, x);
-			len += get_expansion_count(str - x);
+			// len += get_expansion_count(str - x);
 			/*debug*/printf("\033[93mvalid brace!! %d+1\033[0m\n", len);
 			perform_brace_expansion(cmd_line, len);
-			// flag = 1; //temporary
 			str = *cmd_line;
 			x = -1;
 		}
@@ -118,7 +116,6 @@ int	cmd_expansion(char **lst_data, t_list *vars)
 		/*debug*/printf("cmd_expansion:ent:%s\n", lst_data[x]);
 		shell_var_expansion(&lst_data[x], vars);
 		brace_expansion(&lst_data[x]);
-		/* {}	brace_expansion	*/
 		/* ${}	shell_var_brace_expansion	*/
 		/* ~	tilde_expansion	*/
 		/* " '	quote_removal	*/
