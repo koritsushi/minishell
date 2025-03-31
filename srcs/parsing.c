@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/26 14:56:46 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/01 07:25:39 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,10 @@ int	get_variable(t_list **vars, char *str)
 {
 	char	*new;
 	int		flag;
+	int		export_id;
 
 	flag = 0;
+	export_id = 0;
 	new = skip_spaces(str, " \t\n\v\f\r");
 	new = skip_redirs(new);
 
@@ -144,8 +146,11 @@ int	get_variable(t_list **vars, char *str)
 		if (!is_target(new, '|') && !flag) //put a flag for multiple_cmd  // && !has_mix_redirs(new)
 		{
 			if (ft_strncmp(new, "export", 6) == 0)
+			{
 				new = skip_if_symbol(new, 'c', 'c');
-			process_vars(vars, new, 0);
+				export_id = 2;
+			}
+			process_vars(vars, new, export_id);
 		}
 		// replace_var_space(new);
 	}
