@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/01 08:22:51 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/01 11:34:26 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,13 @@ void	brace_expansion(char **cmd_line)
 	}
 }
 
+// need to split
 /*
  * checks if there are $var in string and corresponding entry in t_env vars
  * yes: replace with content
  * no : replace with spaces ' '
  */
-void	shell_var_expansion(char **cmd_line, t_env *vars)
+void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 {
 	char	**tmp;
 	char	**fin;
@@ -87,14 +88,19 @@ void	shell_var_expansion(char **cmd_line, t_env *vars)
 			free_multiple_ptr(2, tmp, fin);
 			str = *cmd_line;
 		}
-		else if (str[0] == '$' && str[1] == '$')
+		else if (str[0] == '$' && str[1] && str[1] == '?')
+		{
+			str = expand_exit_status(cmd_line, exit_status);
+			/*debug*/printf("shell_var_expansion:exit:%s %d\n", str, exit_status);
+		}
+		else if (str[0] == '$' && str[1] && str[1] == '$')
 			str += 2;
 		else
 			str++;
 	}
 }
 
-int	cmd_expansion(char **lst_data, t_env *vars)
+int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 {
 	int		x;
 
@@ -102,7 +108,7 @@ int	cmd_expansion(char **lst_data, t_env *vars)
 	while (lst_data && lst_data[++x])
 	{
 		/*debug*/printf("cmd_expansion:ent:%s\n", lst_data[x]);
-		shell_var_expansion(&lst_data[x], vars);
+		shell_var_expansion(&lst_data[x], vars, exit_status);
 		brace_expansion(&lst_data[x]);
 		/* ${}	shell_var_brace_expansion	*/
 		/* " '	quote_removal	*/

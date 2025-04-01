@@ -10,8 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 SRCS 		=	srcs/expansion.c					\
-				srcs/expansion_brace.c				\
 				srcs/expansion_brace_utils.c		\
+				srcs/expansion_brace.c				\
+				srcs/expansion_shell_exit-status.c	\
 				srcs/expansion_shell.c				\
 				srcs/token_utils.c					\
 				srcs/token_utils_malloc.c			\

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 06:08:04 by mliyuan           #+#    #+#             */
-/*   Updated: 2024/01/11 15:00:37 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/01 11:36:57 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ static char	*ft_nbr(int n)
 	return (nbrstr);
 }
 
+/*
+ * converts int to ascii, returns a char*
+ * uses malloc
+ */
 char	*ft_itoa(int n)
 {
 	char	*str;

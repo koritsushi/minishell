@@ -10,6 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+/*   does syntax checking for general & variable assignment ($var)
+ *   saves valid variable assignment ($var) to linked list
+ * ************************************************************************** */
+
 #ifndef PARSING_H
 # define PARSING_H
 # include "includes/minishell.h"
