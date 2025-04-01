@@ -33,20 +33,8 @@ enum e_utils
 	OUT = 1
 };
 
-typedef struct s_token
-{
-	unsigned char	*datatype; //datatype
-	char			**data; //malloc string: "infile" "cmd1 -f -g -h" "cmd2" "outfile"
-	t_list			*vars;
-}	t_token;
-
-// typedef struct s_vars
-// {
-// 	void			*id;	// char *name
-// 	void			*data;	// char *content
-// 	struct s_vars	*next;
-// }	t_vars;
-
+typedef struct s_token	t_token;
+typedef struct s_env	t_env;
 
 char	**ft_split_shell(char *str, char *set);
 
@@ -56,11 +44,12 @@ int		has_more_str(char *str, char *set);
 int		has_more_str_all(char **str, char *set);
 
 /* -------------------extract_cmds---------------------- */
-int		get_cmd_line(char *str, t_token *lst, t_list *vars);
+int		get_cmd_line(char *str, t_token *lst, t_env *vars);
 void	assign_datatype(unsigned char *datatype, char **res, char **infile);
 void	extract_infile(char **lst_data, char **res, char **infile);
 void	extract_outfile(char **lst_data, char *str);
-void	process_outfile(char **lst_data, int *i, char *cmd_tail, char **outfile);
+void	process_outfile(char **lst_data, int *i, \
+						char *cmd_tail, char **outfile);
 
 /* -------------------count_&_mallocs---------------------- */
 // int		count_str_array(char **res);
@@ -73,13 +62,9 @@ int		allocate_cmd_tail(char **dest, char **outfile, char c);
 int		init_token_list(t_token *lst, int size);
 int		malloc_chr_ptr(char **dest, int len);
 
-
 char	*skip_if_symbol(char *str, char c, char symbol);
 char	*skip_spaces(char *str, char *set);
 char	*search_rstr(char *str, char c, int len);
-
-
-
 
 char	*truncate_input(char *str);
 
@@ -96,7 +81,7 @@ int		count_chr(char *str, char *set, int *ptr);
 int		if_target_exist(char *set, char *str);
 char	*truncate_last_infile(char *str);
 void	debug_print(char **res);
-void	debug_print_lst(t_list *lst);
+void	debug_print_lst(t_env *lst);
 
 
 #endif

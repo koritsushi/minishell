@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/30 08:31:11 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/01 08:22:08 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,11 +125,11 @@ void	check_replace_var(char **cmd_line, char *name, char *src)
 
 // 24 lines!
 /*
- * child function in shell_var_expansion, checks if $var entry exist in t_list
+ * child function in shell_var_expansion, checks if $var entry exist in t_env
  * yes: remalloc *cmd_line & copy over the content + expansion
  * no : replace $var with ' ' spaces
  */
-void	check_shell_var(t_list *vars, char *name, char **cmd_line, char *str)
+void	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 {
 	char	**tmp;
 	int		flag;

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/01 07:25:39 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/01 08:34:24 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*skip_redirs(char *str)//, char **new)
  * export_id: 1 (export var) export only
  * export_id: 2 (export var=, export var=1) export && env
  */
-void	process_vars(t_list **vars, char *str, int export_id)
+void	process_vars(t_env **vars, char *str, int export_id)
 {
 	char	*new;
 	char	**tmp;
@@ -125,7 +125,7 @@ void	process_vars(t_list **vars, char *str, int export_id)
  * checks if variable syntax is correct,
  * overwrite & save if variable exists
  */
-int	get_variable(t_list **vars, char *str)
+int	get_variable(t_env **vars, char *str)
 {
 	char	*new;
 	int		flag;

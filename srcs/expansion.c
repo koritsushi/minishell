@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/31 09:30:24 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/01 08:22:51 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ void	brace_expansion(char **cmd_line)
 }
 
 /*
- * checks if there are $var in string and corresponding entry in t_list vars
+ * checks if there are $var in string and corresponding entry in t_env vars
  * yes: replace with content
  * no : replace with spaces ' '
  */
-void	shell_var_expansion(char **cmd_line, t_list *vars)
+void	shell_var_expansion(char **cmd_line, t_env *vars)
 {
 	char	**tmp;
 	char	**fin;
@@ -94,7 +94,7 @@ void	shell_var_expansion(char **cmd_line, t_list *vars)
 	}
 }
 
-int	cmd_expansion(char **lst_data, t_list *vars)
+int	cmd_expansion(char **lst_data, t_env *vars)
 {
 	int		x;
 

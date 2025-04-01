@@ -13,14 +13,14 @@ void	debug_print(char **res)
 		printf("%s\n", res[i++]);
 }
 
-void	debug_print_lst(t_list *lst)
+void	debug_print_lst(t_env *lst)
 {
-	t_list	*tmp;
+	t_env	*tmp;
 
 	tmp = lst;
 	while (tmp != NULL)
 	{
-		/*debug*/printf("v:\033[93m%s\033[0m. export_id[\033[93m%d\033[0m]\n", (char*)tmp->content, tmp->export_id);
+		/*debug*/printf("v:\033[93m%s\033[0m. export_id[\033[93m%d\033[0m]\n", (char*)tmp->content, tmp->exported);
 		tmp = tmp->next;
 	}
 }

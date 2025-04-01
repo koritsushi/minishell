@@ -180,7 +180,7 @@ void	process_cmd(t_token *lst, char **res, char **infile)// char **outfile)//cha
  * splits input by PIPE & REDIR, stores result in allocated t_token pointer
  * uses malloc
  */
-int	get_cmd_line(char *str, t_token *lst, t_list *vars)
+int	get_cmd_line(char *str, t_token *lst, t_env *vars)
 {
 	int		count;
 	char	*new;

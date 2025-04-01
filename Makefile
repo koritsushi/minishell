@@ -29,6 +29,7 @@ SRCS 		=	srcs/expansion.c					\
 				srcs/signals.c						\
 				srcs/debug.c						\
 				srcs/utils_free.c					\
+				srcs/minishell_utils_list.c			\
 				srcs/minishell.c 	
 #				srcs/token_utils_operator.c			\
 				srcs/main-test-token_split.c		\

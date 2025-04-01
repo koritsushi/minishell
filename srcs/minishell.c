@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/26 11:14:07 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/01 08:16:34 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	main(int argc, char **argv)
 	}
 	free(text);
 	if (lst.vars && lst.vars->content)
-		ft_lstclear(&lst.vars, free);
+		ft_lstclear_sh(&lst.vars, free);
 	return (0);
 }
 
