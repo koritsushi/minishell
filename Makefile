@@ -21,9 +21,10 @@ SRCS 		=	srcs/expansion.c					\
 				srcs/token_utils_split.c			\
 				srcs/token_utils_truncate.c			\
 				srcs/token.c						\
+				srcs/parsing_utils_vars_write.c		\
+				srcs/parsing_utils_vars_check.c		\
 				srcs/parsing_utils_vars.c			\
 				srcs/parsing_utils_check.c			\
-				srcs/parsing_utils_check_vars.c		\
 				srcs/parsing_utils_replace.c		\
 				srcs/parsing.c						\
 				srcs/signals.c						\

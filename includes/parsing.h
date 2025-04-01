@@ -27,7 +27,10 @@ char	*skip_redirs(char *str);
 int		get_variable(t_env **vars, char *str);
 int		get_var_name(char **dest, char *str);
 void	replace_var_space(char *str);
+int		count_malloc_vars(char *str);
+void	copy_vars(char *dest, char *src, int len);
 void	extract_vars(t_env **vars, char *str, int export_id);
+int		check_replace_dup(t_env *vars, char *name, char *new, int export_id);
 
 /*__________functions to clear variable assignments__________*/
 char	*overwrite_export_line(char *str);
