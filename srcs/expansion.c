@@ -6,22 +6,26 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/01 11:34:26 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/02 14:45:13 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/expansion.h"
 
-// 25 lines!
+// 27 lines!
 /*
  * checks if there are braces expansion {,} in cmd_line
- * yes: expand and replace the cmd_line by freeing & re-malloc
+ * search until found the head of {,}
+ * yes/found: expand and replace the cmd_line by freeing & re-malloc
  */
 void	brace_expansion(char **cmd_line)
 {
 	char	*str;
 	int		x;
 	int		len;
+	int		flag_quote;
+	char	symbol;
+	(void)	len;
 
 	str = *cmd_line;
 	/* cmd_line is the entire pipeline */
@@ -30,24 +34,34 @@ void	brace_expansion(char **cmd_line)
 	 * if encounter spaces ' ', dont expand
 	 */
 	x = 0;
+	flag_quote = 0;
+	symbol = '\0';
+	// int flag = 0;
+	if (!is_target(str, '{'))
+		return ;
 	while (str && str[0])
 	{
 		// /*debug*/printf("\033[93mbrace_expansion:ent:\033[0m%s.\n", str);
-		if (str[0] && is_target(" \t\n\v\f\r", str[0]))
+		if (str[0] && (is_target(" \t\n\v\f\r", str[0]) && !flag_quote))
 			x = -1;
-		if (str[0] == '\'')
-			str = ft_strchr(str + 1, '\'') + 1;
-		else if (str[0] == '$' && str[1] == '{')
+		update_flag_quote(str, &symbol, &flag_quote);
+		// /*debug*/printf("str:%s, flag_q:%d\n", str, flag_quote);
+
+		if (str[0] == '$' && str[1] == '{')
 			str += 2;
-		else if (str[0] == '{' && str[1] != '{' && has_valid_brace_content(str))
+		/* have to be beginning of str: r"{,} , then enter immediately*/
+		// else if (has_valid_brace_content(str) && flag < 1)
+		else if (str[0] == '{' && str[1] != '{' && has_valid_brace_content(str) && !flag_quote)
 		{
 			len = ft_strlen(*cmd_line) - 2 + get_expansion_count(str - x);
-			/*debug*/printf("\033[93mbrace_expansion:\033[0mstr:%s. x:%d\n", str, x);
-			// len += get_expansion_count(str - x);
+			/*debug*/printf("\033[93mbrace_expansion:\033[0mstr:%s. x:%d\n", str - x, x);
 			/*debug*/printf("\033[93mvalid brace!! %d+1\033[0m\n", len);
-			perform_brace_expansion(cmd_line, len);
+			/* propose to put str in perform_brace_expansion */
+			perform_brace_expansion(cmd_line, str - x, len);
 			str = *cmd_line;
 			x = -1;
+			// flag += 1;
+			// str++;
 		}
 		else
 			str++;
@@ -66,12 +80,16 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 	char	**tmp;
 	char	**fin;
 	char	*str;
+	int		flag;
 
 	str = *cmd_line;
+	flag = 0;
 	while (str && str[0])
 	{
 		// /*debug*/printf("shell_var_expansion:ent:%s\n", str);
-		if (str[0] == '\'')
+		if (str[0] == '\"')
+			flag = 1;
+		if (str[0] == '\'' && !flag)
 			str = ft_strchr(str + 1, '\'') + 1;
 		else if (str[0] == '$' && ft_isalpha(str[1]))
 		{
@@ -102,15 +120,16 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 
 int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 {
+	(void)	vars;
+	(void)	exit_status;
 	int		x;
 
 	x = -1;
 	while (lst_data && lst_data[++x])
 	{
 		/*debug*/printf("cmd_expansion:ent:%s\n", lst_data[x]);
-		shell_var_expansion(&lst_data[x], vars, exit_status);
+		// shell_var_expansion(&lst_data[x], vars, exit_status);
 		brace_expansion(&lst_data[x]);
-		/* ${}	shell_var_brace_expansion	*/
 		/* " '	quote_removal	*/
 	}
 	return (1);

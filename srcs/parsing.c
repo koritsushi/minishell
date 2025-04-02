@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/01 08:34:24 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/01 15:18:15 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*skip_if_quote(char *str, char symbol, int flag)
 	if (str[0] == symbol) // ' "
 	{
 		/*debug*/printf("skip \033[35m%c\033[0m =\033[90m%s\033[0m\n", symbol, new);
+		// /*debug*/printf("new: \033[35m%c\033[0m\033[90m%s\033[0m\n", new[0], new + 1);
 		new = ft_strchr(new + 1, symbol);
 		/*debug*/printf("after_skip_quote=\033[90m%s\033[0m.\n", new);
 		if (flag && new && new[1] && is_target(" \t\n\v\f\r", new[1]))

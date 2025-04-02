@@ -6,16 +6,32 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 22:54:34 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/31 09:28:01 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/02 14:03:44 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
+ *   utils function to get content of brace_head & brace_tail,
+ *   then copy to dest
+ * ************************************************************************** */
+
 #include "includes/expansion.h"
 
-/* 
- * utils function to get content of brace_head & brace_tail,
- * then copy to dest
- * ************************************************************************** */
+/*
+ * checks if flag_quote is on, update status accordingly
+ * target = str[0], symbol = &symbol, flag_qupte = &flag_quote
+ */
+void	update_flag_quote(char *target, char *symbol, int *flag_quote)
+{
+	// /*debug*/printf("update_flag_quote:%c\n", target[0]);
+	if (!(*flag_quote) && is_target("\'\"", target[0]))
+	{
+		*flag_quote = 1;
+		*symbol = target[0];
+	}
+	else if (*flag_quote && target[0] == *symbol)
+		*flag_quote = 0;
+}
 
 /*
  * checks if passed str has {,}  (valid brace content)
@@ -28,31 +44,65 @@ int	has_valid_brace_content(char *str)
 	if (!str)
 		return (0);
 	flag = 0;
-	while (str[0] && str[0] != '}')
+	/*debug*/printf("has_valid_brace_content:ent:%s\n", str);
+	/* increment until is_valid_brace_start */
+	while (str && str[0] && !is_target(" \t\n\v\f\r", str[0]))
 	{
-		if (str[0] && is_target(" \t", str[0]))
-			return (0);
-		else if (str[0] == ',')
-			flag = 1;
-		str++;
+		if (str[0] == '{' && str[1] && is_valid_brace_start(str + 1))
+			break ;
+		else if (is_target("\'\"", str[0]))
+			str = ft_strchr(str + 1, str[0]);
+		else if (str)
+			str++;
 	}
-	if (str[0] != '}' && flag)
-		return (0);
+	if (str && str[0] && !is_target(" \t\n\v\f\r", str[0]))
+		flag = 1;
+	/*debug*/printf("has_valid_brace_content:end:%s. flag:%d\n", str, flag);
 	return (flag);
 }
 
+// int	has_valid_brace_content(char *str)
+// {
+// 	int		flag;
+
+// 	if (!str)
+// 		return (0);
+// 	flag = 0;
+// 	while (str[0] && str[0] != '}')
+// 	{
+// 		if (str[0] && is_target(" \t", str[0]))
+// 			return (0);
+// 		else if (str[0] == ',')
+// 			flag = 1;
+// 		str++;
+// 	}
+// 	if (str[0] != '}' && flag)
+// 		return (0);
+// 	return (flag);
+// }
+
 /*
  * child funcion in get_expansion_count
- * checks if the current str[0] is start of a valid brace structure (eg {a,b})
+ * checks if the current str[0] is start of a valid brace structure
+ * which consists exactly {,} (eg {a,b})
+ * ideally when enter str[0] == '{' , input str+1
  */
 int	is_valid_brace_start(char *str)
 {
-	int	flag;
+	int		flag;
+	int		flag_quote;
+	char	symbol;
 
+	/* "a rt"{,}e're w' */
 	flag = 0;
+	flag_quote = 0;
+	symbol = '\0';
+	/*debug*/printf("is_valid_brace_start:ent:%s, %c\n", str, str[0]);
 	while (str && str[0])
 	{
-		if (str[0] && is_target(" \t\n\v\f\r{", str[0]))
+		update_flag_quote(str, &symbol, &flag_quote);
+		// /*debug*/printf("is_valid_brace_start:%c. flag_q:%d\n", str[0], flag_quote);
+		if (str[0] && is_target(" \t\n\v\f\r{", str[0]) && !flag_quote)
 			break ;
 		else if (str[0] == ',')
 			flag = 1;
@@ -69,7 +119,7 @@ int	is_valid_brace_start(char *str)
  * eg a{,}z, content= a or z
  * mallocs & return the content in a new string
  */
-static char	*get_brace_tail(char *str, char symbol)
+static char	*get_brace_tail(char *str, char *set)
 {
 	int		x;
 	int		len;
@@ -79,15 +129,24 @@ static char	*get_brace_tail(char *str, char symbol)
 	if (!str)
 		return (str);
 	len = 0;
-	while (str[len] && str[len] != symbol) //((str[len] == symbol && str[len + 1] == symbol) ||
-		len++;
-	/*debug*/printf("get_brace_tail:len:%d\n", len);
+	while (str[len] && !is_target(set, str[len]))
+	{
+		/*debug*/printf("get_brace_tail:char:%c\n", str[len]);
+		if (is_target("\'\"", str[len]))
+		{
+			int res = skip_if_quote(&str[len], str[len], 0) - &str[len] + 1;
+			/*debug*/printf("get_brace_tail:quote:%d\n", res);
+			len += res;
+		}
+		else
+			len++;
+	}
+	/*debug*/printf("get_brace_tail:malloc:%d+1\n", len);
 	if (!malloc_chr_ptr(&new, len + 1))
 		return (0);
 	x = 0;
-	while (str[0] && x < len && (str[0] != symbol))// || (str[0] == symbol && str[1] == symbol)))
+	while (str[0] && x < len) //&& (!is_target(str, str[0]))
 		new[x++] = *str++;
-	// new[len] = '\0';
 	return (new);
 }
 
@@ -99,21 +158,34 @@ static char	*get_brace_tail(char *str, char symbol)
  */
 static char	*get_brace_head(char *str)//, char symbol)
 {
-	int		len;
 	char	*new;
+	int		len;
+	int		x;
 
 	if (!str)
 		return (str);
 	len = 0;
+	// flag_quote = 0;
+	// symbol = '\0';
 	/* {a{a,e}e*/
-	while (str[len + 1] && !is_valid_brace_start(&str[len] + 1))// (str[len] == symbol && str[len + 1] == symbol) || str[len] != symbol)
-		len++;
-	/*debug*/printf("get_brace_head:len:%d+1\n", len);
+	/* a{a,e}e */ //previous
+	/* "a p"{a,e}e*/ //future
+	while (str[len] && (!is_valid_brace_start(&str[len] + 1)))
+	{
+		if (is_target("\'\"", str[len]))
+			len += ft_strchr(&str[len + 1], str[len]) - &str[len] + 1;
+		else
+			len++;
+		/* can use ft_strchr instead and len += */
+		/* len += ft_strchr() - &str[len] */
+		// update_flag_quote(str[len], &symbol, &flag_quote);
+	}
+	/*debug*/printf("get_brace_head:str:%s. len:%d+1\n", str, len);
 	if (!malloc_chr_ptr(&new, len + 1))
 		return (0);
-	len = 0;
-	while (str[1] && !is_valid_brace_start(str + 1))//(str[0] != symbol || (str[0] == symbol && str[1] == symbol))
-		new[len++] = *str++;
+	x = 0;
+	while (str[0] && x < len)
+		new[x++] = *str++;
 	return (new);
 }
 
@@ -132,9 +204,15 @@ char	*copy_brace_expansion(char *src, char *dest, int *x, int malloc_size)
 	/*debug*/printf("copy_brace_expansion:ent:\033[93m%s\033[0m.\n", src);
 	flag = 0;
 	head = get_brace_head(src);
+	/* to skip until valid_brace_start */
 	while (!is_valid_brace_start(src))
-		src++;
-	tail = get_brace_tail(ft_strchr(src, '}') + 1, ' ');
+	{
+		if (src[0] && is_target("\'\"", src[0]) && skip_if_quote(src, src[0], 0))
+			src = skip_if_quote(src, src[0], 0) + 1;
+		else
+			src++;
+	}
+	tail = get_brace_tail(ft_strchr(src, '}') + 1, " \t\n\v\f\r");
 	/*debug*/printf("src=%s.\nget_brace_head:\033[93m%s\033[0m.\nget_brace_tail:\033[93m%s\033[0m.\n", src, head, tail);
 	while (src && src[0] && *x < malloc_size)
 	{
@@ -155,6 +233,6 @@ char	*copy_brace_expansion(char *src, char *dest, int *x, int malloc_size)
 		src++;
 	}
 	free_multiple_ptr_single(2, head, tail);
-	/*debug*/printf("copy_brace_expansion:end:\033[93m%s\033[0m.\n", dest);
+	// /*debug*/printf("copy_brace_expansion:end:\033[93m%s\033[0m.\n", dest);
 	return (dest);
 }

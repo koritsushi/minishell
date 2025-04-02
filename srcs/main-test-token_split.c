@@ -43,15 +43,15 @@ int	main(int ac, char **av)
 	// char str[] = "var= 123";
 	// char str[] = "var=| 123";
 	// char str[] = "var=123";
-	char str[] = "var=123 cmd1 | cmd2 var=123 | var=123";
-	char str[] = "var=123 ^var=5 var=8";
-	char str[] = "var=99 ^var=123 cmd1 v=1 | cmd2 var=123 | var=123";
-	char str[] = "cmd1| var=123";
+	// char str[] = "var=123 cmd1 | cmd2 var=123 | var=123";
+	// char str[] = "var=123 ^var=5 var=8";
+	// char str[] = "var=99 ^var=123 cmd1 v=1 | cmd2 var=123 | var=123";
+	// char str[] = "cmd1| var=123";
 	// char str[] = "var      = 123";
 	// char str[] = "echo $var\" hello\"";
-	char str[] = "echo '$r'$var";
-	char str[] = "'rr$r'$var$r";
-	char str[] = "$var\" hello\"";
+	// char str[] = "echo '$r'$var";
+	// char str[] = "'rr$r'$var$r";
+	// char str[] = "$var\" hello\"";
 	// char str[] = "var=123 | echo $var";
 	// char str[] = "echo hello | var=cmd2| var=123 | cmd3";
 	// char str[] = "echo hello | cmd2| var=123 | cmd3";
@@ -211,13 +211,19 @@ int	main(int ac, char **av)
 	// /*debug*/printf("count_chr=%d\n", count_chr(str, " \t\n\v\f\r", &flag));
 	
 	/*---------------------count_str_debug-----------------------*/
-	int	flag = 0;
-	/*debug*/printf("str:%s\n", str);
-	/*debug*/printf("count_str:%d, chr:%d\n", count_str(str, " \"\t\n\v\f\r"), count_chr(str, " \"\t\n\v\f\r", &flag));
+	// int	flag = 0;
+	// /*debug*/printf("str:%s\n", str);
+	// /*debug*/printf("count_str:%d, chr:%d\n", count_str(str, " \"\t\n\v\f\r"), count_chr(str, " \"\t\n\v\f\r", &flag));
 	
 	/*---------------------syntax_check-----------------------*/
 	// /*debug*/printf("entry:%s\n", str);
 	// check_syntax(str);
+	
+	/*---------------------ft_strchr_test-----------------------*/
+	char str[] = "\"ar e\"{,}e";
+	int	x = ft_strchr(str + 1, str[0]) - str;
+	/*debug*/printf("str:%s. x:%d\n", &str[x], x);
+
 	
 	/*---------------------ft_strncmp_test-----------------------*/
 	// char str[] = "vars=9090";

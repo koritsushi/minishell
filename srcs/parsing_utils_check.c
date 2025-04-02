@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:28:58 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/01 07:14:07 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/01 15:43:07 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,21 +109,22 @@ int	check_symbols(char **res)
 	return (1);
 }
 
-int	check_unclosed_quote(char *str, char *set)
+int	check_unclosed_quote(char *str)
 {
 	char	*new;
 
 	new = str;
-	while (new && new[0])
+	while (new[0])
 	{
-		// /*debug*/printf("enter=%s\n", new);
-		if (new[0] && is_target(set, new[0]))
+		// /*debug*/printf("check_unclosed_quote:ent:%s\n", new);
+		if (new[0] && is_target("\'\"", new[0]))
 		{
 			new = skip_if_quote(new, new[0], 0);
-			/*debug*/printf("check_unclosed_quote:%s.\n", new);
+			if (new)
+				/*debug*/printf("check_unclosed_quote:%s.\n", new);
 		}
 		if (!new)
-			ft_perror_fd("🚨 Syntax error! unclosed quote detected!\n", 2, 0);
+			return (ft_perror_fd("🚨 Syntax error! unclosed quote detected!\n", 2, 0));
 		new++;
 	}
 	return (1);
@@ -140,7 +141,7 @@ int	check_syntax(char *str)
 	// /*debug*/debug_print(res);
 	// /*debug*/printf("--------\n");
 
-	if (!check_symbols(res) || !check_unclosed_quote(str, "\'\""))
+	if (!check_symbols(res) || !check_unclosed_quote(str))
 		flag = 0;
 	free_chr_ptr((void **)res);
 	return (flag);
