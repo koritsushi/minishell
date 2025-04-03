@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/03 08:31:23 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/03 09:04:44 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,42 @@ void	brace_expansion(char **cmd_line)
 	}
 }
 
-// need to split
+/*
+ * child function in shell_var_expansion
+ * checks if $var entry exists, copy from *cmd_line
+ * remallocs the new expanded string & return
+ * uses malloc
+ */
+static char	*expand_shell_var(t_env *vars, char **cmd_line, char *str)
+{
+	char	**tmp;
+	char	**fin;
+
+	tmp = ft_split_shell(str, "$");
+	// /*debug*/printf("-----\nsplit:fin:\n");
+	fin = ft_split_shell(tmp[0], " \'\"\t\n\v\f\r");
+	// /*debug*/debug_print(tmp);
+	// /*debug*/printf(".....\nfin:\n");
+	// /*debug*/debug_print(fin);
+	// /*debug*/printf("-----\n");
+	/*debug*/printf("expand_shell_var:var_name:%s, str:%s\n", fin[0], str);
+	check_shell_var(vars, fin[0], cmd_line, str);
+	free_multiple_ptr(2, tmp, fin);
+	return (*cmd_line);
+	// str = *cmd_line;
+}
+
+// need to split 28 lines
 /*
  * checks if there are $var in string and corresponding entry in t_env vars
  * yes: replace with content
  * no : replace with spaces ' '
+ * uses malloc
  */
 void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 {
-	char	**tmp;
-	char	**fin;
+	// char	**tmp;
+	// char	**fin;
 	char	*str;
 	int		flag;
 
@@ -79,20 +105,21 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 		if (str[0] == '\'' && !flag)
 			str = ft_strchr(str + 1, '\'') + 1;
 		else if (str[0] == '$' && ft_isalpha(str[1]))
-		{
-			tmp = ft_split_shell(str, "$");
-			// /*debug*/printf("-----\nsplit:fin:\n");
-			fin = ft_split_shell(tmp[0], " \'\"\t\n\v\f\r");
-			// /*debug*/printf("-----\nshell_var_expansion:tmp:\n");
-			// /*debug*/debug_print(tmp);
-			// /*debug*/printf(".....\nfin:\n");
-			// /*debug*/debug_print(fin);
-			// /*debug*/printf("-----\n");
-			/*debug*/printf("var_name:%s, str:%s\n", fin[0], str);
-			check_shell_var(vars, fin[0], cmd_line, str);
-			free_multiple_ptr(2, tmp, fin);
-			str = *cmd_line;
-		}
+			str = expand_shell_var(vars, cmd_line, str);
+		// {
+		// 	tmp = ft_split_shell(str, "$");
+		// 	// /*debug*/printf("-----\nsplit:fin:\n");
+		// 	fin = ft_split_shell(tmp[0], " \'\"\t\n\v\f\r");
+		// 	// /*debug*/printf("-----\nshell_var_expansion:tmp:\n");
+		// 	// /*debug*/debug_print(tmp);
+		// 	// /*debug*/printf(".....\nfin:\n");
+		// 	// /*debug*/debug_print(fin);
+		// 	// /*debug*/printf("-----\n");
+		// 	/*debug*/printf("var_name:%s, str:%s\n", fin[0], str);
+		// 	check_shell_var(vars, fin[0], cmd_line, str);
+		// 	free_multiple_ptr(2, tmp, fin);
+		// 	str = *cmd_line;
+		// }
 		else if (str[0] == '$' && str[1] && str[1] == '?')
 		{
 			str = expand_exit_status(cmd_line, exit_status);
@@ -115,8 +142,8 @@ int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 	while (lst_data && lst_data[++x])
 	{
 		/*debug*/printf("cmd_expansion:ent:%s\n", lst_data[x]);
-		// shell_var_expansion(&lst_data[x], vars, exit_status);
-		brace_expansion(&lst_data[x]);
+		shell_var_expansion(&lst_data[x], vars, exit_status);
+		// brace_expansion(&lst_data[x]);
 		/* " '	quote_removal	*/
 	}
 	return (1);

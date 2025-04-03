@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/01 10:38:55 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/03 08:45:16 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,12 +132,12 @@ void	check_replace_var(char **cmd_line, char *name, char *src)
 void	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 {
 	char	**tmp;
-	int		flag;
+	int		flag_name;
 	char	*start;
 
-	flag = 0;
+	flag_name = 0;
 	/*debug*/printf("check_shell_var:ent:%s\n", *cmd_line);
-	while (vars && !flag)
+	while (vars && !flag_name)
 	{
 		tmp = ft_split_shell(vars->content, "=");
 		// /*debug*/printf("check_replace_dup name:%s, %s\n", tmp[0], name);
@@ -146,26 +146,14 @@ void	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 		{
 			start = ft_strchr(vars->content, '=') + 1;
 			check_replace_var(cmd_line, name, start);
-			flag = 1;
+			flag_name = 1;
 		}
 		free_chr_ptr((void **)tmp);
 		vars = vars->next;
 	}
-	if (!flag) // if name !found, should start replacing from str
+	if (!flag_name) // if name !found, should start replacing from str
 	{
 		// /*debug*/printf("notfound! bf:%s.\n", *cmd_line);
-		// start = ft_strchr(*cmd_line, '$');
-		// start = *cmd_line;
-		// while (start[0] && start[0] != '$')
-		// {
-		// 	if (start[0] && is_target("\'\"", start[0]))
-		// 		start = skip_if_quote(start, start[0]);
-		// 	else
-		// 		start++;
-		// 	/*debug*/printf("progress:%s\n", start);
-		// }
-		// if (!ft_isalpha(start[1]))
-			// return ;
 		start = str;
 		*start++ = ' ';
 		while (start && start[0] && !is_target(" $\'\"\t\n\v\f\r", start[0]))
