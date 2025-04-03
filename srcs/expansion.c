@@ -6,13 +6,13 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/02 14:45:13 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/03 08:31:23 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/expansion.h"
 
-// 27 lines!
+// 24 lines!
 /*
  * checks if there are braces expansion {,} in cmd_line
  * search until found the head of {,}
@@ -20,12 +20,10 @@
  */
 void	brace_expansion(char **cmd_line)
 {
-	char	*str;
 	int		x;
-	int		len;
-	int		flag_quote;
+	char	*str;
 	char	symbol;
-	(void)	len;
+	int		flag_quote;
 
 	str = *cmd_line;
 	/* cmd_line is the entire pipeline */
@@ -35,9 +33,7 @@ void	brace_expansion(char **cmd_line)
 	 */
 	x = 0;
 	flag_quote = 0;
-	symbol = '\0';
-	// int flag = 0;
-	if (!is_target(str, '{'))
+	if (!is_target(*cmd_line, '{'))
 		return ;
 	while (str && str[0])
 	{
@@ -51,18 +47,9 @@ void	brace_expansion(char **cmd_line)
 			str += 2;
 		/* have to be beginning of str: r"{,} , then enter immediately*/
 		// else if (has_valid_brace_content(str) && flag < 1)
-		else if (str[0] == '{' && str[1] != '{' && has_valid_brace_content(str) && !flag_quote)
-		{
-			len = ft_strlen(*cmd_line) - 2 + get_expansion_count(str - x);
-			/*debug*/printf("\033[93mbrace_expansion:\033[0mstr:%s. x:%d\n", str - x, x);
-			/*debug*/printf("\033[93mvalid brace!! %d+1\033[0m\n", len);
-			/* propose to put str in perform_brace_expansion */
-			perform_brace_expansion(cmd_line, str - x, len);
-			str = *cmd_line;
-			x = -1;
-			// flag += 1;
-			// str++;
-		}
+		else if (str[0] == '{' && str[1] != '{' && !flag_quote && \
+		has_valid_brace_content(str))
+			str = perform_brace_expansion(str, cmd_line, &x);
 		else
 			str++;
 		x++;

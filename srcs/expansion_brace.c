@@ -6,102 +6,14 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 15:29:13 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/02 15:07:19 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/03 08:26:37 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/expansion.h"
 
 /*
- * child function in get_expansion_count
- * counts valid comma within brace {,} only for the 1st brace occurence
- * eg. {,}a{,}b : comma = 1 (only count comma in the 1st brace)
- */
-static int	count_brace_comma(char *str)
-{
-	int	comma;
-
-	comma = 0;
-	while (!is_valid_brace_start(str))
-		str++;
-	while (str && str[0] && str[0] != '}')
-	{
-		if (str[0] == ',')
-			comma++;
-		str++;
-	}
-	return (comma);
-}
-
-/*
- * child function in get_expansion_count
- * counts char that it outside of brace {,} (1st brace occurence)
- * eg. {,}a{,}b :  len=5 (a{,}b)
- */
-static int	count_brace_content(char *str)
-{
-	int		len;
-	int		flag;
-	int		flag_quote;
-	char	symbol;
-
-	len = 0;
-	flag = 0;
-	flag_quote = 0;
-	symbol = '\0';
-	/*count head, count tail*/
-	while (str && str[0] && (!is_target(" \t\n\v\f\r", str[0]) || flag_quote))
-	{
-		/*debug*/printf("\033[100mcount_brace_content:ent:%s\033[0m\n", str);
-		update_flag_quote(str, &symbol, &flag_quote);
-		/* identify if its the correct brace set , if true, strchr it*/
-		/*debug*/printf("count_brace_content!\n");
-		if (str[1] && str[0] == '{' && is_valid_brace_start(str + 1) && !flag)
-		{
-			str = ft_strchr(str, '}');
-			flag = 1;
-		}
-		else
-		{
-			// /*debug*/printf("tmp=\033[93m%c\033[0m%s. \033[93mlen=%d\033[0m\n", str[0], str+1, len);
-			/*debug*/printf("tmp=\033[93m%c\033[0m%s.\n", str[0], str+1);
-			len++;
-		}
-		if (str)
-			str++;
-	}
-	return (len);
-}
-
-/* counts the brace_expansion area when fully expanded */
-int	get_expansion_count(char *str)
-{
-	int		len;
-	int		comma;
-
-	/* 6-2=4 */
-	/* a{,}e */
-	/* 5-2=3 2x1=2 ==5 */
-	/* aa{b,c}ee */
-	/* 9-2=7 4x1=4 ==11 */
-	/* a{,}e{ */
-	/* 6-2=4 3x1=3 ==7 */
-	/* {,}a{,}b */
-	/* 8-2=6, 5x1=5, 11*/
-
-	/*debug*/printf("get_expansion_count:ent:%s.\n", str);
-	len = 0;
-	comma = 0;
-	str = skip_spaces(str, " \t\n\v\f\r");
-	comma = count_brace_comma(str);
-	len = count_brace_content(str);
-	/*debug*/printf("comma=%d len=%d\n", comma, len);
-	return (len * comma);
-
-}
-
-/*
- * child function in start_brace_operation
+ * child function in expand_brace_content
  * skips entire valid_brace and point to the first space ' ' after brace end
  */
 static char	*skip_braces(char *str)
@@ -120,54 +32,60 @@ static char	*skip_braces(char *str)
 	return (str);
 }
 
-// 22 lines!
 /*
- * child function in perform_brace_expansion
+ * child function in expand_brace_content
+ * expand brace and copy all the remainder til end
+ * returns src pointing to '\0' when done
+ * src = src-len,  x = x-len
+ */
+static char	*copy_til_brace_end(char *src, char *dest, int x, int malloc_size)
+{
+	{
+		copy_brace_expansion(src, dest, &x, malloc_size);
+		src = skip_braces(src);
+		/*debug*/printf("str:%s.\n", src);
+		while (src && src[0] && x < malloc_size)
+			dest[x++] = *src++;
+		/*debug*/printf("copy_skip_brace_end:%s.\n", src);
+		return (src);
+	}
+}
+
+// 21 lines!
+/*
+ * child function in start_brace_expansion
  * copy, expands, and point to next available spaces ' ' when done
  */
-static void	start_brace_operation(char *src, char *dest, int malloc_size)
+static void	expand_brace_content(char *src, char *dest, int malloc_size)
 {
 	int		x;
 	int		len;
-	int		flag;
 	int		flag_quote;
 	char	symbol;
 
 	x = 0;
 	len = 0;
-	flag = 0;
 	flag_quote = 0;
-	symbol = '\0';
 	while (src && src[0] && x < malloc_size)
 	{
 		update_flag_quote(src, &symbol, &flag_quote);
 		if (src[0] && is_target(" \t\n\v\f\r", src[0]) && !flag_quote)
 			len = -1;
-		if (src[0] == '{' && is_valid_brace_start(src + 1) && !flag)
-		{
-			/* "ar e"{,}v */
-			/*debug*/printf("x=%d len=%d %c\n", x, len, src[0]);
-			x -= len;
-			copy_brace_expansion(src - len, dest, &x, malloc_size);
-			//forsee bugs here when:  "ar e"{,"so m"}v
-			// src = ft_strchr(src, ' '); 
-			src = skip_braces(src);
-			flag = 1;
-			/*debug*/printf("str:%s.\n", src);
-		}
+		if (src[0] == '{' && is_valid_brace_start(src + 1))
+			src = copy_til_brace_end(src - len, dest, x - len, malloc_size);
 		else
 			dest[x++] = *src++;
 		len++;
 	}
-	/*debug*/printf("perform_brace_expansion:res:\033[93m%s\033[0m. x:%d\n", dest, x);
+	/*debug*/printf("start_brace_expansion:res:\033[93m%s\033[0m. x:%d\n", dest, x);
 }
 
 /*
- * child function in brace_expansion
+ * child function in perform_brace_expansion
  * copies over head content up to beginning of valid_brace (a{,}e)
  * expand + replace the cmd_line by freeing & re-malloc
  */
-void	perform_brace_expansion(char **cmd_line, char *str, int malloc_size)
+static void	start_brace_expansion(char **cmd_line, char *str, int malloc_size)
 {
 	char	*dest;
 	int		x;
@@ -175,13 +93,32 @@ void	perform_brace_expansion(char **cmd_line, char *str, int malloc_size)
 	/* front a{b,c,d}e back */
 	/* front abe ace ade back*/
 	/* 7, 2*2=4, 7+4=11 */
-	// /*debug*/printf("perform_brace_expansion:ent:%s.\n", str);
+	// /*debug*/printf("start_brace_expansion:ent:%s.\n", str);
 	malloc_chr_ptr(&dest, malloc_size + 1);
 	x = -1;
 	while (str - &(*cmd_line)[++x] > 0)
 		dest[x] = (*cmd_line)[x];
-	// /*debug*/printf("perform_brace_expansion:diff:%ld, %s\n", str - &(*cmd_line)[x], &(*cmd_line)[x]);
-	start_brace_operation(str, &dest[x], malloc_size);
+	/*debug*/printf("start_brace_expansion:diff:%ld, %s\n", str - &(*cmd_line)[x], &(*cmd_line)[x]);
+	expand_brace_content(str, &dest[x], malloc_size);
 	free(*cmd_line);
 	*cmd_line = dest;
+}
+
+/*
+ * child function in brace_expansion
+ * counts malloc size & expands brace
+ * cmd_line = the full original line, need to copy from and remalloc free it
+ */
+char	*perform_brace_expansion(char *str, char **cmd_line, int *x)
+{
+	int	len;
+
+	len = 0;
+	len = ft_strlen(*cmd_line) - 2 + get_expansion_count(str - (*x));
+	/*debug*/printf("\033[93mbrace_expansion:\033[0mstr:%s. x:%d\n", str - (*x), *x);
+	/*debug*/printf("\033[93mvalid brace!! %d+1\033[0m\n", len);
+	/* propose to put str in perform_brace_expansion */
+	start_brace_expansion(cmd_line, str - (*x), len);
+	*x = -1;
+	return (*cmd_line);
 }
