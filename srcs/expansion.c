@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/03 10:28:52 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/03 21:21:52 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,28 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 	}
 }
 
+/*
+ * child function in cmd_expansion
+ * removes quotes from string
+ * count malloc, remallocs, copy over & return new updated string in cmd_line
+ */
+void	quote_removal(char **cmd_line)
+{
+	int		len;
+	char	*new;
+
+	if (!(*cmd_line) || \
+	(!is_target(*cmd_line, '\'') && !is_target(*cmd_line, '\"')))
+		return ;
+	len = count_malloc_quote_removal(*cmd_line);
+	/*debug*/printf("quote_removal:len:%d\n", len);
+	if (!malloc_chr_ptr(&new, len + 1))
+		return ;
+	expand_quote_removal(*cmd_line, new);
+	free(*cmd_line);
+	*cmd_line = new;
+}
+
 int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 {
 	(void)	vars;
@@ -104,8 +126,8 @@ int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 	{
 		/*debug*/printf("cmd_expansion:ent:%s\n", lst_data[x]);
 		shell_var_expansion(&lst_data[x], vars, exit_status);
-		// brace_expansion(&lst_data[x]);
-		/* " '	quote_removal	*/
+		brace_expansion(&lst_data[x]);
+		// quote_removal(&lst_data[x]);
 	}
 	return (1);
 }

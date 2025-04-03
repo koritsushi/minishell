@@ -40,5 +40,10 @@ char	*copy_brace_expansion(char *src, char *dest, int *x, int malloc_size);
 void	update_flag_quote(char *target, char *symbol, int *flag_quote);
 
 
+/* __________functions for quote removal expansion__________*/
+
+int		count_malloc_quote_removal(char *str);
+void	expand_quote_removal(char *src, char *dest);
+
 
 #endif

@@ -10,6 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 SRCS 		=	srcs/expansion.c					\
+				srcs/expansion_quote.c				\
 				srcs/expansion_brace_utils_count.c	\
 				srcs/expansion_brace_utils.c		\
 				srcs/expansion_brace.c				\
