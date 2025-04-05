@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/03 21:21:52 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/05 21:24:49 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	brace_expansion(char **cmd_line)
 	}
 }
 
-// need to split 28 lines
+// 24 lines!
 /*
  * checks if there are $var in string and corresponding entry in t_env vars
  * yes: replace with content
@@ -80,7 +80,12 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 		if (str[0] == '\'' && !flag)
 			str = ft_strchr(str + 1, '\'') + 1;
 		else if (str[0] == '$' && ft_isalpha(str[1]))
+		{
+			/*debug*/printf("shell_var_expansion:flag:%d\n", flag);
 			str = expand_shell_var(vars, cmd_line, str);
+			if (flag)
+				flag = 0;
+		}
 		else if (str[0] == '$' && str[1] && str[1] == '?')
 		{
 			str = expand_exit_status(cmd_line, exit_status);
@@ -127,7 +132,7 @@ int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 		/*debug*/printf("cmd_expansion:ent:%s\n", lst_data[x]);
 		shell_var_expansion(&lst_data[x], vars, exit_status);
 		brace_expansion(&lst_data[x]);
-		// quote_removal(&lst_data[x]);
+		quote_removal(&lst_data[x]);
 	}
 	return (1);
 }

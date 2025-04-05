@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:21:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/03 20:27:08 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/05 19:16:48 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,58 +16,58 @@
 #include "includes/expansion.h"
 
 /*
- * child function in copy_shell_var
+ * child function in next_available_var
  * perform split checks if there are unseparated var (eg $var$var2)
  * returns 1 if true
  */
-static int	has_unseparated_var(char *str, char *symbol)
-{
-	char	**tmp;
-	int		res;
-	char	*check;
+// static int	has_unseparated_var(char *str, char *symbol)
+// {
+// 	char	**tmp;
+// 	int		res;
+// 	char	*check;
 
-	/* var=" var' "*/
-	/* var=" $var "*/
-	/* var=' $var '*/
-	/* $var"$var" */
-	res = 0;
-	tmp = ft_split_shell(str, " \t\n\v\f\r");
-	// /*debug*/printf("has_unseparated_var:\n");
-	// /*debug*/debug_print(tmp);
+// 	/* var=" var' "*/
+// 	/* var=" $var "*/
+// 	/* var=' $var '*/
+// 	/* $var"$var" */
+// 	res = 0;
+// 	tmp = ft_split_shell(str, " \t\n\v\f\r");
+// 	// /*debug*/printf("has_unseparated_var:\n");
+// 	// /*debug*/debug_print(tmp);
 
-	check = tmp[0] + 1;
-	while (check && check[0] && !is_target(" \t\n\v\f\r", check[0]) && !res)
-	{
-		if (is_target("\'\"$", check[0]))
-		{
-			*symbol = check[0];
-			res = 1;
-		}
-		check++;
-	}
-	free_chr_ptr((void **)tmp);
-	return (res);
-}
+// 	check = tmp[0] + 1;
+// 	while (check && check[0] && !is_target(" \t\n\v\f\r", check[0]) && !res)
+// 	{
+// 		if (is_target("\'\"$", check[0]))
+// 		{
+// 			*symbol = check[0];
+// 			res = 1;
+// 		}
+// 		check++;
+// 	}
+// 	free_chr_ptr((void **)tmp);
+// 	return (res);
+// }
 
 /*
  * child helper function in copy_shell_var
  * updates str pointer to point to the next available word/var
  */
-static char	*next_available_var(char *str)
-{
-	char	symbol;
+// static char	*next_available_var(char *str)
+// {
+// 	char	symbol;
 
-	symbol = '$';
-	if (has_unseparated_var(str, &symbol)) // if $var$var1, $var"hello" $var"hello$var1"
-		str = ft_strchr(str + 1, symbol);
-	else
-	{
-		str = skip_if_symbol(str, str[0], symbol);
-		if (str)
-			str -= 1;
-	}
-	return (str);
-}
+// 	symbol = '$';
+// 	if (has_unseparated_var(str, &symbol)) // if $var$var1, $var"hello" $var"hello$var1"
+// 		str = ft_strchr(str + 1, symbol);
+// 	else
+// 	{
+// 		str = skip_if_symbol(str, str[0], symbol);
+// 		if (str)
+// 			str -= 1;
+// 	}
+// 	return (str);
+// }
 
 /*
  * child helper function in copy_shell_var
@@ -89,7 +89,7 @@ static void	update_flag_status(char target, char symbol, int *main_flag, int sub
  * copy string from str & src to dest
  * only expands the 1st $var set, copies & return the rest, repeat
  */
-char	*copy_shell_var(char *str, char *dest, char *src)
+char	*copy_shell_var(char *str, char *dest, char *src, int var_name_len)
 {
 	int		i;
 	int		flag;
@@ -107,7 +107,8 @@ char	*copy_shell_var(char *str, char *dest, char *src)
 		if (!flag && str[0] == '$' && str[1] != '$')
 		{
 			i += ft_strlcpy(&dest[i], src, ft_strlen(src) + 1);
-			str = next_available_var(str);
+			// str = next_available_var(str);
+			str += var_name_len;
 			flag = 2;
 			/*debug*/printf("copy_shell_var:skips:\033[92m%s\033[0m\n", str);
 		}
