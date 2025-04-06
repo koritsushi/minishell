@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/06 13:40:42 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/06 15:33:01 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	is_valid_var_name(char *str)
 	fin = ft_split_shell(tmp[0], " \t\n\v\f\r");
 	res = 1;
 	i = -1;
-	while (fin && fin[++i] && !res)
+	while (fin && fin[++i] && res)
 	{
 		/*debug*/printf("is_valid_var_name:ent:%s.\n", fin[i]);
 		if (ft_strncmp(fin[i], "export", 6) == 0)
@@ -89,7 +89,7 @@ static int	is_valid_var_name(char *str)
  * checks if variable assigned syntax formatted correctly
  * update flag=1 if starts with non_alpha
  */
-int	check_var_syntax(char *str, int *flag)
+int	check_var_syntax(char *str)//, int *flag)
 {
 	char	*new;
 
@@ -101,24 +101,19 @@ int	check_var_syntax(char *str, int *flag)
 	// if (has_mix_redirs(new) || is_valid_var_name(new))
 	new = str;
 	if (!is_valid_var_name(new))
-		*flag = 1;
-	// return (0);
+		return (0);
+		// *flag = 1;
 	/* skips infile outfile at head */
-	// new = skip_redirs(new);
-	while (new && new[0] && !(*flag)) //export & default can use flag != 1
+	while (new && new[0])// && !(*flag)) //export & default can use flag != 1
 	{
 		/*debug*/printf("check_var_syntax:ent:%s\n", new);
 		if (new[1] == '=' && \
 			((new[0] && is_target(" \t\n\v\f\r<>|&", new[0])) || \
 			(new[2] && is_target(" \t\n\v\f\r<>|&", new[2]))))
 			return (ft_perror_fd("🚨 Syntax error! spaces before or after '='!\n", 2, 0));
-		// else if (new[1] == '=' && valid_var_name())
-		// 	return (0);
 		else if (new[1] == '=' && (new[2] == '\'' || new[2] == '\"'))
 			new = skip_if_quote(new + 2, new[2], 1);
 		new++;
 	}
-	// if (*flag)
-	// 	return (0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/06 12:45:48 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/06 15:33:14 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,10 @@ void	process_vars(t_env **vars, char *str, int export_id)
 int	get_variable(t_env **vars, char *str)
 {
 	char	*new;
-	int		flag;
 	int		export_id;
+	// int		flag;
 
-	flag = 0;
+	// flag = 0;
 	export_id = 0;
 	new = skip_spaces(str, " \t\n\v\f\r");
 	new = skip_redirs(new);
@@ -140,13 +140,13 @@ int	get_variable(t_env **vars, char *str)
 	/*debug*/printf("get_variable:ent:%s.\n", new);
 	if (new[0] && !is_target(new, '=') && ft_strncmp(new, "export", 6) != 0)
 		return (0);
-	if (check_var_syntax(new, &flag))
+	if (check_var_syntax(new))//, &flag))
 	{
 		/* if no pipes, copy_vars */
 		// /*debug*/printf("check_var_syntax:enter! new:%s, str:%s\n", new, str);
-		if (!is_target(new, '|') && !flag) //put a flag for multiple_cmd  // && !has_mix_redirs(new)
+		if (!is_target(new, '|'))// && !flag) //put a flag for multiple_cmd  // && !has_mix_redirs(new)
 		{
-			/*debug*/printf("get_variable:flag:%d\n", flag);
+			// /*debug*/printf("get_variable:flag:%d\n", flag);
 			if (ft_strncmp(new, "export", 6) == 0)
 			{
 				new = skip_if_symbol(new, 'c', 'c');
@@ -156,16 +156,6 @@ int	get_variable(t_env **vars, char *str)
 		}
 		// replace_var_space(new);
 	}
-	// /* check if its export */
-	// new = skip_spaces(new, " \t\n\v\f\r");
-	// if (ft_strncmp(new, "export", 6) == 0 && !is_target(new, '|'))
-	// {
-	// 	/*follow same process, just that == 1*/
-	// 	new = skip_if_symbol(new, 'c', 'c');
-	// 	/*debug*/printf("handle_Export!:%s\n", new);
-	// 	process_vars(vars, new, 2);
-	// 	// new = overwrite_export_line(new);
-	// }
 	/*debug*/printf("updated_str:%s.\n", str);
 	return (1);
 }
