@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/05 21:24:49 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/05 21:28:05 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,6 @@ void	quote_removal(char **cmd_line)
 
 int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 {
-	(void)	vars;
-	(void)	exit_status;
 	int		x;
 
 	x = -1;

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/05 19:18:48 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/05 21:30:06 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,10 @@ static void	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 	}
 }
 
+/*
+ * child function in expand_shell_var
+ * truncates name up to 1st occurence of non-alphabet or non-numbers
+ */
 static void	truncate_name_at_symbol(char *str)
 {
 	while (str && str[0])

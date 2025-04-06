@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/01 15:18:15 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/06 12:45:48 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ int	get_variable(t_env **vars, char *str)
 		// /*debug*/printf("check_var_syntax:enter! new:%s, str:%s\n", new, str);
 		if (!is_target(new, '|') && !flag) //put a flag for multiple_cmd  // && !has_mix_redirs(new)
 		{
+			/*debug*/printf("get_variable:flag:%d\n", flag);
 			if (ft_strncmp(new, "export", 6) == 0)
 			{
 				new = skip_if_symbol(new, 'c', 'c');
