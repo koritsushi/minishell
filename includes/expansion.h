@@ -44,6 +44,7 @@ void	update_flag_quote(char *target, char *symbol, int *flag_quote);
 
 int		count_malloc_quote_removal(char *str);
 void	expand_quote_removal(char *src, char *dest);
+// void	quote_removal(char **cmd_line);
 
 
 #endif

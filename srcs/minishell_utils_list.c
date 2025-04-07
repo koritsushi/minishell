@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 07:39:22 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/01 08:19:50 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/07 11:30:28 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	ft_lstdelone_sh(t_env *lst, void (*del)(void*))
 		return ;
 	if (lst && del != NULL)
 	{
+		(*del)(lst->env);
 		(*del)(lst->content);
 		free(lst);
 	}
@@ -70,6 +71,12 @@ void	ft_lstclear_sh(t_env **lst, void (*del)(void*))
 	}
 }
 
+/*
+ * helper function in saving variable in linked list
+ * splits var=123 into var and 123, saves in linked list
+ * and return the updated t_env
+ * uses malloc
+ */
 t_env	*ft_lstnew_sh(void *content)
 {
 	t_env	*p;
@@ -77,7 +84,24 @@ t_env	*ft_lstnew_sh(void *content)
 	p = malloc(sizeof(t_env));
 	if (p == NULL)
 		return (NULL);
-	p->content = content;
+	get_var_name(&p->env, content);
+	if (!is_target(content, '='))
+		p->content = ft_strdup("");
+	else if (ft_strchr(content, '='))
+		p->content = ft_strdup(ft_strchr(content, '=') + 1);
+	/*debug*/printf("ft_lstnew_sh:content:%s.\n", p->content);
 	p->next = NULL;
 	return (p);
 }
+
+// t_env	*ft_lstnew_sh(void *content)
+// {
+// 	t_env	*p;
+
+// 	p = malloc(sizeof(t_env));
+// 	if (p == NULL)
+// 		return (NULL);
+// 	p->content = content;
+// 	p->next = NULL;
+// 	return (p);
+// }

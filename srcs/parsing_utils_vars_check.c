@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/06 15:33:01 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/06 18:05:59 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,10 @@ int	check_var_syntax(char *str)//, int *flag)
 	// if (has_mix_redirs(new) || is_valid_var_name(new))
 	new = str;
 	if (!is_valid_var_name(new))
+	{
+		/*debug*/printf("\033[93mnot valid_var_name!\033[0m\n");
 		return (0);
+	}
 		// *flag = 1;
 	/* skips infile outfile at head */
 	while (new && new[0])// && !(*flag)) //export & default can use flag != 1

@@ -28,7 +28,7 @@ char	*skip_redirs(char *str);
 // int		has_mix_redirs(char *str);
 
 /*__________functions to extract variable assignments__________*/
-int		get_variable(t_env **vars, char *str);
+int		get_variable(t_env **vars, char *str, int exit_status);
 int		get_var_name(char **dest, char *str);
 void	replace_var_space(char *str);
 int		count_malloc_vars(char *str);

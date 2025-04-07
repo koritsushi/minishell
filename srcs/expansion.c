@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/05 21:28:05 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/07 09:22:21 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,12 @@ void	brace_expansion(char **cmd_line)
 // 24 lines!
 /*
  * checks if there are $var in string and corresponding entry in t_env vars
- * yes: replace with content
+ * yes: replace, free, remalloc cmd_line with content
  * no : replace with spaces ' '
  * uses malloc
  */
 void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 {
-	// char	**tmp;
-	// char	**fin;
 	char	*str;
 	int		flag;
 
@@ -128,8 +126,10 @@ int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 	while (lst_data && lst_data[++x])
 	{
 		/*debug*/printf("cmd_expansion:ent:%s\n", lst_data[x]);
-		shell_var_expansion(&lst_data[x], vars, exit_status);
 		brace_expansion(&lst_data[x]);
+		/*debug*/printf("cmd_expansion:brace:%s\n", lst_data[x]);
+		shell_var_expansion(&lst_data[x], vars, exit_status);
+		/*debug*/printf("cmd_expansion:sh_var:%s\n", lst_data[x]);
 		quote_removal(&lst_data[x]);
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/06 15:33:14 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/07 11:36:17 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	process_vars(t_env **vars, char *str, int export_id)
  * checks if variable syntax is correct,
  * overwrite & save if variable exists
  */
-int	get_variable(t_env **vars, char *str)
+int	get_variable(t_env **vars, char *str, int exit_status)
 {
 	char	*new;
 	int		export_id;
@@ -152,7 +152,11 @@ int	get_variable(t_env **vars, char *str)
 				new = skip_if_symbol(new, 'c', 'c');
 				export_id = 2;
 			}
+			new = ft_strdup(new);
+			shell_var_expansion(&new, *vars, exit_status);
+
 			process_vars(vars, new, export_id);
+			free(new);
 		}
 		// replace_var_space(new);
 	}

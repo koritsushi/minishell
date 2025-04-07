@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/01 11:10:36 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/07 08:54:22 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,9 @@ int	main(int argc, char **argv)
 		/*lexing & get_vars*/
 		else if (*text && check_syntax(text))
 		{
-			get_variable(&lst.vars, text);
+			get_variable(&lst.vars, text, 255);
 			if (lst.vars && lst.vars->content)
-			{
-				/*debug*/printf("\033[90m_____export_id definition:_____\033[0m\n");
-				/*debug*/printf("\033[90m0:[0]env_list && [0]export_list\033[0m\n");
-				/*debug*/printf("\033[90m1:[0]env_list && [1]export_list\033[0m\n");
-				/*debug*/printf("\033[90m2:[1]env_list && [1]export_list\033[0m\n");
-				/*debug*/printf("\033[103m_____vars_list:_____\033[0m\n");
 				debug_print_lst(lst.vars);
-			}
 			if (get_cmd_line(text, &lst, lst.vars))
 				free_all(&lst);
 			/* direct to/run pipex */

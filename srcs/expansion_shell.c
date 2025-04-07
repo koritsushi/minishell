@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/05 21:30:06 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/07 11:15:20 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	check_replace_var(char **cmd_line, char *name, char *src)
  */
 static void	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 {
-	char	**tmp;
+	// char	**tmp;
 	int		flag_name;
 	char	*content;
 
@@ -50,16 +50,16 @@ static void	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 	/*debug*/printf("\033[93mcheck_shell_var:ent:\033[0m%s\n", *cmd_line);
 	while (vars && !flag_name)
 	{
-		tmp = ft_split_shell(vars->content, "=");
-		/*debug*/printf("check_replace_dup name:%s, %s\n", tmp[0], name);
-		if (ft_strlen(tmp[0]) == ft_strlen(name) && \
-			ft_strncmp(vars->content, name, ft_strlen(name)) == 0)
+		// tmp = ft_split_shell(vars->content, "=");
+		/*debug*/printf("check_replace_dup name:%s, %s\n", vars->env, name);
+		if (ft_strlen(vars->env) == ft_strlen(name) && \
+			ft_strncmp(vars->env, name, ft_strlen(name)) == 0)
 		{
-			content = ft_strchr(vars->content, '=') + 1;
+			content = vars->content;
 			check_replace_var(cmd_line, name, content);
 			flag_name = 1;
 		}
-		free_chr_ptr((void **)tmp);
+		// free_chr_ptr((void **)tmp);
 		vars = vars->next;
 	}
 	if (!flag_name)
@@ -106,12 +106,11 @@ char	*expand_shell_var(t_env *vars, char **cmd_line, char *str)
 	fin = ft_split_shell(tmp[0], " \'\"\t\n\v\f\r");
 	truncate_name_at_symbol(fin[0]);
 	// /*debug*/debug_print(tmp);
-	/*debug*/printf(".....\nfin:\n");
-	/*debug*/debug_print(fin);
-	/*debug*/printf("-----\n");
-	/*debug*/printf("expand_shell_var:var_name:%s, str:%s\n", fin[0], str);
+	// /*debug*/printf(".....\nfin:\n");
+	// /*debug*/debug_print(fin);
+	// /*debug*/printf("-----\n");
+	// /*debug*/printf("expand_shell_var:var_name:%s, str:%s\n", fin[0], str);
 	check_shell_var(vars, fin[0], cmd_line, str);
 	free_multiple_ptr(2, tmp, fin);
 	return (*cmd_line);
-	// str = *cmd_line;
 }

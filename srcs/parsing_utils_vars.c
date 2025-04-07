@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:12:43 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/01 10:04:46 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/07 11:58:07 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int get_var_name(char **dest, char *str)
 	// /*debug*/printf("------\nget_var_name:\n");
 	len = 0;
 	new = skip_spaces(str, " \t\n\v\f\r"); //optional
+	if (!new[0])
+		return (0);
 	while (new[len] && new[len] != '=')
 		len++;
 	/*debug*/printf("len=%d, leftover=%s.\n", len, &new[len]);
@@ -106,8 +108,10 @@ static void	add_var_entry(t_env **vars, char *new, int export_id)
 
 	/*if !found && !flag*/
 	// /*debug*/printf("saved: new=\033[96m%s\033[0m.\n", new);
-	ft_lstadd_back_sh(vars, ft_lstnew_sh(ft_strdup(new)));
+	// ft_lstadd_back_sh(vars, ft_lstnew_sh(ft_strdup(new)));
+	ft_lstadd_back_sh(vars, ft_lstnew_sh(new));
 	tmp = ft_lstlast_sh(*vars);
+	/*debug*/printf("add_var_entry:env:\033[93m%s\033[0m.\n", tmp->env);
 	tmp->exported = export_id;
 	if (!is_target(new, '='))
 		tmp->exported = 1;
@@ -121,7 +125,7 @@ static void	add_var_entry(t_env **vars, char *new, int export_id)
  */
 void	extract_vars(t_env **vars, char *str, int export_id)
 {
-	int		flag;
+	int		flag_duplicate;
 	char	*name;
 	char	*new;
 
@@ -129,7 +133,7 @@ void	extract_vars(t_env **vars, char *str, int export_id)
 	/* search for name in linked list, if found, replace */
 	while (str && str[0])
 	{
-		flag = 0;
+		flag_duplicate = 0;
 		str = skip_spaces(str, " \t\n\v\f\r");
 		/* get_var_name */
 		if (!get_var_name(&name, str))
@@ -141,9 +145,9 @@ void	extract_vars(t_env **vars, char *str, int export_id)
 		copy_vars(new, str, count_malloc_vars(str));
 		// /*debug*/printf("copy_vars:%s\n", new);
 		// /*debug*/printf("---------\ncheck_replace_dup:\n");
-		flag = check_replace_dup(*vars, name, new, export_id);
+		flag_duplicate = check_replace_dup(*vars, name, new, export_id);
 		// /*debug*/printf("---------\n");
-		if (flag == 0) // if no duplicates
+		if (flag_duplicate == 0) // if no duplicates
 			add_var_entry(vars, new, export_id);
 		/*free variable name*/
 		free_multiple_ptr_single(2, new, name);
