@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/07 11:36:17 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/08 10:41:45 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,12 @@ char	*skip_if_quote(char *str, char symbol, int flag)
 	char	*new;
 
 	new = str;
-	if (str[0] == symbol) // ' "
+	if (str[0] == symbol)
 	{
 		/*debug*/printf("skip \033[35m%c\033[0m =\033[90m%s\033[0m\n", symbol, new);
 		// /*debug*/printf("new: \033[35m%c\033[0m\033[90m%s\033[0m\n", new[0], new + 1);
-		new = ft_strchr(new + 1, symbol);
+		// /*debug*/printf("\033[90msym:%c %d skip_quote:strchr: %s\033[0m\n", symbol, (int)symbol, new + 1);
+		new = ft_strchr(new + 1, (int)symbol);
 		/*debug*/printf("after_skip_quote=\033[90m%s\033[0m.\n", new);
 		if (flag && new && new[1] && is_target(" \t\n\v\f\r", new[1]))
 			return (skip_spaces(new + 1, " \t\n\v\f\r"));
@@ -121,6 +122,53 @@ void	process_vars(t_env **vars, char *str, int export_id)
 		extract_vars(vars, new, export_id);
 }
 
+/*
+ * child function in valid_export_keyword
+ * checks if str == keyword up to len
+ * flag = 0: no spaces after keyword
+ * flag = 1: has spaces after keyword
+ */
+static int	check_export_keyword(char *str, char *keyword, int len, int flag)
+{
+	if (ft_strncmp(str, keyword, len) == 0)
+	{
+		if ((flag && str[len] && is_target(" \t\n\v\f\r", str[len])) || !flag)
+			return (1);
+	}
+	return (0);
+}
+
+/*
+ * child function in get_variable & is_valid_var_name
+ * checks if string starts with export 'export' or "export"
+ * return 1 if valid
+ * flag 0 = only checks if it is keyword export
+ * flag 1 = checks keyword + if has spaces ' ' after keyword
+ */
+int	valid_export_keyword(char *str, int flag)
+{
+	if (!str)
+		return (0);
+	str = skip_spaces(str, " \t\n\v\f\r");
+	/*debug*/printf("valid_export_keyword:ent:%s.\n", str);
+	// if (
+	// (ft_strncmp(str, "export", 6) == 0 && \
+	// str[6] && is_target(" \t\n\v\f\r", str[6])) || \
+	// (ft_strncmp(str, "\'export\'", 8) == 0 && \
+	// str[8] && is_target(" \t\n\v\f\r", str[8])) || \
+	// (ft_strncmp(str, "\"export\"", 8) == 0  && \
+	// str[8] && is_target(" \t\n\v\f\r", str[8])))
+	// 	return (1);
+
+	if (\
+	check_export_keyword(str, "export", 6, flag) || \
+	check_export_keyword(str, "\'export\'", 8, flag) || \
+	check_export_keyword(str, "\"export\"", 8, flag))
+		return (1);
+	/*debug*/printf("valid_export_keyword:invalid! %c\n", str[6]);
+	return (0);
+}
+
 // 18 lines!
 /*
  * checks if variable syntax is correct,
@@ -138,8 +186,13 @@ int	get_variable(t_env **vars, char *str, int exit_status)
 	new = skip_redirs(new);
 
 	/*debug*/printf("get_variable:ent:%s.\n", new);
-	if (new[0] && !is_target(new, '=') && ft_strncmp(new, "export", 6) != 0)
+	// no '=', no export, no spaces after export
+	// if (new[0] && !is_target(new, '=') && ft_strncmp(new, "export", 6) != 0)
+	if (new[0] && !is_target(new, '=') && !valid_export_keyword(new, 1))
+	{
+		/*debug*/printf("get_variable:\033[93minvalid var!\033[0m\n");
 		return (0);
+	}
 	if (check_var_syntax(new))//, &flag))
 	{
 		/* if no pipes, copy_vars */
@@ -147,7 +200,8 @@ int	get_variable(t_env **vars, char *str, int exit_status)
 		if (!is_target(new, '|'))// && !flag) //put a flag for multiple_cmd  // && !has_mix_redirs(new)
 		{
 			// /*debug*/printf("get_variable:flag:%d\n", flag);
-			if (ft_strncmp(new, "export", 6) == 0)
+			// if (ft_strncmp(new, "export", 6) == 0)
+			if (valid_export_keyword(new, 1))
 			{
 				new = skip_if_symbol(new, 'c', 'c');
 				export_id = 2;

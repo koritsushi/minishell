@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 07:39:22 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/07 11:30:28 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/08 12:38:03 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,14 @@ void	ft_lstclear_sh(t_env **lst, void (*del)(void*))
 t_env	*ft_lstnew_sh(void *content)
 {
 	t_env	*p;
+	char	*name;
 
 	p = malloc(sizeof(t_env));
 	if (p == NULL)
 		return (NULL);
-	get_var_name(&p->env, content);
+	get_var_name(&name, content);
+	quote_removal(&name);
+	p->env = name;
 	if (!is_target(content, '='))
 		p->content = ft_strdup("");
 	else if (ft_strchr(content, '='))

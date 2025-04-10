@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/06 18:05:59 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/08 15:49:34 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,30 +20,38 @@
  * returns 0 if detect non-alnum
  * str=tmp[0]
  */
-static int	check_if_non_alnum(char *str)
-{
-	int		i;
-	int		res;
-	char	**tmp;
+// static int	check_if_non_alnum(char *str)
+// {
+// 	int		i;
+// 	int		res;
+// 	char	**tmp;
 
-	res = 1;
-	tmp = ft_split_shell(str, "=");
-	i = -1;
-	if (ft_strncmp(tmp[0], "export", 6) == 0 && skip_if_symbol(tmp[0], 'c', 'c'))
-	{
-		i = skip_if_symbol(tmp[0], 'c', 'c') - tmp[0];
-		/*debug*/printf("check_if_non_alnum:ent:%s.\n", &tmp[0][i]);
-	}
-	while (tmp[0][++i] && res)
-	{
-		/*debug*/printf("check_if_non_alnum:while_ent:%s.\n", &tmp[0][i]);
-		if (!ft_isalnum(tmp[0][i]))
-			res = 0;
-	}
-	free_chr_ptr((void **)tmp);
-	return (res);
+// 	res = 1;
+// 	tmp = ft_split_shell(str, "=");
+// 	/* car1=9 car2=4 */
+// 	/* car1
+// 	9 car2
+// 	4 */
+// 	/* export car1 car2 */
+// 	/* export flag on, if non-alnum && non-spaces ' ' , invalid! */
+// 	/* dont need split '=' */
+// 	i = -1;
+// 	// if (ft_strncmp(tmp[0], "export", 6) == 0 && skip_if_symbol(tmp[0], 'c', 'c'))
+// 	if (valid_export_keyword(tmp[0], 1) && skip_if_symbol(tmp[0], 'c', 'c'))
+// 	{
+// 		i = skip_if_symbol(tmp[0], 'c', 'c') - tmp[0];
+// 		/*debug*/printf("check_if_non_alnum:ent:%s.\n", &tmp[0][i]);
+// 	}
+// 	while (tmp[0][++i] && res)
+// 	{
+// 		/*debug*/printf("check_if_non_alnum:while_ent:%s.\n", &tmp[0][i]);
+// 		if (!ft_isalnum(tmp[0][i]))
+// 			res = 0;
+// 	}
+// 	free_chr_ptr((void **)tmp);
+// 	return (res);
 
-}
+// }
 
 /*
  * child function in check_var_syntax
@@ -51,32 +59,69 @@ static int	check_if_non_alnum(char *str)
  * or if str contains any non-alphabets & numbers
  * changes flag value if true
  */
-static int	is_valid_var_name(char *str)
+// int	is_valid_var_name(char *str)
+// static int	is_valid_var_name(char *str)
+// {
+// 	char	*new;
+// 	char	**tmp;
+// 	char	**fin;
+// 	int		i;
+// 	int		res;
+
+// 	new = skip_redirs(str);
+// 	tmp = ft_split_shell(new, "<>");
+// 	fin = ft_split_shell(tmp[0], " \t\n\v\f\r");
+// 	res = 1;
+// 	i = -1;
+// 	while (fin && fin[++i] && res)
+// 	{
+// 		/*debug*/printf("is_valid_var_name:ent:%s.\n", fin[i]);
+// 		// if (ft_strncmp(fin[i], "export", 6) == 0)
+// 		if (valid_export_keyword(fin[i], 0))
+// 			i++;
+// 			// break ;
+// 		if ((fin[i][0] && !ft_isalpha(fin[i][0])) || !is_target(fin[i], '=')) //check head
+// 		{
+// 			res = 0;
+// 			/*debug*/printf("is_valid_var_name:found!%s\n", fin[i]);
+// 		}
+// 	}
+// 	if (res)
+// 		res = check_if_non_alnum(tmp[0]);
+// 	/* var=90 var2=56 ^var=6 */
+// 	/* ^var=6 */
+// 	free_multiple_ptr(2, tmp, fin);
+// 	return (res);
+// }
+
+/*
+ * child function in check_var_syntax
+ * breaks check if detected keyword: export 'export' "export"
+ * checks if str doesnt have '=' (valid_var)
+ */
+static int	has_non_var(char *str)
 {
-	char	*new;
 	char	**tmp;
 	char	**fin;
 	int		i;
 	int		res;
 
-	new = skip_redirs(str);
-	tmp = ft_split_shell(new, "<>");
+	str = skip_redirs(str);
+	tmp = ft_split_shell(str, "<>");
 	fin = ft_split_shell(tmp[0], " \t\n\v\f\r");
-	res = 1;
+	res = 0;
 	i = -1;
-	while (fin && fin[++i] && res)
+	while (fin && fin[++i] && !res)
 	{
-		/*debug*/printf("is_valid_var_name:ent:%s.\n", fin[i]);
-		if (ft_strncmp(fin[i], "export", 6) == 0)
+		/*debug*/printf("has_non_var:ent:%s.\n", fin[i]);
+		if (valid_export_keyword(fin[i], 0))
 			break ;
-		if ((fin[i][0] && !ft_isalpha(fin[i][0])) || !is_target(fin[i], '='))
+		if (!is_target(fin[i], '='))
 		{
-			res = 0;
-			/*debug*/printf("is_valid_var_name:found!%s\n", fin[i]);
+			res = 1;
+			/*debug*/printf("has_non_var:found!%s\n", fin[i]);
 		}
 	}
-	if (res)
-		res = check_if_non_alnum(tmp[0]);
 	/* var=90 var2=56 ^var=6 */
 	/* ^var=6 */
 	free_multiple_ptr(2, tmp, fin);
@@ -93,20 +138,14 @@ int	check_var_syntax(char *str)//, int *flag)
 {
 	char	*new;
 
-	/* mix in/out files */
-	/* has other cmds */
-	/* syntax incorrect: have spaces before/after '=' */
-	/* '=' happen before ' " */
-	/* mix in/out files */
-	// if (has_mix_redirs(new) || is_valid_var_name(new))
 	new = str;
-	if (!is_valid_var_name(new))
+	/* if no export && has_more_str , error! */
+	if (has_non_var(new))
 	{
-		/*debug*/printf("\033[93mnot valid_var_name!\033[0m\n");
+		/*debug*/printf("check_var_syntax:\033[93mnon var detected!\033[0m\n");
 		return (0);
 	}
-		// *flag = 1;
-	/* skips infile outfile at head */
+	
 	while (new && new[0])// && !(*flag)) //export & default can use flag != 1
 	{
 		/*debug*/printf("check_var_syntax:ent:%s\n", new);

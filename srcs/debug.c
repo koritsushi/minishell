@@ -10,7 +10,7 @@ void	debug_print(char **res)
 		return ;
 	}
 	while (res && res[i])
-		printf("%s\n", res[i++]);
+		printf("%s.\n", res[i++]);
 }
 
 void	debug_print_lst(t_env *lst)

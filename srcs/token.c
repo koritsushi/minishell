@@ -212,11 +212,6 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars)
 	/* ---------------- extract_cmd ---------------- */
 	process_cmd(lst, res, infile);
 	cmd_expansion(lst->data, vars, 255); //exit status need to redef
-
-	// get_variable(&lst->vars, str);
-	// if (lst->vars && lst->vars->content)
-	// 	debug_print_lst(lst->vars);
-	
 	assign_datatype(lst->datatype, res, infile);
 
 	/*-------------debug_start-------------*/

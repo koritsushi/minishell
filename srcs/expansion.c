@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/07 09:22:21 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/10 18:56:28 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 {
 	char	*str;
 	int		flag;
+	// int		x;
 
 	str = *cmd_line;
 	flag = 0;
@@ -75,7 +76,7 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 		// /*debug*/printf("shell_var_expansion:ent:%s\n", str);
 		if (str[0] == '\"')
 			flag = 1;
-		if (str[0] == '\'' && !flag)
+		if (!flag && str[0] == '\'' && ft_strchr(str + 1, '\''))
 			str = ft_strchr(str + 1, '\'') + 1;
 		else if (str[0] == '$' && ft_isalpha(str[1]))
 		{
@@ -95,6 +96,7 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 			str++;
 	}
 }
+
 
 /*
  * child function in cmd_expansion

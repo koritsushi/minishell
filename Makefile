@@ -50,7 +50,7 @@ CCFLAGS		=	-Wall -Wextra -Werror
 DEBUG		=	-ggdb3
 FSAN		=	-fsanitize=address
 READINC		= 	-I/usr/include./	
-READLIB		= 	-L/usr/lib/x86_64-linux-gnu/libreadline.a
+#READLIB		= 	-L/usr/lib/x86_64-linux-gnu/libreadline.a
 
 %.o: %.c
 			$(COMPILE) $(CCFLAGS) $(DEBUG) $(READINC) -I. -c $< -o $(<:.c=.o)

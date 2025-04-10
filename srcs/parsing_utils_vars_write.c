@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:02:51 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/06 22:02:32 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/09 07:41:00 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,15 @@
 int	count_malloc_vars(char *str)
 {
 	int	i;
+	int	f_equal_sign;
 
 	i = 0;
+	f_equal_sign = 0;
 	while (str && str[i])
 	{
-		if (str[i] == '\'' || str[i] == '\"')
+		if (str[i] == '=')
+			f_equal_sign = 1;
+		if (f_equal_sign && (str[i] == '\'' || str[i] == '\"'))
 		{
 			// printf("count_malloc_vars: i=%d, %s.\n", i, &str[i]);
 			// printf("%d+1\n", (int)(ft_strchr(&str[i + 1], str[i]) - &str[i]));
@@ -45,7 +49,7 @@ int	count_malloc_vars(char *str)
 
 /*
  * child function in extract_vars,
- * copies src to dest, skips when encountered double quote sign "
+ * copies src to dest, except when encountered double quote sign " (skips)
  */
 void	copy_vars(char *dest, char *src, int len)
 {
@@ -57,17 +61,21 @@ void	copy_vars(char *dest, char *src, int len)
 		return ;
 	x = 0;
 	flag = 0;
-	symbol = '\0';
+	// symbol = '\0';
+	/*debug*/printf("copy_vars:src:%s, len:%d\n", src, len);
 	while (src[0] && x < len)
 	{
-		// if (!flag && (src[0] == '\'' || src[0] == '\"'))
-		if (!flag && src[0] == '\"')
-		{
-			symbol = src[0];
-			flag = 1;
-		}
-		if (src[0] != symbol)
+		/* 'po"$var' "p'$var" */
+		update_flag_quote(src, &symbol, &flag);
+		// if (src[0] == symbol && symbol == '\'')
+		// if (!flag && src[0] == '\"')
+		// {
+		// 	symbol = src[0];
+		// 	flag = 1;
+		// }
+		if (src[0] != symbol || (src[0] == symbol && symbol == '\''))
 			dest[x++] = src[0];
+		/*debug*/printf("copy_vars:%s.\n", dest);
 		src++;
 	}
 	dest[x] = '\0';
@@ -115,7 +123,7 @@ int	check_replace_dup(t_env *vars, char *name, char *new, int export_id)
 		/*debug*/printf("check_replace_dup name:%s, %s.\n", (*vars).env, name);
 		while (name[len] && !is_target(" \t\n\v\f\r", name[len]))
 			len++;
-		/*debug*/printf("h:%s, %zu %zu\n", new, ft_strlen((*vars).env), len);
+		/*debug*/printf("h:%s, %zu %zu\n", name, ft_strlen((*vars).env), len);
 		if (ft_strlen((*vars).env) > len)
 			len = ft_strlen((*vars).env);
 		if (ft_strncmp(vars->env, name, len) == 0 && !is_target(new, '='))

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/07 11:15:20 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/10 18:56:48 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,16 @@ static void	check_replace_var(char **cmd_line, char *name, char *src)
  * child function in expand_shell_var, checks if $var entry exist in t_env
  * yes: remalloc *cmd_line & copy over the content + expansion
  * no : replace $var with ' ' spaces
+ * return len of the expanded content
  */
-static void	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
+static int	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 {
 	// char	**tmp;
+	int		len;
 	int		flag_name;
 	char	*content;
 
+	len = 0;
 	flag_name = 0;
 	/*debug*/printf("\033[93mcheck_shell_var:ent:\033[0m%s\n", *cmd_line);
 	while (vars && !flag_name)
@@ -55,9 +58,10 @@ static void	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 		if (ft_strlen(vars->env) == ft_strlen(name) && \
 			ft_strncmp(vars->env, name, ft_strlen(name)) == 0)
 		{
+			flag_name = 1;
+			len = ft_strlen(content);
 			content = vars->content;
 			check_replace_var(cmd_line, name, content);
-			flag_name = 1;
 		}
 		// free_chr_ptr((void **)tmp);
 		vars = vars->next;
@@ -66,12 +70,14 @@ static void	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 	{
 		// /*debug*/printf("notfound! bf:%s.\n", *cmd_line);
 		content = str;
-		*content++ = ' ';
+		content[len++] = ' ';
 		while (content && content[0] && !is_target(" $\'\"\t\n\v\f\r", content[0]))
 			*content++ = ' ';
 		/*debug*/printf("notfound! updated:%s.\n", *cmd_line);
 	}
+	return (len);
 }
+/* " r'r$v' " */
 
 /*
  * child function in expand_shell_var
@@ -93,10 +99,11 @@ static void	truncate_name_at_symbol(char *str)
 /*
  * child function in shell_var_expansion
  * checks if $var entry exists, copy from *cmd_line
- * remallocs the new expanded string & return
+ * remallocs cmd_line to new expanded string & return
+ * index = str[index] position when entering this function
  * uses malloc
  */
-char	*expand_shell_var(t_env *vars, char **cmd_line, char *str)
+char	*expand_shell_var(t_env *vars, char **cmd_line, char *str)//, int index)
 {
 	char	**tmp;
 	char	**fin;
@@ -110,7 +117,12 @@ char	*expand_shell_var(t_env *vars, char **cmd_line, char *str)
 	// /*debug*/debug_print(fin);
 	// /*debug*/printf("-----\n");
 	// /*debug*/printf("expand_shell_var:var_name:%s, str:%s\n", fin[0], str);
+	
+	// index = check_shell_var();
+	// /*debug*/ printf("expand_shell_var:index_ori:%d\n", index);
 	check_shell_var(vars, fin[0], cmd_line, str);
+	// /*debug*/ printf("expand_shell_var:index_new:%d\n", index);
 	free_multiple_ptr(2, tmp, fin);
+	// return &cmd_line[index] (return a pointer to the previous expansion)
 	return (*cmd_line);
 }

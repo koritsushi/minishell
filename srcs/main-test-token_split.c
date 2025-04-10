@@ -49,7 +49,12 @@ int	main(int ac, char **av)
 	// char str[] = "cmd1| var=123";
 	// char str[] = "var      = 123";
 	// char str[] = "echo $var\" hello\"";
-	// char str[] = "echo '$r'$var";
+	char str[] = "echo '$r'$var";
+	char str[] = "$var'$var yu'";
+	char str[] = " $var'$var'$var "$var'$var yu'" ";
+	char str[] = " $var'$var'$var"$var'$var yu'” ";
+	char str[] = " "$var'$var'"$var ";
+	char str[] = " 'a'b"c'dd'” ";
 	// char str[] = "'rr$r'$var$r";
 	// char str[] = "$var\" hello\"";
 	// char str[] = "var=123 | echo $var";

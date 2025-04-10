@@ -35,6 +35,7 @@ int		count_malloc_vars(char *str);
 void	copy_vars(char *dest, char *src, int len);
 void	extract_vars(t_env **vars, char *str, int export_id);
 int		check_replace_dup(t_env *vars, char *name, char *new, int export_id);
+int		valid_export_keyword(char *str, int flag);
 
 /*__________functions to clear variable assignments__________*/
 char	*overwrite_export_line(char *str);
