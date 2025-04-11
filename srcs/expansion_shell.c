@@ -6,32 +6,11 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/11 11:32:47 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/12 07:55:22 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/expansion.h"
-
-/*
- * child function in check_replace_var
- * copies var_head up to len
- * updates & return flag_quote if ' " quotes detected
- */
-// static int	copy_var_head(char *dest, char *src, int len, char *symbol)
-// {
-// 	int	x;
-// 	int	flag_quote;
-	
-// 	x = 0;
-// 	flag_quote = 0;
-// 	while (src[x] && x < len)
-// 	{
-// 		update_flag_quote(&src[x], &symbol, &flag_quote);
-// 		dest[x] = src[x];
-// 		x++;
-// 	}
-// 	return (flag_quote);
-// }
 
 /*
  * child function in check_shell_var
@@ -91,8 +70,7 @@ static int	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 			flag_exist = 1;
 			len = ft_strlen(vars->content);
 			/*debug*/printf("check_shell_var:len:%s. %d\n", vars->content, len);
-			content = vars->content;
-			check_replace_var(cmd_line, name, content, str - (*cmd_line));
+			check_replace_var(cmd_line, name, vars->content, str - (*cmd_line));
 		}
 		vars = vars->next;
 	}
@@ -132,11 +110,11 @@ static void	truncate_name_at_symbol(char *str)
  * child function in shell_var_expansion
  * checks if $var entry exists, copy from *cmd_line to new string
  * remallocs cmd_line to point to new expanded string,
- * returns index number to point where expansion part done
+ * updates index number to point where expansion part done
  * index = str[index] position when entering this function
  * uses malloc
  */
-int	expand_shell_var(t_env *vars, char **cmd_line, char *str, int index)
+char	*expand_shell_var(t_env *vars, char **cmd_line, char *str, int *index)
 {
 	char	**tmp;
 	char	**fin;
@@ -151,13 +129,13 @@ int	expand_shell_var(t_env *vars, char **cmd_line, char *str, int index)
 	// /*debug*/printf("-----\n");
 	/*debug*/printf("expand_shell_var:var_name:%s, str:%s\n", fin[0], str);
 	
-	/*debug*/ printf("expand_shell_var:\033[93mindex_ori:\033[0m %d %ld\n", index, str - (*cmd_line));
-	index += check_shell_var(vars, fin[0], cmd_line, str);
-	/*debug*/ printf("expand_shell_var:index_new: %d\n", index);
+	/*debug*/ printf("expand_shell_var:\033[93mindex_ori:\033[0m %d %ld\n", *index, str - (*cmd_line));
+	(*index) += check_shell_var(vars, fin[0], cmd_line, str);
+	/*debug*/ printf("expand_shell_var:index_new: %d\n", *index);
 	// /*debug*/ printf("expand_shell_var:%s.\n", &(*cmd_line)[index]);
 	free_multiple_ptr(2, tmp, fin);
-	return (index);
-	// return (*cmd_line);
+	return (*cmd_line);
+	// return (index);
 }
 
 // char	*expand_shell_var(t_env *vars, char **cmd_line, char *str, int index)
