@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:21:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/05 19:16:48 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/11 11:02:56 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ static void	update_flag_status(char target, char symbol, int *main_flag, int sub
 // 24 lines!
 /*
  * child helper function in check_replace_var
+ * str = *cmd_line, src = expanded_content (eg var=src)
  * copy string from str & src to dest
  * only expands the 1st $var set, copies & return the rest, repeat
  */
@@ -119,3 +120,40 @@ char	*copy_shell_var(char *str, char *dest, char *src, int var_name_len)
 	dest[i] = '\0';
 	return (dest);
 }
+
+
+// char	*copy_shell_var(char *dest, char *src, int var_name_len, char *symbol)
+// {
+// 	int		i;
+// 	int		flag;
+// 	int		double_quote;
+
+// 	if (!src)
+// 		return (0);
+
+// 	if (symbol = '\"')
+// 		double_quote = 1;
+
+// 	i = 0;
+// 	flag = 0;
+// 	double_quote = 0;
+// 	while (str && str[0])
+// 	{
+// 		update_flag_quote
+// 		update_flag_status(str[0], '\"', &double_quote, flag);
+// 		update_flag_status(str[0], '\'', &flag, double_quote);
+// 		if (!flag && str[0] == '$' && str[1] != '$')
+// 		{
+// 			i += ft_strlcpy(&dest[i], src, ft_strlen(src) + 1);
+// 			// str = next_available_var(str);
+// 			str += var_name_len;
+// 			flag = 2;
+// 			/*debug*/printf("copy_shell_var:skips:\033[92m%s\033[0m\n", str);
+// 		}
+// 		else
+// 			dest[i++] = *str++;
+// 		// /*debug*/printf("copy_shell_var:%s, %d, flag:%d\n", dest, i, flag);
+// 	}
+	
+// 	return (dest);
+// }

@@ -6,11 +6,32 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/10 18:56:48 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/11 11:32:47 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/expansion.h"
+
+/*
+ * child function in check_replace_var
+ * copies var_head up to len
+ * updates & return flag_quote if ' " quotes detected
+ */
+// static int	copy_var_head(char *dest, char *src, int len, char *symbol)
+// {
+// 	int	x;
+// 	int	flag_quote;
+	
+// 	x = 0;
+// 	flag_quote = 0;
+// 	while (src[x] && x < len)
+// 	{
+// 		update_flag_quote(&src[x], &symbol, &flag_quote);
+// 		dest[x] = src[x];
+// 		x++;
+// 	}
+// 	return (flag_quote);
+// }
 
 /*
  * child function in check_shell_var
@@ -18,18 +39,29 @@
  * free & reassign *cmd_line to point to the new allocated string
  * src = content to copy over (eg var=content)
  */
-static void	check_replace_var(char **cmd_line, char *name, char *src)
+static void	check_replace_var(char **cmd_line, char *name, char *src, int len_head)
 {
 	int		i;
 	char	*new;
 
 	/*debug*/printf("str:%s. %zu+1\n", *cmd_line, ft_strlen(*cmd_line));
-	i = ft_strlen(*cmd_line);
-	/*debug*/printf("str:%lu, name:%lu, content:%lu\n malloc:%lu\n", ft_strlen(*cmd_line), ft_strlen(name), ft_strlen(src), i - ft_strlen(name) + ft_strlen(src));
+	i = ft_strlen(*cmd_line) - ft_strlen(name) + ft_strlen(src);
+	malloc_chr_ptr(&new, i);
+	
+	/*debug*/printf("check_replace_var:str:%lu, name:%lu, content:%lu\n malloc:%d\n", ft_strlen(*cmd_line), ft_strlen(name), ft_strlen(src), i);
 	/*debug*/printf("check_replace_var:same! start:%s\n", src);	
-	malloc_chr_ptr(&new, i - ft_strlen(name) + ft_strlen(src));
-	copy_shell_var(*cmd_line, new, src, ft_strlen(name) + 1);
+	
+	i = len_head + ft_strlen(name) + 1;
+	ft_strlcpy(new, (*cmd_line), len_head + 1); //copy head
+	len_head += ft_strlcpy(&new[len_head], src, ft_strlen(src) + 1); //copy content
+	/*debug*/printf("check_replace_var:head:%s. %s\n", new, &new[len_head]);
+	
+	/*debug*/printf("check_replace_var:tail:%s. %d\n", &(*cmd_line)[i], i);
+	ft_strlcpy(&new[len_head], &(*cmd_line)[i], ft_strlen(&(*cmd_line)[i]) + 1); //copy tail
+
+	// copy_shell_var(&(*cmd_line)[len_head], &new[len_head], src, ft_strlen(name) + 1);
 	// /*debug*/printf("res:%s, %d\n", new, i);
+
 	free(*cmd_line);
 	*cmd_line = new;
 }
@@ -43,36 +75,36 @@ static void	check_replace_var(char **cmd_line, char *name, char *src)
  */
 static int	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 {
-	// char	**tmp;
 	int		len;
-	int		flag_name;
+	int		flag_exist;
 	char	*content;
 
 	len = 0;
-	flag_name = 0;
+	flag_exist = 0;
 	/*debug*/printf("\033[93mcheck_shell_var:ent:\033[0m%s\n", *cmd_line);
-	while (vars && !flag_name)
+	while (vars && !flag_exist)
 	{
-		// tmp = ft_split_shell(vars->content, "=");
 		/*debug*/printf("check_replace_dup name:%s, %s\n", vars->env, name);
 		if (ft_strlen(vars->env) == ft_strlen(name) && \
 			ft_strncmp(vars->env, name, ft_strlen(name)) == 0)
 		{
-			flag_name = 1;
-			len = ft_strlen(content);
+			flag_exist = 1;
+			len = ft_strlen(vars->content);
+			/*debug*/printf("check_shell_var:len:%s. %d\n", vars->content, len);
 			content = vars->content;
-			check_replace_var(cmd_line, name, content);
+			check_replace_var(cmd_line, name, content, str - (*cmd_line));
 		}
-		// free_chr_ptr((void **)tmp);
 		vars = vars->next;
 	}
-	if (!flag_name)
+	if (!flag_exist) // need to replace to remalloc delete empty str
 	{
+		// if len=2 (a $va, va=)
+		// len remains same, recopy & malloc only
 		// /*debug*/printf("notfound! bf:%s.\n", *cmd_line);
 		content = str;
 		content[len++] = ' ';
-		while (content && content[0] && !is_target(" $\'\"\t\n\v\f\r", content[0]))
-			*content++ = ' ';
+		while (content && content[len] && !is_target(" $\'\"\t\n\v\f\r", content[len]))
+			content[len++] = ' ';
 		/*debug*/printf("notfound! updated:%s.\n", *cmd_line);
 	}
 	return (len);
@@ -98,12 +130,13 @@ static void	truncate_name_at_symbol(char *str)
 
 /*
  * child function in shell_var_expansion
- * checks if $var entry exists, copy from *cmd_line
- * remallocs cmd_line to new expanded string & return
+ * checks if $var entry exists, copy from *cmd_line to new string
+ * remallocs cmd_line to point to new expanded string,
+ * returns index number to point where expansion part done
  * index = str[index] position when entering this function
  * uses malloc
  */
-char	*expand_shell_var(t_env *vars, char **cmd_line, char *str)//, int index)
+int	expand_shell_var(t_env *vars, char **cmd_line, char *str, int index)
 {
 	char	**tmp;
 	char	**fin;
@@ -116,13 +149,37 @@ char	*expand_shell_var(t_env *vars, char **cmd_line, char *str)//, int index)
 	// /*debug*/printf(".....\nfin:\n");
 	// /*debug*/debug_print(fin);
 	// /*debug*/printf("-----\n");
-	// /*debug*/printf("expand_shell_var:var_name:%s, str:%s\n", fin[0], str);
+	/*debug*/printf("expand_shell_var:var_name:%s, str:%s\n", fin[0], str);
 	
-	// index = check_shell_var();
-	// /*debug*/ printf("expand_shell_var:index_ori:%d\n", index);
-	check_shell_var(vars, fin[0], cmd_line, str);
-	// /*debug*/ printf("expand_shell_var:index_new:%d\n", index);
+	/*debug*/ printf("expand_shell_var:\033[93mindex_ori:\033[0m %d %ld\n", index, str - (*cmd_line));
+	index += check_shell_var(vars, fin[0], cmd_line, str);
+	/*debug*/ printf("expand_shell_var:index_new: %d\n", index);
+	// /*debug*/ printf("expand_shell_var:%s.\n", &(*cmd_line)[index]);
 	free_multiple_ptr(2, tmp, fin);
-	// return &cmd_line[index] (return a pointer to the previous expansion)
-	return (*cmd_line);
+	return (index);
+	// return (*cmd_line);
 }
+
+// char	*expand_shell_var(t_env *vars, char **cmd_line, char *str, int index)
+// {
+// 	char	**tmp;
+// 	char	**fin;
+
+// 	tmp = ft_split_shell(str, "$");
+// 	// /*debug*/printf("-----\nsplit:fin:\n");
+// 	fin = ft_split_shell(tmp[0], " \'\"\t\n\v\f\r");
+// 	truncate_name_at_symbol(fin[0]);
+// 	// /*debug*/debug_print(tmp);
+// 	// /*debug*/printf(".....\nfin:\n");
+// 	// /*debug*/debug_print(fin);
+// 	// /*debug*/printf("-----\n");
+// 	// /*debug*/printf("expand_shell_var:var_name:%s, str:%s\n", fin[0], str);
+	
+// 	// index = check_shell_var();
+// 	/*debug*/ printf("expand_shell_var:index_ori: %d\n", index);
+// 	index += check_shell_var(vars, fin[0], cmd_line, str);
+// 	/*debug*/ printf("expand_shell_var:index_new: %d\n", index);
+// 	free_multiple_ptr(2, tmp, fin);
+// 	// return &cmd_line[index] (return a pointer to the previous expansion)
+// 	return (*cmd_line);
+// }

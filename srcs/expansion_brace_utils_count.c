@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:41:58 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/03 08:25:41 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/11 10:42:29 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 /*
  * checks if flag_quote is on, update status accordingly
- * target = str[0], symbol = &symbol, flag_qupte = &flag_quote
+ * target = str[0], symbol = &symbol, flag_quote = &flag_quote
  */
 void	update_flag_quote(char *target, char *symbol, int *flag_quote)
 {

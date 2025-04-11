@@ -21,8 +21,8 @@ int		cmd_expansion(char **lst_data, t_env *vars, int exit_status);
 /*__________functions for shell var expansion__________*/
 
 void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status);
-// char	*expand_shell_var(t_env *vars, char **cmd_line, char *str, int index);
-char	*expand_shell_var(t_env *vars, char **cmd_line, char *str);
+int     expand_shell_var(t_env *vars, char **cmd_line, char *str, int index);
+// char	*expand_shell_var(t_env *vars, char **cmd_line, char *str);
 char	*copy_shell_var(char *str, char *dest, char *src, int var_name_len);
 
 

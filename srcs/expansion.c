@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/10 18:56:28 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/11 12:39:57 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,35 +65,57 @@ void	brace_expansion(char **cmd_line)
  */
 void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 {
-	char	*str;
+	int		x;
 	int		flag;
-	// int		x;
+	char	*str;
+	char	symbol;
+	(void)	vars;
+	(void)	exit_status;
 
-	str = *cmd_line;
+	x = 0;
 	flag = 0;
-	while (str && str[0])
+	str = *cmd_line;
+
+	// int	k = 0;
+	while (str && str[x])// && k < 3)
 	{
-		// /*debug*/printf("shell_var_expansion:ent:%s\n", str);
-		if (str[0] == '\"')
-			flag = 1;
-		if (!flag && str[0] == '\'' && ft_strchr(str + 1, '\''))
-			str = ft_strchr(str + 1, '\'') + 1;
-		else if (str[0] == '$' && ft_isalpha(str[1]))
+		/*debug*/printf("shell_var_expansion:ent:%s. flag:%d\n", &str[x], flag);
+		update_flag_quote(&str[x], &symbol, &flag);
+		// if (str[x] == '\"')
+		// 	flag = 1;
+		// if (!flag && str[x] == '\'' && ft_strchr(&str[x + 1], '\''))
+		if (flag && symbol == '\'' && str[x] == symbol)// && ft_strchr(&str[x + 1], '\''))
+		{
+			// str = ft_strchr(str + 1, '\'') + 1;
+			// 'var' e
+			// x = (ft_strchr(&str[x + 1], '\'') + 1) - &str[x];
+			// /*debug*/printf("\033[93mshell_var_expansion:sym:\033[0m%s.\n", &str[x + 1]);
+			/*debug*/printf("x: %ld, x_ori:%d\n", (ft_strchr(&str[x + 1], '\'') - &str[x]), x);
+			x += ft_strchr(&str[x + 1], '\'') - &str[x];
+			update_flag_quote(&str[x], &symbol, &flag);
+			x++;
+			if (&str[x])
+			/*debug*/printf("\033[93mshell_var_expansion:quote:\033[0m%s. %d\n", &str[x], flag);
+		}
+		else if (str[x] == '$' && ft_isalpha(str[x + 1]))
 		{
 			/*debug*/printf("shell_var_expansion:flag:%d\n", flag);
-			str = expand_shell_var(vars, cmd_line, str);
-			if (flag)
-				flag = 0;
+			x = expand_shell_var(vars, cmd_line, &str[x], x); //actually return x is better
+			str = *cmd_line;
+			/*debug*/printf("shell_var_expansion:new:%s.\n", &str[x]);
 		}
-		else if (str[0] == '$' && str[1] && str[1] == '?')
-		{
-			str = expand_exit_status(cmd_line, exit_status);
-			/*debug*/printf("shell_var_expansion:exit:%s %d\n", str, exit_status);
-		}
-		else if (str[0] == '$' && str[1] && str[1] == '$')
-			str += 2;
+		// else if (str[x] == '$' && str[x + 1] && str[x + 1] == '?')
+		// {
+		// 	// this need to update to x too
+		// 	// x += expand_exit_status(cmd_line, exit_status) - &str[x];
+		// 	str = expand_exit_status(cmd_line, exit_status);
+		// 	/*debug*/printf("shell_var_expansion:exit:%s. %d\n", &str[x], exit_status);
+		// }
+		else if (str[x] == '$' && str[x + 1] && str[x + 1] == '$')
+			x += 2;
 		else
-			str++;
+			x++;
+		// k++;
 	}
 }
 
@@ -132,7 +154,7 @@ int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 		/*debug*/printf("cmd_expansion:brace:%s\n", lst_data[x]);
 		shell_var_expansion(&lst_data[x], vars, exit_status);
 		/*debug*/printf("cmd_expansion:sh_var:%s\n", lst_data[x]);
-		quote_removal(&lst_data[x]);
+		// quote_removal(&lst_data[x]);
 	}
 	return (1);
 }
