@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/12 07:55:22 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/12 09:00:01 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,26 @@ static void	check_replace_var(char **cmd_line, char *name, char *src, int len_he
 	free(*cmd_line);
 	*cmd_line = new;
 }
+/*
+ * child function in check_shell_var,
+ * clean up $var when it does not exist
+ * copies leftover and remalloc cmd_line to point to new string
+ * index = str - *cmd_line
+ * uses malloc
+ */
+static void	copy_remove_var(char **cmd_line, int index, int name_len)
+{
+	int		tail;
+	char	*dest;
+
+	malloc_chr_ptr(&dest, ft_strlen(*cmd_line) - name_len);
+	ft_strlcpy(dest, (*cmd_line), index + 1);
+	tail = ft_strlen(&(*cmd_line)[index + name_len + 1]) + 1;
+	ft_strlcpy(&dest[index], &(*cmd_line)[index + name_len + 1], tail);
+	// /*debug*/printf("\033[93mnotfound!\033[0m new:%s. len:%zu\n", content, ft_strlen(content));
+	free(*cmd_line);
+	*cmd_line = dest;
+}
 
 // 24 lines!
 /*
@@ -56,7 +76,6 @@ static int	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 {
 	int		len;
 	int		flag_exist;
-	char	*content;
 
 	len = 0;
 	flag_exist = 0;
@@ -74,15 +93,9 @@ static int	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 		}
 		vars = vars->next;
 	}
-	if (!flag_exist) // need to replace to remalloc delete empty str
+	if (!flag_exist)
 	{
-		// if len=2 (a $va, va=)
-		// len remains same, recopy & malloc only
-		// /*debug*/printf("notfound! bf:%s.\n", *cmd_line);
-		content = str;
-		content[len++] = ' ';
-		while (content && content[len] && !is_target(" $\'\"\t\n\v\f\r", content[len]))
-			content[len++] = ' ';
+		copy_remove_var(cmd_line, str - (*cmd_line), ft_strlen(name));
 		/*debug*/printf("notfound! updated:%s.\n", *cmd_line);
 	}
 	return (len);
@@ -128,14 +141,15 @@ char	*expand_shell_var(t_env *vars, char **cmd_line, char *str, int *index)
 	// /*debug*/debug_print(fin);
 	// /*debug*/printf("-----\n");
 	/*debug*/printf("expand_shell_var:var_name:%s, str:%s\n", fin[0], str);
-	
 	/*debug*/ printf("expand_shell_var:\033[93mindex_ori:\033[0m %d %ld\n", *index, str - (*cmd_line));
+
 	(*index) += check_shell_var(vars, fin[0], cmd_line, str);
+
 	/*debug*/ printf("expand_shell_var:index_new: %d\n", *index);
 	// /*debug*/ printf("expand_shell_var:%s.\n", &(*cmd_line)[index]);
+
 	free_multiple_ptr(2, tmp, fin);
 	return (*cmd_line);
-	// return (index);
 }
 
 // char	*expand_shell_var(t_env *vars, char **cmd_line, char *str, int index)

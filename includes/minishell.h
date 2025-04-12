@@ -64,7 +64,7 @@ void	debug_print(char **res);
 
 /*______________modified linked_lst function from libft______________*/
 t_env	*ft_lstlast_sh(t_env *lst);
-t_env	*ft_lstnew_sh(void *content);
+t_env	*ft_lstnew_sh(char *name, char *content, int export_id);
 void	ft_lstadd_back_sh(t_env **lst, t_env *new);
 void	ft_lstdelone_sh(t_env *lst, void (*del)(void*));
 void	ft_lstclear_sh(t_env **lst, void (*del)(void*));

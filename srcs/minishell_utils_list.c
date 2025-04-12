@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 07:39:22 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/08 12:38:03 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/12 13:49:51 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,22 @@ void	ft_lstclear_sh(t_env **lst, void (*del)(void*))
  * and return the updated t_env
  * uses malloc
  */
-t_env	*ft_lstnew_sh(void *content)
+t_env	*ft_lstnew_sh(char *name, char *content, int export_id)
 {
 	t_env	*p;
-	char	*name;
 
 	p = malloc(sizeof(t_env));
 	if (p == NULL)
 		return (NULL);
-	get_var_name(&name, content);
-	quote_removal(&name);
-	p->env = name;
+
+	// get_var_name(&name, content);
+	// quote_removal(&name);
+	p->env = ft_strdup(name);
+
+	p->exported = export_id;
+	if (!is_target(content, '='))
+		p->exported = 1;
+
 	if (!is_target(content, '='))
 		p->content = ft_strdup("");
 	else if (ft_strchr(content, '='))
@@ -96,15 +101,3 @@ t_env	*ft_lstnew_sh(void *content)
 	p->next = NULL;
 	return (p);
 }
-
-// t_env	*ft_lstnew_sh(void *content)
-// {
-// 	t_env	*p;
-
-// 	p = malloc(sizeof(t_env));
-// 	if (p == NULL)
-// 		return (NULL);
-// 	p->content = content;
-// 	p->next = NULL;
-// 	return (p);
-// }

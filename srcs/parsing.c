@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/08 10:41:45 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/12 12:17:19 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,8 +186,6 @@ int	get_variable(t_env **vars, char *str, int exit_status)
 	new = skip_redirs(new);
 
 	/*debug*/printf("get_variable:ent:%s.\n", new);
-	// no '=', no export, no spaces after export
-	// if (new[0] && !is_target(new, '=') && ft_strncmp(new, "export", 6) != 0)
 	if (new[0] && !is_target(new, '=') && !valid_export_keyword(new, 1))
 	{
 		/*debug*/printf("get_variable:\033[93minvalid var!\033[0m\n");
@@ -200,7 +198,6 @@ int	get_variable(t_env **vars, char *str, int exit_status)
 		if (!is_target(new, '|'))// && !flag) //put a flag for multiple_cmd  // && !has_mix_redirs(new)
 		{
 			// /*debug*/printf("get_variable:flag:%d\n", flag);
-			// if (ft_strncmp(new, "export", 6) == 0)
 			if (valid_export_keyword(new, 1))
 			{
 				new = skip_if_symbol(new, 'c', 'c');
@@ -208,7 +205,6 @@ int	get_variable(t_env **vars, char *str, int exit_status)
 			}
 			new = ft_strdup(new);
 			shell_var_expansion(&new, *vars, exit_status);
-
 			process_vars(vars, new, export_id);
 			free(new);
 		}

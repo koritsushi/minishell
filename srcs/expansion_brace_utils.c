@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 22:54:34 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/07 09:34:16 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/12 11:52:56 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,7 @@ static char	*get_brace_tail(char *str, char *set)
 		if (is_target("\'\"", str[len]))
 		{
 			len += skip_if_quote(&str[len], str[len], 0) - &str[len] + 1;
-			// int res = skip_if_quote(&str[len], str[len], 0) - &str[len] + 1;
 			// /*debug*/printf("get_brace_tail:quote:%d\n", res);
-			// len += res;
 		}
 		else
 			len++;

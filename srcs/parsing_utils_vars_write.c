@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:02:51 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/09 07:41:00 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/12 13:52:04 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,34 +22,44 @@
  */
 int	count_malloc_vars(char *str)
 {
-	int	i;
-	int	f_equal_sign;
+	int		i;
+	char	symbol;
+	int		flag;
 
 	i = 0;
-	f_equal_sign = 0;
-	while (str && str[i])
+	flag = 0;
+	// while (str && str[i])
+	while (str && str[0])
 	{
-		if (str[i] == '=')
-			f_equal_sign = 1;
-		if (f_equal_sign && (str[i] == '\'' || str[i] == '\"'))
-		{
-			// printf("count_malloc_vars: i=%d, %s.\n", i, &str[i]);
-			// printf("%d+1\n", (int)(ft_strchr(&str[i + 1], str[i]) - &str[i]));
-			i += (int)(ft_strchr(&str[i + 1], str[i]) - &str[i]);
-			if (str[i] == '\"')
-				return (i + 1 - 2);
-			return (i + 1);
-		}
-		else if (str[i] && is_target(" \t\n\v\f\r", str[i]))
+		// if (str[i] == '=') // ='data' or 'var'=data
+		// 	f_equal_sign = 1;
+		// if (f_equal_sign && (str[i] == '\'' || str[i] == '\"'))
+		// {
+		// 	// printf("count_malloc_vars: i=%d, %s.\n", i, &str[i]);
+		// 	// printf("%d+1\n", (int)(ft_strchr(&str[i + 1], str[i]) - &str[i]));
+		// 	i += (int)(ft_strchr(&str[i + 1], str[i]) - &str[i]);
+		// 	if (str[i] == '\"')
+		// 		return (i + 1 - 2);
+		// 	return (i + 1);
+		// }
+		// else if (str[i] && is_target(" \t\n\v\f\r", str[i]))
+		// 	return (i);
+		// i++;
+
+		update_flag_quote(str, &symbol, &flag);
+		if (!flag && is_target(" \t\n\v\f\r", str[0]))
 			return (i);
-		i++;
+		if (str[0] != symbol)
+			i++;
+		str++;
 	}
 	return (i);
 }
 
 /*
  * child function in extract_vars,
- * copies src to dest, except when encountered double quote sign " (skips)
+ * copy src to dest, skips when encounter double quote "
+ * stop copy when encounter spaces ' ' 
  */
 void	copy_vars(char *dest, char *src, int len)
 {
@@ -73,7 +83,8 @@ void	copy_vars(char *dest, char *src, int len)
 		// 	symbol = src[0];
 		// 	flag = 1;
 		// }
-		if (src[0] != symbol || (src[0] == symbol && symbol == '\''))
+		// if (src[0] != symbol || (src[0] == symbol && symbol == '\''))
+		if (src[0] != symbol)
 			dest[x++] = src[0];
 		/*debug*/printf("copy_vars:%s.\n", dest);
 		src++;
@@ -103,23 +114,21 @@ static int	overwrite_existing_var(t_env *head, char *str, int export_id)
 	return (1);
 }
 
-// 24 lines
+// 22 lines
 /*
  * child function in extract_vars,
- * search for var name in linked list,
+ * search for *name in var_name linked list,
  * replace data & sets flag to 1 if duplicate found
  */
 int	check_replace_dup(t_env *vars, char *name, char *new, int export_id)
 {
 	size_t	len;
-	// char	**tmp;
 	int		flag;
 
 	flag = 0;
 	while (vars && !flag)
 	{
 		len = 0;
-		// tmp = ft_split_shell(vars->content, "=");
 		/*debug*/printf("check_replace_dup name:%s, %s.\n", (*vars).env, name);
 		while (name[len] && !is_target(" \t\n\v\f\r", name[len]))
 			len++;
@@ -135,7 +144,6 @@ int	check_replace_dup(t_env *vars, char *name, char *new, int export_id)
 		}
 		else if (ft_strncmp(vars->env, name, len) == 0 && is_target(new, '='))
 			flag = overwrite_existing_var(vars, new, export_id);
-		// free_chr_ptr((void **)tmp);
 		vars = vars->next;
 	}
 	return (flag);

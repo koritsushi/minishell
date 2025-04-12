@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/12 07:53:39 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/12 11:31:21 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,16 +141,20 @@ void	quote_removal(char **cmd_line)
 int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 {
 	int		x;
+	char	*ori;
 
 	x = -1;
 	while (lst_data && lst_data[++x])
 	{
+		ori = ft_strdup(lst_data[x]);
 		/*debug*/printf("cmd_expansion:ent:%s\n", lst_data[x]);
 		brace_expansion(&lst_data[x]);
 		/*debug*/printf("cmd_expansion:brace:%s\n", lst_data[x]);
 		shell_var_expansion(&lst_data[x], vars, exit_status);
 		/*debug*/printf("cmd_expansion:sh_var:%s\n", lst_data[x]);
-		// quote_removal(&lst_data[x]);
+		if (ori[0] && (is_target(ori, '\'') || is_target(ori, '\"')))
+			quote_removal(&lst_data[x]);
+		free(ori);
 	}
 	return (1);
 }
