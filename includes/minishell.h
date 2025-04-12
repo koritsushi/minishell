@@ -41,7 +41,6 @@ typedef struct s_env
 	int				exported;
 	char			*env;
 	char			*content;
-	char			*content_tmp;
 	struct s_env	*next;
 }	t_env;
 
