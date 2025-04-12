@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/07 16:28:41 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/12 16:51:40 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,22 @@ int	main(int argc, char **argv)
 		}
 		if (ft_strncmp(text, "print", 5) == 0)
 		{
-			printf("\033[103m_____vars_list:_____\033[0m\n");
 			if (lst.vars && lst.vars->content)
-				debug_print_lst(lst.vars);
+				debug_print_var_lst(lst.vars);
+			else
+				printf("\033[103m_____vars_list:_____\033[0m\n");
 		}
 		/*lexing & get_vars*/
 		else if (*text && check_syntax(text))
 		{
 			get_variable(&lst.vars, text, 255);
 			if (lst.vars && lst.vars->content)
-				debug_print_lst(lst.vars);
-			if (get_cmd_line(text, &lst, lst.vars))
+				debug_print_var_lst(lst.vars);
+			if (get_cmd_line(text, &lst, lst.vars, 255))
+			{
+				debug_print_cmd_line(&lst);
 				free_all(&lst);
+			}
 			/* direct to/run pipex */
 		}
 		free(text);

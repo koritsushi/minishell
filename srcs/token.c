@@ -180,7 +180,7 @@ void	process_cmd(t_token *lst, char **res, char **infile)// char **outfile)//cha
  * splits input by PIPE & REDIR, stores result in allocated t_token pointer
  * uses malloc
  */
-int	get_cmd_line(char *str, t_token *lst, t_env *vars)
+int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 {
 	int		count;
 	char	*new;
@@ -211,17 +211,15 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars)
 	// /*debug*/debug_print(res);
 	/* ---------------- extract_cmd ---------------- */
 	process_cmd(lst, res, infile);
-	cmd_expansion(lst->data, vars, 255); //exit status need to redef
+	cmd_expansion(lst->data, vars, exit_status); //exit status need to redef
 	assign_datatype(lst->datatype, res, infile);
 
 	/*-------------debug_start-------------*/
-	// printf("------\nlst_data:\n");
-	// debug_print(lst->data);
-	printf("\n\033[102m_____lst_data:_____\033[0m\n");
-	int i = -1;
-	// while (lst->data[++i])
-	while (++i < count)
-		printf("\033[92m%s\033[0m. [%d]\n", lst->data[i], lst->datatype[i]);
+	// printf("\n\033[102m_____lst_data:_____\033[0m\n");
+	// int i = -1;
+	// // while (lst->data[++i])
+	// while (++i < count)
+	// 	printf("\033[92m%s\033[0m. [%d]\n", lst->data[i], lst->datatype[i]);
 	/*--------------debug_end--------------*/
 
 	free_multiple_ptr(2, res, infile);

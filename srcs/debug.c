@@ -13,7 +13,17 @@ void	debug_print(char **res)
 		printf("%s.\n", res[i++]);
 }
 
-void	debug_print_lst(t_env *lst)
+void	debug_print_cmd_line(t_token *lst)
+{
+	int	i;
+
+	i = -1;
+	printf("\n\033[102m_____lst_data:_____\033[0m\n");
+	while (lst->data[++i])
+		printf("\033[92m%s\033[0m. [%d]\n", lst->data[i], lst->datatype[i]);
+}
+
+void	debug_print_var_lst(t_env *lst)
 {
 	t_env	*tmp;
 

@@ -61,6 +61,9 @@ typedef struct s_token
 
 /*______________________for debug purposes only______________________*/
 void	debug_print(char **res);
+void	debug_print_var_lst(t_env *lst);
+void	debug_print_cmd_line(t_token *lst);
+
 
 /*______________modified linked_lst function from libft______________*/
 t_env	*ft_lstlast_sh(t_env *lst);
