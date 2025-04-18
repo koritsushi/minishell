@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/12 12:17:19 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/18 15:09:31 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,14 +151,6 @@ int	valid_export_keyword(char *str, int flag)
 		return (0);
 	str = skip_spaces(str, " \t\n\v\f\r");
 	/*debug*/printf("valid_export_keyword:ent:%s.\n", str);
-	// if (
-	// (ft_strncmp(str, "export", 6) == 0 && \
-	// str[6] && is_target(" \t\n\v\f\r", str[6])) || \
-	// (ft_strncmp(str, "\'export\'", 8) == 0 && \
-	// str[8] && is_target(" \t\n\v\f\r", str[8])) || \
-	// (ft_strncmp(str, "\"export\"", 8) == 0  && \
-	// str[8] && is_target(" \t\n\v\f\r", str[8])))
-	// 	return (1);
 
 	if (\
 	check_export_keyword(str, "export", 6, flag) || \
