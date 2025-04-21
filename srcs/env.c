@@ -12,16 +12,26 @@
 
 #include "../includes/env.h"
 
+void	minishell_init(t_ms *minishell, char** env)
+{
+	env_init(minishell->env_var, env);
+}
+
 /*	env
 	used doubly linked-list to store env
 	copy env from bash shell then stored a copy in minishell
 */
-void	env_init(t_list lst, char **env)
+void	env_init(t_env env_var, char **env)
 {
 	char	*str;
 	if (env == NULL)
 		return ;
 	lst->env = env;
+}
+
+void	exec_init(t_exec exec)
+{
+
 }
 
 /*

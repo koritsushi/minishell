@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/01/16 16:07:22 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/06 17:55:51 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,16 @@ int	ft_isspace(char *str)
 	return (1);
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **env)
 {
+	t_ms	minishell;
 	char	*text;
 
 	if (argc > 1 && ft_strncmp(argv[0], "minishell", 9) != 0)
 		exit(127);
 	set_signal_action();
 	block_signal(SIGQUIT);
+	env_init(&minishell, env);
 	while (1)
 	{
 		text = readline("\033[34mminishell> \033[0m");

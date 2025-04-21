@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/20 14:11:03 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/21 22:04:38 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ typedef struct s_env
 	int				exported;
 	char			*env;
 	char			*content;
+	struct s_env	*prev;
 	struct s_env 	*next;
 }					t_env;
 
 typedef struct s_minishell
 {
-	int				signal;
 	struct s_exec	exec;
-	struct s_env	env;
+	struct s_env	env_var;
 }					t_ms;
 
 #endif
