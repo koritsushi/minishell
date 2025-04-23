@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/23 11:26:28 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/23 15:47:40 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	ft_isspace(char *str)
 int	main(int argc, char **argv, char **env)
 {
 	t_ms	data;
+	t_ms	data2;
 	char	*text;
 
 	if (argc > 1 && ft_strncmp(argv[0], "minishell", 9) != 0)
@@ -36,7 +37,19 @@ int	main(int argc, char **argv, char **env)
 	set_signal_action();
 	//lock_signal(SIGQUIT);
 	data.env_var = NULL;
+	data2.env_var = NULL;
+	char **envstr_2 = ft_split("var=1 var=2", ' ');
 	msh_init(&data, env);
+	msh_init(&data2, envstr_2);
+	//DEBUG
+	// t_env *tmp = data.env_var;
+	// printf("env address:%p\n", data.env_var);
+	// while (tmp != NULL)
+	// {
+	// 	printf("name:%s, content:%s,", tmp->env, tmp->content);
+	// 	printf("exported:%d\n", tmp->exported);
+	// 	tmp = tmp->next;
+	// }
 	while (1)
 	{
 		text = readline("\033[34mminishell> \033[0m");

@@ -58,7 +58,7 @@ void	split_env(char **env, char **var)
 	local variable
 	environment variable wont show the variable if its empty or not exported
 */
-void	env_init(t_env *env_var, char **env)
+void	env_init(t_env **env_var, char **env)
 {
 	int		i;
 	int		len;
@@ -71,15 +71,15 @@ void	env_init(t_env *env_var, char **env)
 	split_env(env, var);
 	while (env[i] != NULL)
 	{
-		if (env_var == NULL)
+		if (*env_var == NULL)
 		{
-			env_var = ft_lstnew_sh(var[i], env[i], 1);
+			*env_var = ft_lstnew_sh(var[i], env[i], 1);
 			i++;
 		}
 		tmp = ft_lstnew_sh(var[i], env[i], 1);
 		if (tmp == NULL)
 			return ;
-		ft_lstadd_back_sh(&env_var, tmp);
+		ft_lstadd_back_sh(env_var, tmp);
 		i++;
 	}
 }
@@ -95,7 +95,7 @@ void	exec_init(t_exec *exec)
 
 void	msh_init(t_ms *data, char** env)
 {
-	env_init(data->env_var, env);
+	env_init(&data->env_var, env);
 	//exec_init(data->exec);
 }
 
@@ -133,15 +133,35 @@ void	env_print(t_env **lst)
 	add variable to env
 
 */
-void	export()
-{
-
-}
+// void	export(t_env **env_var, t_env **lenv)
+// {
+	
+// }
 
 /*	unset
 	remove a specific variale to display on env and export
 */
-void	unset()
+void	unset(t_env *env_var, t_env *lenv)
 {
-	
+	t_env *iter;
+	t_env *tmp;
+	t_env *prev;
+	t_env *check;
+
+	if (env_var == NULL || lenv == NULL)
+		return ;
+	iter = env_var;
+	check = lenv;
+	while (iter != NULL)
+	{
+		prev = tmp;
+		tmp = iter;
+		if (ft_strcmp(iter->env, check->env) == 0)
+		{
+			ft_lstdelone_sh(iter, free);
+			prev->next = tmp;
+			iter = tmp->next;
+		}
+		iter = iter->next;
+	}
 }

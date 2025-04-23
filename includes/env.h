@@ -19,7 +19,7 @@ typedef struct s_env	t_env;
 typedef struct s_exec	t_exec;
 
 void	msh_init(t_ms *data, char** env);
-void	env_init(t_env *env_var, char **env);
+void	env_init(t_env **env_var, char **env);
 void	exec_init(t_exec *exec);
 
 t_env	*ft_lstlast_sh(t_env *lst);

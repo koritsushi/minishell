@@ -107,7 +107,7 @@ t_env	*ft_lstnew_sh(char *name, char *content, int export_id)
 		p->content = ft_strdup("");
 	else if (ft_strchr(content, '='))
 		p->content = ft_strdup(ft_strchr(content, '=') + 1);
-	/*debug*/printf("ft_lstnew_sh:content:%s.\n", p->content);
+	/*debug*///printf("ft_lstnew_sh:content:%s.\n", p->content);
 	p->next = NULL;
 	return (p);
 }
