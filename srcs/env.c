@@ -45,7 +45,8 @@ void	split_env(char **env, char **var)
 	while (env[i] != NULL)
 	{
 		temp = ft_split(env[i], '=');
-		var[i] = ft_strdup(temp[0]);
+		var[i] = temp[0];
+		//debug printf("name:%s\n", var[i]);
 		i++;
 	}
 	var[i] = NULL;
@@ -66,10 +67,15 @@ void	env_init(t_env *env_var, char **env)
 
 	i = 0;
 	len = array_len(env);
-	var = malloc(sizeof(char **) * (len));
+	var = malloc(sizeof(char **) * (len + 1));
 	split_env(env, var);
 	while (env[i] != NULL)
 	{
+		if (env_var == NULL)
+		{
+			env_var = ft_lstnew_sh(var[i], env[i], 1);
+			i++;
+		}
 		tmp = ft_lstnew_sh(var[i], env[i], 1);
 		if (tmp == NULL)
 			return ;

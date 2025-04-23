@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/22 23:37:44 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/23 11:26:28 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,14 @@ int	main(int argc, char **argv, char **env)
 		exit(127);
 	set_signal_action();
 	//lock_signal(SIGQUIT);
+	data.env_var = NULL;
 	msh_init(&data, env);
 	while (1)
 	{
 		text = readline("\033[34mminishell> \033[0m");
 		if (text == NULL)
 		{
-			ft_putstr_fd("\e[0;31mexit\e[0;31m\n", 1);
+			ft_putstr_fd("\e[0;31mlogout\e[0;31m\n", 1);
 			exit(ENOMEM);
 		}
 		if (ft_strncmp(text, "exit", 4) == 0)
