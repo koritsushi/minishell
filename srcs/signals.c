@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/signals.h"
+#include "../includes/signals.h"
 
 volatile int	g_unblock_sigquit = 0;
 
@@ -28,7 +28,8 @@ void	set_signal_action(void)
 
 	ft_bzero(&act, sizeof(act));
 	act.sa_handler = &sigint_handler;
-	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGINT, NULL, &act);
+	sigaction(SIGQUIT, NULL, &act);
 }
 
 // Blocks the specified signal
@@ -44,8 +45,11 @@ void	block_signal(int signal)
 	sigemptyset(&sigset);
 	sigaddset(&sigset, signal);
 	sigprocmask(SIG_BLOCK, &sigset, NULL);
+
 	if (signal == SIGQUIT)
 		printf("\e[36mSIGQUIT (ctrl-\\) blocked.\e[0m\n");
+	else if (signal == SIGINT)
+		printf("\e[36mSIGINT (ctrl-c) blocked.\e[0m\n");
 }
 
 // Unblocks the given signal
@@ -73,9 +77,17 @@ void	unblock_signal(int signal)
 // g_unblock_sigquit = 1;	->	variable during access
 void	sigint_handler(int signal)
 {
-	if (signal != SIGINT)
+	if (signal == SIGINT)
+	{
+		ft_putstr_fd("\n\033[34mminishell> \033[0m", 1);
 		return ;
-	block_signal(SIGINT);
-	g_unblock_sigquit = 1;
-	unblock_signal(SIGINT);
+	}
+	else if (signal == SIGQUIT)
+	{
+		ft_putstr_fd("\033[34mminishell> \033[0m", 1);
+		return ;
+	}
+	//this is to unblock sigint
+	//g_unblock_sigquit = 1;
+	//unblock_signal(SIGINT);
 }

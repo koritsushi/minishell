@@ -12,32 +12,90 @@
 
 #include "../includes/env.h"
 
-void	minishell_init(t_ms *minishell, char** env)
+void	free_strarr(char **arr)
 {
-	env_init(minishell->env_var, env);
+	int	i;
+
+	i = 0;
+	if (arr == NULL)
+		return ;
+	while (arr != NULL)
+		free(arr[i++]);
+	free(arr);
+}
+
+int	array_len(char **str)
+{
+	int	i;
+
+	i = 0;
+	if (str == NULL)
+		return (i);
+	while (str[i] != NULL)
+		i++;
+	return (i);
+}
+
+void	split_env(char **env, char **var)
+{
+	int	i;
+	char **temp;
+
+	i = 0;
+	while (env[i] != NULL)
+	{
+		temp = ft_split(env[i], '=');
+		var[i] = ft_strdup(temp[0]);
+		i++;
+	}
+	var[i] = NULL;
 }
 
 /*	env
-	used doubly linked-list to store env
+	used singly linked-list to store env
 	copy env from bash shell then stored a copy in minishell
+	local variable
+	environment variable wont show the variable if its empty or not exported
 */
-void	env_init(t_env env_var, char **env)
+void	env_init(t_env *env_var, char **env)
 {
-	char	*str;
-	if (env == NULL)
-		return ;
-	lst->env = env;
+	int		i;
+	int		len;
+	char	**var;
+	t_env	*tmp;
+
+	i = 0;
+	len = array_len(env);
+	var = malloc(sizeof(char **) * (len));
+	split_env(env, var);
+	while (env[i] != NULL)
+	{
+		tmp = ft_lstnew_sh(var[i], env[i], 1);
+		if (tmp == NULL)
+			return ;
+		ft_lstadd_back_sh(&env_var, tmp);
+		i++;
+	}
 }
 
-void	exec_init(t_exec exec)
+void	exec_init(t_exec *exec)
 {
+	exec->infile_fd = 0;
+	exec->outfile_fd = 0;
+	exec->here_doc = 0;
+	exec->cmd_count = 0;
+	exec->index = 0;
+}
 
+void	msh_init(t_ms *data, char** env)
+{
+	env_init(data->env_var, env);
+	//exec_init(data->exec);
 }
 
 /*
-	if update env only minishell own copy of env
-*/
-void	env_update(t_list **lst, t_list *lc_env)
+//if update env only minishell own copy of env
+void	env_update(t_env **lst, t_env *nv)
 {
 	t_list new_lst;
 
@@ -48,10 +106,9 @@ void	env_update(t_list **lst, t_list *lc_env)
 
 }
 
-/*
-	print out env from minishell 
-*/
-void	env_print(t_list **lst)
+
+//print out env from minishell 
+void	env_print(t_env **lst)
 {
 	int	i;
 
@@ -63,6 +120,8 @@ void	env_print(t_list **lst)
 		lst = lst->next;
 	}
 }
+*/
+
 
 /*	export 
 	add variable to env

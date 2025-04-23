@@ -15,8 +15,9 @@ SRCS 		=	srcs/minishell.c 	\
 				srcs/parsing.c		\
 				srcs/signals.c		\
 				srcs/builtins.c		\
+				srcs/execution.c	\
 				srcs/env.c 			\
-				srcs/execution.c
+				srcs/env_utils.c
 
 OBJS		=	$(SRCS:%.c=%.o)
 
@@ -42,7 +43,7 @@ $(NAME): $(LIBFT) $(OBJS)
 $(DEBUG):	$(LIBFT) $(OBJS)
 			@cp $(LIBFT) $(NAME)
 			ar rcs $(NAME) $(OBJS) $(LIBFT) 
-			$(COMPILE) $(CCFLAGS) $(FSAN) $(NAME) -o $(PROGRAM) 
+			$(COMPILE) $(CCFLAGS) $(FSAN) $(NAME) -lreadline $(READLIB) -o $(PROGRAM) 
 
 $(LIBFT):
 			@make -C $(LIBFTDIR) all

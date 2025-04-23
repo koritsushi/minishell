@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/21 22:04:38 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/22 23:36:57 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@
 # include "env.h"
 # include "signals.h"
 
+typedef struct s_ms
+{
+	struct s_exec	*exec;
+	struct s_env	*env_var;
+}					t_ms;
 
 typedef struct s_exec
 {
@@ -50,14 +55,7 @@ typedef struct s_env
 	int				exported;
 	char			*env;
 	char			*content;
-	struct s_env	*prev;
 	struct s_env 	*next;
 }					t_env;
-
-typedef struct s_minishell
-{
-	struct s_exec	exec;
-	struct s_env	env_var;
-}					t_ms;
 
 #endif
