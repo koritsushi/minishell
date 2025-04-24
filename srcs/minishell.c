@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/23 15:47:40 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/23 22:35:56 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int argc, char **argv, char **env)
 	char **envstr_2 = ft_split("var=1 var=2", ' ');
 	msh_init(&data, env);
 	msh_init(&data2, envstr_2);
+	
 	//DEBUG
 	// t_env *tmp = data.env_var;
 	// printf("env address:%p\n", data.env_var);
@@ -49,6 +50,24 @@ int	main(int argc, char **argv, char **env)
 	// 	printf("name:%s, content:%s,", tmp->env, tmp->content);
 	// 	printf("exported:%d\n", tmp->exported);
 	// 	tmp = tmp->next;
+	// }
+	unset(&data.env_var, &data2.env_var);
+	//DEBUG
+	//t_env *tmp = data.env_var;
+	// printf("env address:%p\n", data.env_var);
+	// while (tmp != NULL)
+	// {
+	// 	printf("name:%s, content:%s,", tmp->env, tmp->content);
+	// 	printf("exported:%d\n", tmp->exported);
+	// 	tmp = tmp->next;
+	// }
+	// t_env *tmp2 = data2.env_var;
+	// printf("env address:%p\n", data2.env_var);
+	// while (tmp2 != NULL)
+	// {
+	// 	printf("name:%s, content:%s,", tmp2->env, tmp2->content);
+	// 	printf("exported:%d\n", tmp2->exported);
+	// 	tmp2 = tmp2->next;
 	// }
 	while (1)
 	{
