@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/23 22:35:56 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/24 10:17:49 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char **argv, char **env)
 	// 	printf("exported:%d\n", tmp->exported);
 	// 	tmp = tmp->next;
 	// }
-	unset(&data.env_var, &data2.env_var);
+	unset(data.env_var, data2.env_var);
 	//DEBUG
 	//t_env *tmp = data.env_var;
 	// printf("env address:%p\n", data.env_var);
