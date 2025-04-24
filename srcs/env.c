@@ -133,15 +133,37 @@ void	env_print(t_env **lst)
 	add variable to env
 
 */
-// void	export(t_env **env_var, t_env **lenv)
-// {
-	
-// }
+void	export(t_env **env_var, t_env *lenv)
+{
+	t_env	*iter;
+	t_env	*check;
+	t_env	*new;
+
+	iter = *env_var;
+	check = lenv;
+	while (iter != NULL)
+	{
+		if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env))\
+		== 0)
+		{
+			free(iter->content);
+			iter->content = strdup(check->env);
+			break ;
+		}
+		iter = iter->next;
+	}
+	if (iter == NULL)
+	{
+		//printf("%s\n", check->content);
+		new = ft_lstnew_sh(check->env, check->content, check->exported);
+		ft_lstadd_back_sh(env_var, new);
+	}
+}
 
 /*	unset
 	remove a specific variale to display on env and export
 */
-void	unset(t_env *env_var, t_env *lenv)
+void	unset(t_env **env_var, t_env *lenv)
 {
 	t_env *iter;
 	t_env *tmp;
@@ -150,18 +172,35 @@ void	unset(t_env *env_var, t_env *lenv)
 
 	if (env_var == NULL || lenv == NULL)
 		return ;
-	iter = env_var;
+	iter = *env_var;
 	check = lenv;
+	if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env))\
+		== 0)
+	{
+		*env_var = iter->next;
+		ft_lstdelone_sh(iter, free);
+		return ;
+	}
+	iter = iter->next;
 	while (iter != NULL)
 	{
-		prev = tmp;
-		tmp = iter;
-		if (ft_strcmp(iter->env, check->env) == 0)
+		/*debug*///printf("%p\n", iter);
+		if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env))\
+			== 0)
 		{
+			if (iter->next != NULL)
+			{
+				tmp = iter->next;
+				prev->next = tmp;
+			}
+			else
+				prev->next = NULL;
 			ft_lstdelone_sh(iter, free);
-			prev->next = tmp;
-			iter = tmp->next;
+			iter = tmp;
+			break ;
 		}
+		prev = iter;
 		iter = iter->next;
 	}
+	printf("%p\n", iter->next);
 }

@@ -102,7 +102,6 @@ t_env	*ft_lstnew_sh(char *name, char *content, int export_id)
 	p->exported = export_id;
 	if (!is_target(content, '='))
 		p->exported = 1;
-
 	if (!is_target(content, '='))
 		p->content = ft_strdup("");
 	else if (ft_strchr(content, '='))
