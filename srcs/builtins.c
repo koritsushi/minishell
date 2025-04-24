@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/03/22 19:24:33 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/24 20:47:49 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,28 @@ int	ft_pwd(void)
 	will update env OLDPWD and PWD var when changing directory
 	not yet handle ~ or no arguments might need expansion
 */
-int	ft_cd(char *dir)
+int	ft_cd(t_env **lst, char *dir)
 {
-	char *curr_dir;
+	int		status;
+	char	*curr_dir;
+	t_env	*opwd;
+	t_env	*cpwd;
 
 	curr_dir = getpwd();
 	if (curr_dir == NULL)
 		return (-1);
-	if (chdir(dir) == -1)
+	status = chdir(dir);
+	if (status == -1)
+	{
 		printf("Minishell: cd : %s: %s\n", dir, strerror(errno));
+	}
+	else
+	{
+		cpwd = ft_lstnew_env("PWD", dir, 1);
+		opwd = ft_lstnew_env("OLDPWD", curr_dir, 1);
+		export(lst, cpwd);
+		export(lst, opwd);
+	}
 	return (0);
 }
 

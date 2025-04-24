@@ -19,7 +19,7 @@ void	free_strarr(char **arr)
 	i = 0;
 	if (arr == NULL)
 		return ;
-	while (arr != NULL)
+	while (arr[i] != NULL)
 		free(arr[i++]);
 	free(arr);
 }
@@ -45,7 +45,8 @@ void	split_env(char **env, char **var)
 	while (env[i] != NULL)
 	{
 		temp = ft_split(env[i], '=');
-		var[i] = temp[0];
+		var[i] = ft_strdup(temp[0]);
+		free_strarr(temp);
 		//debug printf("name:%s\n", var[i]);
 		i++;
 	}
@@ -147,7 +148,7 @@ void	export(t_env **env_var, t_env *lenv)
 		== 0)
 		{
 			free(iter->content);
-			iter->content = strdup(check->env);
+			iter->content = strdup(check->content);
 			break ;
 		}
 		iter = iter->next;
@@ -155,7 +156,7 @@ void	export(t_env **env_var, t_env *lenv)
 	if (iter == NULL)
 	{
 		//printf("%s\n", check->content);
-		new = ft_lstnew_sh(check->env, check->content, check->exported);
+		new = ft_lstnew_env(check->env, check->content, check->exported);
 		ft_lstadd_back_sh(env_var, new);
 	}
 }

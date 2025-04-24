@@ -28,8 +28,8 @@ void	set_signal_action(void)
 
 	ft_bzero(&act, sizeof(act));
 	act.sa_handler = &sigint_handler;
-	sigaction(SIGINT, NULL, &act);
-	sigaction(SIGQUIT, NULL, &act);
+	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGQUIT, &act, NULL);
 }
 
 // Blocks the specified signal
@@ -82,7 +82,7 @@ void	sigint_handler(int signal)
 		ft_putstr_fd("\n\033[34mminishell> \033[0m", 1);
 		return ;
 	}
-	else if (signal == SIGQUIT)
+	if (signal == SIGQUIT)
 	{
 		ft_putstr_fd("\033[34mminishell> \033[0m", 1);
 		return ;

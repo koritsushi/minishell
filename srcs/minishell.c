@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/24 15:55:41 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/24 20:32:35 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ int	main(int argc, char **argv, char **env)
 	if (argc > 1 && ft_strncmp(argv[0], "minishell", 9) != 0)
 		exit(127);
 	set_signal_action();
-	//lock_signal(SIGQUIT);
+	//block_signal(SIGQUIT);
+	//block_signal(SIGINT);
 	data.env_var = NULL;
 	data2.env_var = NULL;
-	char **envstr_2 = ft_split("var=1 var=2", ' ');
+	char **envstr_2 = ft_split("var=2 var=3", ' ');
 	msh_init(&data, env);
 	msh_init(&data2, envstr_2);
 	
@@ -52,9 +53,9 @@ int	main(int argc, char **argv, char **env)
 	// 	tmp = tmp->next;
 	// }
 	//unset(&data.env_var, data2.env_var);
-	export(&data.env_var, data2.env_var);
+	// export(&data.env_var, data2.env_var);
 	//DEBUG
-	// t_env *tmp = data.env_var;
+	// tmp = data.env_var;
 	// printf("env address:%p\n", data.env_var);
 	// while (tmp != NULL)
 	// {

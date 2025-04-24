@@ -29,5 +29,5 @@ void	ft_lstadd_back_sh(t_env **lst, t_env *new);
 void	ft_lstdelone_sh(t_env *lst, void (*del)(void*));
 void	ft_lstclear_sh(t_env **lst, void (*del)(void*));
 t_env	*ft_lstnew_sh(char *name, char *content, int export_id);
-
+t_env	*ft_lstnew_env(char *name, char *content, int export_id);
 #endif
