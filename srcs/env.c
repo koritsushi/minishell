@@ -102,6 +102,8 @@ void	export(t_env **env_var, t_env *lenv)
 	t_env	*check;
 	t_env	*new;
 
+	if (env_var == NULL || lenv == NULL)
+		return ;
 	iter = *env_var;
 	check = lenv;
 	while (iter != NULL)
@@ -114,7 +116,7 @@ void	export(t_env **env_var, t_env *lenv)
 		}
 		iter = iter->next;
 	}
-	if (iter == NULL)
+	if (iter->content == NULL)
 	{
 		new = ft_lstnew_env(check->env, check->content, check->exported);
 		ft_lstadd_back_env(env_var, new);
