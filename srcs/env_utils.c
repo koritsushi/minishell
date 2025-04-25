@@ -26,7 +26,7 @@ int	is_target(char *str, char c)
 	return (0);
 }
 
-t_env	*ft_lstlast_sh(t_env *lst)
+t_env	*ft_lstlast_env(t_env *lst)
 {
 	if (lst == NULL)
 		return (NULL);
@@ -35,7 +35,7 @@ t_env	*ft_lstlast_sh(t_env *lst)
 	return (lst);
 }
 
-void	ft_lstadd_back_sh(t_env **lst, t_env *new)
+void	ft_lstadd_back_env(t_env **lst, t_env *new)
 {
 	t_env	*tmp;
 
@@ -45,12 +45,12 @@ void	ft_lstadd_back_sh(t_env **lst, t_env *new)
 		*lst = new;
 	else
 	{
-		tmp = ft_lstlast_sh(*lst);
+		tmp = ft_lstlast_env(*lst);
 		tmp->next = new;
 	}
 }
 
-void	ft_lstdelone_sh(t_env *lst, void (*del)(void*))
+void	ft_lstdelone_env(t_env *lst, void (*del)(void*))
 {
 	if (lst == NULL)
 		return ;
@@ -62,7 +62,7 @@ void	ft_lstdelone_sh(t_env *lst, void (*del)(void*))
 	}
 }
 
-void	ft_lstclear_sh(t_env **lst, void (*del)(void*))
+void	ft_lstclear_env(t_env **lst, void (*del)(void*))
 {
 	t_env	*next;
 	t_env	*tmp;
@@ -75,7 +75,7 @@ void	ft_lstclear_sh(t_env **lst, void (*del)(void*))
 		while (tmp)
 		{
 			next = tmp->next;
-			ft_lstdelone_sh(tmp, del);
+			ft_lstdelone_env(tmp, del);
 			tmp = next;
 		}
 		*lst = NULL;
@@ -88,7 +88,7 @@ void	ft_lstclear_sh(t_env **lst, void (*del)(void*))
  * and return the updated t_env
  * uses malloc
  */
-t_env	*ft_lstnew_sh(char *name, char *content, int export_id)
+t_env	*ft_lstnew_shenv(char *name, char *content, int export_id)
 {
 	t_env	*p;
 

@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/25 16:11:18 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/25 16:37:03 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ int	ft_cd(t_env **lst, char *dir)
 		opwd = ft_lstnew_env("OLDPWD", curr_dir, 1);
 		export(lst, cpwd);
 		export(lst, opwd);
-		ft_lstdelone_sh(cpwd, free);
-		ft_lstdelone_sh(opwd, free);
+		ft_lstdelone_env(cpwd, free);
+		ft_lstdelone_env(opwd, free);
 	}
 	return (0);
 }

@@ -18,6 +18,13 @@ typedef struct s_ms		t_ms;
 typedef struct s_env	t_env;
 typedef struct s_exec	t_exec;
 
+t_env	*ft_lstlast_env(t_env *lst);
+void	ft_lstadd_back_env(t_env **lst, t_env *new);
+void	ft_lstdelone_env(t_env *lst, void (*del)(void*));
+void	ft_lstclear_env(t_env **lst, void (*del)(void*));
+t_env	*ft_lstnew_shenv(char *name, char *content, int export_id);
+t_env	*ft_lstnew_env(char *name, char *content, int export_id);
+
 void	msh_init(t_ms *data, char** env);
 void	env_init(t_env **env_var, char **env);
 void	exec_init(t_exec *exec);
@@ -26,10 +33,4 @@ void	unset(t_env **env_var, t_env *lenv);
 void	env_print(t_env **lst);
 void	export_print(t_env **lst);
 
-t_env	*ft_lstlast_sh(t_env *lst);
-void	ft_lstadd_back_sh(t_env **lst, t_env *new);
-void	ft_lstdelone_sh(t_env *lst, void (*del)(void*));
-void	ft_lstclear_sh(t_env **lst, void (*del)(void*));
-t_env	*ft_lstnew_sh(char *name, char *content, int export_id);
-t_env	*ft_lstnew_env(char *name, char *content, int export_id);
 #endif

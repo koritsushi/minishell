@@ -17,6 +17,7 @@ SRCS 		=	srcs/minishell.c 	\
 				srcs/builtins.c		\
 				srcs/execution.c	\
 				srcs/env.c 			\
+				srcs/env_print.c	\
 				srcs/env_utils.c
 
 OBJS		=	$(SRCS:%.c=%.o)
