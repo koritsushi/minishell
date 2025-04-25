@@ -23,6 +23,8 @@ void	env_init(t_env **env_var, char **env);
 void	exec_init(t_exec *exec);
 void	export(t_env **env_var, t_env *lenv);
 void	unset(t_env **env_var, t_env *lenv);
+void	env_print(t_env **lst);
+void	export_print(t_env **lst);
 
 t_env	*ft_lstlast_sh(t_env *lst);
 void	ft_lstadd_back_sh(t_env **lst, t_env *new);

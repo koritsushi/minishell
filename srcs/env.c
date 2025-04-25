@@ -38,8 +38,8 @@ int	array_len(char **str)
 
 void	split_env(char **env, char **var)
 {
-	int	i;
-	char **temp;
+	int		i;
+	char	**temp;
 
 	i = 0;
 	while (env[i] != NULL)
@@ -47,7 +47,6 @@ void	split_env(char **env, char **var)
 		temp = ft_split(env[i], '=');
 		var[i] = ft_strdup(temp[0]);
 		free_strarr(temp);
-		//debug printf("name:%s\n", var[i]);
 		i++;
 	}
 	var[i] = NULL;
@@ -94,45 +93,37 @@ void	exec_init(t_exec *exec)
 	exec->index = 0;
 }
 
-void	msh_init(t_ms *data, char** env)
-{
-	env_init(&data->env_var, env);
-	//exec_init(data->exec);
-}
-
-/*
-//if update env only minishell own copy of env
-void	env_update(t_env **lst, t_env *nv)
-{
-	t_list new_lst;
-
-	new_lst = ft_lstnew((void) lc_env)
-	if (new_lst == NULL)
-		return ;
-	lst->next = ft_lstadd_back(lst, new_lst);
-
-}
-
-
-//print out env from minishell 
 void	env_print(t_env **lst)
 {
-	int	i;
+	t_env	*iter;
 
-	while (lst->next != NULL)
+	iter = *lst;
+	while (iter != NULL)
 	{
-		i = 0;
-		while (lst->env[i] != NULL)
-			printf("%s\n", env[i++]);
-		lst = lst->next;
+		if (iter->content != NULL && iter->exported == 1)
+			printf("%s=%s\n", iter->env, iter->content);
+		iter = iter->next;
 	}
 }
-*/
 
+//print out export env from minishell 
+void	export_print(t_env **lst)
+{
+	t_env	*iter;
+	char	*export_str;
+
+	iter = *lst;
+	export_str = "declare -x";
+	while (iter != NULL)
+	{
+		if (iter->content != NULL && iter->exported == 1)
+			printf("%s %s=%s\n", export_str, iter->env, iter->content);
+		iter = iter->next;
+	}
+}
 
 /*	export 
 	add variable to env
-
 */
 void	export(t_env **env_var, t_env *lenv)
 {
@@ -144,8 +135,7 @@ void	export(t_env **env_var, t_env *lenv)
 	check = lenv;
 	while (iter != NULL)
 	{
-		if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env))\
-		== 0)
+		if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env)) == 0)
 		{
 			free(iter->content);
 			iter->content = strdup(check->content);
@@ -155,7 +145,6 @@ void	export(t_env **env_var, t_env *lenv)
 	}
 	if (iter == NULL)
 	{
-		//printf("%s\n", check->content);
 		new = ft_lstnew_env(check->env, check->content, check->exported);
 		ft_lstadd_back_sh(env_var, new);
 	}
@@ -166,17 +155,16 @@ void	export(t_env **env_var, t_env *lenv)
 */
 void	unset(t_env **env_var, t_env *lenv)
 {
-	t_env *iter;
-	t_env *tmp;
-	t_env *prev;
-	t_env *check;
+	t_env	*iter;
+	t_env	*tmp;
+	t_env	*prev;
+	t_env	*check;
 
 	if (env_var == NULL || lenv == NULL)
 		return ;
 	iter = *env_var;
 	check = lenv;
-	if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env))\
-		== 0)
+	if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env)) == 0)
 	{
 		*env_var = iter->next;
 		ft_lstdelone_sh(iter, free);
@@ -185,9 +173,7 @@ void	unset(t_env **env_var, t_env *lenv)
 	iter = iter->next;
 	while (iter != NULL)
 	{
-		/*debug*///printf("%p\n", iter);
-		if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env))\
-			== 0)
+		if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env)) == 0)
 		{
 			if (iter->next != NULL)
 			{
@@ -203,5 +189,10 @@ void	unset(t_env **env_var, t_env *lenv)
 		prev = iter;
 		iter = iter->next;
 	}
-	printf("%p\n", iter->next);
+}
+
+void	msh_init(t_ms *data, char **env)
+{
+	env_init(&data->env_var, env);
+	exec_init(&data->exec);
 }

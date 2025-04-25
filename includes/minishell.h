@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/23 11:11:42 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/25 16:03:50 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_env
 
 typedef struct s_ms
 {
-	t_exec		*exec;
+	t_exec		exec;
 	t_env		*env_var;
 }					t_ms;
 

@@ -95,9 +95,6 @@ t_env	*ft_lstnew_sh(char *name, char *content, int export_id)
 	p = malloc(sizeof(t_env));
 	if (p == NULL)
 		return (NULL);
-
-	// get_var_name(&name, content);
-	// quote_removal(&name);
 	p->env = ft_strdup(name);
 	p->exported = export_id;
 	if (!is_target(content, '='))
@@ -106,7 +103,6 @@ t_env	*ft_lstnew_sh(char *name, char *content, int export_id)
 		p->content = ft_strdup("");
 	else if (ft_strchr(content, '='))
 		p->content = ft_strdup(ft_strchr(content, '=') + 1);
-	/*debug*///printf("ft_lstnew_sh:content:%s.\n", p->content);
 	p->next = NULL;
 	return (p);
 }
@@ -118,9 +114,6 @@ t_env	*ft_lstnew_env(char *name, char *content, int export_id)
 	p = malloc(sizeof(t_env));
 	if (p == NULL)
 		return (NULL);
-
-	// get_var_name(&name, content);
-	// quote_removal(&name);
 	p->env = ft_strdup(name);
 	p->exported = export_id;
 	if (!is_target(content, '='))
@@ -128,7 +121,6 @@ t_env	*ft_lstnew_env(char *name, char *content, int export_id)
 	if (!is_target(content, '='))
 		p->content = ft_strdup("");
 	p->content = ft_strdup(content);
-	/*debug*///printf("ft_lstnew_sh:content:%s.\n", p->content);
 	p->next = NULL;
 	return (p);
 }
