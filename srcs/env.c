@@ -184,8 +184,7 @@ void	ft_lst_remove_if(t_env **lst, char *target, int (*func)())
 	{
 		/*debug*/printf("ft_lst_remove_if:%s. %s.", tmp->env, target);
 		(*lst) = tmp->next;
-		free(tmp->env);
-		free(tmp->content);
+		free_multiple_ptr_single(tmp->env, tmp->content, NULL);
 		free(tmp);
 		ft_lst_remove_if(lst, target, func);
 	}
