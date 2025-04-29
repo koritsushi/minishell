@@ -178,7 +178,7 @@ void	ft_lst_remove_if(t_env **lst, char *target, int (*func)())
 	if (!lst || !*lst)
 		return ;
 	tmp = *lst;
-	/*debug*/printf("ft_lst_remove_if:ent: %s. %s.\n", tmp->env, target);
+	// /*debug*/printf("ft_lst_remove_if:ent: %s. %s.\n", tmp->env, target);
 
 	if (func(tmp->env, target, ft_strlen(target)) == 0)
 	{
@@ -202,7 +202,6 @@ void	ft_lst_remove_if(t_env **lst, char *target, int (*func)())
 */
 void	unset(t_env **lst, char *str)
 {
-	(void)	lst;
 	int		i;
 	char	**tmp;
 

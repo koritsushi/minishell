@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 16:39:33 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/29 13:16:48 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 17:39:29 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	env_print(t_env **lst)
 	}
 }
 
-//print out export env from minishell 
+/* print out export env from minishell */
 void	export_print(t_env **lst)
 {
 	t_env	*iter;

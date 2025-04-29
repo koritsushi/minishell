@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/29 17:08:31 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 21:12:48 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,8 @@ int	check_var_syntax(char *str)//, int *flag)
 			return (ft_perror_fd("🚨 Syntax error! spaces before or after '='!\n", 2, 0));
 		else if (new[1] == '=' && (new[2] == '\'' || new[2] == '\"'))
 			new = skip_if_quote(new + 2, new[2], 1);
-		new++;
+		if (new)
+			new++;
 	}
 	return (1);
 }
