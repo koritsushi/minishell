@@ -1,21 +1,34 @@
 /* ************************************************************************** */
-/*			    */
-/*			        :::      ::::::::   */
-/*   minishell.h			    :+:      :+:    :+:   */
-/*			    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>			      +#+  +:+       +#+        */
-/*			+#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#			 */
-/*   Updated: 2025/04/01 08:40:54 by hsim			 ###   ########.fr       */
-/*			    */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
+/*   Updated: 2025/04/29 09:51:11 by hsim             ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
+/* 
+	common header file such as
+	# include <unistd.h>
+	# include <limits.h>
+	# include <stdlib.h>
+	# include <stdio.h>
+	# include <stdarg.h>
+	# include <stdint.h>
+	are in libft header file
+*/
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "../libft/libft.h"
 # include "parsing.h"
 # include "token.h"
 # include "expansion.h"
+# include "execution.h"
+# include "builtins.h"
+# include "env.h"
 # include "signals.h"
 # include <errno.h>
 # include <strings.h>
@@ -34,26 +47,25 @@ typedef struct s_exec
 	char		***cmd_args;
 	int			cmd_count;
 	int			index;
-}	t_exec;
+}				t_exec;
 
 typedef struct s_env
 {
 	int				exported;
 	char			*env;
 	char			*content;
-	struct s_env	*next;
-}	t_env;
+	struct s_env 	*next;
+}					t_env;
 
-typedef struct s_minishell
+typedef struct s_ms
 {
-	int				signal;
-	struct s_exec	exec;
-	struct s_env	env;
-}	t_ms;
+	t_exec		exec;
+	t_env		*env_var;
+}					t_ms;
 
 typedef struct s_token
 {
-	unsigned char	*datatype; //datatype
+	unsigned char	*datatype;
 	char			**data; //string: "infile" "cmd1 -f -g -h" "cmd2" "outfile"
 	t_env			*vars;
 }	t_token;
@@ -73,6 +85,5 @@ void	ft_lstclear_sh(t_env **lst, void (*del)(void*));
 
 /*______________________free memory allocations______________________*/
 void	free_chr_ptr(void **ptr);
-
 
 #endif

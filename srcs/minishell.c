@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/29 09:34:43 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 10:02:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,26 @@ int	ft_isspace(char *str)
 	return (1);
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **env)
 {
+	t_ms	data;
 	char	*text;
 	t_token	lst;
 
 	if (argc > 1 && ft_strncmp(argv[0], "minishell", 9) != 0)
 		exit(127);
 	set_signal_action();
-	block_signal(SIGQUIT);
-	lst.vars = NULL;
+	//block_signal(SIGQUIT);
+	//block_signal(SIGINT);
+	data.env_var = NULL;
+	lst.vars = NULL; //merge into env_var later
+	msh_init(&data, env);
 	while (1)
 	{
 		text = readline("\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m");
 		if (text == NULL)
+		{
+			ft_putstr_fd("\e[0;31mlogout\e[0;31m\n", 1);
 			exit(ENOMEM);
 		if (*text)
 			add_history(text);

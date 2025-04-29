@@ -31,13 +31,18 @@ SRCS 		=	srcs/expansion.c					\
 				srcs/parsing_utils_vars_name.c		\
 				srcs/parsing_utils_vars_check.c		\
 				srcs/parsing_utils_vars_write.c		\
-				srcs/signals.c						\
-				srcs/debug.c						\
 				srcs/utils_free.c					\
+				srcs/debug.c						\
 				srcs/minishell_utils_list.c			\
 				srcs/minishell.c 	
+				srcs/signals.c		\
+				srcs/builtins.c		\
+				srcs/execution.c	\
+				srcs/env.c 			\
+				srcs/env_print.c	\
+				srcs/env_utils.c
 #				srcs/token_utils_operator.c			\
-				srcs/main-test-token_split.c		\
+#				srcs/main-test-token_split.c		\
 
 OBJS		=	$(SRCS:%.c=%.o)
 
@@ -65,7 +70,7 @@ $(NAME): $(LIBFT) $(OBJS)
 $(DEBUG):	$(LIBFT) $(OBJS)
 			@cp $(LIBFT) $(NAME)
 			ar rcs $(NAME) $(OBJS) $(LIBFT) 
-			$(COMPILE) $(CCFLAGS) $(FSAN) $(NAME) -lreadline -o $(PROGRAM) 
+			$(COMPILE) $(CCFLAGS) $(FSAN) $(NAME) -lreadline $(READLIB) -o $(PROGRAM) 
 
 $(LIBFT):
 			@make -C $(LIBFTDIR) all

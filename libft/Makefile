@@ -6,9 +6,10 @@
 #    By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:55:31 by mliyuan           #+#    #+#              #
-#    Updated: 2025/03/04 08:00:03 by hsim             ###   ########.fr        #
+#    Updated: 2025/04/29 09:53:08 by hsim             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 
 MANDATORY	=		ft_atoi.c						\
 					ft_bzero.c						\
@@ -33,6 +34,7 @@ MANDATORY	=		ft_atoi.c						\
 					ft_strlcpy.c					\
 					ft_strlen.c						\
 					ft_strmapi.c					\
+					ft_strcmp.c						\
 					ft_strncmp.c					\
 					ft_strnstr.c					\
 					ft_strrchr.c					\

@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_perror_fd.c                                     :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/03 07:51:12 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/29 09:52:16 by hsim             ###   ########.fr       */
+/*   Created: 2025/03/21 14:19:56 by mliyuan           #+#    #+#             */
+/*   Updated: 2025/04/22 14:58:30 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
- * prints message in destination pointed by fd
- * value = its return value
- * have to include \n everytime
- */
-int	ft_perror_fd(char *s, int fd, int value)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	if (!s)
-		return (0);
-	write(fd, s, ft_strlen(s));
-	return (value);
+	int	i;
+
+	i = 0;
+	while (s1[i] != '\0' && s1[i] == s2[i])
+		i++;
+	while (s2[i] != '\0')
+		i++;
+	return ((unsigned char) s1[i] - (unsigned char) s2[i]);
 }
