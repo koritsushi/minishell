@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/29 22:14:39 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 22:18:54 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,14 +151,6 @@ int	valid_export_keyword(char *str, int flag)
 		return (0);
 	str = skip_spaces(str, " \t\n\v\f\r");
 	/*debug*/printf("valid_export_keyword:ent:%s.\n", str);
-	// if (
-	// (ft_strncmp(str, "export", 6) == 0 && \
-	// str[6] && is_target(" \t\n\v\f\r", str[6])) || \
-	// (ft_strncmp(str, "\'export\'", 8) == 0 && \
-	// str[8] && is_target(" \t\n\v\f\r", str[8])) || \
-	// (ft_strncmp(str, "\"export\"", 8) == 0  && \
-	// str[8] && is_target(" \t\n\v\f\r", str[8])))
-	// 	return (1);
 
 	if (\
 	check_export_keyword(str, "export", 6, flag) || \
@@ -188,6 +180,7 @@ int	get_variable(t_env **vars, char *str, int exit_status)
 	/*debug*/printf("get_variable:ent:%s.\n", new);
 	if (new[0] && !is_target(new, '=') && !valid_export_keyword(new, 1))
 	{
+		// checks for if not == export var
 		/*debug*/printf("get_variable:\033[93minvalid var!\033[0m\n");
 		return (0);
 	}
