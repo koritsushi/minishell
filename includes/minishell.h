@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/29 09:51:11 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 17:17:23 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ typedef struct s_token
 {
 	unsigned char	*datatype;
 	char			**data; //string: "infile" "cmd1 -f -g -h" "cmd2" "outfile"
-	t_env			*vars;
 }	t_token;
 
 /*______________________for debug purposes only______________________*/
@@ -75,6 +74,9 @@ void	debug_print(char **res);
 void	debug_print_var_lst(t_env *lst);
 void	debug_print_cmd_line(t_token *lst);
 
+/*___________________helper function executing cmd___________________*/
+void	execute_built_in(t_ms data, int argc, char **argv);
+// void	execute_built_in(t_ms data, t_env *env, int argc, char **argv);
 
 /*______________modified linked_lst function from libft______________*/
 t_env	*ft_lstlast_sh(t_env *lst);

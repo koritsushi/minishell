@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/29 10:02:35 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 17:19:12 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	ft_isspace(char *str)
 	return (1);
 }
 
+// rmb to handle exit_status
 int	main(int argc, char **argv, char **env)
 {
 	t_ms	data;
@@ -38,7 +39,6 @@ int	main(int argc, char **argv, char **env)
 	//block_signal(SIGQUIT);
 	//block_signal(SIGINT);
 	data.env_var = NULL;
-	lst.vars = NULL; //merge into env_var later
 	msh_init(&data, env);
 	while (1)
 	{
@@ -47,6 +47,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			ft_putstr_fd("\e[0;31mlogout\e[0;31m\n", 1);
 			exit(ENOMEM);
+		}
 		if (*text)
 			add_history(text);
 		if (ft_strncmp(text, "exit", 4) == 0)
@@ -56,29 +57,29 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (ft_strncmp(text, "print", 5) == 0)
 		{
-			if (lst.vars && lst.vars->content)
-				debug_print_var_lst(lst.vars);
+			if (data.env_var && data.env_var->content)
+				debug_print_var_lst(data.env_var);
 			else
 				printf("\033[103m_____vars_list:_____\033[0m\n");
 		}
 		/*lexing & get_vars*/
 		else if (*text && check_syntax(text))
 		{
-			get_variable(&lst.vars, text, 255);
-			if (lst.vars && lst.vars->content)
-				debug_print_var_lst(lst.vars);
-			if (get_cmd_line(text, &lst, lst.vars, 255))
+			get_variable(&data.env_var, text, 255);
+			// if (data.env_var && data.env_var->content)
+			// 	debug_print_var_lst(data.env_var);
+			if (get_cmd_line(text, &lst, data.env_var, 255))
 			{
-				debug_print_cmd_line(&lst);
+				/*debug*/debug_print_cmd_line(&lst);
+				execute_built_in(data, count_str(lst.data[0], " \t\n\v\f\r"), lst.data);
+				/* direct to pipex/execve */
 				free_all(&lst);
 			}
-			/* direct to/run pipex */
 		}
 		free(text);
 	}
 	free(text);
-	if (lst.vars && lst.vars->content)
-		ft_lstclear_sh(&lst.vars, free);
+	if (data.env_var && data.env_var->content)
+		ft_lstclear_sh(&data.env_var, free);
 	return (0);
 }
-

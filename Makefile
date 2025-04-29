@@ -9,6 +9,11 @@
 #    Updated: 2024/11/11 15:04:47 by mliyuan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+# __________detect os____________
+UNAME_S := $(shell uname -s)
+
+# __________all files____________
 SRCS 		=	srcs/expansion.c					\
 				srcs/expansion_quote.c				\
 				srcs/expansion_brace_utils_count.c	\
@@ -33,14 +38,15 @@ SRCS 		=	srcs/expansion.c					\
 				srcs/parsing_utils_vars_write.c		\
 				srcs/utils_free.c					\
 				srcs/debug.c						\
+				srcs/signals.c						\
+				srcs/builtins.c						\
+				srcs/execution.c					\
+				srcs/env.c 							\
+				srcs/env_print.c					\
+				srcs/env_utils.c					\
+				srcs/minishell_utils_builtin.c		\
 				srcs/minishell_utils_list.c			\
 				srcs/minishell.c 	
-				srcs/signals.c		\
-				srcs/builtins.c		\
-				srcs/execution.c	\
-				srcs/env.c 			\
-				srcs/env_print.c	\
-				srcs/env_utils.c
 #				srcs/token_utils_operator.c			\
 #				srcs/main-test-token_split.c		\
 
@@ -57,14 +63,21 @@ FSAN		=	-fsanitize=address
 READINC		= 	-I/usr/include./	
 #READLIB		= 	-L/usr/lib/x86_64-linux-gnu/libreadline.a
 
+# __________readlib paths configs__________
+ifeq ($(UNAME_S), Linux)
+	READLIB	:= 	-L/usr/lib/x86_64-linux-gnu/libreadline.a
+else ifeq ($(UNAME_S), Darwin)
+	READLIB	:=
+endif
+
 %.o: %.c
 			$(COMPILE) $(CCFLAGS) $(DEBUG) $(READINC) -I. -c $< -o $(<:.c=.o)
 
 $(NAME): $(LIBFT) $(OBJS)
 			@cp $(LIBFT) $(NAME)
 			ar rcs $(NAME) $(OBJS) $(LIBFT)
-			$(COMPILE) $(CCFLAGS) $(NAME) -lreadline -o $(PROGRAM)
-#			$(COMPILE) $(CCFLAGS) $(NAME) -lreadline $(READLIB) -o $(PROGRAM)
+			$(COMPILE) $(CCFLAGS) $(NAME) -lreadline $(READLIB) -o $(PROGRAM)
+#			$(COMPILE) $(CCFLAGS) $(NAME) -lreadline -o $(PROGRAM)
 
 
 $(DEBUG):	$(LIBFT) $(OBJS)

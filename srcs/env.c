@@ -57,6 +57,7 @@ void	split_env(char **env, char **var)
 	copy env from bash shell then stored a copy in minishell
 	local variable
 	environment variable wont show the variable if its empty or not exported
+	uses malloc
 */
 void	env_init(t_env **env_var, char **env)
 {
@@ -76,12 +77,13 @@ void	env_init(t_env **env_var, char **env)
 			*env_var = ft_lstnew_shenv(var[i], env[i], 1);
 			i++;
 		}
-		tmp = ft_lstnew_shenv(var[i], env[i], 1);
+		tmp = ft_lstnew_shenv(var[i], env[i], 2);
 		if (tmp == NULL)
 			return ;
 		ft_lstadd_back_env(env_var, tmp);
 		i++;
 	}
+	free_chr_ptr((void **)var);
 }
 
 void	exec_init(t_exec *exec)
@@ -124,44 +126,96 @@ void	export(t_env **env_var, t_env *lenv)
 }
 
 /*	unset
-	remove a specific variale to display on env and export
+	remove a specific variable to display on env and export
 */
-void	unset(t_env **env_var, t_env *lenv)
-{
-	t_env	*iter;
-	t_env	*tmp;
-	t_env	*prev;
-	t_env	*check;
+// void	unset(t_env **env_var, t_env *lenv)
+// {
+// 	t_env	*iter;
+// 	t_env	*tmp = NULL;
+// 	t_env	*prev;
+// 	t_env	*check;
 
-	if (env_var == NULL || lenv == NULL)
+// 	if (env_var == NULL || lenv == NULL)
+// 		return ;
+// 	iter = *env_var;
+// 	check = lenv;
+// 	if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env)) == 0)
+// 	{
+// 		*env_var = iter->next;
+// 		ft_lstdelone_env(iter, free);
+// 		return ;
+// 	}
+// 	iter = iter->next;
+// 	while (iter != NULL)
+// 	{
+// 		if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env)) == 0)
+// 		{
+// 			if (iter->next != NULL)
+// 			{
+// 				tmp = iter->next;
+// 				prev->next = tmp;
+// 			}
+// 			else
+// 				prev->next = NULL;
+// 			ft_lstdelone_env(iter, free);
+// 			iter = tmp;
+// 			break ;
+// 		}
+// 		prev = iter;
+// 		iter = iter->next;
+// 	}
+// }
+
+/*
+ * checks if lst.env (env_name) == target
+ * if true, frees the entry
+ * function pointer *func is ft_strcmp()
+ */
+void	ft_lst_remove_if(t_env **lst, char *target, int (*func)())
+{
+	t_env	*tmp;
+
+	if (!lst || !*lst)
 		return ;
-	iter = *env_var;
-	check = lenv;
-	if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env)) == 0)
+	tmp = *lst;
+	/*debug*/printf("ft_lst_remove_if:ent: %s. %s.\n", tmp->env, target);
+
+	if (func(tmp->env, target, ft_strlen(target)) == 0)
 	{
-		*env_var = iter->next;
-		ft_lstdelone_env(iter, free);
-		return ;
+		/*debug*/printf("ft_lst_remove_if:%s. %s.", tmp->env, target);
+		(*lst) = tmp->next;
+		free(tmp->env);
+		free(tmp->content);
+		free(tmp);
+		ft_lst_remove_if(lst, target, func);
 	}
-	iter = iter->next;
-	while (iter != NULL)
+	else
 	{
-		if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env)) == 0)
-		{
-			if (iter->next != NULL)
-			{
-				tmp = iter->next;
-				prev->next = tmp;
-			}
-			else
-				prev->next = NULL;
-			ft_lstdelone_env(iter, free);
-			iter = tmp;
-			break ;
-		}
-		prev = iter;
-		iter = iter->next;
+		tmp = *lst;
+		ft_lst_remove_if(&tmp->next, target, func);
 	}
+}
+/*
+ * split input str by spaces ' '
+ * iterates entire **lst & free if lst.env (env_name) == str
+ * removes a specific variable that's shown on env and export
+ * uses malloc
+*/
+void	unset(t_env **lst, char *str)
+{
+	(void)	lst;
+	int		i;
+	char	**tmp;
+
+	i = 0;
+	tmp = ft_split_shell(str, " \t\n\v\f\r");
+
+	/*debug*/printf("unset_debug_print:\n");
+	debug_print(tmp);
+
+	while (tmp[++i])
+		ft_lst_remove_if(lst, tmp[i], ft_strncmp);
+	free_chr_ptr((void **)tmp);
 }
 
 void	msh_init(t_ms *data, char **env)

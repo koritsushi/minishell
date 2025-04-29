@@ -29,7 +29,8 @@ void	msh_init(t_ms *data, char** env);
 void	env_init(t_env **env_var, char **env);
 void	exec_init(t_exec *exec);
 void	export(t_env **env_var, t_env *lenv);
-void	unset(t_env **env_var, t_env *lenv);
+void	unset(t_env **lst, char *str);
+// void	unset(t_env **env_var, t_env *lenv);
 void	env_print(t_env **lst);
 void	export_print(t_env **lst);
 

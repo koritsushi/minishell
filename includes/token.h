@@ -71,9 +71,8 @@ char	*truncate_input(char *str);
 
 /* -----------------free_memory_allocations----------------- */
 void	free_all(t_token *lst);
-void	free_multiple_ptr(int x, ...);
-void	free_multiple_ptr_single(int x, ...);
-
+void	free_multiple_ptr(char **p1, char **p2, char **p3);
+void	free_multiple_ptr_single(char *p1, char *p2, char *p3);
 
 /*debug testing only*/
 int		count_str(char *str, char *set);

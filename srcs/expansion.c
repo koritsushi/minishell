@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/12 11:31:21 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 10:42:05 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,20 +92,20 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 	// int	k = 0;
 	while (str && str[x])// && k < 3)
 	{
-		/*debug*/printf("shell_var_expansion:ent:%s. flag:%d\n", &str[x], flag);
+		// /*debug*/printf("shell_var_expansion:ent:%s. flag:%d\n", &str[x], flag);
 		update_flag_quote(&str[x], &symbol, &flag);
 		if (flag && symbol == '\'' && str[x] == symbol)// && ft_strchr(&str[x + 1], '\''))
 			skip_quote_update_flag(str, &symbol, &flag, &x);
 		else if (str[x] == '$' && ft_isalpha(str[x + 1]))
 		{
-			/*debug*/printf("shell_var_expansion:flag:%d\n", flag);
+			// /*debug*/printf("shell_var_expansion:flag:%d\n", flag);
 			str = expand_shell_var(vars, cmd_line, &str[x], &x); //actually return x is better
-			/*debug*/printf("shell_var_expansion:new:%s.\n", &str[x]);
+			// /*debug*/printf("shell_var_expansion:new:%s.\n", &str[x]);
 		}
 		else if (str[x] == '$' && str[x + 1] && str[x + 1] == '?')
 		{
 			str = expand_exit_status(cmd_line, exit_status, &x);
-			/*debug*/printf("shell_var_expansion:exit:%s. %d\n", &str[x], exit_status);
+			// /*debug*/printf("shell_var_expansion:exit:%s. %d\n", &str[x], exit_status);
 		}
 		else if (str[x] == '$' && str[x + 1] && str[x + 1] == '$')
 			x += 2;

@@ -6,25 +6,25 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/07 21:23:28 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 10:21:13 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/token.h"
 
 /* checks if char c == members in str */
-int	is_target(char *str, char c)
-{
-	if (!str)
-		return (0);
-	while (str[0])
-	{
-		if (str[0] == c)
-			return (1);
-		str++;
-	}
-	return (0);
-}
+// int	is_target(char *str, char c)
+// {
+// 	if (!str)
+// 		return (0);
+// 	while (str[0])
+// 	{
+// 		if (str[0] == c)
+// 			return (1);
+// 		str++;
+// 	}
+// 	return (0);
+// }
 
 /*
  * counts the number of words in the provided str 

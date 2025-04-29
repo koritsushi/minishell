@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 22:54:34 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/12 11:52:56 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 17:10:56 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ char	*copy_brace_expansion(char *src, char *dest, int *x, int malloc_size)
 		}
 		src++;
 	}
-	free_multiple_ptr_single(2, head, tail);
+	free_multiple_ptr_single(head, tail, NULL);
 	// /*debug*/printf("copy_brace_expansion:end:\033[93m%s\033[0m.\n", dest);
 	return (dest);
 }

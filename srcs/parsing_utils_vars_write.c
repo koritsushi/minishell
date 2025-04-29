@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:02:51 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/12 13:52:04 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 10:40:54 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	copy_vars(char *dest, char *src, int len)
 	x = 0;
 	flag = 0;
 	// symbol = '\0';
-	/*debug*/printf("copy_vars:src:%s, len:%d\n", src, len);
+	// /*debug*/printf("copy_vars:src:%s, len:%d\n", src, len);
 	while (src[0] && x < len)
 	{
 		/* 'po"$var' "p'$var" */
@@ -129,10 +129,10 @@ int	check_replace_dup(t_env *vars, char *name, char *new, int export_id)
 	while (vars && !flag)
 	{
 		len = 0;
-		/*debug*/printf("check_replace_dup name:%s, %s.\n", (*vars).env, name);
+		// /*debug*/printf("check_replace_dup name:%s, %s.\n", (*vars).env, name);
 		while (name[len] && !is_target(" \t\n\v\f\r", name[len]))
 			len++;
-		/*debug*/printf("h:%s, %zu %zu\n", name, ft_strlen((*vars).env), len);
+		// /*debug*/printf("h:%s, %zu %zu\n", name, ft_strlen((*vars).env), len);
 		if (ft_strlen((*vars).env) > len)
 			len = ft_strlen((*vars).env);
 		if (ft_strncmp(vars->env, name, len) == 0 && !is_target(new, '='))

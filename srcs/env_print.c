@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_print.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 16:39:33 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/25 17:19:53 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/29 13:16:48 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	env_print(t_env **lst)
 	iter = *lst;
 	while (iter != NULL)
 	{
-		if (iter->content != NULL && iter->exported == 1)
+		if (iter->content != NULL && iter->exported == 2)
 			printf("%s=%s\n", iter->env, iter->content);
 		iter = iter->next;
 	}
@@ -35,7 +35,7 @@ void	export_print(t_env **lst)
 	export_str = "declare -x";
 	while (iter != NULL)
 	{
-		if (iter->content != NULL && iter->exported == 1)
+		if (iter->content != NULL && iter->exported >= 1)
 			printf("%s %s=%s\n", export_str, iter->env, iter->content);
 		iter = iter->next;
 	}

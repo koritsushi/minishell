@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/12 09:00:01 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 17:08:11 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static int	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 	/*debug*/printf("\033[93mcheck_shell_var:ent:\033[0m%s\n", *cmd_line);
 	while (vars && !flag_exist)
 	{
-		/*debug*/printf("check_replace_dup name:%s, %s\n", vars->env, name);
+		// /*debug*/printf("93mcheck_shell_var:check_replace_dup name:%s, %s\n", vars->env, name);
 		if (ft_strlen(vars->env) == ft_strlen(name) && \
 			ft_strncmp(vars->env, name, ft_strlen(name)) == 0)
 		{
@@ -148,7 +148,7 @@ char	*expand_shell_var(t_env *vars, char **cmd_line, char *str, int *index)
 	/*debug*/ printf("expand_shell_var:index_new: %d\n", *index);
 	// /*debug*/ printf("expand_shell_var:%s.\n", &(*cmd_line)[index]);
 
-	free_multiple_ptr(2, tmp, fin);
+	free_multiple_ptr(tmp, fin, NULL);
 	return (*cmd_line);
 }
 

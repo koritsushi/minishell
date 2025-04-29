@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:40:41 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/12 08:00:14 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 17:10:49 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*expand_exit_status(char **cmd_line, int exit_status, int *index)
 
 	// start_exit_expansion(*cmd_line, new, exit_code, len);
 	*index += ft_strlen(exit_code);
-	free_multiple_ptr_single(2, *cmd_line, exit_code);
+	free_multiple_ptr_single(*cmd_line, exit_code, NULL);
 	*cmd_line = new;
 	return (*cmd_line);
 }

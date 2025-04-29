@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/12 07:57:56 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 17:08:31 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ static int	has_non_var(char *str)
 	}
 	/* var=90 var2=56 ^var=6 */
 	/* ^var=6 */
-	free_multiple_ptr(2, tmp, fin);
+	free_multiple_ptr(tmp, fin, NULL);
 	return (res);
 }
 

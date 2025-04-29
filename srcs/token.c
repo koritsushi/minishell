@@ -222,6 +222,6 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 	// 	printf("\033[92m%s\033[0m. [%d]\n", lst->data[i], lst->datatype[i]);
 	/*--------------debug_end--------------*/
 
-	free_multiple_ptr(2, res, infile);
+	free_multiple_ptr(res, infile, NULL);
 	return (1);
 }
