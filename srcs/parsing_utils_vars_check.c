@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/12 07:57:56 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 18:47:09 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,14 +148,15 @@ int	check_var_syntax(char *str)//, int *flag)
 	
 	while (new && new[0])// && !(*flag)) //export & default can use flag != 1
 	{
-		// /*debug*/printf("check_var_syntax:ent:%s\n", new);
+		/*debug*/printf("check_var_syntax:ent:%s\n", new);
 		if (new[1] == '=' && \
 			((new[0] && is_target(" \t\n\v\f\r<>|&", new[0])) || \
 			(new[2] && is_target(" \t\n\v\f\r<>|&", new[2]))))
 			return (ft_perror_fd("🚨 Syntax error! spaces before or after '='!\n", 2, 0));
 		else if (new[1] == '=' && (new[2] == '\'' || new[2] == '\"'))
 			new = skip_if_quote(new + 2, new[2], 1);
-		new++;
+		if (new)
+			new++;
 	}
 	return (1);
 }

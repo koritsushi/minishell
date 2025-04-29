@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:57:56 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/12 14:14:27 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 22:06:08 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,30 @@ static int	is_self_assigned(char *str, char *name)
 	free(check);
 	return (flag);
 }
+/*
+ * child function in get_var_name,
+ * breaks if encounter '=' or spaces(when quote is not detected)
+ * counts & return len
+ */
+static int	count_var_name(char *new)
+{
+	int		len;
+	int		flag;
+	char	symbol;
+	
+	len = 0;
+	flag = 0;
+	while (new[len])
+	{
+		/*debug*/printf("count_var_name:f:%d\n", flag);
+		update_flag_quote(&new[len], &symbol, &flag);
+		if (new[len] && ((new[len] == '=') || \
+(!flag && is_target(" \t\n\v\f\r", new[len]))))
+			break;
+		len++;
+	}
+	return (len);
+}
 
 /*
  * child function in extract_vars,
@@ -54,12 +78,14 @@ int	get_var_name(char **dest, char *str)
 	new = skip_spaces(str, " \t\n\v\f\r"); //optional
 	if (!new[0])
 		return (0);
-	while (new[len] && new[len] != '=')
-		len++;
+	len = count_var_name(new);
+
 	/*debug*/printf("get_var_name:len=%d, leftover=%s.\n", len, &new[len]);
 	if (new && malloc_chr_ptr(dest, (len + 1)))
 		ft_strlcpy(*dest, new, len + 1);
 	/*debug*/printf("get_var_name:new_bf=%s.\n", new);
+
+	/* check if is_self_assigned */
 	if (new[len] == '=')
 		new += 1;
 	new += len;
@@ -69,6 +95,7 @@ int	get_var_name(char **dest, char *str)
 		free(*dest);
 		return (0);
 	}
+
 	/*debug*/printf("get_var_name:copied name!\033[93m%s\033[0m.\n", *dest);
 	return (1);
 }

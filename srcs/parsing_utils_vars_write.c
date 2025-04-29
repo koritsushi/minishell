@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:02:51 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/12 13:52:04 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/29 18:03:49 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	count_malloc_vars(char *str)
 
 	i = 0;
 	flag = 0;
-	// while (str && str[i])
+
 	while (str && str[0])
 	{
 		// if (str[i] == '=') // ='data' or 'var'=data
