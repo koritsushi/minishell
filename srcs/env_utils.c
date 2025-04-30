@@ -13,17 +13,46 @@
 #include "../includes/env.h"
 
 /* checks if char c == members in str */
-int	is_target(char *str, char c)
+// int	is_target(char *str, char c)
+// {
+// 	if (!str)
+// 		return (0);
+// 	while (str[0])
+// 	{
+// 		if (str[0] == c)
+// 			return (1);
+// 		str++;
+// 	}
+// 	return (0);
+// }
+
+/*
+ * checks if lst.env (env_name) == target
+ * if true, frees the entry
+ * function pointer *func is ft_strcmp()
+ */
+void	ft_lst_remove_if(t_env **lst, char *target, int (*func)())
 {
-	if (!str)
-		return (0);
-	while (str[0])
+	t_env	*tmp;
+
+	if (!lst || !*lst)
+		return ;
+	tmp = *lst;
+	// /*debug*/printf("ft_lst_remove_if:ent: %s. %s.\n", tmp->env, target);
+
+	if (func(tmp->env, target, ft_strlen(target)) == 0)
 	{
-		if (str[0] == c)
-			return (1);
-		str++;
+		/*debug*/printf("ft_lst_remove_if:%s. %s.", tmp->env, target);
+		(*lst) = tmp->next;
+		free_multiple_ptr_single(tmp->env, tmp->content, NULL);
+		free(tmp);
+		ft_lst_remove_if(lst, target, func);
 	}
-	return (0);
+	else
+	{
+		tmp = *lst;
+		ft_lst_remove_if(&tmp->next, target, func);
+	}
 }
 
 t_env	*ft_lstlast_env(t_env *lst)

@@ -40,6 +40,7 @@ SRCS 		=	srcs/expansion.c					\
 				srcs/debug.c						\
 				srcs/signals.c						\
 				srcs/builtins.c						\
+				srcs/builtins_utils.c				\
 				srcs/execution.c					\
 				srcs/env.c 							\
 				srcs/env_print.c					\

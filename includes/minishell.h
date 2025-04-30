@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/29 17:17:23 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 08:27:48 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,12 @@ typedef struct s_token
 	char			**data; //string: "infile" "cmd1 -f -g -h" "cmd2" "outfile"
 }	t_token;
 
-/*______________________for debug purposes only______________________*/
+/*__________for debug purposes only, can remove during eval__________*/
 void	debug_print(char **res);
 void	debug_print_var_lst(t_env *lst);
 void	debug_print_cmd_line(t_token *lst);
+void	debug_print_cd(void);
+
 
 /*___________________helper function executing cmd___________________*/
 void	execute_built_in(t_ms data, int argc, char **argv);

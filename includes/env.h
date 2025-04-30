@@ -24,6 +24,8 @@ void	ft_lstdelone_env(t_env *lst, void (*del)(void*));
 void	ft_lstclear_env(t_env **lst, void (*del)(void*));
 t_env	*ft_lstnew_shenv(char *name, char *content, int export_id);
 t_env	*ft_lstnew_env(char *name, char *content, int export_id);
+void	ft_lst_remove_if(t_env **lst, char *target, int (*func)());
+
 
 void	msh_init(t_ms *data, char** env);
 void	env_init(t_env **env_var, char **env);

@@ -1,3 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   debug.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/30 08:25:46 by hsim              #+#    #+#             */
+/*   Updated: 2025/04/30 08:27:00 by hsim             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/*   helper functions for debug purposes
+ * ************************************************************************** */
+
 #include "includes/minishell.h"
 
 void	debug_print(char **res)
@@ -11,6 +26,12 @@ void	debug_print(char **res)
 	}
 	while (res && res[i])
 		printf("%s.\n", res[i++]);
+}
+
+void	debug_print_cd(void)
+{
+	char tab[100];
+	printf("path:%s.\n", getcwd(tab, 100));
 }
 
 void	debug_print_cmd_line(t_token *lst)

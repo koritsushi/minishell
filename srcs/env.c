@@ -167,34 +167,6 @@ void	export(t_env **env_var, t_env *lenv)
 // }
 
 /*
- * checks if lst.env (env_name) == target
- * if true, frees the entry
- * function pointer *func is ft_strcmp()
- */
-void	ft_lst_remove_if(t_env **lst, char *target, int (*func)())
-{
-	t_env	*tmp;
-
-	if (!lst || !*lst)
-		return ;
-	tmp = *lst;
-	// /*debug*/printf("ft_lst_remove_if:ent: %s. %s.\n", tmp->env, target);
-
-	if (func(tmp->env, target, ft_strlen(target)) == 0)
-	{
-		/*debug*/printf("ft_lst_remove_if:%s. %s.", tmp->env, target);
-		(*lst) = tmp->next;
-		free_multiple_ptr_single(tmp->env, tmp->content, NULL);
-		free(tmp);
-		ft_lst_remove_if(lst, target, func);
-	}
-	else
-	{
-		tmp = *lst;
-		ft_lst_remove_if(&tmp->next, target, func);
-	}
-}
-/*
  * split input str by spaces ' '
  * iterates entire **lst & free if lst.env (env_name) == str
  * removes a specific variable that's shown on env and export

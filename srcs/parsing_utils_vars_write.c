@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:02:51 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/29 10:40:54 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 08:36:36 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,8 @@ static int	overwrite_existing_var(t_env *head, char *str, int export_id)
 // 22 lines
 /*
  * child function in extract_vars,
- * search for *name in var_name linked list,
+ * search for *name in var_name t_env linked list,
+ * new= the entire var_assignment string (eg var=1234)
  * replace data & sets flag to 1 if duplicate found
  */
 int	check_replace_dup(t_env *vars, char *name, char *new, int export_id)

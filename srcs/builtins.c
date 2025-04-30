@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/25 16:37:03 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/30 10:49:10 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,43 @@ int	ft_pwd(void)
 	return (0);
 }
 
+/*
+ * child function in ft_cd
+ * checks if target_dir is relative path (eg .. or ../)
+ * expand it to proper path text
+ * uses malloc
+ */
+char	*expand_relative_path(char *str, char *curr_dir)
+{
+	char 	*new;
+	int		len;
+	int		len2;
+	
+	new = str;
+	len2 = 0;
+	if (strcmp(".", new) == 0)
+		return (curr_dir);
+	else if (strncmp("../", new, 3) == 0 || strncmp("..", new, 2) == 0)
+	{
+		len = ft_strrchr(curr_dir, '/') - curr_dir;
+		if (ft_strchr(str, '/') && *(ft_strchr(str, '/') + 1) != '\0')
+		{
+			str = ft_strchr(str, '/');
+			if (str[1] == '\0')
+				str += 1;
+			len2 = ft_strlen(str);
+			/*debug*/printf("expand_relative_path:str:%s.\n", str);
+		}
+		/*debug*/printf("expand_relative_path:len:%d %d\n", len, len2);
+		malloc_chr_ptr(&new, len + len2 + 1);
+		ft_strlcpy(new, curr_dir, len + 1);
+		if (len2 > 0)
+			ft_strlcpy(&new[len], str, len2 + 1);
+		/*debug*/printf("expand_relative_path:new:\033[93m%s\033[0m.\n", new);
+	}
+	return (new);
+}
+
 /*	
 	change directory
 	will update env OLDPWD and PWD var when changing directory
@@ -75,23 +112,27 @@ int	ft_pwd(void)
 int	ft_cd(t_env **lst, char *dir)
 {
 	char	*curr_dir;
-	t_env	*opwd;
-	t_env	*cpwd;
+	char	*new;
+	// t_env	*opwd;
+	// t_env	*cpwd;
+	(void)	lst;
 
+	dir = skip_spaces(dir, " \t\n\v\f\r");
 	curr_dir = getpwd();
 	if (curr_dir == NULL)
 		return (-1);
-	if (chdir(dir) == -1)
-		return (printf("Minishell: cd : %s: %s\n", dir, strerror(errno)));
+	if (chdir(dir) != 0)
+		printf("Minishell: cd : %s: %s\n", dir, strerror(errno));
 	else
 	{
-		cpwd = ft_lstnew_env("PWD", dir, 1);
-		opwd = ft_lstnew_env("OLDPWD", curr_dir, 1);
-		export(lst, cpwd);
-		export(lst, opwd);
-		ft_lstdelone_env(cpwd, free);
-		ft_lstdelone_env(opwd, free);
+		new = expand_relative_path(dir, curr_dir);
+		ft_lst_replace_if(*lst, "PWD", new);
+		ft_lst_replace_if(*lst, "OLDPWD", curr_dir);
+		if (strncmp("../", dir, 3) == 0 || strncmp("..", dir, 2) == 0)
+			free(new);
 	}
+	/*debug*/debug_print_cd();
+	free(curr_dir);
 	return (0);
 }
 
