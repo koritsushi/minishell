@@ -12,20 +12,6 @@
 
 #include "../includes/env.h"
 
-/* checks if char c == members in str */
-// int	is_target(char *str, char c)
-// {
-// 	if (!str)
-// 		return (0);
-// 	while (str[0])
-// 	{
-// 		if (str[0] == c)
-// 			return (1);
-// 		str++;
-// 	}
-// 	return (0);
-// }
-
 /*
  * checks if lst.env (env_name) == target
  * if true, frees the entry
@@ -79,37 +65,37 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 	}
 }
 
-void	ft_lstdelone_env(t_env *lst, void (*del)(void*))
-{
-	if (lst == NULL)
-		return ;
-	if (lst && del != NULL)
-	{
-		(*del)(lst->env);
-		(*del)(lst->content);
-		free(lst);
-	}
-}
+// void	ft_lstdelone_env(t_env *lst, void (*del)(void*))
+// {
+// 	if (lst == NULL)
+// 		return ;
+// 	if (lst && del != NULL)
+// 	{
+// 		(*del)(lst->env);
+// 		(*del)(lst->content);
+// 		free(lst);
+// 	}
+// }
 
-void	ft_lstclear_env(t_env **lst, void (*del)(void*))
-{
-	t_env	*next;
-	t_env	*tmp;
+// void	ft_lstclear_env(t_env **lst, void (*del)(void*))
+// {
+// 	t_env	*next;
+// 	t_env	*tmp;
 
-	if (lst == NULL)
-		return ;
-	if (lst && del != NULL)
-	{
-		tmp = *lst;
-		while (tmp)
-		{
-			next = tmp->next;
-			ft_lstdelone_env(tmp, del);
-			tmp = next;
-		}
-		*lst = NULL;
-	}
-}
+// 	if (lst == NULL)
+// 		return ;
+// 	if (lst && del != NULL)
+// 	{
+// 		tmp = *lst;
+// 		while (tmp)
+// 		{
+// 			next = tmp->next;
+// 			ft_lstdelone_env(tmp, del);
+// 			tmp = next;
+// 		}
+// 		*lst = NULL;
+// 	}
+// }
 
 /*
  * helper function in saving variable in linked list

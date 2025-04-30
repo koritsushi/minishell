@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/30 08:27:48 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 13:06:00 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ void	debug_print_cd(void);
 
 
 /*___________________helper function executing cmd___________________*/
-void	execute_built_in(t_ms data, int argc, char **argv);
+void	execute_functions(t_ms data, t_token lst);
+void	execute_built_in(t_ms data, int argc, char *argv);
+
 // void	execute_built_in(t_ms data, t_env *env, int argc, char **argv);
 
 /*______________modified linked_lst function from libft______________*/

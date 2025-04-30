@@ -32,3 +32,40 @@ void	ft_lst_replace_if(t_env *lst, char *name, char *content)
     else
         ft_lst_replace_if(tmp->next, name, content);
 }
+
+/*
+ * child function in ft_cd
+ * checks if target_dir is relative path (eg .. or ../)
+ * expand it to proper path text
+ * uses malloc
+ */
+char	*expand_relative_path(char *str, char *curr_dir)
+{
+	char 	*new;
+	int		len;
+	int		len2;
+	
+	new = str;
+	len2 = 0;
+	if (strcmp(".", new) == 0)
+		return (curr_dir);
+	else if (strncmp("../", new, 3) == 0 || strncmp("..", new, 2) == 0)
+	{
+		len = ft_strrchr(curr_dir, '/') - curr_dir;
+		if (ft_strchr(str, '/') && *(ft_strchr(str, '/') + 1) != '\0')
+		{
+			str = ft_strchr(str, '/');
+			if (str[1] == '\0')
+				str += 1;
+			len2 = ft_strlen(str);
+			/*debug*/printf("expand_relative_path:str:%s.\n", str);
+		}
+		/*debug*/printf("expand_relative_path:len:%d %d\n", len, len2);
+		malloc_chr_ptr(&new, len + len2 + 1);
+		ft_strlcpy(new, curr_dir, len + 1);
+		if (len2 > 0)
+			ft_strlcpy(&new[len], str, len2 + 1);
+		/*debug*/printf("expand_relative_path:new:\033[93m%s\033[0m.\n", new);
+	}
+	return (new);
+}

@@ -45,7 +45,7 @@ SRCS 		=	srcs/expansion.c					\
 				srcs/env.c 							\
 				srcs/env_print.c					\
 				srcs/env_utils.c					\
-				srcs/minishell_utils_builtin.c		\
+				srcs/minishell_utils_execute.c		\
 				srcs/minishell_utils_list.c			\
 				srcs/minishell.c 	
 #				srcs/token_utils_operator.c			\
