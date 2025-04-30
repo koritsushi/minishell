@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/30 13:43:20 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 14:17:28 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	execute_functions(t_ms data, t_token lst)
 	int		i;
 	char	**cmd_line;
 
+	if (!lst.data || !lst.data[0] || !lst.data[0][0])
+		return ;
 	cmd_line = lst.data;
 	i = -1;
 	if (strncmp(cmd_line[0], "cd", 2) == 0 && !has_pipes(lst))
