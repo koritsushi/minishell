@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:18:26 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/18 10:19:01 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 21:54:25 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	*skip_spaces(char *str, char *set)
  * child function for extract_cmd_head & process_cmd_tail
  * *str = the string to check/iterate
  * if char c == symbol, skips *str to the 1st occurence of spaces
+ * and skips all consequent spaces
  */
 char	*skip_if_symbol(char *str, char c, char symbol)
 {

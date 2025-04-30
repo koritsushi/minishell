@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/29 10:42:05 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 21:43:17 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,11 @@ static void	skip_quote_update_flag(char *str, char *symbol, int *flag, int *x)
  * checks if there are $var in string and corresponding entry in t_env vars
  * yes: replace, free, remalloc cmd_line with content
  * no : replace with spaces ' '
+ * b_switch=1 : expand_exit_status 
+ * b_switch=0 : dont expand_exit_status 
  * uses malloc
  */
-void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
+void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status, int b_switch)
 {
 	int		x;
 	int		flag;
@@ -102,7 +104,7 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 			str = expand_shell_var(vars, cmd_line, &str[x], &x); //actually return x is better
 			// /*debug*/printf("shell_var_expansion:new:%s.\n", &str[x]);
 		}
-		else if (str[x] == '$' && str[x + 1] && str[x + 1] == '?')
+		else if (b_switch && str[x] == '$' && str[x + 1] && str[x + 1] == '?')
 		{
 			str = expand_exit_status(cmd_line, exit_status, &x);
 			// /*debug*/printf("shell_var_expansion:exit:%s. %d\n", &str[x], exit_status);
@@ -150,7 +152,7 @@ int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 		/*debug*/printf("cmd_expansion:ent:%s\n", lst_data[x]);
 		brace_expansion(&lst_data[x]);
 		/*debug*/printf("cmd_expansion:brace:%s\n", lst_data[x]);
-		shell_var_expansion(&lst_data[x], vars, exit_status);
+		shell_var_expansion(&lst_data[x], vars, exit_status, 0);
 		/*debug*/printf("cmd_expansion:sh_var:%s\n", lst_data[x]);
 		if (ori[0] && (is_target(ori, '\'') || is_target(ori, '\"')))
 			quote_removal(&lst_data[x]);

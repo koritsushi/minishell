@@ -6,71 +6,20 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/12 12:17:19 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 22:08:36 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "includes/parsing.h"
 
 /*
  * parsing section here saves variable assignments to linked list,
  * checks syntax error & replace processed vars with spaces ' '
  ---------------------------------------------------------------------------- */
 
-/*
- * if str[0] == symbol, will skip to the next occurence of symbol
- * if flag == 1, will skip all spaces followed after result
- * returns skipped result
- */
-char	*skip_if_quote(char *str, char symbol, int flag)
-{
-	char	*new;
-
-	new = str;
-	if (str[0] == symbol)
-	{
-		/*debug*/printf("skip \033[35m%c\033[0m =\033[90m%s\033[0m\n", symbol, new);
-		// /*debug*/printf("new: \033[35m%c\033[0m\033[90m%s\033[0m\n", new[0], new + 1);
-		// /*debug*/printf("\033[90msym:%c %d skip_quote:strchr: %s\033[0m\n", symbol, (int)symbol, new + 1);
-		new = ft_strchr(new + 1, (int)symbol);
-		/*debug*/printf("after_skip_quote=\033[90m%s\033[0m.\n", new);
-		if (flag && new && new[1] && is_target(" \t\n\v\f\r", new[1]))
-			return (skip_spaces(new + 1, " \t\n\v\f\r"));
-	}
-	return (new);
-}
-
-/*
- * child function in process_vars,
- * skips all < infile & > outfile redirections that are at the beginning of str,
- * returns result to char*
- */
-char	*skip_redirs(char *str)//, char **new)
-{
-	char	*new;
-
-	new = str;
-	while (str[0] == '<' || str[0] == '>')
-	{
-		new = skip_spaces(new, "<> \t\n\v\f\r");
-		/*debug*/printf("skip_spaces=%s\n", new);
-		new = skip_if_symbol(new, str[0], '<');
-		/*debug*/printf("skip_< =%s\n", new);
-		new = skip_if_symbol(new, str[0], '>');
-		/*debug*/printf("skip_> =%s\n", new);
-		str = skip_spaces(str, "<> \t\n\v\f\r");
-		while (str[0] && !is_target(" \t\n\v\f\r", str[0]))
-			str++;
-		str = skip_spaces(str, " \t\n\v\f\r");
-		/*debug*/printf("str =%s\n", str);
-		new = str;
-	}
-	return (new);
-}
+ #include "includes/parsing.h"
 
 // 19 lines!
 /*
- * child function in get_variables, saves variables in linked list
+ * child function in get_variable, saves variables in linked list
  * types of export_id values~
  * export_id: 0 (var=text) none
  * export_id: 1 (export var) export only
@@ -169,7 +118,18 @@ int	valid_export_keyword(char *str, int flag)
 	return (0);
 }
 
-// 18 lines!
+/*
+ * child function in get_variable
+ * skips keyword 'export' & update dependant values
+ */
+static char	*skip_export_update_val(char *new, int *export_id, int *flag_exit)
+{
+	*export_id = 2;
+	*flag_exit = 1;
+	return (skip_if_symbol(new, 'c', 'c'));
+}
+
+// 23 lines!
 /*
  * checks if variable syntax is correct,
  * overwrite & save if variable exists
@@ -178,9 +138,9 @@ int	get_variable(t_env **vars, char *str, int exit_status)
 {
 	char	*new;
 	int		export_id;
-	// int		flag;
+	int		flag_exit;
 
-	// flag = 0;
+	flag_exit = 0;
 	export_id = 0;
 	new = skip_spaces(str, " \t\n\v\f\r");
 	new = skip_redirs(new);
@@ -199,16 +159,12 @@ int	get_variable(t_env **vars, char *str, int exit_status)
 		{
 			// /*debug*/printf("get_variable:flag:%d\n", flag);
 			if (valid_export_keyword(new, 1))
-			{
-				new = skip_if_symbol(new, 'c', 'c');
-				export_id = 2;
-			}
+				new = skip_export_update_val(new, &export_id, &flag_exit);
 			new = ft_strdup(new);
-			shell_var_expansion(&new, *vars, exit_status);
+			shell_var_expansion(&new, *vars, exit_status, flag_exit);
 			process_vars(vars, new, export_id);
 			free(new);
 		}
-		// replace_var_space(new);
 	}
 	/*debug*/printf("updated_str:%s.\n", str);
 	return (1);

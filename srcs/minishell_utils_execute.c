@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/30 15:47:08 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 22:09:54 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	execute_built_in(t_ms *data, char *argv)
 	{
 		*exit_code = ft_echo(tmp);
 	}
-	else if (strcmp(argv, "pwd") == 0)
+	else if (strncmp(argv, "pwd", 3) == 0)
 	{
 		*exit_code = ft_pwd();
 	}
@@ -84,6 +84,8 @@ void	execute_functions(t_ms *data, t_token lst)
 	{
 		/* if there's pipe || if no pipe
 		 * fork & dup2 */
+		// int x = 0;
+		// expand_exit_status(&cmd_line[i], *exit_code, &x);
 		if (lst.datatype[i] == WORD)
 			execute_built_in(data, cmd_line[i]);
 	}

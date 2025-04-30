@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/30 14:59:01 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 21:33:41 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	main(int argc, char **argv, char **env)
 		/*lexing & get_vars*/
 		else if (*text && check_syntax(text))
 		{
-			get_variable(&data.env_var, text, 255);
+			get_variable(&data.env_var, text, data.exec.exit_code);
 			// if (data.env_var && data.env_var->content)
 			// 	debug_print_var_lst(data.env_var);
 			if (get_cmd_line(text, &lst, data.env_var, data.exec.exit_code))

@@ -30,6 +30,7 @@ SRCS 		=	srcs/expansion.c					\
 				srcs/token_utils_split.c			\
 				srcs/token_utils_truncate.c			\
 				srcs/parsing.c						\
+				srcs/parsing_utils_skip.c			\
 				srcs/parsing_utils_check.c			\
 				srcs/parsing_utils_replace.c		\
 				srcs/parsing_utils_vars.c			\
