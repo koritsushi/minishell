@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/30 13:06:00 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 15:45:25 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,16 @@
 
 typedef struct s_exec
 {
-	int			pipes[1024][2];
-	int			infile_fd;
-	int			outfile_fd;
-	int			here_doc;
-	char		**cmd_paths;
-	char		***cmd_args;
-	int			cmd_count;
-	int			index;
-}				t_exec;
+	int				pipes[1024][2];
+	int				infile_fd;
+	int				outfile_fd;
+	int				here_doc;
+	char			**cmd_paths;
+	char			***cmd_args;
+	int				cmd_count;
+	int				index;
+	unsigned char	exit_code;
+}	t_exec;
 
 typedef struct s_env
 {
@@ -55,13 +56,13 @@ typedef struct s_env
 	char			*env;
 	char			*content;
 	struct s_env 	*next;
-}					t_env;
+}	t_env;
 
 typedef struct s_ms
 {
 	t_exec		exec;
 	t_env		*env_var;
-}					t_ms;
+}	t_ms;
 
 typedef struct s_token
 {
@@ -77,8 +78,8 @@ void	debug_print_cd(void);
 
 
 /*___________________helper function executing cmd___________________*/
-void	execute_functions(t_ms data, t_token lst);
-void	execute_built_in(t_ms data, int argc, char *argv);
+void	execute_functions(t_ms *data, t_token lst);
+void	execute_built_in(t_ms *data, char *argv);
 
 // void	execute_built_in(t_ms data, t_env *env, int argc, char **argv);
 

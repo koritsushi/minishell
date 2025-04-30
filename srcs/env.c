@@ -93,37 +93,38 @@ void	exec_init(t_exec *exec)
 	exec->here_doc = 0;
 	exec->cmd_count = 0;
 	exec->index = 0;
+	exec->exit_code = 0;
 }
 
 /*	export 
 	add variable to env
 */
-void	export(t_env **env_var, t_env *lenv)
-{
-	t_env	*iter;
-	t_env	*check;
-	t_env	*new;
+// void	export(t_env **env_var, t_env *lenv)
+// {
+// 	t_env	*iter;
+// 	t_env	*check;
+// 	t_env	*new;
 
-	if (env_var == NULL || lenv == NULL)
-		return ;
-	iter = *env_var;
-	check = lenv;
-	while (iter != NULL)
-	{
-		if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env)) == 0)
-		{
-			free(iter->content);
-			iter->content = strdup(check->content);
-			break ;
-		}
-		iter = iter->next;
-	}
-	if (iter->content == NULL)
-	{
-		new = ft_lstnew_env(check->env, check->content, check->exported);
-		ft_lstadd_back_env(env_var, new);
-	}
-}
+// 	if (env_var == NULL || lenv == NULL)
+// 		return ;
+// 	iter = *env_var;
+// 	check = lenv;
+// 	while (iter != NULL)
+// 	{
+// 		if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env)) == 0)
+// 		{
+// 			free(iter->content);
+// 			iter->content = strdup(check->content);
+// 			break ;
+// 		}
+// 		iter = iter->next;
+// 	}
+// 	if (iter->content == NULL)
+// 	{
+// 		new = ft_lstnew_env(check->env, check->content, check->exported);
+// 		ft_lstadd_back_env(env_var, new);
+// 	}
+// }
 
 /*
  * split input str by spaces ' '
@@ -131,20 +132,20 @@ void	export(t_env **env_var, t_env *lenv)
  * removes a specific variable that's shown on env and export
  * uses malloc
 */
-void	unset(t_env **lst, char *str)
+int	unset(t_env **lst, char *str)
 {
 	int		i;
 	char	**tmp;
 
 	i = 0;
 	tmp = ft_split_shell(str, " \t\n\v\f\r");
-
 	/*debug*/printf("unset_debug_print:\n");
 	debug_print(tmp);
 
 	while (tmp[++i])
 		ft_lst_remove_if(lst, tmp[i], ft_strncmp);
 	free_chr_ptr((void **)tmp);
+	return (0);
 }
 
 void	msh_init(t_ms *data, char **env)

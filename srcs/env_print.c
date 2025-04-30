@@ -6,13 +6,13 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 16:39:33 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/29 17:39:29 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 15:11:15 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/env.h"
 
-void	env_print(t_env **lst)
+int	env_print(t_env **lst)
 {
 	t_env	*iter;
 
@@ -23,10 +23,11 @@ void	env_print(t_env **lst)
 			printf("%s=%s\n", iter->env, iter->content);
 		iter = iter->next;
 	}
+	return (0);
 }
 
 /* print out export env from minishell */
-void	export_print(t_env **lst)
+int	export_print(t_env **lst)
 {
 	t_env	*iter;
 	char	*export_str;
@@ -39,4 +40,5 @@ void	export_print(t_env **lst)
 			printf("%s %s=%s\n", export_str, iter->env, iter->content);
 		iter = iter->next;
 	}
+	return (0);
 }

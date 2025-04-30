@@ -6,34 +6,36 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/30 14:17:28 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 15:47:08 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	execute_built_in(t_ms data, int argc, char *argv)
+void	execute_built_in(t_ms *data, char *argv)
 {
-	(void)	argc;
-	char	**tmp;
+	char			**tmp;
+	unsigned char	*exit_code;
 
 	tmp = ft_split_shell(argv, " \t\n\v\f\r");
-	// /*debug*/printf("execute_built_in:ent:%s.\n", argv[0]);
+	exit_code = &data->exec.exit_code;
 	if (strcmp(tmp[0], "echo") == 0)
 	{
-		ft_echo(tmp);
+		*exit_code = ft_echo(tmp);
 	}
 	else if (strcmp(argv, "pwd") == 0)
 	{
-		ft_pwd();
-	}	
+		*exit_code = ft_pwd();
+	}
 	else if (strcmp(argv, "env") == 0)
 	{
-		env_print(&data.env_var);
+		*exit_code = env_print(&data->env_var);
+		// env_print(&data->env_var);
 	}
 	else if (strcmp(argv, "export") == 0)
 	{
-		export_print(&data.env_var);
+		*exit_code = export_print(&data->env_var);
+		// export_print(&data->env_var);
 	}
 	free_chr_ptr((void **)tmp);
 }
@@ -59,28 +61,30 @@ static int	has_pipes(t_token lst)
  * parent function to handle cmd_line input
  * and execute if it's built-in or execve()
  */
-void	execute_functions(t_ms data, t_token lst)
+void	execute_functions(t_ms *data, t_token lst)
 {
-	int		i;
-	char	**cmd_line;
+	int				i;
+	char			**cmd_line;
+	unsigned char	*exit_code;
 
 	if (!lst.data || !lst.data[0] || !lst.data[0][0])
 		return ;
 	cmd_line = lst.data;
+	exit_code = &data->exec.exit_code;
 	i = -1;
 	if (strncmp(cmd_line[0], "cd", 2) == 0 && !has_pipes(lst))
-		ft_cd(&data.env_var, ft_strchr(cmd_line[++i], ' '));
+		*exit_code = ft_cd(&data->env_var, ft_strchr(cmd_line[++i], ' '));
 	else if (strncmp(cmd_line[0], "unset", 5) == 0 && !has_pipes(lst))
 	{
-		unset(&data.env_var, cmd_line[++i]);
+		*exit_code = unset(&data->env_var, cmd_line[++i]);
 		/*debug*/printf("\033[93m===========================\033[0m\n");
-		/*debug*/env_print(&data.env_var);
+		/*debug*/env_print(&data->env_var);
 	}
 	while (cmd_line[++i])
 	{
 		/* if there's pipe || if no pipe
 		 * fork & dup2 */
 		if (lst.datatype[i] == WORD)
-			execute_built_in(data, count_str(cmd_line[i], " \t\n\v\f\r"), cmd_line[i]);
+			execute_built_in(data, cmd_line[i]);
 	}
 }

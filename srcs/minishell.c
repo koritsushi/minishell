@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/30 13:07:12 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 14:59:01 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ int	main(int argc, char **argv, char **env)
 			get_variable(&data.env_var, text, 255);
 			// if (data.env_var && data.env_var->content)
 			// 	debug_print_var_lst(data.env_var);
-			if (get_cmd_line(text, &lst, data.env_var, 255))
+			if (get_cmd_line(text, &lst, data.env_var, data.exec.exit_code))
 			{
 				/*debug*/debug_print_cmd_line(&lst);
-				execute_functions(data, lst);
+				execute_functions(&data, lst);
 				// execute_built_in(data, count_str(lst.data[0], " \t\n\v\f\r"), lst.data);
 				free_all(&lst);
 			}

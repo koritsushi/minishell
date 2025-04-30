@@ -122,20 +122,20 @@ t_env	*ft_lstnew_shenv(char *name, char *content, int export_id)
 	return (p);
 }
 
-t_env	*ft_lstnew_env(char *name, char *content, int export_id)
-{
-	t_env	*p;
+// t_env	*ft_lstnew_env(char *name, char *content, int export_id)
+// {
+// 	t_env	*p;
 
-	p = malloc(sizeof(t_env));
-	if (p == NULL)
-		return (NULL);
-	p->env = ft_strdup(name);
-	p->exported = export_id;
-	if (!is_target(content, '='))
-		p->exported = 1;
-	if (!is_target(content, '='))
-		p->content = ft_strdup("");
-	p->content = ft_strdup(content);
-	p->next = NULL;
-	return (p);
-}
+// 	p = malloc(sizeof(t_env));
+// 	if (p == NULL)
+// 		return (NULL);
+// 	p->env = ft_strdup(name);
+// 	p->exported = export_id;
+// 	if (!is_target(content, '='))
+// 		p->exported = 1;
+// 	if (!is_target(content, '='))
+// 		p->content = ft_strdup("");
+// 	p->content = ft_strdup(content);
+// 	p->next = NULL;
+// 	return (p);
+// }

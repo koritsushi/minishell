@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/30 14:02:26 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 15:33:58 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,21 @@ int	ft_pwd(void)
 	return (0);
 }
 
+/*
+ * child function in ft_cd
+ * updates env_path to new chdir path if chdir() success
+ */
+static void	update_env_path(t_env *lst, char *str, char *curr_dir)
+{
+	char *new;
+
+	new = expand_relative_path(str, curr_dir);
+	ft_lst_replace_if(lst, "PWD", new);
+	ft_lst_replace_if(lst, "OLDPWD", curr_dir);
+	if (strncmp("../", str, 3) == 0 || strncmp("..", str, 2) == 0)
+		free(new);
+}
+
 /*	
 	change directory
 	will update env OLDPWD and PWD var when changing directory
@@ -75,29 +90,34 @@ int	ft_pwd(void)
 int	ft_cd(t_env **lst, char *dir)
 {
 	char	*curr_dir;
-	char	*new;
 	char	**tmp;
+	int		exit_code;
 
 	if (!dir)
 		return (0);
+	exit_code = 0;
 	tmp = ft_split_shell(dir, " \t\n\v\f\r");
 	curr_dir = getpwd();
 	if (curr_dir == NULL)
 		return (-1);
 	if (chdir(tmp[0]) != 0)
-		printf("Minishell: cd : %s: %s\n", tmp[0], strerror(errno));
-	else
 	{
-		new = expand_relative_path(tmp[0], curr_dir);
-		ft_lst_replace_if(*lst, "PWD", new);
-		ft_lst_replace_if(*lst, "OLDPWD", curr_dir);
-		if (strncmp("../", tmp[0], 3) == 0 || strncmp("..", tmp[0], 2) == 0)
-			free(new);
+		printf("Minishell: cd : %s: %s\n", tmp[0], strerror(errno));
+		exit_code = 1;
 	}
+	else
+		update_env_path(*lst, tmp[0], curr_dir);
+	// {
+	// 	new = expand_relative_path(tmp[0], curr_dir);
+	// 	ft_lst_replace_if(*lst, "PWD", new);
+	// 	ft_lst_replace_if(*lst, "OLDPWD", curr_dir);
+	// 	if (strncmp("../", tmp[0], 3) == 0 || strncmp("..", tmp[0], 2) == 0)
+	// 		free(new);
+	// }
 	/*debug*/debug_print_cd();
 	free_chr_ptr((void **)tmp);
 	free(curr_dir);
-	return (0);
+	return (exit_code);
 }
 
 /*	echo (option -n Only)
@@ -114,9 +134,7 @@ int	ft_echo(char **args)
 	int	nl;
 
 	nl = 0;
-	if (!args[1])
-		return (printf("\n"));
-	if (ft_strncmp(args[1], "-n", 2) == 0)
+	if (args[1] && ft_strncmp(args[1], "-n", 2) == 0)
 		nl = 1;
 	i = 1 + nl;
 	while (args[i] != NULL)
