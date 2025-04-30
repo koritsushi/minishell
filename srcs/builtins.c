@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/30 12:28:44 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 13:55:47 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,18 +108,18 @@ int	ft_cd(t_env **lst, char *dir)
     loop based on how many argument count
     ft_putstr_fd will do nothing if arg is NULL
 */
-int	ft_echo(int argc, char **args)
+int	ft_echo(char **args)
 {
-	int	nl;
 	int	i;
+	int	nl;
 
 	nl = 0;
-	if (argc == 2 || args == NULL)
+	if (!args[1])
 		return (printf("\n"));
 	if (ft_strncmp(args[1], "-n", 2) == 0)
 		nl = 1;
 	i = 1 + nl;
-	while (args[i] != NULL && i + nl < argc)
+	while (args[i] != NULL)
 	{
 		ft_putstr_fd(args[i++], 1);
 		if (args[i] != NULL)

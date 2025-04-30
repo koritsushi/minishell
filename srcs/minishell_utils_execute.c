@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/30 13:18:19 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 13:43:20 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 void	execute_built_in(t_ms data, int argc, char *argv)
 {
+	(void)	argc;
+	char	**tmp;
+
+	tmp = ft_split_shell(argv, " \t\n\v\f\r");
 	// /*debug*/printf("execute_built_in:ent:%s.\n", argv[0]);
-	if (strcmp(argv, "echo") == 0)
+	if (strcmp(tmp[0], "echo") == 0)
 	{
-		ft_echo(argc, &argv);
+		ft_echo(tmp);
 	}
 	else if (strcmp(argv, "pwd") == 0)
 	{
@@ -31,6 +35,7 @@ void	execute_built_in(t_ms data, int argc, char *argv)
 	{
 		export_print(&data.env_var);
 	}
+	free_chr_ptr((void **)tmp);
 }
 
 /*
