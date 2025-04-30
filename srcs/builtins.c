@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/30 13:55:47 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/30 14:02:26 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*getpwd(void)
 	return (ret);
 }
 
-//print current working directory
+/* print current working directory */
 int	ft_pwd(void)
 {
 	char	*pwd;

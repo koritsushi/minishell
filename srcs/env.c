@@ -125,47 +125,6 @@ void	export(t_env **env_var, t_env *lenv)
 	}
 }
 
-/*	unset
-	remove a specific variable to display on env and export
-*/
-// void	unset(t_env **env_var, t_env *lenv)
-// {
-// 	t_env	*iter;
-// 	t_env	*tmp = NULL;
-// 	t_env	*prev;
-// 	t_env	*check;
-
-// 	if (env_var == NULL || lenv == NULL)
-// 		return ;
-// 	iter = *env_var;
-// 	check = lenv;
-// 	if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env)) == 0)
-// 	{
-// 		*env_var = iter->next;
-// 		ft_lstdelone_env(iter, free);
-// 		return ;
-// 	}
-// 	iter = iter->next;
-// 	while (iter != NULL)
-// 	{
-// 		if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env)) == 0)
-// 		{
-// 			if (iter->next != NULL)
-// 			{
-// 				tmp = iter->next;
-// 				prev->next = tmp;
-// 			}
-// 			else
-// 				prev->next = NULL;
-// 			ft_lstdelone_env(iter, free);
-// 			iter = tmp;
-// 			break ;
-// 		}
-// 		prev = iter;
-// 		iter = iter->next;
-// 	}
-// }
-
 /*
  * split input str by spaces ' '
  * iterates entire **lst & free if lst.env (env_name) == str
