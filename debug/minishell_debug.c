@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:57:05 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/25 17:14:34 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/04/25 18:50:05 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 int	main (int argc, char **argv, char **env)
 {
 	t_ms data;
-	t_ms data2;
+	//t_ms data2;
 	
 	data.env_var = NULL;
-	data2.env_var = NULL;
+	//data2.env_var = NULL;
 	msh_init(&data, env);
 	// t_env *tmp = data.env_var;
 	// printf("env address:%p\n", data.env_var);
