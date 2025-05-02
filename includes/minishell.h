@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/30 15:45:25 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/02 08:55:32 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	debug_print_cd(void);
 
 /*___________________helper function executing cmd___________________*/
 void	execute_functions(t_ms *data, t_token lst);
-void	execute_built_in(t_ms *data, char *argv);
+int		execute_built_in(t_ms *data, char *argv);
 
 // void	execute_built_in(t_ms data, t_env *env, int argc, char **argv);
 

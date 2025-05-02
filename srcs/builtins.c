@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/30 15:33:58 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/01 07:05:18 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	ft_cd(t_env **lst, char *dir)
 
 	if (!dir)
 		return (0);
+	/*debug*/printf("ft_cd:ent:%s.\n", dir);
 	exit_code = 0;
 	tmp = ft_split_shell(dir, " \t\n\v\f\r");
 	curr_dir = getpwd();
