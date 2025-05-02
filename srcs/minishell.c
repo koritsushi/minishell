@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/02 09:14:41 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/02 16:12:16 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	main(int argc, char **argv, char **env)
 		text = readline("\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m");
 		if (text == NULL)
 		{
-			ft_putstr_fd("\e[0;31mlogout\e[0;31m\n", 1);
-			exit(ENOMEM);
+			ft_putstr_fd("\e[0;31mlogout\e[0;0m\n", 1);
+			exit(-1);
 		}
 		if (*text)
 			add_history(text);
@@ -71,8 +71,9 @@ int	main(int argc, char **argv, char **env)
 			if (get_cmd_line(text, &lst, data.env_var, data.exec.exit_code))
 			{
 				/*debug*/debug_print_cmd_line(&lst);
+				/* execution here */
 				execute_functions(&data, lst); //inject pipex inside
-				/*debug*/debug_print_cmd_line(&lst);
+				// /*debug*/debug_print_cmd_line(&lst);
 				free_all(&lst);
 			}
 		}

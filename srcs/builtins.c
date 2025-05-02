@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/01 07:05:18 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/02 15:38:42 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,9 @@ int	ft_echo(char **args)
 	int	i;
 	int	nl;
 
+	/*debug*/printf("\033[93mft_echo:\033[0m\n");
+	/*debug*/debug_print(args);
+	/*debug*/printf("\033[93mft_echo end\033[0m\n");
 	nl = 0;
 	if (args[1] && ft_strncmp(args[1], "-n", 2) == 0)
 		nl = 1;

@@ -22,16 +22,16 @@ enum e_type
 	OUTFILE,	// >
 	OUTFILE_A,	// >>
 	PIPE,		// |
-	ENV,		// $
-	ERR,		// error
+	// ENV,		// $
+	// ERR,		// error
 	END
 };
 
-enum e_utils
-{
-	IN = 0,
-	OUT = 1
-};
+// enum e_utils
+// {
+// 	IN = 0,
+// 	OUT = 1
+// };
 
 typedef struct s_token	t_token;
 typedef struct s_env	t_env;

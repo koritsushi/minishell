@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/02 09:40:31 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/02 16:52:19 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,24 +36,24 @@ static int	has_pipes(t_token lst)
  * updates int to the index after expansion
  * uses malloc
  */
-static void	expand_exit_mod(char **cmd_line, int exit_status)
-{
-	int		x;
-	char	*str;
+// static void	expand_exit_mod(char **cmd_line, int exit_status)
+// {
+// 	int		x;
+// 	char	*str;
 
-	x = 0;
-	str = *cmd_line;
-	while (str && str[x])
-	{
-		/*debug*/printf("\033[43mexpand_exit_mod:\033[0ment:%s.\n", &str[x]);
-		if (ft_strncmp(&str[x], "$?", 2) == 0)
-			str = expand_exit_status(cmd_line, exit_status, &x);
-		else
-			x++;
-		/*debug*/printf("\033[43mexpand_exit_mod:\033[0mend:%s. %s.\n", str, &str[x]);
-	}
+// 	x = 0;
+// 	str = *cmd_line;
+// 	while (str && str[x])
+// 	{
+// 		/*debug*/printf("\033[43mexpand_exit_mod:\033[0ment:%s.\n", &str[x]);
+// 		if (ft_strncmp(&str[x], "$?", 2) == 0)
+// 			str = expand_exit_status(cmd_line, exit_status, &x);
+// 		else
+// 			x++;
+// 		/*debug*/printf("\033[43mexpand_exit_mod:\033[0mend:%s. %s.\n", str, &str[x]);
+// 	}
 
-}
+// }
 
 /*
  * child function in execute_built_in
@@ -112,12 +112,6 @@ void	execute_functions(t_ms *data, t_token lst)
 	cmd_line = lst.data;
 	exit_code = &data->exec.exit_code;
 	i = -1;
-	/* need to do $? expansion as well */
-	if (strncmp(cmd_line[0], "cd", 2) == 0 || strncmp(cmd_line[0], "unset", 5) == 0)
-	{
-		expand_exit_mod(&cmd_line[0], data->exec.exit_code);
-		/*debug*/printf("execute_functions:$?:\033[92m%s\033[0m.\n", cmd_line[0]);
-	}
 	if (strncmp(cmd_line[0], "cd", 2) == 0 && !has_pipes(lst))
 		*exit_code = ft_cd(&data->env_var, ft_strchr(cmd_line[++i], ' '));
 	else if (strncmp(cmd_line[0], "unset", 5) == 0 && !has_pipes(lst))
@@ -130,16 +124,10 @@ void	execute_functions(t_ms *data, t_token lst)
 	{
 		/* if there's pipe || if no pipe
 		 * fork & dup2 */
-		/*debug*/printf("execute_functions:%d\n", data->exec.exit_code);
-		/*debug*/printf("execute_functions:$?:ent:\033[93m%s\033[0m.\n", cmd_line[i]);
-		expand_exit_mod(&cmd_line[i], data->exec.exit_code);
+		// /*debug*/printf("execute_functions:%d\n", data->exec.exit_code);
+		// /*debug*/printf("execute_functions:$?:ent:\033[93m%s\033[0m.\n", cmd_line[i]);
 		/*debug*/printf("execute_functions:$?:\033[92m%s\033[0m.\n", cmd_line[i]);
 		if (lst.datatype[i] == WORD)
-		{
-			if (!execute_built_in(data, cmd_line[i]))
-			{
-				/* execute_external_functions */
-			}
-		}
+			execute_built_in(data, cmd_line[i]);
 	}
 }

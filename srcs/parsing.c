@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/30 22:08:36 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/02 16:58:23 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,6 @@ int	valid_export_keyword(char *str, int flag)
 		return (0);
 	str = skip_spaces(str, " \t\n\v\f\r");
 	/*debug*/printf("valid_export_keyword:ent:%s.\n", str);
-	// if (
-	// (ft_strncmp(str, "export", 6) == 0 && \
-	// str[6] && is_target(" \t\n\v\f\r", str[6])) || \
-	// (ft_strncmp(str, "\'export\'", 8) == 0 && \
-	// str[8] && is_target(" \t\n\v\f\r", str[8])) || \
-	// (ft_strncmp(str, "\"export\"", 8) == 0  && \
-	// str[8] && is_target(" \t\n\v\f\r", str[8])))
-	// 	return (1);
 
 	if (\
 	check_export_keyword(str, "export", 6, flag) || \
@@ -122,10 +114,10 @@ int	valid_export_keyword(char *str, int flag)
  * child function in get_variable
  * skips keyword 'export' & update dependant values
  */
-static char	*skip_export_update_val(char *new, int *export_id, int *flag_exit)
+static char	*skip_export_update_val(char *new, int *export_id)//, int *flag_exit)
 {
 	*export_id = 2;
-	*flag_exit = 1;
+	// *flag_exit = 1;
 	return (skip_if_symbol(new, 'c', 'c'));
 }
 
@@ -159,9 +151,9 @@ int	get_variable(t_env **vars, char *str, int exit_status)
 		{
 			// /*debug*/printf("get_variable:flag:%d\n", flag);
 			if (valid_export_keyword(new, 1))
-				new = skip_export_update_val(new, &export_id, &flag_exit);
+				new = skip_export_update_val(new, &export_id);
 			new = ft_strdup(new);
-			shell_var_expansion(&new, *vars, exit_status, flag_exit);
+			shell_var_expansion(&new, *vars, exit_status);
 			process_vars(vars, new, export_id);
 			free(new);
 		}
