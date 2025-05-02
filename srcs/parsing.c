@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/02 16:58:23 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/02 17:10:52 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,9 +130,7 @@ int	get_variable(t_env **vars, char *str, int exit_status)
 {
 	char	*new;
 	int		export_id;
-	int		flag_exit;
 
-	flag_exit = 0;
 	export_id = 0;
 	new = skip_spaces(str, " \t\n\v\f\r");
 	new = skip_redirs(new);
