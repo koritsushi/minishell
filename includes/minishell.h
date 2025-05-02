@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/02 08:55:32 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/02 17:48:29 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@
 */
 #ifndef MINISHELL_H
 # define MINISHELL_H
+//libft header
 # include "../libft/libft.h"
+//minishell headers
 # include "parsing.h"
 # include "token.h"
 # include "expansion.h"
@@ -30,6 +32,10 @@
 # include "builtins.h"
 # include "env.h"
 # include "signals.h"
+//c library
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <errno.h>
 # include <strings.h>
 # include <stdlib.h>
