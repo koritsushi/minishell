@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/25 16:07:55 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/02 16:14:40 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	main(int argc, char **argv, char **env)
 		text = readline("\033[34mminishell> \033[0m");
 		if (text == NULL)
 		{
-			ft_putstr_fd("\e[0;31mlogout\e[0;31m\n", 1);
-			exit(ENOMEM);
+			ft_putstr_fd("\e[31mlogout\e[0m\n", 1);
+			exit(-1);
 		}
 		if (ft_strncmp(text, "exit", 4) == 0)
 		{
