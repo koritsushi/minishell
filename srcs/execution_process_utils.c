@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:16:21 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/02 18:16:55 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/03 13:58:09 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	f_process(t_exec *data, int index)
 	dup2(data->pipes[index][WRITE], STDOUT_FILENO);
 	close(data->pipes[index][WRITE]);
 	close(data->infile_fd);
+	close_pipe(data, index);
 }
 
 void	l_process(t_exec *data, int index)
@@ -37,4 +38,5 @@ void	m_process(t_exec *data, int index)
 	dup2(data->pipes[index][WRITE], STDOUT_FILENO);
 	close(data->pipes[index][WRITE]);
 	close(data->pipes[index][READ]);
+	close_pipe(data, index);
 }

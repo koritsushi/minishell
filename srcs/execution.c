@@ -24,14 +24,27 @@ or execve it like cmds but recognize it as local lib
 ans: fork out a child process just for builtin function for 
 them to be able redirec in/out for shell commands function
 */
-int	execution(t_ms *data, char *cmd_paths, char **cmd_args, char **envp)
+void	ft_init_pipe(t_ms *data, int argc)
 {
-	if (execve(cmd_paths, cmd_args, envp) == -1)
+	int		pipe_count;
+	int		pipe_index;
+	int		pipe_fd[2];
+
+	data->exec.cmd_count = argc - 3;
+	pipe_count = data->exec.cmd_count - 1;
+	// if (data->exec.here_doc == 1)
+	// 	pipe_count += 1;
+	pipe_index = 0;
+	while (pipe_index < pipe_count)
 	{
-		write(2, "./pipex: execve() error!\n", 26);
-		exit(errno);
+		if (pipe(pipe_fd) == -1)
+			printf("\033[34mminishell: pipe() error!\033[0m\n");
+		data->exec.pipes[pipe_index][READ] = pipe_fd[READ];
+		data->exec.pipes[pipe_index][WRITE] = pipe_fd[WRITE];
+		pipe_index++;
 	}
 }
+
 
 static void	ft_process(t_ms *data, char **envp)
 {
@@ -45,16 +58,14 @@ static void	ft_process(t_ms *data, char **envp)
 	{
 		pid = fork();
 		if (pid == -1)
+		{
 			printf("\033[34mminishell: fork() error!\033[0m\n");
+			exit(1);
+		}
 		if (pid == 0)
-		{
 			ft_child_process(data, i);
-			ft_execute(data, data->exec.cmd_paths[i], data->exec.cmd_args[i], envp);
-		}
 		else
-		{
 			ft_parent_process(data, i);
-		}
 		i++;
 	}
 	while (wait(&p_status) >= 0)
