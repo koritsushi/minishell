@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:12:43 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/12 16:31:05 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/03 09:48:00 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ static char	*find_next_var(char *str)
 /*
  * child function in extract_vars,
  * adds new var entry to the end of linked list
- * updates export_id to respective values
+ * updates export_id to respective values~
+ * export_id: 0 (var=text) none
+ * export_id: 1 (export var) export only
+ * export_id: 2 (export var=, export var=1) export && env
  * uses malloc
  */
 static void	add_var_entry(t_env **vars, char *name, char *new, int export_id)
