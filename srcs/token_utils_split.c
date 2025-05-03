@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/30 08:44:15 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/03 08:25:11 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,6 @@ int	count_str(char *str, char *set)
 			wc++;
 		if (!is_target(set, '\"') && !is_target(set, '\''))
 			update_flag_quote(str, &symbol, &flag);
-		/* condition of set has no ' " */
-
-		// if (!flag && str[0] && is_target("'\"", str[0]) && !is_target(set, '\"') && !is_target(set, '\''))
-		// 	symbol = str[0];
-		// if (!flag && str[0] == symbol && str[0 - 1])
-		// 	flag = 1;
-		// else if (flag && str[0] == symbol)
-		// 	flag = 0;
 		str++;
 	}
 	return (wc);
@@ -78,13 +70,15 @@ static int	increment_val(int flag, int *count, char **str)
 	return (0);
 }
 
+//22 lines
 /*
  * set = set of delimiters (" \t\n\v\f\r")
  * counts the number of characters and stop when delimiters detected
  * if flag == 1, ignore *set, else: stop upon *set
  */
-int	count_chr(char *str, char *set, int *flag)
+static int	count_chr(char *str, char *set)//, int *flag)
 {
+	int		flag;
 	int		count;
 	char	symbol;
 
@@ -93,29 +87,32 @@ int	count_chr(char *str, char *set, int *flag)
 	/* '90 > 90'= var */
 
 	// /*debug*/printf("count_chr_str entry:%s\n", str);
+	flag = 0;
 	count = 0;
 	symbol = '\0';
-	while (str[0] && (!is_target(set, str[0]) || (*flag == 1)))
+	while (str[0] && (!is_target(set, str[0]) || (flag == 1)))
 	{
-		if (*flag == 0 && str[0] && is_target("'\'\"", str[0]) && \
-		!is_target(set, '"') && !is_target(set, '\'')) // if is first encounter to '
-			symbol = str[0];
-		if (*flag == 0 && str[0] == symbol) // if is first encounter to '
-			*flag = increment_val(1, &count, &str); // increment & set flag to 1
-		else if (*flag == 1 && str[0] == symbol)
-			*flag = 0;
-		if (*flag)
-			increment_val(-1, &count, &str);
-		else if (!*flag && !is_target(set, str[0]))
-			increment_val(-1, &count, &str);
 		/* if flag == 1, ignore sets */
 		/* if flag != 1, stop upon sets */
+
+		if (flag == 0 && str[0] && is_target("'\'\"", str[0]) && \
+		!is_target(set, '\"') && !is_target(set, '\'')) // if is first encounter to '
+			symbol = str[0];
+		if (flag == 0 && str[0] == symbol) // if is first encounter to '
+			flag = increment_val(1, &count, &str); // increment & set flag to 1
+		else if (flag == 1 && str[0] == symbol)
+			flag = 0;
+		if (flag)
+			increment_val(-1, &count, &str);
+		else if (!flag && !is_target(set, str[0]))
+			increment_val(-1, &count, &str);
 	}
 	// /*debug*/printf("count_chr:flag:%d, stopped:%s, %d\n", *flag, str, count);
 	// /*debug*/printf("count_chr:flag:%d, count:%d\n", *flag, count);
 	return (count);
 }
 
+// 24 lines!
 /*
  * set = set of delimiters: " \t\n\v\f\r"
  * splits string into individual char* when *set is detected
@@ -127,37 +124,35 @@ char	**ft_split_shell(char *str, char *set)
 	char	**res;
 	int		i;
 	int		x;
-	int		f;
 	int		count;
 
 	if (!str || !set)
 		return (NULL);
 	i = 0;
-	f = 0;
 	str = skip_spaces(str, set);
 
-	int str_count = count_str(str, set);
+	// int str_count = count_str(str, set);
 	// /*debug*/printf("str_count:%d\n", str_count);
-	res = (char **)malloc(sizeof(char *) * (str_count + 1));
-	// res = (char **)malloc(sizeof(char *) * (count_str(str, set) + 1));
+	// res = (char **)malloc(sizeof(char *) * (str_count + 1));
+	res = (char **)malloc(sizeof(char *) * (count_str(str, set) + 1));
 
 	// /*debug*/printf("\033[102mcount_str= %d+1\033[0m\n", count_str(str, set));
 	while (str[0] && count_str(str, set))
 	{
 		// /*debug*/printf("split_enter:%s\n", str);
 		x = 0;
-		f = 0;
-		count = count_chr(str, set, &f);
+		count = count_chr(str, set);//, &f);
 		if (!malloc_chr_ptr(&res[i], count + 1))
 		{
 			ft_perror_fd("malloc_failed!\n", 2, 0);
 			return (0);
 		}
-		// res[i] = (char *)malloc(sizeof(char) * (count + 1));
-		while (x < count)
-			res[i][x++] = *str++;
-		i++;
-		str = skip_spaces(str, set);
+		ft_strlcpy(res[i++], str, count + 1);
+		/*debug*/printf("split_shell:str:%s.\n", str);
+		// while (x < count)
+		// 	res[i][x++] = *str++;
+		// i++;
+		str = skip_spaces(str + count, set);
 	}
 	res[i] = NULL;
 	return (res);

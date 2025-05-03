@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:02:51 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/30 08:36:36 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/02 18:42:41 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,8 @@ int	count_malloc_vars(char *str)
 
 	i = 0;
 	flag = 0;
-	// while (str && str[i])
 	while (str && str[0])
 	{
-		// if (str[i] == '=') // ='data' or 'var'=data
-		// 	f_equal_sign = 1;
-		// if (f_equal_sign && (str[i] == '\'' || str[i] == '\"'))
-		// {
-		// 	// printf("count_malloc_vars: i=%d, %s.\n", i, &str[i]);
-		// 	// printf("%d+1\n", (int)(ft_strchr(&str[i + 1], str[i]) - &str[i]));
-		// 	i += (int)(ft_strchr(&str[i + 1], str[i]) - &str[i]);
-		// 	if (str[i] == '\"')
-		// 		return (i + 1 - 2);
-		// 	return (i + 1);
-		// }
-		// else if (str[i] && is_target(" \t\n\v\f\r", str[i]))
-		// 	return (i);
-		// i++;
-
 		update_flag_quote(str, &symbol, &flag);
 		if (!flag && is_target(" \t\n\v\f\r", str[0]))
 			return (i);
@@ -77,13 +61,6 @@ void	copy_vars(char *dest, char *src, int len)
 	{
 		/* 'po"$var' "p'$var" */
 		update_flag_quote(src, &symbol, &flag);
-		// if (src[0] == symbol && symbol == '\'')
-		// if (!flag && src[0] == '\"')
-		// {
-		// 	symbol = src[0];
-		// 	flag = 1;
-		// }
-		// if (src[0] != symbol || (src[0] == symbol && symbol == '\''))
 		if (src[0] != symbol)
 			dest[x++] = src[0];
 		/*debug*/printf("copy_vars:%s.\n", dest);

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:26:21 by hsim              #+#    #+#             */
-/*   Updated: 2025/03/11 19:06:42 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/02 17:15:47 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,8 @@ char	*truncate_input(char *str)
 	new = skip_spaces(str, " \t\n\v\f\r");
 	new = truncate_infile_back(new);
 	new = skip_spaces(new, " \t\n\v\f\r");
-	// /*debug*/printf("trunc_tail=%s\n", new);
 	if (new[0] == '<')
-	{
 		new = truncate_infile_front(new);
-		// /*debug*/printf("trunc_head=%s\n", new);
-	}
 	new = skip_spaces(new, " \t\n\v\f\r");
 	return (new);
 }

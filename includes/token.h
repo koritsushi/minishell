@@ -76,9 +76,9 @@ void	free_multiple_ptr_single(char *p1, char *p2, char *p3);
 
 /*debug testing only*/
 int		count_str(char *str, char *set);
-int		count_chr(char *str, char *set, int *ptr);
-int		if_target_exist(char *set, char *str);
-char	*truncate_last_infile(char *str);
+// int		count_chr(char *str, char *set, int *ptr);
+// int		if_target_exist(char *set, char *str);
+// char	*truncate_last_infile(char *str);
 void	debug_print(char **res);
 void	debug_print_lst(t_env *lst);
 

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:28:58 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/30 14:28:29 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/03 08:11:48 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,9 +140,9 @@ int	check_syntax(char *str)
 	if (!str[0])
 		return (0);
 	res = ft_split_shell(str, " \t\n\v\f\r");
-	// /*debug*/printf("check_syntax\n--------\nres:\n");
-	// /*debug*/debug_print(res);
-	// /*debug*/printf("--------\n");
+	/*debug*/printf("check_syntax\n--------\nres:\n");
+	/*debug*/debug_print(res);
+	/*debug*/printf("--------\n");
 
 	if (res && (!check_symbols(res) || !check_unclosed_quote(str)))
 		flag = 0;

@@ -32,7 +32,6 @@ SRCS 		=	srcs/expansion.c					\
 				srcs/parsing.c						\
 				srcs/parsing_utils_skip.c			\
 				srcs/parsing_utils_check.c			\
-				srcs/parsing_utils_replace.c		\
 				srcs/parsing_utils_vars.c			\
 				srcs/parsing_utils_vars_name.c		\
 				srcs/parsing_utils_vars_check.c		\

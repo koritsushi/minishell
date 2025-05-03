@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 22:54:34 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/29 17:10:56 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/03 08:28:34 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,38 +46,6 @@ int	has_valid_brace_content(char *str)
 }
 
 /*
- * child funcion in get_expansion_count
- * checks if the current str[0] is start of a valid brace structure
- * which consists exactly {,} (eg {a,b})
- * ideally when enter str[0] == '{' , input str+1
- */
-int	is_valid_brace_start(char *str)
-{
-	int		flag;
-	int		flag_quote;
-	char	symbol;
-
-	/* "a rt"{,}e're w' */
-	flag = 0;
-	flag_quote = 0;
-	symbol = '\0';
-	// /*debug*/printf("is_valid_brace_start:ent:%s, %c\n", str, str[0]);
-	while (str && str[0])
-	{
-		update_flag_quote(str, &symbol, &flag_quote);
-		// /*debug*/printf("is_valid_brace_start:%c. flag_q:%d\n", str[0], flag_quote);
-		if (str[0] && is_target(" \t\n\v\f\r{", str[0]) && !flag_quote)
-			break ;
-		else if (str[0] == ',')
-			flag = 1;
-		else if (str[0] == '}' && flag)
-			return (1);
-		str++;
-	}
-	return (0);
-}
-
-/*
  * child function in copy_brace_expansion
  * moves char* pointer to where the valid brace start is {,}
  */
@@ -86,14 +54,13 @@ static char	*move_to_valid_brace_start(char *src)
 	while (src && !is_valid_brace_start(src))
 	{
 		if (src[0] && is_target("\'\"", src[0]) && \
-		skip_if_quote(src, src[0], 0))
+skip_if_quote(src, src[0], 0))
 			src = skip_if_quote(src, src[0], 0) + 1;
 		else
 			src++;
 	}
 	return (src);
 }
-
 
 // 20 lines!
 /*

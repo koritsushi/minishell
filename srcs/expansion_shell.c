@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/29 17:08:11 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/02 18:50:24 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	copy_remove_var(char **cmd_line, int index, int name_len)
 	*cmd_line = dest;
 }
 
-// 24 lines!
+// 19 lines!
 /*
  * child function in expand_shell_var, checks if $var entry exist in t_env
  * yes: remalloc *cmd_line & copy over the content + expansion

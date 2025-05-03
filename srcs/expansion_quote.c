@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 20:30:48 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/12 11:48:38 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/03 08:29:25 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	count_malloc_quote_removal(char *str)
 	flag = 0;
 	while (str && str[0])
 	{
-		/* 'vars' */
 		if (!flag && is_target("\'\"", str[0]))
 		{
 			flag = 1;
@@ -52,16 +51,7 @@ void	expand_quote_removal(char *src, char *dest)
 	symbol = '\0';
 	while (src && src[0])
 	{
-		/* 'va"rs' */
 		update_flag_quote(src, &symbol, &flag);
-		// if (!flag && is_target("\'\"", src[0]))
-		// {
-		// 	flag = 1;
-		// 	symbol = src[0];
-		// }
-		// else if (flag && src[0] == symbol)
-		// 	flag = 0;
-		// else
 		if (src[0] != symbol)
 			dest[x++] = src[0];
 		src++;
