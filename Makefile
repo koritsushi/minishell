@@ -42,13 +42,13 @@ SRCS 		=	srcs/expansion.c					\
 				srcs/signals.c						\
 				srcs/builtins.c						\
 				srcs/builtins_utils.c				\
-				srcs/execution.c					\
 				srcs/env.c 							\
 				srcs/env_print.c					\
 				srcs/env_utils.c					\
 				srcs/minishell_utils_execute.c		\
 				srcs/minishell_utils_list.c			\
-				srcs/minishell.c 	
+				srcs/minishell.c 					\
+#				srcs/execution.c					\
 #				srcs/token_utils_operator.c			\
 #				srcs/main-test-token_split.c		\
 
