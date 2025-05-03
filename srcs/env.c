@@ -88,9 +88,8 @@ void	env_init(t_env **env_var, char **env)
 
 void	exec_init(t_exec *exec)
 {
-	exec->infile_fd = 0;
-	exec->outfile_fd = 0;
-	exec->here_doc = 0;
+	exec->cmd_paths = NULL;
+	exec->cmd_args = NULL;
 	exec->cmd_count = 0;
 	exec->index = 0;
 	exec->exit_code = 0;
