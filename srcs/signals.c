@@ -79,15 +79,12 @@ void	sigint_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		ft_putstr_fd("\n\033[34mminishell> \033[0m", 1);
+		ft_putstr_fd("\n\033[34mminishell > \033[0m", 1);
 		return ;
 	}
 	if (signal == SIGQUIT)
 	{
-		ft_putstr_fd("\033[34mminishell> \033[0m", 1);
+		ft_putstr_fd("\033[34mminishell > \033[0m", 1);
 		return ;
 	}
-	//this is to unblock sigint
-	//g_unblock_sigquit = 1;
-	//unblock_signal(SIGINT);
 }
