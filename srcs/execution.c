@@ -38,7 +38,10 @@ void	ft_init_pipe(t_ms *data, int argc)
 	while (pipe_index < pipe_count)
 	{
 		if (pipe(pipe_fd) == -1)
+		{
 			printf("\033[34mminishell: pipe() error!\033[0m\n");
+			/*exit free function here*/ exit(1);
+		}
 		data->exec.pipes[pipe_index][READ] = pipe_fd[READ];
 		data->exec.pipes[pipe_index][WRITE] = pipe_fd[WRITE];
 		pipe_index++;
@@ -72,5 +75,30 @@ static void	ft_process(t_ms *data, char **envp)
 	{
 		if (WIFEXITED(p_status))
 			data->exec.exit_code = WEXITSTATUS(p_status);
+	}
+}
+
+void	pf_init(void (*func[])())
+{
+	func[0] = cmd_init();
+	func[1] = infile_init();
+	func[2] = heredoc_init();
+	func[3] = outfile_init();
+	func[4] = outfile_a_init();
+	func[5] = pipe_init();
+}
+
+void	exec_init(t_ms *data, t_token lst)
+{
+	void	(*func[5])(t_exec exec, t_token lst);
+	int		i;
+
+	pf_init(func);
+	i = 0;
+	while (lst.data != NULL)
+	{
+		if (lst.datatype == i)
+			func[i](data->exec, lst);
+		i++;
 	}
 }
