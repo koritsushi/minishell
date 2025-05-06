@@ -40,7 +40,8 @@ void	ft_init_pipe(t_ms *data, int argc)
 		if (pipe(pipe_fd) == -1)
 		{
 			printf("\033[34mminishell: pipe() error!\033[0m\n");
-			/*exit free function here*/ exit(1);
+			/*exit free function here*/ 
+			exit(1);
 		}
 		data->exec.pipes[pipe_index][READ] = pipe_fd[READ];
 		data->exec.pipes[pipe_index][WRITE] = pipe_fd[WRITE];
@@ -63,6 +64,7 @@ static void	ft_process(t_ms *data, char **envp)
 		if (pid == -1)
 		{
 			printf("\033[34mminishell: fork() error!\033[0m\n");
+			/*exit free function here*/ 
 			exit(1);
 		}
 		if (pid == 0)
