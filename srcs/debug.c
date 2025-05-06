@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 08:25:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/30 08:27:00 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/06 14:40:41 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	debug_print_cmd_line(t_token *lst)
 	i = -1;
 	printf("\n\033[102m_____lst_data:_____\033[0m\n");
 	while (lst->data[++i])
-		printf("\033[92m%s\033[0m. [%d]\n", lst->data[i], lst->datatype[i]);
+		printf("\033[92mdata:[%s]\033[0m. datatype:[%d]\n", lst->data[i], lst->datatype[i]);
 }
 
 void	debug_print_var_lst(t_env *lst)

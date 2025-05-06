@@ -49,6 +49,8 @@ SRCS 		=	srcs/expansion.c					\
 				srcs/minishell_utils_list.c			\
 				srcs/minishell.c 					\
 #				srcs/execution.c					\
+#				srcs/execution_cmd.c				\
+#				srcs/execution_cmd_utils.c			\
 #				srcs/token_utils_operator.c			\
 #				srcs/main-test-token_split.c		\
 

@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:55 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/03 21:27:56 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/06 16:35:16 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ void	ft_parent_process(t_exec *data, int index)
 	}
 }
 
-void	ft_child_process(t_exec *data, int index)
+void	ft_child_process(t_exec *exec, int index)
 {
 	if (index == 0)
-		f_process(data, index);
-	else if (index == data->cmd_count - 1)
-		l_process(data, index);
+		f_process(exec, index);
+	else if (index == exec->cmd_count - 1)
+		l_process(exec, index);
 	else
-		m_process(data, index);
-	ft_execute(data, data->exec.cmd_paths[i], data->exec.cmd_args[i], envp);
+		m_process(exec, index);
+	ft_execute(exec, exec->cmd_paths[index], exec->cmd_args[index], exec->envp);
 }

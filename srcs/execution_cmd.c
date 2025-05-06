@@ -12,19 +12,18 @@
 
 #include "../includes/execution.h"
 
-char	**ft_get_path(t_env **envp)
+char	**ft_get_path(char **envp)
 {
 	int		i;
-	char	*env;
-
+	char	**path;
+	
 	i = 0;
-	env = *envp
 	path = NULL;
 	while (envp != NULL)
 	{
-		if (ft_strncmp(envp->env, "PATH", 4) == 0)
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
-			path = ft_split(content, ':');
+			path = ft_split(envp[i] + 5, ':');
 			break ;
 		}
 		i++;
@@ -57,7 +56,7 @@ char	**ft_format_path(char **path, char *format)
 	return (format_path);
 }
 
-char	***ft_split_cmd(t_ms *data, char **argv)
+char	***ft_split_cmd(t_exec *exec, char **argv)
 {
 	char	***cmd;
 	int		i;
@@ -66,13 +65,13 @@ char	***ft_split_cmd(t_ms *data, char **argv)
 
 	j = 0;
 	len = 0;
-	if (data->here_doc == 1)
+	if (exec->here_doc == 1)
 		len += 1;
 	i = 2 + len;
-	cmd = malloc(sizeof(char **) * (data->cmd_count + 1));
+	cmd = malloc(sizeof(char **) * (exec->cmd_count + 1));
 	if (cmd == NULL)
 		return (NULL);
-	while (argv[i] != NULL && j < data->cmd_count)
+	while (argv[i] != NULL && j < exec->cmd_count)
 	{
 		cmd[j] = ft_split(argv[i], ' ');
 		i++;
@@ -82,7 +81,7 @@ char	***ft_split_cmd(t_ms *data, char **argv)
 	return (cmd);
 }
 
-void	ft_cmdpath(t_ms *data, char **path)
+void	ft_cmdpath(t_exec *exec, char **path)
 {
 	int		i;
 	int		j;
@@ -90,22 +89,22 @@ void	ft_cmdpath(t_ms *data, char **path)
 
 	i = -1;
 	end = ft_str_arr(path);
-	data->cmd_paths = malloc(sizeof(char *) * (data->cmd_count + 1));
-	data->cmd_paths[data->cmd_count] = NULL;
-	while (data->cmd_args[++i] != NULL)
+	exec->cmd_paths = malloc(sizeof(char *) * (exec->cmd_count + 1));
+	exec->cmd_paths[exec->cmd_count] = NULL;
+	while (exec->cmd_args[++i] != NULL)
 	{
 		j = -1;
 		while (path[++j] != NULL)
 		{
-			data->cmd_paths[i] = ft_strjoin(path[j], data->cmd_args[i][0]);
-			if (access(data->cmd_paths[i], F_OK) == 0)
+			exec->cmd_paths[i] = ft_strjoin(path[j], exec->cmd_args[i][0]);
+			if (access(exec->cmd_paths[i], F_OK) == 0)
 				break ;
 			if (j == end - 1)
 			{
-				data->index = i;
-				ft_cmdpath_error(data, data->cmd_args[i][0], path);
+				exec->index = i;
+				ft_cmdpath_error(exec, exec->cmd_args[i][0], path);
 			}
-			free(data->cmd_paths[i]);
+			free(exec->cmd_paths[i]);
 		}
 	}
 }
@@ -116,16 +115,16 @@ void	ft_cmdpath_error(t_ms *data, char *cmd, char **path)
 
 	i = 0;
 	printf("./pipex: %s: command not found!\n", cmd);
-	if (data->cmd_args != NULL)
+	if (data->exec.cmd_args != NULL)
 	{
-		while (data->cmd_args[i] != NULL)
+		while (data->exec.cmd_args[i] != NULL)
 		{
-			ft_free(data->cmd_args[i]);
+			ft_free(data->exec.cmd_args[i]);
 			i++;
 		}
-		free(data->cmd_args);
+		free(data->exec.cmd_args);
 	}
-	ft_cmdpath_free(data->cmd_paths, data->index);
-	ft_free(path);
+	//ft_cmdpath_free(data->exec.cmd_paths, data->exec.index);
+	//ft_free(path);
 	exit(1);
 }

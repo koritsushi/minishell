@@ -12,7 +12,7 @@
 
 #include "../includes/execution.h"
 
-char	**envp(t_env **lst)
+char	**ft_envp(t_env **lst)
 {
 	char	**envp;
 	char	*env;

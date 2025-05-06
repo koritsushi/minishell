@@ -24,23 +24,87 @@ or execve it like cmds but recognize it as local lib
 ans: fork out a child process just for builtin function for 
 them to be able redirec in/out for shell commands function
 */
-void	ft_init_pipe(t_ms *data, int argc)
+
+void	ft_cmd_init(t_exec *exec, char *data)
+{
+	int		i;
+	int		size;
+	char	**str;
+
+	i = 0;
+	size = 0;
+	if (exec->cmd_args == NULL)
+	{
+		exec->cmd_args = malloc(sizeof(char **) * (1 + 1));
+	}
+	else
+	{
+		size = ft_arr_len(exec->cmd_args) + 1;
+		str = malloc(sizeof(char **) * (size));
+		while (exec->cmd_args[i] != NULL)
+		{
+			str[i] = exec->cmd_args[i];
+			i++;
+		}
+	}
+	str[i++] = ft_strdup(data);
+	str[i] = NULL;
+}
+
+void	ft_infile_init(t_exec *exec, t_token *lst)
+{
+	int	i;
+	int	infile;
+
+	i = 0;
+	infile = 0;
+	while (lst->data[i] != NULL)
+	{
+		if (lst->datatype[i] == INFILE && exec->infile_fd[infile] == 0)
+			exec->infile_fd[infile] = open(lst->data[i], O_RDONLY);
+		if (lst->datatype[i] == PIPE)
+			infile++;
+		i++;
+	}
+}
+
+void	ft_heredoc_init(t_exec *exec, t_token *lst)
+{
+
+}
+
+void 	ft_outfile_init(t_exec *exec, t_token *lst)
+{
+
+}
+
+void	ft_outfileA_init(t_exec *exec, t_token *lst)
+{
+
+}
+
+void	ft_init_pipe(t_ms *data, t_token *lst)
 {
 	int		pipe_count;
 	int		pipe_index;
 	int		pipe_fd[2];
+	int		i;
 
-	data->exec.cmd_count = argc - 3;
-	pipe_count = data->exec.cmd_count - 1;
-	// if (data->exec.here_doc == 1)
-	// 	pipe_count += 1;
+	pipe_count = 0;
+	i = -1;
+	while (lst->data[++i] != NULL)
+	{
+		if (lst->datatype[i] == PIPE)
+			pipe_count += 1;
+	}
+	data->exec.cmd_count = pipe_count * 2;
 	pipe_index = 0;
 	while (pipe_index < pipe_count)
 	{
 		if (pipe(pipe_fd) == -1)
 		{
 			printf("\033[34mminishell: pipe() error!\033[0m\n");
-			/*exit free function here*/ 
+			/*free & exit function here*/ 
 			exit(1);
 		}
 		data->exec.pipes[pipe_index][READ] = pipe_fd[READ];
@@ -49,6 +113,15 @@ void	ft_init_pipe(t_ms *data, int argc)
 	}
 }
 
+void	ft_execs_init(t_ms *data, t_token *lst)
+{
+	ft_init_pipe(data, lst);
+	ft_infile_init(data, lst);
+	ft_outfile_init(data, lst);
+	ft_outfileA_init(data, lst);
+	
+	ft_process(data, envp);
+}
 
 static void	ft_process(t_ms *data, char **envp)
 {
@@ -64,7 +137,7 @@ static void	ft_process(t_ms *data, char **envp)
 		if (pid == -1)
 		{
 			printf("\033[34mminishell: fork() error!\033[0m\n");
-			/*exit free function here*/ 
+			/*free & exit function here*/ 
 			exit(1);
 		}
 		if (pid == 0)
@@ -77,30 +150,5 @@ static void	ft_process(t_ms *data, char **envp)
 	{
 		if (WIFEXITED(p_status))
 			data->exec.exit_code = WEXITSTATUS(p_status);
-	}
-}
-
-void	pf_init(void (*func[])())
-{
-	func[0] = cmd_init();
-	func[1] = infile_init();
-	func[2] = heredoc_init();
-	func[3] = outfile_init();
-	func[4] = outfile_a_init();
-	func[5] = pipe_init();
-}
-
-void	exec_init(t_ms *data, t_token lst)
-{
-	void	(*func[5])(t_exec exec, t_token lst);
-	int		i;
-
-	pf_init(func);
-	i = 0;
-	while (lst.data != NULL)
-	{
-		if (lst.datatype == i)
-			func[i](data->exec, lst);
-		i++;
 	}
 }
