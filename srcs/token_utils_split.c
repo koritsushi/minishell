@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/03 08:25:11 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/07 21:26:50 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ char	**ft_split_shell(char *str, char *set)
 			return (0);
 		}
 		ft_strlcpy(res[i++], str, count + 1);
-		/*debug*/printf("split_shell:str:%s.\n", str);
+		// /*debug*/printf("split_shell:str:%s.\n", str);
 		// while (x < count)
 		// 	res[i][x++] = *str++;
 		// i++;

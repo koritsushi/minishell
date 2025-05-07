@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/02 16:52:19 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/07 21:21:41 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	execute_functions(t_ms *data, t_token lst)
 		 * fork & dup2 */
 		// /*debug*/printf("execute_functions:%d\n", data->exec.exit_code);
 		// /*debug*/printf("execute_functions:$?:ent:\033[93m%s\033[0m.\n", cmd_line[i]);
-		/*debug*/printf("execute_functions:$?:\033[92m%s\033[0m.\n", cmd_line[i]);
+		// /*debug*/printf("execute_functions:$?:\033[92m%s\033[0m.\n", cmd_line[i]);
 		if (lst.datatype[i] == WORD)
 			execute_built_in(data, cmd_line[i]);
 	}
