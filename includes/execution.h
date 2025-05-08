@@ -23,7 +23,7 @@ typedef struct s_env	t_env;
 
 void	ft_execs_init(t_ms *data, t_token lst);
 void	ft_init_pipe(t_ms *data, t_token lst);
-void	ft_envp(t_env **lst);
+char	**ft_envp(t_env **lst);
 
 //execution_cmd.c functions
 char	**ft_get_path(char **envp);
