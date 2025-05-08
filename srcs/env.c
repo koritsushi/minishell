@@ -69,17 +69,21 @@ void	env_init(t_env **env_var, char **env)
 	i = 0;
 	len = array_len(env);
 	var = malloc(sizeof(char **) * (len + 1));
+	tmp = *env_var;
 	split_env(env, var);
 	while (env[i] != NULL)
 	{
-		if (*env_var == NULL)
+		if (tmp == NULL)
 		{
-			*env_var = ft_lstnew_shenv(var[i], env[i], 1);
+			tmp = ft_lstnew_shenv(var[i], env[i], 1);
 			i++;
 		}
-		tmp = ft_lstnew_shenv(var[i], env[i], 2);
-		if (tmp == NULL)
-			return ;
+		else
+		{
+			tmp = ft_lstnew_shenv(var[i], env[i], 2);
+			if (tmp == NULL)
+				return ;
+		}
 		ft_lstadd_back_env(env_var, tmp);
 		i++;
 	}
@@ -88,9 +92,8 @@ void	env_init(t_env **env_var, char **env)
 
 void	exec_init(t_exec *exec)
 {
-	exec->envp = NULL;
 	exec->path = NULL;
-	exec->cmd_paths = NULL;
+	exec->cmd = NULL;
 	exec->cmd_args = NULL;
 	exec->cmd_count = 0;
 	exec->index = 0;
