@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:16:21 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/03 13:58:09 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/07 14:55:27 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	f_process(t_exec *data, int index)
 {
 	close(data->pipes[index][READ]);
-	dup2(data->infile_fd, STDIN_FILENO);
+	dup2(data->infile_fd[index], STDIN_FILENO);
 	dup2(data->pipes[index][WRITE], STDOUT_FILENO);
 	close(data->pipes[index][WRITE]);
 	close(data->infile_fd);
