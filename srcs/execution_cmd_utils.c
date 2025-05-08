@@ -21,16 +21,18 @@ char	**ft_envp(t_env **lst)
 
 	if (lst == NULL)
 		return (NULL);
-		i = 0;
-	env = NULL;
+	i = 0;
+	tmp = *lst;
 	envp = malloc(sizeof(char *) * (ft_lstsize_sh(lst) + 1));
 	while (tmp != NULL)
 	{
 		env = ft_strjoin(tmp->env, "=");
-		envp[i++] = ft_strjoin(env, tmp->content);
+		envp[i] = ft_strjoin(env, tmp->content);
+		printf("%s\n", envp[i]);
 		free(env);
+		i++;
 		tmp = tmp->next;
 	}
-	envp[i] == NULL;
+	envp[i] = NULL;
 	return (envp);
 }
