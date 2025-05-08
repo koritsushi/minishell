@@ -12,7 +12,7 @@
 
 #ifndef EXPANSION_H
 # define EXPANSION_H
-# include "includes/minishell.h"
+# include "minishell.h"
 
 typedef struct s_env	t_env;
 
