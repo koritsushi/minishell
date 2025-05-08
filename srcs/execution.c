@@ -25,22 +25,53 @@ ans: fork out a child process just for builtin function for
 them to be able redirec in/out for shell commands function
 */
 
+int	lst_cmd_count(t_token *lst)
+{
+	int	i;
+	int	size;
+
+	i = 0;
+	size = 0;
+	while (lst->data[i] != NULL)
+	{
+		if (lst->datatype[i] == WORD)
+			size++;
+		i++;
+	}
+	return (size);
+}
+
+int	lst_pipe_count(t_token *lst)
+{
+	int	i;
+	int	size;
+
+	i = 0;
+	size = 0;
+	while (lst->data[i] != NULL)
+	{
+		if (lst->datatype[i] == PIPE)
+			size++;
+		i++;
+	}
+	return (size);
+}
+
 void	ft_cmd_init(t_exec *exec, t_token *lst)
 {
 	int		i;
 	int		size;
-	char	**str;
 
 	i = 0;
-	size = ft_arr_len(data);
-	str = malloc(sizeof(char **) * (size + 1));
-	while (data[i] != NULL)
+	size = lst_cmd_count(lst);
+	exec->cmd = malloc(sizeof(char **) * (size + 1));
+	while (lst->data[i] != NULL)
 	{
 		if (lst->datatype[i] == WORD)
-			exec->cmd_args[i] = data[i];
+			exec->cmd[i] = lst->data[i];
 		i++;
 	}
-	str[i] = NULL;
+	exec->cmd[i] = NULL;
 }
 
 void	ft_init_pipe(t_ms *data, t_token *lst)
@@ -79,9 +110,9 @@ void	ft_execs_init(t_ms *data, t_token *lst)
 	
 	ft_init_pipe(data, lst);
 	ft_cmd_init(data, lst);
-	envp = ft_envp(data->env);
+	envp = ft_envp(data->env_var);
 	data->exec.path = ft_get_path(envp);
-	ft_split_cmd();
+	//data->exec.cmd_args = ft_split_cmd();
 	ft_process(data, envp);
 }
 
@@ -103,7 +134,7 @@ static void	ft_process(t_ms *data, char **envp)
 			exit(1);
 		}
 		if (pid == 0)
-			ft_child_process(data, i);
+			ft_child_process(data, i, envp);
 		else
 			ft_parent_process(data, i);
 		i++;
