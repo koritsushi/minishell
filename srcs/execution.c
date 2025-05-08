@@ -25,62 +25,22 @@ ans: fork out a child process just for builtin function for
 them to be able redirec in/out for shell commands function
 */
 
-void	ft_cmd_init(t_exec *exec, char *data)
+void	ft_cmd_init(t_exec *exec, t_token *lst)
 {
 	int		i;
 	int		size;
 	char	**str;
 
 	i = 0;
-	size = 0;
-	if (exec->cmd_args == NULL)
+	size = ft_arr_len(data);
+	str = malloc(sizeof(char **) * (size + 1));
+	while (data[i] != NULL)
 	{
-		exec->cmd_args = malloc(sizeof(char **) * (1 + 1));
-	}
-	else
-	{
-		size = ft_arr_len(exec->cmd_args) + 1;
-		str = malloc(sizeof(char **) * (size));
-		while (exec->cmd_args[i] != NULL)
-		{
-			str[i] = exec->cmd_args[i];
-			i++;
-		}
-	}
-	str[i++] = ft_strdup(data);
-	str[i] = NULL;
-}
-
-void	ft_infile_init(t_exec *exec, t_token *lst)
-{
-	int	i;
-	int	infile;
-
-	i = 0;
-	infile = 0;
-	while (lst->data[i] != NULL)
-	{
-		if (lst->datatype[i] == INFILE && exec->infile_fd[infile] == 0)
-			exec->infile_fd[infile] = open(lst->data[i], O_RDONLY);
-		if (lst->datatype[i] == PIPE)
-			infile++;
+		if (lst->datatype[i] == WORD)
+			exec->cmd_args[i] = data[i];
 		i++;
 	}
-}
-
-void	ft_heredoc_init(t_exec *exec, t_token *lst)
-{
-
-}
-
-void 	ft_outfile_init(t_exec *exec, t_token *lst)
-{
-
-}
-
-void	ft_outfileA_init(t_exec *exec, t_token *lst)
-{
-
+	str[i] = NULL;
 }
 
 void	ft_init_pipe(t_ms *data, t_token *lst)
@@ -115,11 +75,13 @@ void	ft_init_pipe(t_ms *data, t_token *lst)
 
 void	ft_execs_init(t_ms *data, t_token *lst)
 {
-	ft_init_pipe(data, lst);
-	ft_infile_init(data, lst);
-	ft_outfile_init(data, lst);
-	ft_outfileA_init(data, lst);
+	char	**envp;
 	
+	ft_init_pipe(data, lst);
+	ft_cmd_init(data, lst);
+	envp = ft_envp(data->env);
+	data->exec.path = ft_get_path(envp);
+	ft_split_cmd();
 	ft_process(data, envp);
 }
 
