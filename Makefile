@@ -65,7 +65,15 @@ COMPILE		=	gcc
 CCFLAGS		=	-Wall -Wextra -Werror
 DEBUG		=	-ggdb3
 FSAN		=	-fsanitize=address
-READINC		= 	-I/usr/include./	
+READINC		= 	-I/usr/include./
+HEADER		=	includes/minishell.h \
+				includes/token.h \
+				includes/parsing.h \
+				includes/expansion.h \
+				includes/env.h	\
+				includes/builtins.h \
+				includes/execution.h \
+				includes/signals.h
 #READLIB		= 	-L/usr/lib/x86_64-linux-gnu/libreadline.a
 
 # __________readlib paths configs__________
@@ -75,7 +83,7 @@ else ifeq ($(UNAME_S), Darwin)
 	READLIB	:=
 endif
 
-%.o: %.c
+%.o: %.c	$(HEADER)
 			$(COMPILE) $(CCFLAGS) $(DEBUG) $(READINC) -I. -c $< -o $(<:.c=.o)
 
 $(NAME): $(LIBFT) $(OBJS)
