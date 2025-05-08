@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/06 16:31:59 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/07 14:48:48 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ typedef struct s_exec
 	int				pipes[1024][2];
 	int				infile_fd[1024];
 	int				outfile_fd[1024];
-	int				here_doc[1024];
-	char			**envp;
+	char			**path;
 	char			**cmd_paths;
 	char			***cmd_args;
 	int				cmd_count;
