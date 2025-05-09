@@ -187,6 +187,7 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 	char	**infile;
 	char	**res;
 	(void)	vars;
+	(void)	exit_status;
 
 	str = skip_spaces(str, " \t\n\v\f\r");
 	if (!str || !str[0])
@@ -194,7 +195,8 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 	/* ---------------- format string ---------------- */
 	/* search & truncate string to last infile < sign */
 	/* removes env (VAR="1 2 3") during get_cmds*/
-	new = truncate_input(str);
+	// new = truncate_input(str);
+	new = str;
 	res = ft_split_shell(new, "|");
 	infile = ft_split_shell(res[0], "<");
 	if (!res || !infile)
@@ -206,7 +208,7 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 		return (0);
 
 	// /*debug*/printf("trunc=%s\n", new);
-	/*debug*/printf("get_cmd_line:\033[93mcount=%d+1\033[0m, %s.\n", count, str);
+	/*debug*/printf("get_cmd_line:\033[93mcount=%d+1\033[0m, %s.\n", count, new);
 	// /*debug*/printf("------\nres:\n");
 	// /*debug*/debug_print(res);
 	/* ---------------- extract_cmd ---------------- */
