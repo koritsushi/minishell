@@ -6,45 +6,95 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 12:06:36 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/02 18:39:51 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/09 17:32:58 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/token.h"
 
+/*
+ * child function of extract_infile
+ * mallocs enough space & copy corresponding infile
+ * uses malloc
+ */
+static void	alloc_copy_infile(char **infile, char *tmp, char **lst_data, int *i)
+{
+	int		x;
+	int		k;
+	char	**infile_fin;
+
+	x = 0;
+	k = 0;
+	infile_fin = ft_split_shell(infile[x], " \t\n\v\f\r");
+	while (infile_fin[k + 1])
+	{
+		if ((tmp[0] == '<') && (!count_str_array(&infile[x + 1])))
+			break ;
+		k++;
+	}
+	allocate_str(&lst_data[(*i)], infile_fin[k]);
+	ft_strlcpy(lst_data[(*i)++], infile_fin[k], ft_strlen(infile_fin[k]) + 1);
+	free_chr_ptr((void **)infile_fin);
+}
+
 // 16 lines!
 /*
  * child function of extract_cmd
- * int start = index position of where to copy over the text
+ * jump to where 1st infile occur, split by spaces & malloc+copy
  * uses malloc
  */
-void	extract_infile(char **lst_data, char **res, char **infile)
+void	extract_infile(char **lst_data, int *i, char *res)//, char **infile)
 {
-	int		i;
-	char	**infile_fin;
+	int		x;
+	char	*tmp;
+	char	**infile;
 
-	i = 0;
+	x = -1;
+	//extract all infiles
 	/*get to the last infile index*/
-	while (infile && infile[i + 1])
-		i++;
-	infile_fin = ft_split_shell(infile[i], " \t\n\v\f\r");
-	i = 0;
-	if (res[0][0] != '<' && infile[1])
-	{
-		while (infile_fin[i + 1] && infile_fin[i + 1][0] != '>')
-			i++;
-	}
-	allocate_str(lst_data, infile_fin[i]);
-	ft_strlcpy(*lst_data, infile_fin[i], ft_strlen(infile_fin[i]) + 1);
+	tmp = skip_spaces(res, " \t\n\v\f\r");
+	infile = ft_split_shell(tmp, "<");
+	if (tmp[0] != '<')
+		x++;
+	// <in1 in2 <in3 cmd | <in3 cmd
+	// cmd -k <in1 <in2 in3 | <in3 cmd
+	// jump to where 1st infile occur
+	// split
 
-    /*debug*/
-	// printf("------\ninfile:\n");
-	// debug_print(infile);
-	// printf("------\nINFILE=%s\n", *lst_data);
-    /*debug_end*/
-
-	free_chr_ptr((void **)infile_fin);
+	// int count = count_str_array(&infile[x + 1]);
+	// /*debug*/printf("count_extin:%d\n", count);
+	while (infile[++x])
+		alloc_copy_infile(&infile[x], tmp, lst_data, i);
+	free_chr_ptr((void **)infile);
 }
+
+// void	extract_infile(char **lst_data, char **res, char **infile)
+// {
+// 	int		i;
+// 	char	**infile_fin;
+
+// 	i = 0;
+// 	/*get to the last infile index*/
+// 	while (infile && infile[i + 1])
+// 		i++;
+// 	infile_fin = ft_split_shell(infile[i], " \t\n\v\f\r");
+// 	i = 0;
+// 	if (res[0][0] != '<' && infile[1])
+// 	{
+// 		while (infile_fin[i + 1] && infile_fin[i + 1][0] != '>')
+// 			i++;
+// 	}
+// 	allocate_str(lst_data, infile_fin[i]);
+// 	ft_strlcpy(*lst_data, infile_fin[i], ft_strlen(infile_fin[i]) + 1);
+
+//     /*debug*/
+// 	// printf("------\ninfile:\n");
+// 	// debug_print(infile);
+// 	// printf("------\nINFILE=%s\n", *lst_data);
+//     /*debug_end*/
+
+// 	free_chr_ptr((void **)infile_fin);
+// }
 
 /* get & saves outfile string into lst_data */
 void	extract_outfile(char **lst_data, char *str)

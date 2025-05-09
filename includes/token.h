@@ -46,7 +46,8 @@ int		has_more_str_all(char **str, char *set);
 /* -------------------extract_cmds---------------------- */
 int		get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status);
 void	assign_datatype(unsigned char *datatype, char **res, char **infile);
-void	extract_infile(char **lst_data, char **res, char **infile);
+// void	extract_infile(char **lst_data, char **res, char **infile);
+void	extract_infile(char **lst_data, int *i, char *res);
 void	extract_outfile(char **lst_data, char *str);
 void	process_outfile(char **lst_data, int *i, \
 						char *cmd_tail, char **outfile);
@@ -54,9 +55,10 @@ void	process_outfile(char **lst_data, int *i, \
 /* -------------------count_&_mallocs---------------------- */
 // int		count_str_array(char **res);
 int		count_cmd_tail_chr(char **outfile);
+int		count_str_array(char **res);
 
 
-int		get_malloc_size(char **res, char **infile);
+int		get_malloc_size(char **res);
 int		allocate_str(char **dest, char *str);
 int		allocate_cmd_tail(char **dest, char **outfile, char c);
 int		init_token_list(t_token *lst, int size);

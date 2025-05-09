@@ -141,16 +141,17 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
  * scans line and saves valid command into a new char** array, str=new
  * uses malloc
  */
-void	process_cmd(t_token *lst, char **res, char **infile)// char **outfile)//char *str)
+void	process_cmd(t_token *lst, char **res, char **infile)
 {
 	int		i;
 	int		x;
 	char	*cmd_tail;
+	(void)	infile;
 
 	/*----------- get_infiles -----------*/
 	i = 0;
-	if (infile[1] || res[0][0] == '<')
-		extract_infile(&lst->data[i++], res, infile);
+	// if (infile[1] || res[0][0] == '<')
+		// extract_infile(&lst->data[i++], res, infile);
 
 	/*----------- copy the rest -----------*/
 	/* cmd1 -f -g < infile */
@@ -161,14 +162,18 @@ void	process_cmd(t_token *lst, char **res, char **infile)// char **outfile)//cha
 	x = -1;
 	while (res && res[++x])
 	{
+		if (ft_strchr(res[x], '<'))
+			extract_infile(lst->data, &i, res[x]);
+		// /*debug*/printf("process_cmd:i:%d\n", i);
 		cmd_tail = skip_spaces(res[x], "< \t\n\v\f\r");
 		cmd_tail = skip_if_symbol(cmd_tail, res[x][0], '<');
 		if (!cmd_tail)
 			break ;
 		process_cmd_tail(lst->data, &i, cmd_tail);
-		/*------------ add_pipes ------------*/
+		// /*------------ add_pipes ------------*/
 		if (res[x + 1])
 			extract_outfile(&lst->data[i++], "|");
+		i++;
 	}
 
 	// /*debug*/ printf("------\ninfile:\n");
@@ -203,7 +208,7 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 		return (0);
 
 	/* ---------------- get_malloc_size ---------------- */
-	count = get_malloc_size(res, infile);
+	count = get_malloc_size(res);//, infile);
 	if (!init_token_list(lst, (count + 1)))
 		return (0);
 

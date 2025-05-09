@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/09 12:35:17 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/09 16:28:51 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  #include "includes/token.h"
 
 /* counts total string count in a double char array */
-static int	count_str_array(char **res)
+int	count_str_array(char **res)
 {
 	int	i;
 
@@ -177,10 +177,10 @@ static int	count_cmd_tail(char **res, char *set)
  * checks if < << is at beginning, process entire line til pipe
  * if infile at middle, all strings after < are filenames
  */
-int	get_malloc_size(char **res, char **infile)
+int	get_malloc_size(char **res)//, char **infile)
 {
 	int		i;
-	(void)	infile;
+	// (void)	infile;
 
 	/* <infile >outfile*/
 	i = 0;
