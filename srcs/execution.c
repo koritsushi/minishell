@@ -107,12 +107,18 @@ void	ft_init_pipe(t_ms *data, t_token *lst)
 void	ft_execs_init(t_ms *data, t_token *lst)
 {
 	char	**envp;
-	
+	char	**cmd;
+	int		i;
+
+	i = 0;
 	ft_init_pipe(data, lst);
-	ft_cmd_init(data, lst);
+	ft_cmd_init(cmd, lst);
 	envp = ft_envp(data->env_var);
 	data->exec.path = ft_get_path(envp);
-	//data->exec.cmd_args = ft_split_cmd();
+	data->exec.cmd_args = ft_split_cmd(&data->exec, cmd);
+	while (cmd[i] != NULL)
+		free(cmd[i++]);
+	free(cmd);
 	ft_process(data, envp);
 }
 
