@@ -103,15 +103,21 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 	/* cmd */
 	/* < infile cmd */
 	/* < infile <infile cmd */
-	/* < infile infile cmd */
 	/* cmd < infile1 infile2 -k */
+	
+	/* < infile < in2 cmd > outfile */
+
 	/* cmd < infile > outfile */
+	/* cmd > outfile */
 
 	/*__________start_here_________*/
 	outfile = ft_split_shell(cmd_tail, ">");
 
 	// /*debug*/printf("------\noutfile:\n");
 	// /*debug*/debug_print(outfile);
+
+	// if cmd_tail[0] == '<' , skip all infiles
+	// split by '>'
 
 	/*--------------extract_cmd_tail--------------*/
 	/* if splittable && has_more_str_all*/
@@ -135,6 +141,59 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 	process_outfile(lst_data, i, cmd_tail, outfile);
 	free_chr_ptr((void **)outfile);
 }
+
+// void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
+// {
+// 	char	**outfile;
+
+// 	/*__________splittable_________*/
+// 	/* < infile cmd > outfile */
+// 	/* < infile > outfile */
+// 	/* cmd > outfile1 */
+// 	/* cmd > outfile1 -k */
+// 	/* > outfile1 > outfile2 */
+// 	/* > outfile1 cmd1 > outfile2 -h */
+// 	/* > outfile1 cmd1 */
+
+// 	/*__________!splittable_________*/
+// 	/* >       outfile1 cmd */
+// 	/* > outfile1 cmd */
+// 	/* cmd */
+// 	/* < infile cmd */
+// 	/* < infile <infile cmd */
+// 	/* cmd < infile1 infile2 -k */
+	
+// 	/* cmd < infile > outfile */
+// 	/* < infile cmd > outfile */
+
+// 	/*__________start_here_________*/
+// 	outfile = ft_split_shell(cmd_tail, ">");
+
+// 	// /*debug*/printf("------\noutfile:\n");
+// 	// /*debug*/debug_print(outfile);
+
+// 	/*--------------extract_cmd_tail--------------*/
+// 	/* if splittable && has_more_str_all*/
+// 	if (outfile[1] && (cmd_tail[0] != '>' || \
+// 		(cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r"))))
+// 		extract_cmd_tail(&lst_data[(*i)++], cmd_tail, outfile);
+// 	/* if not splittable */
+// 	if (!outfile[1])
+// 	{
+// 		/* if begin with >, check if has_more_str_all */
+// 		/* if theres no <>, only single cmd, copy over */
+// 		/* if begin with < (one_line_condition), do not extract */
+// 		// /*debug*/printf("extract_cmd_tail:%s\n", cmd_tail);
+// 		if (cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r"))
+// 			extract_cmd_tail(&lst_data[(*i)++], cmd_tail, outfile);
+// 		if (cmd_tail[0] && !is_target("<>", cmd_tail[0]))
+// 			extract_cmd_tail(&lst_data[(*i)++], cmd_tail, outfile);
+// 	}
+
+// 	/*--------------extract outfiles--------------*/
+// 	process_outfile(lst_data, i, cmd_tail, outfile);
+// 	free_chr_ptr((void **)outfile);
+// }
 
 // 18 lines!
 /*
@@ -169,11 +228,11 @@ void	process_cmd(t_token *lst, char **res, char **infile)
 		cmd_tail = skip_if_symbol(cmd_tail, res[x][0], '<');
 		if (!cmd_tail)
 			break ;
-		process_cmd_tail(lst->data, &i, cmd_tail);
-		// /*------------ add_pipes ------------*/
-		if (res[x + 1])
-			extract_outfile(&lst->data[i++], "|");
-		i++;
+		// process_cmd_tail(lst->data, &i, cmd_tail);
+		// // /*------------ add_pipes ------------*/
+		// if (res[x + 1])
+		// 	extract_outfile(&lst->data[i++], "|");
+		// i++;
 	}
 
 	// /*debug*/ printf("------\ninfile:\n");
@@ -218,8 +277,8 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 	// /*debug*/debug_print(res);
 	/* ---------------- extract_cmd ---------------- */
 	process_cmd(lst, res, infile);
-	cmd_expansion(lst->data, vars, exit_status); //exit status need to redef
-	assign_datatype(lst->datatype, res, infile);
+	// cmd_expansion(lst->data, vars, exit_status); //exit status need to redef
+	// assign_datatype(lst->datatype, res, infile);
 
 	/*-------------debug_start-------------*/
 	// printf("\n\033[102m_____lst_data:_____\033[0m\n");

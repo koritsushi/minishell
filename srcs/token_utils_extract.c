@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 12:06:36 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/09 17:32:58 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/09 21:56:09 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,17 @@ static void	alloc_copy_infile(char **infile, char *tmp, char **lst_data, int *i)
 {
 	int		x;
 	int		k;
+	char	**fin;
 	char	**infile_fin;
 
 	x = 0;
 	k = 0;
-	infile_fin = ft_split_shell(infile[x], " \t\n\v\f\r");
+	fin = ft_split_shell(infile[x], ">");
+	infile_fin = ft_split_shell(fin[0], " \t\n\v\f\r");
+
+	// in
+	// in2 in3>out blbl
+
 	while (infile_fin[k + 1])
 	{
 		if ((tmp[0] == '<') && (!count_str_array(&infile[x + 1])))
@@ -34,7 +40,7 @@ static void	alloc_copy_infile(char **infile, char *tmp, char **lst_data, int *i)
 	}
 	allocate_str(&lst_data[(*i)], infile_fin[k]);
 	ft_strlcpy(lst_data[(*i)++], infile_fin[k], ft_strlen(infile_fin[k]) + 1);
-	free_chr_ptr((void **)infile_fin);
+	free_multiple_ptr(infile_fin, fin, NULL);
 }
 
 // 16 lines!
