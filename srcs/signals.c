@@ -12,7 +12,8 @@
 
 #include "../includes/signals.h"
 
-volatile int	g_unblock_sigquit = 0;
+extern int g_signal;
+//volatile int	g_unblock_sigquit = 0;
 
 // Set all of the structure's bits to 0 to avoid errors
 // -> relating to uninitialized variables
@@ -79,12 +80,13 @@ void	sigint_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		ft_putstr_fd("\n\033[34mminishell > \033[0m", 1);
+		ft_putstr_fd("\n\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m", 1);
+		g_signal = 130;
 		return ;
 	}
 	if (signal == SIGQUIT)
 	{
-		ft_putstr_fd("\033[34mminishell > \033[0m", 1);
+		ft_putstr_fd("\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m", 1);
 		return ;
 	}
 }
