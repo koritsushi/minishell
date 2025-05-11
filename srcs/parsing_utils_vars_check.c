@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/29 21:12:48 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/11 16:20:59 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ static int	has_non_var(char *str)
 	int		res;
 
 	str = skip_redirs(str);
+	/*debug*/printf("has_non_var:skip:%s.\n", str);
 	tmp = ft_split_shell(str, "<>");
 	fin = ft_split_shell(tmp[0], " \t\n\v\f\r");
 	res = 0;

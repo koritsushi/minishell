@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 07:55:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/02 18:40:31 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/11 18:38:50 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,14 @@
  */
 static void	assign_datatype_outfile(char *str, unsigned char *datatype, int *i)
 {
-	char *cmd_tail;
+	char	*cmd_tail;
 
+	/* use ft_strchr */
+	/* > out1 cmd */
+	/* > out1 > out2 cmd */
+	/* cmd > out1 > out2 */
+
+	/* check the entire string */
 	cmd_tail = str;
 	while (cmd_tail && cmd_tail[0])
 	{
@@ -38,16 +44,58 @@ static void	assign_datatype_outfile(char *str, unsigned char *datatype, int *i)
 	}
 }
 
-/* checks if str[0] is '<' or '<<' , returns result */
-static void	assign_datatype_infile(char *str, unsigned char *datatype, int *i)
+/*
+ * child function in assign_datatype_infile
+ * checks if str[0] is '<' or '<<' , returns result
+ */
+static void	assign_infile_now(char **infile, char *cmd_tail, unsigned char *datatype, int *i)
 {
-	char	*cmd_tail;
+	int		x;
 
-	cmd_tail = str;
-	if (cmd_tail[0] == '<' && cmd_tail[1] == '<')
-		datatype[(*i)++] = HEREDOC;
-	else if (cmd_tail[0] == '<' && cmd_tail[1] != '<')
-		datatype[(*i)++] = INFILE;
+	// <<in1 <in2 in3
+	x = -1;
+	if (!cmd_tail)
+		return ;
+	while (infile[++x])
+	{
+		if (cmd_tail[0] == '<' && cmd_tail[1] == '<')
+		{
+			datatype[(*i)++] = HEREDOC;
+			cmd_tail = ft_strchr(cmd_tail + 2, '<');
+		}
+		else if (cmd_tail[0] == '<' && cmd_tail[1] != '<')
+		{
+			datatype[(*i)++] = INFILE;
+			cmd_tail = ft_strchr(cmd_tail + 1, '<');
+		}
+	}
+}
+// static void	assign_datatype_infile(char *str, unsigned char *datatype, int *i)
+// {
+// 	char	*cmd_tail;
+
+// 	cmd_tail = str;
+// 	if (cmd_tail[0] == '<' && cmd_tail[1] == '<')
+// 		datatype[(*i)++] = HEREDOC;
+// 	else if (cmd_tail[0] == '<' && cmd_tail[1] != '<')
+// 		datatype[(*i)++] = INFILE;
+// }
+
+/* child function in assign_datatype */
+static void	assign_datatype_infile(char *cmd_tail, unsigned char *datatype, int *i)
+{
+	char **infile;
+
+	infile = ft_split_shell(cmd_tail, "<");
+	if (!infile)
+		return ;
+	if (infile[1] && cmd_tail[0] == '<')
+		assign_infile_now(infile, cmd_tail, datatype, i);
+	else if (infile[1] && cmd_tail[0] != '<')
+		assign_infile_now(&infile[1], ft_strchr(cmd_tail, '<'), datatype, i);
+	else if (!infile[1] && cmd_tail[0] == '<')
+		assign_infile_now(infile, cmd_tail, datatype, i);
+	free_chr_ptr((void **)infile);
 }
 
 /* checks if str[0] is WORD, str[0] = cmd_tail */
@@ -77,12 +125,12 @@ static void	assign_datatype_cmd_tail(char *str, unsigned char *datatype, int *i,
 	}
 }
 
-// 25 lines!
+// 22 lines!
 /*
  * considered as lexing process
  * scans input and assigns datatype according to operator sign
  */
-void	assign_datatype(unsigned char *datatype, char **res, char **infile)
+void	assign_datatype(unsigned char *datatype, char **res)//, char **infile_f)
 {
 	int		x;
 	int		i;
@@ -100,21 +148,36 @@ void	assign_datatype(unsigned char *datatype, char **res, char **infile)
 	/* cmd < infile > outfile */
 	/* < infile */
 
-	x = -1;
 	i = 0;
+	x = -1;
 	/* _____________get infile_____________ */
 	/* if infile[1], travel to the last infile '<' */
-	cmd_tail = search_rstr(res[0], '<', ft_strlen(res[0]));
-	if (infile[1])
-		assign_datatype_infile(cmd_tail, datatype, &i);
-	else if (!infile[1] && cmd_tail[0] == '<')
-		assign_datatype_infile(cmd_tail, datatype, &i);
-	/* get the rest */
+
+	// <in1 in2 in3   <in4 cmd
+	// cmd            <in1 in2 in3 <in4
+	// <in4 cmd
+	// cmd_tail = search_rstr(res[0], '<', ft_strlen(res[0]));
+	// /*debug*/printf("assign_datatype:%s.\n", cmd_tail);
+	// if (infile[1])
+	// 	assign_datatype_infile(cmd_tail, datatype, &i);
+	// else if (!infile[1] && cmd_tail[0] == '<')
+	// 	assign_datatype_infile(cmd_tail, datatype, &i);
+
+		/* get the rest */
+	// <in1 in2 cmd | <in3 blabla
 	while (res[++x])
 	{
+		//get infile here
+		// <in1 in2  <in4  cmd    splittable
+		// cmd <in1 in2 in3 <in4
+		cmd_tail = skip_spaces(res[x], " \t\n\v\f\r");
+		assign_datatype_infile(cmd_tail, datatype, &i);
 		/* skip spaces & infile symbol */
-		cmd_tail = skip_spaces(res[x], "< \t\n\v\f\r");
-		cmd_tail = skip_if_symbol(cmd_tail, res[x][0], '<');
+		if (cmd_tail[0] == '<')
+			cmd_tail = ft_strrchr(cmd_tail, '<');
+		// /*debug*/printf("assign_datatype:tail:%s.\n", cmd_tail);
+
+		cmd_tail = skip_if_symbol(cmd_tail, cmd_tail[0], '<');
 		outfile = ft_split_shell(cmd_tail, ">");
 		if (!outfile)
 		{
@@ -126,13 +189,6 @@ void	assign_datatype(unsigned char *datatype, char **res, char **infile)
 		assign_datatype_cmd_tail(cmd_tail, datatype, &i, outfile);
 
 		/*--------------assign_outfiles--------------*/
-		/* use ft_strchr */
-		/* > out1 cmd */
-		/* > out1 > out2 cmd */
-		/* cmd > out1 > out2 */
-
-		/* check the entire string */
-		// cmd_tail = res[x];
 		assign_datatype_outfile(res[x], datatype, &i);
 		if (res[x + 1])
 			datatype[i++] = PIPE;
