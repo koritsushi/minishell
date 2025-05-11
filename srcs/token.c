@@ -64,6 +64,9 @@ void	extract_cmd_tail(char **lst_data, char *str, char **outfile)
 	/* > outfile1 > outfile2 -a -b */
 	/* > outfile1 > outfile2*/
 
+	// skip space
+	// skip symbol '>'
+	// skip redirs '<>'
 	allocate_cmd_tail(lst_data, outfile, str[0]);
 	i = 0;
 	start = 0;
@@ -72,6 +75,7 @@ void	extract_cmd_tail(char **lst_data, char *str, char **outfile)
 	if (str[0] != '>')
 	{
 		/* if str[0] is splittable by infile '<' */
+		/* if outfile[0] = cmd <infile in2 in3 >out  */
 		infile_check = ft_split_shell(outfile[0], "<");
 		ft_strlcpy(*lst_data, infile_check[0], ft_strlen(infile_check[0]) + 1);
 		start = ft_strlen(infile_check[0]);
@@ -79,8 +83,43 @@ void	extract_cmd_tail(char **lst_data, char *str, char **outfile)
 		free_chr_ptr((void **)infile_check);
 	}
 	copy_cmd_tail(lst_data, start, &outfile[i]);
-	// /*debug*/printf("tail_fin=%s\n", *lst_data);//, &(*lst_data)[start-3]);
+	/*debug*/printf("tail_fin=%s\n", *lst_data);//, &(*lst_data)[start-3]);
 }
+
+// void	extract_cmd_tail(char **lst_data, char *str, char **outfile)
+// {
+// 	char	**infile_check;
+// 	int		start;
+// 	int		i;
+
+// 	/* < infile cmd */
+// 	/* < infile <infile cmd */
+// 	/* < infile cmd cmd */
+// 	/* cmd < infile1 infile2 > outfile -k */
+// 	/* cmd > outfile -k */
+
+// 	/* cmd3 > outfile -a -b */
+// 	/* cmd3 > outfile1 > outfile2 -a -b */
+// 	/* > outfile1 > outfile2 -a -b */
+// 	/* > outfile1 > outfile2*/
+
+// 	allocate_cmd_tail(lst_data, outfile, str[0]);
+// 	i = 0;
+// 	start = 0;
+
+//     /* copy cmd_head */
+// 	if (str[0] != '>')
+// 	{
+// 		/* if str[0] is splittable by infile '<' */
+// 		infile_check = ft_split_shell(outfile[0], "<");
+// 		ft_strlcpy(*lst_data, infile_check[0], ft_strlen(infile_check[0]) + 1);
+// 		start = ft_strlen(infile_check[0]);
+// 		i = 1;
+// 		free_chr_ptr((void **)infile_check);
+// 	}
+// 	copy_cmd_tail(lst_data, start, &outfile[i]);
+// 	// /*debug*/printf("tail_fin=%s\n", *lst_data);//, &(*lst_data)[start-3]);
+// }
 
 // 15 lines!
 /* child function in process_cmd, *i = lst_data index number */
@@ -104,36 +143,38 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 	/* < infile cmd */
 	/* < infile <infile cmd */
 	/* cmd < infile1 infile2 -k */
-	
-	/* < infile < in2 cmd > outfile */
-
-	/* cmd < infile > outfile */
-	/* cmd > outfile */
 
 	/*__________start_here_________*/
 	outfile = ft_split_shell(cmd_tail, ">");
 
-	// /*debug*/printf("------\noutfile:\n");
-	// /*debug*/debug_print(outfile);
+	/*debug*/printf("------\noutfile:\n");
+	/*debug*/debug_print(outfile);
 
 	// if cmd_tail[0] == '<' , skip all infiles
 	// split by '>'
 
+	/* > outfile1     cmd */
+	/* > outfile1 >o2    cmd */
+
+	/* < infile < in2 cmd        > outfile */
+	/* cmd < infile <in2 <in3    > outfile */
+
 	/*--------------extract_cmd_tail--------------*/
-	/* if splittable && has_more_str_all*/
+	/* if splittable by > && has_more_str_all*/
+	// >out >out some_cmd
 	if (outfile[1] && (cmd_tail[0] != '>' || \
 		(cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r"))))
 		extract_cmd_tail(&lst_data[(*i)++], cmd_tail, outfile);
-	/* if not splittable */
-	if (!outfile[1])
+	/* if not > splittable */
+	else if (!outfile[1])
 	{
 		/* if begin with >, check if has_more_str_all */
 		/* if theres no <>, only single cmd, copy over */
 		/* if begin with < (one_line_condition), do not extract */
 		// /*debug*/printf("extract_cmd_tail:%s\n", cmd_tail);
-		if (cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r"))
+		if (cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r")) // >out cmd
 			extract_cmd_tail(&lst_data[(*i)++], cmd_tail, outfile);
-		if (cmd_tail[0] && !is_target("<>", cmd_tail[0]))
+		if (cmd_tail[0] && !is_target("<>", cmd_tail[0])) // normal plain cmd
 			extract_cmd_tail(&lst_data[(*i)++], cmd_tail, outfile);
 	}
 
@@ -224,15 +265,21 @@ void	process_cmd(t_token *lst, char **res, char **infile)
 		if (ft_strchr(res[x], '<'))
 			extract_infile(lst->data, &i, res[x]);
 		// /*debug*/printf("process_cmd:i:%d\n", i);
+
+		// skips to where cmd starts & process cmd
+		// maybe dont need < in skip_spaces
 		cmd_tail = skip_spaces(res[x], "< \t\n\v\f\r");
+		if (res[x][0] == '<' && ft_strrchr(cmd_tail, '<'))
+			cmd_tail = ft_strrchr(cmd_tail, '<');
 		cmd_tail = skip_if_symbol(cmd_tail, res[x][0], '<');
+		/*debug*/printf("cmd_tail:%s.\n", cmd_tail);
+
 		if (!cmd_tail)
 			break ;
-		// process_cmd_tail(lst->data, &i, cmd_tail);
-		// // /*------------ add_pipes ------------*/
-		// if (res[x + 1])
-		// 	extract_outfile(&lst->data[i++], "|");
-		// i++;
+		process_cmd_tail(lst->data, &i, cmd_tail);
+		/*------------ add_pipes ------------*/
+		if (res[x + 1])
+			extract_outfile(&lst->data[i++], "|");
 	}
 
 	// /*debug*/ printf("------\ninfile:\n");
