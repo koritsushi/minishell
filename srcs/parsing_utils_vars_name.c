@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:57:56 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/29 22:12:20 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/12 11:48:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	get_var_name(char **dest, char *str)
 		return (0);
 	len = count_var_name(new);
 
-	/*debug*/printf("get_var_name:len=%d, leftover=%s.\n", len, &new[len]);
+	/*debug*/printf("get_var_name:len:%d, leftover:%s.\n", len, &new[len]);
 	if (new && malloc_chr_ptr(dest, (len + 1)))
 		ft_strlcpy(*dest, new, len + 1);
 	/*debug*/printf("get_var_name:new_bf=%s.\n", new);
@@ -134,7 +134,8 @@ int	is_valid_var_name(char **str, int export_id)
 
 	/*debug*/printf("is_valid_var_name:ent:%s.\n", *str);
 	/*debug*/printf("is_valid_var_name:export_id:%d.\n", export_id);
-	if (valid_export_keyword((*str), 0) || (export_id && spaces_in_quote((*str))))
+	// if (valid_export_keyword((*str), 0) || (export_id && spaces_in_quote((*str))))
+	if (export_id && spaces_in_quote((*str)))
 		return (0);
 	if (export_id)
 	{

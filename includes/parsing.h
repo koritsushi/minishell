@@ -19,6 +19,7 @@
 # include "minishell.h"
 
 typedef struct s_env	t_env;
+typedef struct s_token	t_token;
 
 /*__________functions for syntax error checks__________*/
 int		check_syntax(char *str);
@@ -27,7 +28,8 @@ char	*skip_if_quote(char *str, char symbol, int flag);
 char	*skip_redirs(char *str);
 
 /*__________functions to extract variable assignments__________*/
-int		get_variable(t_env **vars, char *str, int exit_status);
+// int		get_variable(t_env **vars, char *str, int exit_status);
+int 	get_variable(t_env **vars, t_token lst, char *str, int exit_status);
 int		get_var_name(char **dest, char *str);
 int		is_valid_var_name(char **str, int export_id);
 void	replace_var_space(char *str);

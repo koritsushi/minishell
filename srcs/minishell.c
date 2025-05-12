@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/11 17:00:45 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/12 11:56:48 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,16 @@ int	main(int argc, char **argv, char **env)
 		/*lexing & get_vars*/
 		else if (*text && check_syntax(text))
 		{
-			get_variable(&data.env_var, text, data.exec.exit_code);
+			// get_variable(&data.env_var, text, data.exec.exit_code);
 			// if (data.env_var && data.env_var->content)
 			// 	debug_print_var_lst(data.env_var);
 			if (get_cmd_line(text, &lst, data.env_var, data.exec.exit_code))
 			{
+				get_variable(&data.env_var, lst, text, data.exec.exit_code);
+				int x = -1;
+				while (lst.data[++x])
+					quote_removal(&lst.data[x]);
 				/*debug*/debug_print_cmd_line(&lst);
-				// get_variable(&data.env_var, text, data.exec.exit_code);
-
 				/* execution here */
 				// execute_functions(&data, lst); //inject pipex inside
 				// /*debug*/debug_print_cmd_line(&lst);

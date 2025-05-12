@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/11 16:20:59 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/12 10:15:15 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,12 @@ static int	has_non_var(char *str)
 	while (fin && fin[++i] && !res)
 	{
 		/*debug*/printf("has_non_var:ent:%s.\n", fin[i]);
-		if (valid_export_keyword(fin[i], 0))
+		if (valid_export_keyword(fin[i], 0)) // && has_more_str after export
+		{
+			/*debug*/printf("has_non_var:export! %d\n", res);
 			break ;
-		if (!is_target(fin[i], '='))
+		}
+		if (!is_target(fin[i], '=') || !ft_isalpha(fin[i][0]))
 		{
 			res = 1;
 			/*debug*/printf("has_non_var:found!%s\n", fin[i]);
@@ -159,5 +162,6 @@ int	check_var_syntax(char *str)//, int *flag)
 		if (new)
 			new++;
 	}
+	// if invalid_var_name
 	return (1);
 }

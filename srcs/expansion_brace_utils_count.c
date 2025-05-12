@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:41:58 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/03 08:27:56 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/12 14:33:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	is_valid_brace_start(char *str)
 	flag = 0;
 	flag_quote = 0;
 	symbol = '\0';
-	// /*debug*/printf("is_valid_brace_start:ent:%s, %c\n", str, str[0]);
+	/*debug*/printf("is_valid_brace_start:ent:%s, %c\n", str, str[0]);
 	while (str && str[0])
 	{
 		update_flag_quote(str, &symbol, &flag_quote);
@@ -64,6 +64,7 @@ int	is_valid_brace_start(char *str)
 			return (1);
 		str++;
 	}
+	/*debug*/printf("\033[93mnot valid_brace_start!\033[0m\n");
 	return (0);
 }
 
@@ -77,11 +78,20 @@ static int	count_brace_comma(char *str)
 	int	comma;
 
 	comma = 0;
-	while (!is_valid_brace_start(str))
+	while (str[0])
+	{
+		if (str[0] == '{' && is_valid_brace_start(str + 1))		
+			break ;
 		str++;
+	}
+	// 'v'{,}e
+	/*debug*/printf("count_brace_comma:ent:%s.\n", str);
+	// str = ft_strchr(str, '{');
 	while (str && str[0] && str[0] != '}')
 	{
-		if (str[0] == ',')
+		if (str[0] && is_target("\'\"", str[0]))
+			str = skip_if_quote(str, str[0], 0);
+		else if (str[0] == ',')
 			comma++;
 		str++;
 	}

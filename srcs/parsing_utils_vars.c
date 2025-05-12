@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:12:43 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/03 09:48:00 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/12 10:09:41 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,21 @@ static void	add_var_entry(t_env **vars, char *name, char *new, int export_id)
 	/*debug*/printf("add_var_entry:env:\033[93m%s\033[0m.\n", lst->env);
 }
 
+/*
+ * child function in extract_vars
+ * checks if str does not start with 'export' 
+ * yet has 'export' keyword, eg:
+ * var=123 export var2
+ * then it is invalid
+ * export export=baba var=baba
+ */
+// static void	is_valid_var()
+// {
+// 	//if has export, skip til after 1st export keyword
+// 	//var=baba var=gg   export v=99 export lala
+// 	// trim_if_export
+// }
+
 // 18 lines!
 /*
  * child function in process_vars,
@@ -89,8 +104,15 @@ void	extract_vars(t_env **vars, char *str, int export_id)
 		if (!get_var_name(&name, str))
 			return ;
 
+		// if !start_with_export && has_=_assignemnt && has_export down the string
+		//	return
+		// var=uuu export v=tu export baba
+		// var not saved as env
+		
 		if (is_valid_var_name(&name, export_id))
 		{
+			//trim_if_export
+			// var=baba export uu
 			/*debug*/printf("var_name=%s, var_len=%d+1, str=%s\n", name, count_malloc_vars(str), str);
 			malloc_chr_ptr(&new, count_malloc_vars(str) + 1);
 			copy_vars(new, str, count_malloc_vars(str));
