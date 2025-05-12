@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/11 22:21:27 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/12 16:37:28 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,10 +144,11 @@ void	execute_functions(t_ms *data, t_token lst)
 		/*debug*/printf("\033[93m===========================\033[0m\n");
 		/*debug*/env_print(&data->env_var);
 	}
-	while (has_pipes(lst))
+	if (has_pipes(lst))
 	{
 		infile_parsing_init(data, &lst);
 		outfile_parsing_init(data, &lst);
+		ft_execs_init(data, &lst);
 	}
 	// while (cmd_line[++i]) //split into another function here
 	// {

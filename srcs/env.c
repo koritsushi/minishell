@@ -92,6 +92,15 @@ void	env_init(t_env **env_var, char **env)
 
 void	exec_init(t_exec *exec)
 {
+	int	i;
+
+	i = 0;
+	while (i < 1024)
+	{
+		exec->infile_fd[i] = 0;
+		exec->outfile_fd[i] = 1;
+		i++;
+	}
 	exec->path = NULL;
 	exec->cmd = NULL;
 	exec->cmd_args = NULL;

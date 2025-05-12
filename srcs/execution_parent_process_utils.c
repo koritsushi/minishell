@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:32:43 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/08 13:36:19 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/12 16:36:25 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	fp_process(t_ms *data, int index)
 	close(data->exec.pipes[index][WRITE]);
 	if (data->exec.infile_fd[index] != 0)
 		close(data->exec.infile_fd[index]);
-	if (data->exec.outfile_fd[index] != 0)
+	if (data->exec.outfile_fd[index] != 1)
 		close(data->exec.outfile_fd[index]);
 }
 
@@ -27,7 +27,7 @@ void	lp_process(t_ms *data, int index)
 	close(data->exec.pipes[index - 1][READ]);
 	if (data->exec.infile_fd[index] != 0)
 		close(data->exec.infile_fd[index]);
-	if (data->exec.outfile_fd[index] != 0)
+	if (data->exec.outfile_fd[index] != 1)
 		close(data->exec.outfile_fd[index]);
 }
 
@@ -37,6 +37,6 @@ void	mp_process(t_ms *data, int index)
 	close(data->exec.pipes[index][WRITE]);
 	if (data->exec.infile_fd[index] != 0)
 		close(data->exec.infile_fd[index]);
-	if (data->exec.outfile_fd[index] != 0)
+	if (data->exec.outfile_fd[index] != 1)
 		close(data->exec.outfile_fd[index]);
 }

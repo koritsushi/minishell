@@ -57,21 +57,25 @@ int	lst_pipe_count(t_token *lst)
 	return (size);
 }
 
-void	ft_cmd_init(char **cmd, t_token *lst)
+char	**ft_cmd_init(t_token *lst)
 {
 	int		i;
+	int		j;
 	int		size;
+	char	**cmd;
 
 	i = 0;
+	j = 0;
 	size = lst_cmd_count(lst);
 	cmd = malloc(sizeof(char **) * (size + 1));
 	while (lst->data[i] != NULL)
 	{
 		if (lst->datatype[i] == WORD)
-			cmd[i] = lst->data[i];
+			cmd[j++] = ft_strdup(lst->data[i]);
 		i++;
 	}
-	cmd[i] = NULL;
+	cmd[j] = NULL;
+	return (cmd);
 }
 
 void	ft_init_pipe(t_ms *data, t_token *lst)
@@ -139,12 +143,11 @@ void	ft_execs_init(t_ms *data, t_token *lst)
 	char	**envp;
 	char	**cmd;
 
-	cmd = NULL;
 	ft_init_pipe(data, lst);
-	ft_cmd_init(cmd, lst);
+	cmd = ft_cmd_init(lst);
 	envp = ft_envp(&data->env_var);
 	data->exec.path = ft_get_path(envp);
 	data->exec.cmd_args = ft_split_cmd(&data->exec, cmd);
-	free_chr_ptr((void **) cmd);
+	//free_chr_ptr((void **) cmd);
 	ft_process(data, envp);
 }

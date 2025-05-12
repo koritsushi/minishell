@@ -28,7 +28,6 @@ char	**ft_envp(t_env **lst)
 	{
 		env = ft_strjoin(tmp->env, "=");
 		envp[i] = ft_strjoin(env, tmp->content);
-		printf("%s\n", envp[i]);
 		free(env);
 		i++;
 		tmp = tmp->next;
