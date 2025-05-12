@@ -6,14 +6,14 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:55 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/08 18:52:47 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/11 19:48:40 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/execution.h"
 
-int	execution(t_ms *data, char *cmd, char **cmd_args, char **envp)
+void	ft_execution(t_ms *data, char *cmd, char **cmd_args, char **envp)
 {
 	char *cmd_path;
 
@@ -58,10 +58,10 @@ void	ft_parent_process(t_ms *data, int index)
 void	ft_child_process(t_ms *data, int index, char **envp)
 {
 	if (index == 0)
-		f_process(data, index);
+		fc_process(data, index);
 	else if (index == data->exec.cmd_count - 1)
-		l_process(data, index);
+		lc_process(data, index);
 	else
-		m_process(data, index);
-	ft_execute(data, data->exec.cmd[index], data->exec.cmd_args[index], envp);
+		mc_process(data, index);
+	ft_execution(data, data->exec.cmd[index], data->exec.cmd_args[index], envp);
 }

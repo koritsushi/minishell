@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/09 13:56:51 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/10 15:27:28 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,18 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		text = readline("\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m");
+		if (*text)
+			add_history(text);
 		if (g_signal == 130)
 		{
-			data.exec.exit_code = 130;
+			data.exec.exit_code = g_signal;
 			g_signal = 0;
 		}
 		if (text == NULL)
 		{
 			ft_putstr_fd("\e[0;31mlogout\e[0;0m\n", 1);
-			exit(1);
+			break ;
 		}
-		if (*text)
-			add_history(text);
 		if (ft_strncmp(text, "exit", 4) == 0)
 		{
 			ft_putstr_fd("\033[36mminishell exited!\033[0m\n", 1);

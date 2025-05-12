@@ -21,8 +21,8 @@ typedef struct s_exec	t_exec;
 typedef struct s_token	t_token;
 typedef struct s_env	t_env;
 
-void	ft_execs_init(t_ms *data, t_token lst);
-void	ft_init_pipe(t_ms *data, t_token lst);
+void	ft_execs_init(t_ms *data, t_token *lst);
+void	ft_init_pipe(t_ms *data, t_token *lst);
 char	**ft_envp(t_env **lst);
 
 //execution_cmd.c functions
@@ -31,4 +31,24 @@ char	**ft_format_path(char **path, char *format);
 char	***ft_split_cmd(t_exec *exec, char **argv);
 char	*ft_cmdpath(char **cmd_args, char **path);
 void	ft_cmdpath_error(t_ms *data, char *cmd, char **path);
+
+//execution_process.c
+void	ft_execution(t_ms *data, char *cmd, char **cmd_args, char **envp);
+void	ft_parent_process(t_ms *data, int index);
+void	ft_child_process(t_ms *data, int index, char **envp);
+void	close_pipe(t_ms *data, int index);
+
+//execution_heredoc.c
+void	infile_parsing_init(t_ms *data, t_token *lst);
+void	outfile_parsing_init(t_ms *data, t_token *lst);
+
+//execution_parent_process_utils.c
+void	fp_process(t_ms *data, int index);
+void	lp_process(t_ms *data, int index);
+void	mp_process(t_ms *data, int index);
+
+//execution_child_process_utils.c
+void	fc_process(t_ms *data, int index);
+void	lc_process(t_ms *data, int index);
+void	mc_process(t_ms *data, int index);
 #endif

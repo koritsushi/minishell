@@ -57,21 +57,21 @@ int	lst_pipe_count(t_token *lst)
 	return (size);
 }
 
-void	ft_cmd_init(t_exec *exec, t_token *lst)
+void	ft_cmd_init(char **cmd, t_token *lst)
 {
 	int		i;
 	int		size;
 
 	i = 0;
 	size = lst_cmd_count(lst);
-	exec->cmd = malloc(sizeof(char **) * (size + 1));
+	cmd = malloc(sizeof(char **) * (size + 1));
 	while (lst->data[i] != NULL)
 	{
 		if (lst->datatype[i] == WORD)
-			exec->cmd[i] = lst->data[i];
+			cmd[i] = lst->data[i];
 		i++;
 	}
-	exec->cmd[i] = NULL;
+	cmd[i] = NULL;
 }
 
 void	ft_init_pipe(t_ms *data, t_token *lst)
@@ -104,24 +104,6 @@ void	ft_init_pipe(t_ms *data, t_token *lst)
 	}
 }
 
-void	ft_execs_init(t_ms *data, t_token *lst)
-{
-	char	**envp;
-	char	**cmd;
-	int		i;
-
-	i = 0;
-	ft_init_pipe(data, lst);
-	ft_cmd_init(cmd, lst);
-	envp = ft_envp(data->env_var);
-	data->exec.path = ft_get_path(envp);
-	data->exec.cmd_args = ft_split_cmd(&data->exec, cmd);
-	while (cmd[i] != NULL)
-		free(cmd[i++]);
-	free(cmd);
-	ft_process(data, envp);
-}
-
 static void	ft_process(t_ms *data, char **envp)
 {
 	pid_t	pid;
@@ -150,4 +132,19 @@ static void	ft_process(t_ms *data, char **envp)
 		if (WIFEXITED(p_status))
 			data->exec.exit_code = WEXITSTATUS(p_status);
 	}
+}
+
+void	ft_execs_init(t_ms *data, t_token *lst)
+{
+	char	**envp;
+	char	**cmd;
+
+	cmd = NULL;
+	ft_init_pipe(data, lst);
+	ft_cmd_init(cmd, lst);
+	envp = ft_envp(&data->env_var);
+	data->exec.path = ft_get_path(envp);
+	data->exec.cmd_args = ft_split_cmd(&data->exec, cmd);
+	free_chr_ptr((void **) cmd);
+	ft_process(data, envp);
 }

@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/09 13:28:09 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/10 17:06:59 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,13 @@ void	debug_print_var_lst(t_env *lst);
 void	debug_print_cmd_line(t_token *lst);
 void	debug_print_cd(void);
 
+/*__________ helper function detect pipes and builtins_______________*/
+int		has_pipes(t_token lst);
+int		is_built_in(char *str);
 
 /*___________________helper function executing cmd___________________*/
 void	execute_functions(t_ms *data, t_token lst);
-int		execute_built_in(t_ms *data, char *argv);
+int		execute_built_in(t_ms *data, char **argv);
 
 // void	execute_built_in(t_ms data, t_env *env, int argc, char **argv);
 

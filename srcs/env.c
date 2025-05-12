@@ -24,7 +24,7 @@ void	free_strarr(char **arr)
 	free(arr);
 }
 
-int	array_len(char **str)
+int		ft_array_len(char **str)
 {
 	int	i;
 
@@ -67,7 +67,7 @@ void	env_init(t_env **env_var, char **env)
 	t_env	*tmp;
 
 	i = 0;
-	len = array_len(env);
+	len = ft_array_len(env);
 	var = malloc(sizeof(char **) * (len + 1));
 	tmp = *env_var;
 	split_env(env, var);

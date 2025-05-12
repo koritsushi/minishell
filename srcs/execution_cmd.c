@@ -52,7 +52,6 @@ char	**ft_format_path(char **path, char *format)
 		i++;
 	}
 	format_path[i] = NULL;
-	ft_free(path);
 	return (format_path);
 }
 
@@ -85,8 +84,8 @@ char	*ft_cmdpath(char **cmd_args, char **path)
 	int		end;
 	char	*cmd_path;
 
-	end = ft_str_arr(path);
 	i = -1;
+	end = ft_array_len(path);
 	while (path[++i] != NULL)
 	{
 		cmd_path = ft_strjoin(path[i], cmd_args[0]);

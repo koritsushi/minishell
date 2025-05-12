@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/07 22:22:47 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/11 22:26:37 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,19 @@
 // 	return (final);
 // }
 
-void	ft_here_doc(char *delimiter)
+void	ft_here_doc(t_ms *data, char *delimiter, int parsing_pipe[2])
 {
 	char	*res;
 	char	*tmp;
 	char	*final;
 
+	final = "";
 	while (1)
 	{
 		write(STDOUT_FILENO, "> ", 3);
 		res = get_next_line(STDIN_FILENO);
 		if (res == NULL)
-			exit_free();
+			break ; //exit and free everything
 		else if (ft_strncmp(res, delimiter, ft_strlen(delimiter)) == 0)
 		{
 			free(res);
@@ -59,79 +60,89 @@ void	ft_here_doc(char *delimiter)
 		free(res);
 		free(tmp);
 	}
-	shell_var_expansion(final);
+	if (data != NULL)
+		return ;
+	//shell_var_expansion(&final, data->env_var, 0);
 	close(parsing_pipe[READ]);
 	ft_putstr_fd(final, parsing_pipe[WRITE]);
+	close(parsing_pipe[WRITE]);
 	free(final);
-	exit_free();
+	exit(0); //exit and free everything
 }
 
-void	ft_heredoc_init(char *delimiter, int j, int infile_fd)
+void	ft_heredoc_init(t_ms *data, char *delimiter, int j)
 {
+	int				status;
+	int				hdpstatus;
 	int				parsing_pipe[2];
 	pid_t			pid;
 
-	if (pipe(parsing_pipe) == -1)
-		;//pipe fail, free all structs and exit minishell
+	status = pipe(parsing_pipe);
+	if (status == -1)
+		exit(1);//pipe fail, free all structs and exit minishell
 	pid = fork();
 	if (pid == -1)
-		;//fork fail, free all structs and exit minishell
+		exit(1);//fork fail, free all structs and exit minishell
 	if (pid == 0)
-		ft_here_doc(delimiter);
+		ft_here_doc(data, delimiter, parsing_pipe);
 	else
-		close(parsing_pipe[1]);
-	if (waitpid(&status))
+		close(parsing_pipe[WRITE]);
+	status = 0;
+	if (waitpid(pid, &status, WUNTRACED))
 	{
 		if (WIFEXITED(status))
-			heredocpstatus = WEXITSTATUS(p_status);
+			hdpstatus = WEXITSTATUS(status);
 	}
-	if (heredocpstatus > 0)
-		;//child fail, free all structs and exit minishell
-	infile_fd = parsing_pipe[0];
+	if (hdpstatus > 0)
+		exit(1);//child fail, free all structs and exit minishell
+	data->exec.infile_fd[j] = parsing_pipe[READ];
 	//leave parsing_pipe[0] open and only close after execve
 }
 
-void	infile_parsing_init(t_exec *exec, t_token *lst)
+void	infile_parsing_init(t_ms *data, t_token *lst)
 {
-	unsigned int	i;
-	unsigned int	j;
+	int	i;
+	int	j;
 
+	i = 0;
+	j = 0;
 	while (lst->data[i] != NULL)
 	{
 		if (lst->datatype[i] == PIPE)
 			j++;
-		if (lst->datatype[i + 1] == INFILE || lst->datatype[i + 1] == HEREDOC)
-		{
-			if (exec->infile_fd[j] != 0)
-				close(exec->infile_fd[j]);
-		}
+		// if (data->exec.infile_fd[j])
+		// 		close(data->exec.infile_fd[j]);
 		if (lst->datatype[i] == INFILE)
-			exec->infile_fd[j] = open(lst->data, RD_ONLY);
-		if (exec->infile_fd[j] == -1)
-			; //open fail, free all structs and exit minishell
+		{
+			data->exec.infile_fd[j] = open(lst->data[i], O_RDONLY);
+			if (data->exec.infile_fd[j] == -1)
+				printf("File not found!:%s\n", lst->data[i]); //infile open fail, display error message
+		}
 		else if (lst->datatype[i] == HEREDOC)
-			ft_heredoc(lst->data[i], j, exec->infile_fd[j]);
+			ft_heredoc_init(data, lst->data[i], j);
 		i++;
 	}
 }
 
-void	outfile_parsing_init(t_exec *exec, t_token *lst)
+void	outfile_parsing_init(t_ms *data, t_token *lst)
 {
-	unsigned int	i;
-	unsigned int	j;
+	int	i;
+	int	j;
 
+	i = 0;
+	j = 0;
 	while (lst->data[i] != NULL)
 	{
-		while (lst->data[i] && lst->datatype[i] != PIPE)
+		while (lst->data[i] != NULL && lst->datatype[i] != PIPE)
 		{			
-			if (i > 0 && exec->outfile_fd != 0)
-					close(exec->outfile_fd[j]);
+			// if (i > 0 && data->exec.outfile_fd != 0)
+			// 		close(data->exec.outfile_fd[j]);
 			if (lst->datatype[i] == OUTFILE)		
-				exec->outfile_fd[j] = open(lst->data[i], O_RDWR | O_CREAT | O_TRUNC, 0774);
+				data->exec.outfile_fd[j] = open(lst->data[i], O_RDWR | O_CREAT | O_TRUNC, 0774);
 			else if (lst->datatype[i] == OUTFILE_A)
-				exec->outfile_fd[j] = open(lst->data[i], O_RDWR | O_CREAT | O_APPEND, 0774);
-			if (exec->outfile_fd[j] == -1)
-				exit(1); //open() create fail, free all structs and exit minishell
+				data->exec.outfile_fd[j] = open(lst->data[i], O_RDWR | O_CREAT | O_APPEND, 0774);
+			// if (data->exec.outfile_fd[j] == -1)
+			// 	exit(1); //open() create fail, free all structs and exit minishell
 			i++;
 		}
 		j++;
