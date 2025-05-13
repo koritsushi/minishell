@@ -32,7 +32,7 @@ int	lst_cmd_count(t_token *lst)
 
 	i = 0;
 	size = 0;
-	while (lst->datatype[i] && lst->data[i] != NULL)
+	while (lst->data[i] != NULL)
 	{
 		if (lst->datatype[i] == WORD)
 			size++;
@@ -67,6 +67,7 @@ char	**ft_cmd_init(t_token *lst)
 	i = 0;
 	j = 0;
 	size = lst_cmd_count(lst);
+	/*debug*/printf("ft_cmd_init:size:%d\n", size);
 	cmd = malloc(sizeof(char **) * (size + 1));
 	while (lst->data[i] != NULL)
 	{

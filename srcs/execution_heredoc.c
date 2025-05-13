@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/13 14:42:30 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 15:15:16 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	ft_here_doc(t_ms *data, char *delimiter, int parsing_pipe[2])
 {
 	char	*res;
 	char	*tmp;
-	// char	*tmp2;
 	char	*final;
 
 	final = ft_strdup("");
@@ -145,14 +144,16 @@ void	outfile_parsing_init(t_ms *data, t_token *lst)
 	j = 0;
 	while (lst->data[i] != NULL)
 	{
-		if(lst->datatype[i] != PIPE)
+		if (lst->datatype[i] != PIPE)
 			j++;
 		if (data->exec.outfile_fd[j] > 2)
-				close(data->exec.outfile_fd[j]);
+			close(data->exec.outfile_fd[j]);
 		if (lst->datatype[i] == OUTFILE)		
-			data->exec.outfile_fd[j] = open(lst->data[i], O_RDWR | O_CREAT | O_TRUNC, 0774);
+			data->exec.outfile_fd[j] = \
+open(lst->data[i], O_RDWR | O_CREAT | O_TRUNC, 0774);
 		else if (lst->datatype[i] == OUTFILE_A)
-			data->exec.outfile_fd[j] = open(lst->data[i], O_RDWR | O_CREAT | O_APPEND, 0774);
+			data->exec.outfile_fd[j] = \
+open(lst->data[i], O_RDWR | O_CREAT | O_APPEND, 0774);
 		if (data->exec.outfile_fd[j] == -1)
 			exit(1); //open() create fail, free all structs and exit minishell
 		i++;
