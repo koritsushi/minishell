@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/10 17:06:59 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/13 16:21:38 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,19 @@ typedef struct s_env
 	struct s_env 	*next;
 }					t_env;
 
-typedef struct s_ms
-{
-	t_exec			exec;
-	t_env			*env_var;
-}					t_ms;
-
 typedef struct s_token
 {
 	unsigned char	*datatype;
 	char			**data; //string: "infile" "cmd1 -f -g -h" "cmd2" "outfile"
 }					t_token;
+
+typedef struct s_ms
+{
+	t_exec			exec;
+	t_env			*env_var;
+	t_token			lst;
+}					t_ms;
+
 
 /*__________for debug purposes only, can remove during eval__________*/
 void	debug_print(char **res);

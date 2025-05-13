@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/13 12:24:17 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 16:29:44 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ int	ft_isspace(char *str)
 // rmb to handle exit_status
 int	main(int argc, char **argv, char **env)
 {
+	int		x;
 	t_ms	data;
 	char	*text;
-	t_token	lst;
+	// t_token	lst;
 
 	if (argc > 1 && ft_strncmp(argv[0], "minishell", 9) != 0)
 		exit(127);
@@ -72,20 +73,19 @@ int	main(int argc, char **argv, char **env)
 		/*lexing & get_vars*/
 		else if (*text && check_syntax(text))
 		{
-			// get_variable(&data.env_var, text, data.exec.exit_code);
 			// if (data.env_var && data.env_var->content)
 			// 	debug_print_var_lst(data.env_var);
-			if (get_cmd_line(text, &lst, data.env_var, data.exec.exit_code))
+			if (get_cmd_line(text, &data.lst, data.env_var, data.exec.exit_code))
 			{
-				get_variable(&data.env_var, lst, text, data.exec.exit_code);
-				int x = -1;
-				while (lst.data[++x])
-					quote_removal(&lst.data[x]);
-				/*debug*/debug_print_cmd_line(&lst);
+				get_variable(&data.env_var, data.lst, text, data.exec.exit_code);
+				x = -1;
+				while (data.lst.data[++x])
+					quote_removal(&data.lst.data[x]);
+				/*debug*/debug_print_cmd_line(&data.lst);
 
-				// /* execution here */
-				execute_functions(&data, lst); //inject pipex inside
-				free_all(&lst);
+				/* execution here */
+				execute_functions(&data, data.lst); //inject pipex inside
+				free_all(&data.lst);
 			}
 		}
 		free(text);
