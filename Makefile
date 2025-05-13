@@ -31,7 +31,6 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/parsing.c							\
 				srcs/parsing_utils_skip.c				\
 				srcs/parsing_utils_check.c				\
-				srcs/parsing_utils_replace.c			\
 				srcs/parsing_utils_vars.c				\
 				srcs/parsing_utils_vars_name.c			\
 				srcs/parsing_utils_vars_check.c			\
@@ -55,6 +54,7 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/execution_parent_process_utils.c	\
 				srcs/execution_child_process_utils.c	\
 				srcs/execution_heredoc.c				\
+#				srcs/parsing_utils_replace.c			\
 #				srcs/token_utils_operator.c				\
 #				srcs/token_utils_truncate.c				\
 #				srcs/main-test-token_split.c			\

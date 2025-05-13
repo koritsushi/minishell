@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/13 11:51:01 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 14:52:44 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ void	execute_functions(t_ms *data, t_token lst)
 		outfile_parsing_init(data, &lst);
 		ft_execs_init(data, &lst);
 	}
+
 	// while (cmd_line[++i]) //split into another function here
 	// {
 	// 	/* if there's pipe || if no pipe

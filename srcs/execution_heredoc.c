@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_heredoc.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/12 17:08:06 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/13 14:42:30 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ void	ft_here_doc(t_ms *data, char *delimiter, int parsing_pipe[2])
 {
 	char	*res;
 	char	*tmp;
+	// char	*tmp2;
 	char	*final;
 
-	final = "";
+	final = ft_strdup("");
 	while (1)
 	{
 		write(STDOUT_FILENO, "> ", 3);
@@ -55,17 +56,22 @@ void	ft_here_doc(t_ms *data, char *delimiter, int parsing_pipe[2])
 			free(res);
 			break ;
 		}
-		tmp = ft_strjoin(res, "\n");
-		final = ft_strjoin(final, res);
-		free(res);
-		free(tmp);
+		shell_var_expansion(&res, data->env_var, data->exec.exit_code);
+		// /*debug*/printf("ft_here_doc:exp:\033[93m%s\033[0m.\n", res);
+		// tmp = ft_strjoin(res, "\n");
+		tmp = ft_strjoin(final, res);
+		free(final);
+		final = ft_strdup(tmp);
+		free_multiple_ptr_single(res, tmp, NULL);
 	}
 	if (data == NULL)
 		return ;
-	//shell_var_expansion(&final, data->env_var, 0);
+	/*debug*/printf("\033[100m___ft_here_doc___\033[0m\n\033[90m%s\033[0m", final);
+
 	close(parsing_pipe[READ]);
 	ft_putstr_fd(final, parsing_pipe[WRITE]);
 	close(parsing_pipe[WRITE]);
+
 	free(final);
 	exit(0); //exit and free everything
 }
@@ -73,7 +79,7 @@ void	ft_here_doc(t_ms *data, char *delimiter, int parsing_pipe[2])
 void	ft_heredoc_init(t_ms *data, char *delimiter, int j)
 {
 	int				status;
-	int				hdpstatus;
+	int				hdpstatus = 0;
 	int				parsing_pipe[2];
 	pid_t			pid;
 
@@ -84,7 +90,10 @@ void	ft_heredoc_init(t_ms *data, char *delimiter, int j)
 	if (pid == -1)
 		exit(1);//fork fail, free all structs and exit minishell
 	if (pid == 0)
+	{
+		/*debug*/printf("ft_heredoc_init:pid:%d\n", getpid());
 		ft_here_doc(data, delimiter, parsing_pipe);
+	}
 	else
 		close(parsing_pipe[WRITE]);
 	status = 0;

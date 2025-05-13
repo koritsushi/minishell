@@ -32,7 +32,7 @@ int	lst_cmd_count(t_token *lst)
 
 	i = 0;
 	size = 0;
-	while (lst->data[i] != NULL)
+	while (lst->datatype[i] && lst->data[i] != NULL)
 	{
 		if (lst->datatype[i] == WORD)
 			size++;
@@ -108,7 +108,7 @@ void	ft_init_pipe(t_ms *data, t_token *lst)
 	}
 }
 
-static void	ft_process(t_ms *data, char **envp)
+void	ft_process(t_ms *data, char **envp)
 {
 	pid_t	pid;
 	int		p_status;
@@ -144,10 +144,14 @@ void	ft_execs_init(t_ms *data, t_token *lst)
 	char	**cmd;
 
 	ft_init_pipe(data, lst);
-	cmd = ft_cmd_init(lst);
 	envp = ft_envp(&data->env_var);
+	cmd = ft_cmd_init(lst);
+	// /*debug*/printf("___ft_execs_init___\n");
+	// /*debug*/debug_print(cmd);
+
+	/* execute only if there is cmd */
 	data->exec.path = ft_get_path(envp);
 	data->exec.cmd_args = ft_split_cmd(&data->exec, cmd);
-	//free_chr_ptr((void **) cmd);
+	// //free_chr_ptr((void **) cmd);
 	ft_process(data, envp);
 }

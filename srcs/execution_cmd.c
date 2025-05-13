@@ -70,6 +70,7 @@ char	***ft_split_cmd(t_exec *exec, char **argv)
 		return (NULL);
 	while (argv[i] != NULL && j < exec->cmd_count)
 	{
+		// /*debug*/printf("ft_split_cmd:%s\n", argv[i]);
 		cmd[j] = ft_split(argv[i], ' ');
 		i++;
 		j++;

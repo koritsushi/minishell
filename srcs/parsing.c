@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/13 08:04:28 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 12:23:26 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,10 +165,11 @@ int	get_variable(t_env **vars, t_token lst, char *str, int exit_status)
 	// check syntax
 	// if no pipes, do the rest
 	i = 0;
-	while (lst.datatype[i] != WORD)
+	while (lst.data[i] && lst.datatype[i] != WORD)
 		i++;
 	new = lst.data[i];
-
+	if (!new || !new[0])
+		return (0);
 	/*debug*/printf("get_variable:ent:%s.\n", new);
 	if (new[0] && !is_target(new, '=') && 
 !valid_export_keyword(new, 1))
