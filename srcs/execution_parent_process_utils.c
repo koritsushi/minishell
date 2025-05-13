@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:32:43 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/12 16:36:25 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/13 16:43:39 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	fp_process(t_ms *data, int index)
 {
-	close(data->exec.pipes[index][WRITE]);
+	if (data->exec.pipe_count > 0)
+		close(data->exec.pipes[index][WRITE]);
 	if (data->exec.infile_fd[index] != 0)
 		close(data->exec.infile_fd[index]);
 	if (data->exec.outfile_fd[index] != 1)
