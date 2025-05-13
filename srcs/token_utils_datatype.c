@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 07:55:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/11 18:38:50 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 07:31:12 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,9 @@ static void	assign_datatype_infile(char *cmd_tail, unsigned char *datatype, int 
 	infile = ft_split_shell(cmd_tail, "<");
 	if (!infile)
 		return ;
+	// <in cmd <in2
+	// cmd <in cmd <in2
+	// <in cmd
 	if (infile[1] && cmd_tail[0] == '<')
 		assign_infile_now(infile, cmd_tail, datatype, i);
 	else if (infile[1] && cmd_tail[0] != '<')
@@ -173,11 +176,9 @@ void	assign_datatype(unsigned char *datatype, char **res)//, char **infile_f)
 		cmd_tail = skip_spaces(res[x], " \t\n\v\f\r");
 		assign_datatype_infile(cmd_tail, datatype, &i);
 		/* skip spaces & infile symbol */
-		if (cmd_tail[0] == '<')
-			cmd_tail = ft_strrchr(cmd_tail, '<');
-		// /*debug*/printf("assign_datatype:tail:%s.\n", cmd_tail);
+		cmd_tail = skip_redirs(cmd_tail);
 
-		cmd_tail = skip_if_symbol(cmd_tail, cmd_tail[0], '<');
+		/*debug*/printf("assign_datatype:tail:%s.\n", cmd_tail);
 		outfile = ft_split_shell(cmd_tail, ">");
 		if (!outfile)
 		{

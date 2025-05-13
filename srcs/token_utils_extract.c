@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 12:06:36 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/09 21:56:09 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 07:58:16 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,22 @@
  * mallocs enough space & copy corresponding infile
  * uses malloc
  */
-static void	alloc_copy_infile(char **infile, char *tmp, char **lst_data, int *i)
+static void	alloc_copy_infile(char **infile, char **lst_data, int *i)
 {
 	int		x;
-	int		k;
 	char	**fin;
 	char	**infile_fin;
 
 	x = 0;
-	k = 0;
-	fin = ft_split_shell(infile[x], ">");
-	infile_fin = ft_split_shell(fin[0], " \t\n\v\f\r");
+	infile_fin = ft_split_shell(infile[x], ">");
+	fin = ft_split_shell(infile_fin[0], " \t\n\v\f\r");
 
 	// in
 	// in2 in3>out blbl
+	// <in <in3 cmd <in4
 
-	while (infile_fin[k + 1])
-	{
-		if ((tmp[0] == '<') && (!count_str_array(&infile[x + 1])))
-			break ;
-		k++;
-	}
-	allocate_str(&lst_data[(*i)], infile_fin[k]);
-	ft_strlcpy(lst_data[(*i)++], infile_fin[k], ft_strlen(infile_fin[k]) + 1);
+	allocate_str(&lst_data[(*i)], fin[0]);
+	ft_strlcpy(lst_data[(*i)++], fin[0], ft_strlen(fin[0]) + 1);
 	free_multiple_ptr(infile_fin, fin, NULL);
 }
 
@@ -52,25 +45,20 @@ static void	alloc_copy_infile(char **infile, char *tmp, char **lst_data, int *i)
 void	extract_infile(char **lst_data, int *i, char *res)//, char **infile)
 {
 	int		x;
-	char	*tmp;
 	char	**infile;
 
 	x = -1;
 	//extract all infiles
 	/*get to the last infile index*/
-	tmp = skip_spaces(res, " \t\n\v\f\r");
-	infile = ft_split_shell(tmp, "<");
-	if (tmp[0] != '<')
+	infile = ft_split_shell(res, "<");
+	if (res[0] != '<')
 		x++;
 	// <in1 in2 <in3 cmd | <in3 cmd
 	// cmd -k <in1 <in2 in3 | <in3 cmd
 	// jump to where 1st infile occur
 	// split
-
-	// int count = count_str_array(&infile[x + 1]);
-	// /*debug*/printf("count_extin:%d\n", count);
 	while (infile[++x])
-		alloc_copy_infile(&infile[x], tmp, lst_data, i);
+		alloc_copy_infile(&infile[x], lst_data, i);
 	free_chr_ptr((void **)infile);
 }
 

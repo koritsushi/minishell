@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:12:43 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/12 10:09:41 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 08:02:26 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,10 @@ static void	add_var_entry(t_env **vars, char *name, char *new, int export_id)
  * child function in process_vars,
  * searches & replace duplicate var name in linked list, 
  * or add new var entry to list
+ * types of export_id values~
+ * export_id: 0 (var=text) none
+ * export_id: 1 (export var) export only
+ * export_id: 2 (export var=, export var=1) export && env
  */
 void	extract_vars(t_env **vars, char *str, int export_id)
 {

@@ -11,32 +11,38 @@
 /* ************************************************************************** */
 
 #include "includes/token.h"
-// #include "includes/expansion.h"
 
 // 15 lines!
-/* scans through line and copies correct cmds */
-void	copy_cmd_tail(char **lst_data, int start, char **outfile)
+/*
+ * child function in extract_cmd_tail
+ * scans through line and copies the correct cmds
+ */
+static void	copy_cmd_tail(char **lst_data, int *start, char **outfile)
 {
 	char	*cmd_tail;
 	int		i;
 
-	i = 0;
-	while (outfile[i])
+	i = -1;
+	if (!outfile)
+		return ;
+	while (outfile[++i])
 	{
 		/* travel to the first space detected */
 		cmd_tail = skip_spaces(outfile[i], " \t\n\v\f\r");
-		cmd_tail = ft_strchr(cmd_tail, ' ');
-		cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
+		cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
+
+		// cmd_tail = ft_strchr(cmd_tail, ' ');
+		// cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
 		// /*debug*/printf("***cmd_tail=%s| %zu\n", cmd_tail, ft_strlen(cmd_tail));
+		/*debug*/printf("copy_cmd_tail:%s.\n", cmd_tail);
 		if (!cmd_tail)
 		{
 			printf("!cmd_tail, break!\n");
 			break ;
 		}
 		/* copy to array */
-		ft_strlcpy(&(*lst_data)[start], cmd_tail, ft_strlen(cmd_tail) + 1);
-		start += ft_strlen(cmd_tail);
-		i++;
+		ft_strlcpy(&(*lst_data)[(*start)], cmd_tail, ft_strlen(cmd_tail) + 1);
+		(*start) += ft_strlen(cmd_tail);
 	}
 }
 
@@ -77,13 +83,16 @@ void	extract_cmd_tail(char **lst_data, char *str, char **outfile)
 		/* if str[0] is splittable by infile '<' */
 		/* if outfile[0] = cmd <infile in2 in3 >out  */
 		infile_check = ft_split_shell(outfile[0], "<");
-		ft_strlcpy(*lst_data, infile_check[0], ft_strlen(infile_check[0]) + 1);
-		start = ft_strlen(infile_check[0]);
-		i = 1;
+		/*debug*/printf("___infile_check:___\n");
+		/*debug*/debug_print(infile_check);
+		start = ft_strlcpy(*lst_data, infile_check[0], ft_strlen(infile_check[0]) + 1);
+		copy_cmd_tail(lst_data, &start, &infile_check[1]);
 		free_chr_ptr((void **)infile_check);
+		i = 1;
 	}
-	copy_cmd_tail(lst_data, start, &outfile[i]);
-	/*debug*/printf("tail_fin=%s.\n", *lst_data);//, &(*lst_data)[start-3]);
+	if (outfile[i])
+		copy_cmd_tail(lst_data, &start, &outfile[i]);
+	/*debug*/printf("tail_fin=%s.\n", *lst_data);
 }
 
 // void	extract_cmd_tail(char **lst_data, char *str, char **outfile)
@@ -121,8 +130,14 @@ void	extract_cmd_tail(char **lst_data, char *str, char **outfile)
 // 	// /*debug*/printf("tail_fin=%s\n", *lst_data);//, &(*lst_data)[start-3]);
 // }
 
-// 15 lines!
-/* child function in process_cmd, *i = lst_data index number */
+// 17 lines!
+/*
+ * child function in process_cmd, *i = lst_data index number
+ * for !outfile[1]
+ * if begin with >, check if has_more_str_all
+ * if theres no <>, only single cmd, copy over
+ * if begin with < (one_line_condition), do not extract
+ */
 void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 {
 	char	**outfile;
@@ -149,14 +164,8 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 		return ;
 	outfile = ft_split_shell(cmd_tail, ">");
 
-	// /*debug*/printf("------\noutfile:\n");
-	// /*debug*/debug_print(outfile);
-
-	// if cmd_tail[0] == '<' , skip all infiles
-	// split by '>'
-
-	/* > outfile1     cmd */
-	/* > outfile1 >o2    cmd */
+	/*debug*/printf("------\noutfile:\n");
+	/*debug*/debug_print(outfile);
 
 	/* < infile < in2 cmd        > outfile */
 	/* cmd < infile <in2 <in3    > outfile */
@@ -176,7 +185,7 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 		// /*debug*/printf("extract_cmd_tail:%s\n", cmd_tail);
 		if (cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r")) // >out cmd
 			extract_cmd_tail(&lst_data[(*i)++], cmd_tail, outfile);
-		if (cmd_tail[0] && !is_target("<>", cmd_tail[0])) // normal plain cmd
+		else if (cmd_tail[0] && !is_target("<>", cmd_tail[0])) // normal plain cmd
 			extract_cmd_tail(&lst_data[(*i)++], cmd_tail, outfile);
 	}
 
@@ -185,60 +194,7 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 	free_chr_ptr((void **)outfile);
 }
 
-// void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
-// {
-// 	char	**outfile;
-
-// 	/*__________splittable_________*/
-// 	/* < infile cmd > outfile */
-// 	/* < infile > outfile */
-// 	/* cmd > outfile1 */
-// 	/* cmd > outfile1 -k */
-// 	/* > outfile1 > outfile2 */
-// 	/* > outfile1 cmd1 > outfile2 -h */
-// 	/* > outfile1 cmd1 */
-
-// 	/*__________!splittable_________*/
-// 	/* >       outfile1 cmd */
-// 	/* > outfile1 cmd */
-// 	/* cmd */
-// 	/* < infile cmd */
-// 	/* < infile <infile cmd */
-// 	/* cmd < infile1 infile2 -k */
-	
-// 	/* cmd < infile > outfile */
-// 	/* < infile cmd > outfile */
-
-// 	/*__________start_here_________*/
-// 	outfile = ft_split_shell(cmd_tail, ">");
-
-// 	// /*debug*/printf("------\noutfile:\n");
-// 	// /*debug*/debug_print(outfile);
-
-// 	/*--------------extract_cmd_tail--------------*/
-// 	/* if splittable && has_more_str_all*/
-// 	if (outfile[1] && (cmd_tail[0] != '>' || \
-// 		(cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r"))))
-// 		extract_cmd_tail(&lst_data[(*i)++], cmd_tail, outfile);
-// 	/* if not splittable */
-// 	if (!outfile[1])
-// 	{
-// 		/* if begin with >, check if has_more_str_all */
-// 		/* if theres no <>, only single cmd, copy over */
-// 		/* if begin with < (one_line_condition), do not extract */
-// 		// /*debug*/printf("extract_cmd_tail:%s\n", cmd_tail);
-// 		if (cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r"))
-// 			extract_cmd_tail(&lst_data[(*i)++], cmd_tail, outfile);
-// 		if (cmd_tail[0] && !is_target("<>", cmd_tail[0]))
-// 			extract_cmd_tail(&lst_data[(*i)++], cmd_tail, outfile);
-// 	}
-
-// 	/*--------------extract outfiles--------------*/
-// 	process_outfile(lst_data, i, cmd_tail, outfile);
-// 	free_chr_ptr((void **)outfile);
-// }
-
-// 23 lines!
+// 18 lines!
 /*
  * scans line and saves valid command into a new char** array, str=new
  * uses malloc
@@ -250,7 +206,6 @@ void	process_cmd(t_token *lst, char **res)//, char **infile)
 	char	*cmd_tail;
 
 	i = 0;
-
 	/*----------- copy the rest -----------*/
 	/* cmd1 -f -g < infile */
 	/* < infile cmd1 -f -g */
@@ -262,19 +217,15 @@ void	process_cmd(t_token *lst, char **res)//, char **infile)
 	{
 		/*----------- get_infiles -----------*/
 		cmd_tail = skip_spaces(res[x], " \t\n\v\f\r");
+		/*debug*/printf("cmd_tail:ent:%s.\n", cmd_tail);
+
 		if (ft_strchr(cmd_tail, '<'))
 			extract_infile(lst->data, &i, cmd_tail);
 		// /*debug*/printf("process_cmd:i:%d\n", i);
 
 		// skips to where cmd starts & process cmd
-		// maybe dont need < in skip_spaces
-		// cmd_tail = skip_spaces(res[x], "< \t\n\v\f\r");
-		if (cmd_tail[0] == '<')// && ft_strrchr(cmd_tail, '<'))
-		{
-			cmd_tail = ft_strrchr(cmd_tail, '<');
-			cmd_tail = skip_spaces(cmd_tail, "< \t\n\v\f\r");
-			cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
-		}
+		// for scenario '< infile cmd'
+		cmd_tail = skip_redirs(cmd_tail);
 		/*debug*/printf("cmd_tail:%s.\n", cmd_tail);
 
 		if (!cmd_tail)
@@ -286,7 +237,7 @@ void	process_cmd(t_token *lst, char **res)//, char **infile)
 	}
 }
 
-// 21 lines so far
+// 18 lines so far
 /*
  * splits input by PIPE & REDIR, stores result in allocated t_token pointer
  * uses malloc
@@ -294,7 +245,6 @@ void	process_cmd(t_token *lst, char **res)//, char **infile)
 int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 {
 	int		count;
-	// char	*new;
 	char	**res;
 	(void)	vars;
 	(void)	exit_status;
@@ -305,33 +255,22 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 	/* ---------------- format string ---------------- */
 	/* search & truncate string to last infile < sign */
 	/* removes env (VAR="1 2 3") during get_cmds*/
-	// new = truncate_input(str);
-	// new = str;
 	res = ft_split_shell(str, "|");
 	if (!res)
 		return (0);
 
 	/* ---------------- get_malloc_size ---------------- */
-	count = get_malloc_size(res);//, infile);
+	count = get_malloc_size(res);
 	if (!init_token_list(lst, (count + 1)))
 		return (0);
 
-	// /*debug*/printf("trunc=%s\n", new);
 	/*debug*/printf("get_cmd_line:\033[93mcount=%d+1\033[0m, %s.\n", count, str);
-	// /*debug*/printf("------\nres:\n");
-	// /*debug*/debug_print(res);
+	/*debug*/printf("------\nres:\n");
+	/*debug*/debug_print(res);
 	/* ---------------- extract_cmd ---------------- */
 	process_cmd(lst, res);
-	cmd_expansion(lst->data, vars, exit_status); //exit status need to redef
+	cmd_expansion(lst->data, vars, exit_status);
 	assign_datatype(lst->datatype, res);
-
-	/*------------- debug_start -------------*/
-	// printf("\n\033[102m_____lst_data:_____\033[0m\n");
-	// int i = -1;
-	// // while (lst->data[++i])
-	// while (++i < count)
-	// 	printf("\033[92m%s\033[0m. [%d]\n", lst->data[i], lst->datatype[i]);
-	/*-------------- debug_end --------------*/
 
 	free_chr_ptr((void **)res);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 22:05:39 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/10 18:44:04 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 07:25:02 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,38 +40,6 @@ char	*skip_if_quote(char *str, char symbol, int flag)
  * skips all < infile & > outfile redirections that are at the beginning of str,
  * returns result to char*
  */
-// char	*skip_redirs(char *str)//, char **new)
-// {
-// 	char	*new;
-// 	int		flag;
-
-// 	flag = 0;
-// 	new = str;
-// 	while (ft_strchr(new, '<') || ft_strchr(new, '>'))
-// 	{
-// 		flag = 1;
-// 		if (ft_strchr(new, '<') + 1)
-// 		{
-// 			new = ft_strchr(new, '<') + 1;
-// 			/*debug*/printf("skip_< =%s\n", new);
-// 		}
-// 		else if (ft_strchr(new, '>') + 1)
-// 		{
-// 			new = ft_strchr(new, '>') + 1;
-// 			/*debug*/printf("skip_> =%s\n", new);
-// 		}
-// 		else
-// 			break ;
-// 	}
-// 	if (flag && (is_target(new, ' ') || is_target(new, '\t')))
-// 	{
-// 		new = ft_strchr(new, ' ');
-// 		if (new[1])
-// 			new++;
-// 	}
-// 	/*debug*/printf("skip_redirs:new:%s.\n", new);
-// 	return (new);
-// }
 char	*skip_redirs(char *str)//, char **new)
 {
 	char	*new;

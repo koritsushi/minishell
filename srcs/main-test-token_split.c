@@ -37,6 +37,11 @@ int	main(int ac, char **av)
 	// char str[] = "export y > outfile";
 	// char str[] = "> outfile > out2 export y";
 	// char str[] = "< infile1 < infile2 export y";
+	// char str[] = "< infile1 < infile2 export y 1rt u";
+	// char str[] = "< infile1 < infile2 var=88 export y 1rt u";
+	// char str[] = "< infile1 < infile2 'var=88 export y 1rt u";
+	// char str[] = "< infile1 < infile2 export 'y='99 1rt u";
+
 	/* ________________________vars_test________________________ */
 	// char str[] = "var";
 	// char str[] = "var =123";
@@ -144,6 +149,7 @@ int	main(int ac, char **av)
 // 	/* ________________________infiles_tests________________________ */
 // /*********/char str[] = "< infile cmd1 -f -g > out >>out2 -k";// HIGHLIGHT
 // 	char str[] = "<< infile cmd1 -f -g > out";
+// 	char str[] = "<< infile cmd1 -f -g <in2 ";
 // 			char str[] = "< infile < infile2     << infile3 | cmd1 |cmd2 |cmd3 ";
 	// char str[] = "< infile | < infile2 |   < infile3 cmd1  <infile2 << infile5 cmd2 -f -g |cmd2 |cmd3 ";
 // 	char str[] = "|  < infile  | cmd1 |cmd2 |cmd3 ";

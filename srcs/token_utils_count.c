@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/09 16:28:51 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 08:01:05 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,34 +28,38 @@ int	count_str_array(char **res)
 	return (i);
 }
 
+//24 lines!
 /*
  * child function in count_infile
  * helper function to start counting
  */
 static int	start_count_infile(char *str)
 {
-	char	*tmp;
+	int		x;
 	int		count;
 	char	**infile;
 	char	**fin;
 
 	count = 0;
-	tmp = skip_spaces(str, " \t\n\v\f\r");
-	infile = ft_split_shell(tmp, "<");
-	if (tmp[0] == '<' && !infile[1] && \
-has_more_str(infile[0], " \t\n\v\f\r"))
-		count++;
-	else
-		count += count_str_array(&infile[1]);
-	// if infile[1] & the last <infile has_more_str, += 1
-	fin = ft_split_shell(infile[count_str_array(infile) - 1], ">");
-	if (tmp[0] == '<' && infile[1] && \
-has_more_str(fin[0], " \t\n\v\f\r"))
-		count += 1;
-	/*debug*/printf("\033[93mcount_infile:\033[0m\n");
-	/*debug*/debug_print(infile);
-	/*debug*/printf("\033[93mcount_infile:+%d\033[0m\n", count);
-	free_multiple_ptr(infile, fin, NULL);
+	infile = ft_split_shell(str, "<");
+	count += count_str_array(&infile[1]);
+	//<infile in2 in3
+	// cmd <in1 in2 <in3
+	// cmd <<h1 in2 <in3
+	// if < && any <infile has_more_str, += 1 (do once)
+	x = -1;
+	while (str[0] == '<' && infile[++x])
+	{
+		fin = ft_split_shell(infile[x], ">");
+		if (str[0] == '<' && has_more_str(fin[0], " \t\n\v\f\r"))
+		{
+			count += 1;
+			free_chr_ptr((void **)fin);
+			break ;
+		}
+		free_chr_ptr((void **)fin);
+	}
+	free_chr_ptr((void **)infile);
 	return (count);
 }
 
@@ -66,6 +70,7 @@ has_more_str(fin[0], " \t\n\v\f\r"))
 static int	count_infile(char **res)//, char **infile)
 {
 	int		x;
+	char	*tmp;
 	int		count;
 
 	count = 0;
@@ -77,8 +82,9 @@ static int	count_infile(char **res)//, char **infile)
 	x = -1;
 	while (res[++x])
 	{
-		if (ft_strchr(res[x], '<'))
-			count += start_count_infile(res[x]);
+		tmp = skip_spaces(res[x], " \t\n\v\f\r");
+		if (ft_strchr(tmp, '<'))
+			count += start_count_infile(tmp);
 	}
 	return (count);
 }
@@ -108,19 +114,46 @@ int	count_cmd_tail_chr(char **outfile)
 
 	i = 0;
 	len = 0;
+	
+	// >out cmd >out2 baba
+	// len = ft_strlen(outfile[0]);
 	while (outfile[i + 1])
 	{
 		cmd_tail = outfile[i + 1];
 		cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
 		/* skips to the 1st space detected */
-		cmd_tail = ft_strchr(cmd_tail, ' ');
+		cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
 		if (cmd_tail)
-			len += ft_strlen(cmd_tail);
+			len += (ft_strlen(cmd_tail) + 1);
 		i++;
-		// /*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
+		/*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
 	}
 	return (len);
 }
+
+// int	count_cmd_tail_chr(char **outfile)
+// {
+// 	int		i;
+// 	int		len;
+// 	char	*cmd_tail;
+
+// 	i = 0;
+// 	len = 0;
+	
+// 	// >out cmd >out2 baba
+// 	while (outfile[i + 1])
+// 	{
+// 		cmd_tail = outfile[i + 1];
+// 		cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
+// 		/* skips to the 1st space detected */
+// 		cmd_tail = ft_strchr(cmd_tail, ' ');
+// 		if (cmd_tail)
+// 			len += ft_strlen(cmd_tail);
+// 		i++;
+// 		/*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
+// 	}
+// 	return (len);
+// }
 
 // 24 lines!
 /*

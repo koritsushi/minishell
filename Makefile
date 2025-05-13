@@ -28,7 +28,6 @@ SRCS 		=	srcs/expansion.c					\
 				srcs/token_utils_extract.c			\
 				srcs/token_utils_datatype.c			\
 				srcs/token_utils_split.c			\
-				srcs/token_utils_truncate.c			\
 				srcs/parsing.c						\
 				srcs/parsing_utils_skip.c			\
 				srcs/parsing_utils_check.c			\
@@ -48,8 +47,9 @@ SRCS 		=	srcs/expansion.c					\
 				srcs/minishell_utils_execute.c		\
 				srcs/minishell_utils_list.c			\
 				srcs/minishell.c 	
-#				srcs/token_utils_operator.c			\
-#				srcs/main-test-token_split.c		\
+#				srcs/token_utils_operator.c			
+#				srcs/token_utils_truncate.c			
+#				srcs/main-test-token_split.c		
 
 OBJS		=	$(SRCS:%.c=%.o)
 
