@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/10 17:06:59 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/13 14:56:44 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_exec
 	char			**cmd;
 	char			***cmd_args;
 	int				cmd_count;
+	int				pipe_count;
 	int				index;
 	unsigned char	exit_code;
 }					t_exec;
