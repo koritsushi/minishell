@@ -67,7 +67,6 @@ char	**ft_cmd_init(t_ms *data, t_token *lst)
 	j = 0;
 	size = lst_cmd_count(lst);
 	data->exec.cmd_count = size;
-	/*debug*/printf("ft_cmd_init:size:%d\n", size);
 	cmd = malloc(sizeof(char **) * (size + 1));
 	while (lst->data[i] != NULL)
 	{

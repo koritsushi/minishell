@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/13 15:15:16 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 18:42:55 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_here_doc(t_ms *data, char *delimiter, int parsing_pipe[2])
 	}
 	if (data == NULL)
 		return ;
-	/*debug*/printf("\033[100m___ft_here_doc___\033[0m\n\033[90m%s\033[0m", final);
+	// /*debug*/printf("\033[100m___ft_here_doc___\033[0m\n\033[90m%s\033[0m", final);
 
 	close(parsing_pipe[READ]);
 	ft_putstr_fd(final, parsing_pipe[WRITE]);
