@@ -34,9 +34,8 @@ int	lst_cmd_count(t_token *lst)
 	size = 0;
 	while (lst->data[i] != NULL)
 	{
-		if (lst->datatype[i] == WORD)
+		if (lst->datatype[i++] == WORD)
 			size++;
-		i++;
 	}
 	return (size);
 }
@@ -57,7 +56,7 @@ int	lst_pipe_count(t_token *lst)
 	return (size);
 }
 
-char	**ft_cmd_init(t_token *lst)
+char	**ft_cmd_init(t_ms *data, t_token *lst)
 {
 	int		i;
 	int		j;
@@ -67,6 +66,7 @@ char	**ft_cmd_init(t_token *lst)
 	i = 0;
 	j = 0;
 	size = lst_cmd_count(lst);
+	data->exec.cmd_count = size;
 	/*debug*/printf("ft_cmd_init:size:%d\n", size);
 	cmd = malloc(sizeof(char **) * (size + 1));
 	while (lst->data[i] != NULL)
@@ -84,17 +84,10 @@ void	ft_init_pipe(t_ms *data, t_token *lst)
 	int		pipe_count;
 	int		pipe_index;
 	int		pipe_fd[2];
-	int		i;
 
-	pipe_count = 0;
-	i = -1;
-	while (lst->data[++i] != NULL)
-	{
-		if (lst->datatype[i] == PIPE)
-			pipe_count += 1;
-	}
-	data->exec.cmd_count = pipe_count * 2;
 	pipe_index = 0;
+	data->exec.pipe_count = lst_pipe_count(lst);
+	pipe_count = data->exec.pipe_count;
 	while (pipe_index < pipe_count)
 	{
 		if (pipe(pipe_fd) == -1)
@@ -145,8 +138,8 @@ void	ft_execs_init(t_ms *data, t_token *lst)
 	char	**cmd;
 
 	ft_init_pipe(data, lst);
+	cmd = ft_cmd_init(data, lst);
 	envp = ft_envp(&data->env_var);
-	cmd = ft_cmd_init(lst);
 	// /*debug*/printf("___ft_execs_init___\n");
 	// /*debug*/debug_print(cmd);
 

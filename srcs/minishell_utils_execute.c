@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/13 16:32:52 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 18:40:09 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,12 +144,9 @@ void	execute_functions(t_ms *data, t_token lst)
 		/*debug*/printf("\033[93m===========================\033[0m\n");
 		/*debug*/env_print(&data->env_var);
 	}
-	// if (has_pipes(lst))
-	// {
-		infile_parsing_init(data, &lst);
-		outfile_parsing_init(data, &lst);
-		ft_execs_init(data, &lst);
-	// }
+	infile_parsing_init(data, &lst);
+	outfile_parsing_init(data, &lst);
+	ft_execs_init(data, &lst);
 
 	// while (cmd_line[++i]) //split into another function here
 	// {

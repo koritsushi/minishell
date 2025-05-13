@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/13 16:21:38 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 18:37:20 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_exec
 	char			**cmd;
 	char			***cmd_args;
 	int				cmd_count;
+	int				pipe_count;
 	int				index;
 	unsigned char	exit_code;
 }					t_exec;

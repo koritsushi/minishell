@@ -19,7 +19,7 @@ char	**ft_get_path(char **envp)
 	
 	i = 0;
 	path = NULL;
-	while (envp != NULL)
+	while (envp[i] != NULL)
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
@@ -60,21 +60,14 @@ char	***ft_split_cmd(t_exec *exec, char **argv)
 	char	***cmd;
 	int		i;
 	int		j;
-	int		len;
 
+	i = 0;
 	j = 0;
-	len = 0;
-	i = 2 + len;
 	cmd = malloc(sizeof(char **) * (exec->cmd_count + 1));
 	if (cmd == NULL)
 		return (NULL);
 	while (argv[i] != NULL && j < exec->cmd_count)
-	{
-		// /*debug*/printf("ft_split_cmd:%s\n", argv[i]);
-		cmd[j] = ft_split(argv[i], ' ');
-		i++;
-		j++;
-	}
+		cmd[j++] = ft_split(argv[i++], ' ');
 	cmd[j] = NULL;
 	return (cmd);
 }

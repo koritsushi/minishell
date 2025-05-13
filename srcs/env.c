@@ -105,6 +105,7 @@ void	exec_init(t_exec *exec)
 	exec->cmd = NULL;
 	exec->cmd_args = NULL;
 	exec->cmd_count = 0;
+	exec->pipe_count = 0;
 	exec->index = 0;
 	exec->exit_code = 0;
 }
