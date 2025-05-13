@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:33:47 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/12 17:09:23 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/13 16:43:33 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,24 @@
 
 void	fc_process(t_ms *data, int index)
 {
-	close(data->exec.pipes[index][READ]);
+	if (data->exec.pipe_count > 0)
+		close(data->exec.pipes[index][READ]);
 	if (data->exec.infile_fd[index] != 0)
 	{
 		dup2(data->exec.infile_fd[index], STDIN_FILENO);
 		close(data->exec.infile_fd[index]);	
 	}
-	dup2(data->exec.pipes[index][WRITE], STDOUT_FILENO);
-	close(data->exec.pipes[index][WRITE]);
+	if (data->exec.pipe_count > 0)
+	{
+		dup2(data->exec.pipes[index][WRITE], STDOUT_FILENO);
+		close(data->exec.pipes[index][WRITE]);
+		close_pipe(data, index);
+	}
 	if (data->exec.outfile_fd[index] != 1)
 	{
 		dup2(data->exec.outfile_fd[index], STDOUT_FILENO);
 		close(data->exec.outfile_fd[index]);
 	}
-	close_pipe(data, index);
 }
 
 void	lc_process(t_ms *data, int index)
