@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/12 17:08:06 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/13 22:32:20 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ void	infile_parsing_init(t_ms *data, t_token *lst)
 			data->exec.infile_fd[j] = open(lst->data[i], O_RDONLY);
 			if (data->exec.infile_fd[j] == -1)
 			{
-				data->exec.infile_fd[j] = 0;
-				printf("File not found!:%s\n", lst->data[i]); //infile open fail, display error message
+				data->exec.infile_fd[j] = open("/dev/null", O_RDONLY);
+				printf("-minishell: %s: %s\n", lst->data[i], strerror(errno)); //infile open fail, display error message
 			}
 		}
 		else if (lst->datatype[i] == HEREDOC)
