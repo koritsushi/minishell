@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/07 21:21:41 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 11:51:01 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * child function in execute_functions
  * checks if entire cmd_line has pipes
  */
-static int	has_pipes(t_token lst)
+int	has_pipes(t_token lst)
 {
 	int	i;
 
@@ -59,41 +59,65 @@ static int	has_pipes(t_token lst)
  * child function in execute_built_in
  * checks if passed string is build-in functions
  */
-static int is_built_in(char *str)
+
+ void	builtins_init(char *str[])
+ {
+	str[0] = "echo";
+	str[1] = "pwd";
+	str[2] = "env";
+	str[3] = "export";
+	str[4] = NULL;
+ }
+
+int is_built_in(char *str)
 {
+	char	*builtins[4];
+	int		i;
+
+	i = 0;
+	builtins_init(builtins);
+	while (builtins[i] != NULL)
+	{
+		if (ft_strncmp(str, builtins[i], ft_strlen(builtins[i])) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+	/*
 	if ((strcmp(str, "echo") == 0) || \
 (strncmp(str, "pwd", 3) == 0) || \
 (strcmp(str, "env") == 0) || \
 (strcmp(str, "export") == 0))
 	return (1);
 	return (0);
+	*/
 }
 
 /*
  * child function in execute_functions
  * specifically handles build-in functions
  */
-int	execute_built_in(t_ms *data, char *argv)
+int	execute_built_in(t_ms *data, char **argv)
 {
-	char			**tmp;
+	//char			**tmp;
 	unsigned char	*exit_code;
 
 	exit_code = &data->exec.exit_code;
-	tmp = ft_split_shell(argv, " \t\n\v\f\r");
-	if (!is_built_in(tmp[0]))
+	//tmp = ft_split_shell(argv, " \t\n\v\f\r");
+	if (!is_built_in(argv[0]))
 	{
-		free_chr_ptr((void **)tmp);
+		//free_chr_ptr((void **)tmp);
 		return (0);
 	}
-	if (strcmp(tmp[0], "echo") == 0)
-		*exit_code = ft_echo(tmp);
-	else if (strncmp(argv, "pwd", 3) == 0)
+	if (ft_strncmp(argv[0], "echo", 4) == 0)
+		*exit_code = ft_echo(argv);
+	else if (ft_strncmp(argv[0], "pwd", 3) == 0)
 		*exit_code = ft_pwd();
-	else if (strcmp(argv, "env") == 0)
+	else if (ft_strncmp(argv[0], "env", 3) == 0)
 		*exit_code = env_print(&data->env_var);
-	else if (strcmp(argv, "export") == 0)
+	else if (ft_strncmp(argv[0], "export", 6) == 0)
 		*exit_code = export_print(&data->env_var);
-	free_chr_ptr((void **)tmp);
+	//free_chr_ptr((void **)tmp);
 	return (1);
 }
 
@@ -120,14 +144,20 @@ void	execute_functions(t_ms *data, t_token lst)
 		/*debug*/printf("\033[93m===========================\033[0m\n");
 		/*debug*/env_print(&data->env_var);
 	}
-	while (cmd_line[++i]) //split into another function here
+	if (has_pipes(lst))
 	{
-		/* if there's pipe || if no pipe
-		 * fork & dup2 */
-		// /*debug*/printf("execute_functions:%d\n", data->exec.exit_code);
-		// /*debug*/printf("execute_functions:$?:ent:\033[93m%s\033[0m.\n", cmd_line[i]);
-		// /*debug*/printf("execute_functions:$?:\033[92m%s\033[0m.\n", cmd_line[i]);
-		if (lst.datatype[i] == WORD)
-			execute_built_in(data, cmd_line[i]);
+		infile_parsing_init(data, &lst);
+		outfile_parsing_init(data, &lst);
+		ft_execs_init(data, &lst);
 	}
+	// while (cmd_line[++i]) //split into another function here
+	// {
+	// 	/* if there's pipe || if no pipe
+	// 	 * fork & dup2 */
+	// 	// /*debug*/printf("execute_functions:%d\n", data->exec.exit_code);
+	// 	// /*debug*/printf("execute_functions:$?:ent:\033[93m%s\033[0m.\n", cmd_line[i]);
+	// 	/*debug*/printf("execute_functions:$?:\033[92m%s\033[0m.\n", cmd_line[i]);
+	// 	if (lst.datatype[i] == WORD)
+	// 		execute_built_in(data, cmd_line[i]);
+	// }
 }

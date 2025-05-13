@@ -26,7 +26,7 @@ t_env	*ft_lstnew_shenv(char *name, char *content, int export_id);
 t_env	*ft_lstnew_env(char *name, char *content, int export_id);
 void	ft_lst_remove_if(t_env **lst, char *target, int (*func)());
 
-
+int		ft_array_len(char **arr);
 void	msh_init(t_ms *data, char** env);
 void	env_init(t_env **env_var, char **env);
 void	exec_init(t_exec *exec);

@@ -6,11 +6,13 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/13 08:54:42 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/13 11:53:27 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
+
+int	g_signal = 0;
 
 int	ft_isspace(char *str)
 {
@@ -43,13 +45,18 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		text = readline("\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m");
+		if (*text)
+			add_history(text);
+		if (g_signal == 130)
+		{
+			data.exec.exit_code = g_signal;
+			g_signal = 0;
+		}
 		if (text == NULL)
 		{
 			ft_putstr_fd("\e[0;31mlogout\e[0;0m\n", 1);
-			exit(-1);
+			break ;
 		}
-		if (*text)
-			add_history(text);
 		if (ft_strncmp(text, "exit", 4) == 0)
 		{
 			ft_putstr_fd("\033[36mminishell exited!\033[0m\n", 1);
@@ -77,7 +84,7 @@ int	main(int argc, char **argv, char **env)
 				/*debug*/debug_print_cmd_line(&lst);
 
 				/* execution here */
-				// execute_functions(&data, lst); //inject pipex inside
+				execute_functions(&data, lst); //inject pipex inside
 				// /*debug*/debug_print_cmd_line(&lst);
 				free_all(&lst);
 			}

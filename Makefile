@@ -14,42 +14,50 @@
 UNAME_S := $(shell uname -s)
 
 # __________all files____________
-SRCS 		=	srcs/expansion.c					\
-				srcs/expansion_quote.c				\
-				srcs/expansion_brace_utils_count.c	\
-				srcs/expansion_brace_utils.c		\
-				srcs/expansion_brace.c				\
-				srcs/expansion_shell_exit-status.c	\
-				srcs/expansion_shell.c				\
-				srcs/token.c						\
-				srcs/token_utils.c					\
-				srcs/token_utils_malloc.c			\
-				srcs/token_utils_count.c			\
-				srcs/token_utils_extract.c			\
-				srcs/token_utils_datatype.c			\
-				srcs/token_utils_split.c			\
-				srcs/parsing.c						\
-				srcs/parsing_utils_skip.c			\
-				srcs/parsing_utils_check.c			\
-				srcs/parsing_utils_vars.c			\
-				srcs/parsing_utils_vars_name.c		\
-				srcs/parsing_utils_vars_check.c		\
-				srcs/parsing_utils_vars_write.c		\
-				srcs/utils_free.c					\
-				srcs/debug.c						\
-				srcs/signals.c						\
-				srcs/builtins.c						\
-				srcs/builtins_utils.c				\
-				srcs/execution.c					\
-				srcs/env.c 							\
-				srcs/env_print.c					\
-				srcs/env_utils.c					\
-				srcs/minishell_utils_execute.c		\
-				srcs/minishell_utils_list.c			\
-				srcs/minishell.c 	
-#				srcs/token_utils_operator.c			
-#				srcs/token_utils_truncate.c			
-#				srcs/main-test-token_split.c		
+SRCS 		=	srcs/expansion.c						\
+				srcs/expansion_quote.c					\
+				srcs/expansion_brace_utils_count.c		\
+				srcs/expansion_brace_utils.c			\
+				srcs/expansion_brace.c					\
+				srcs/expansion_shell_exit-status.c		\
+				srcs/expansion_shell.c					\
+				srcs/token.c							\
+				srcs/token_utils.c						\
+				srcs/token_utils_malloc.c				\
+				srcs/token_utils_count.c				\
+				srcs/token_utils_extract.c				\
+				srcs/token_utils_datatype.c				\
+				srcs/token_utils_split.c				\
+				srcs/parsing.c							\
+				srcs/parsing_utils_skip.c				\
+				srcs/parsing_utils_check.c				\
+				srcs/parsing_utils_replace.c			\
+				srcs/parsing_utils_vars.c				\
+				srcs/parsing_utils_vars_name.c			\
+				srcs/parsing_utils_vars_check.c			\
+				srcs/parsing_utils_vars_write.c			\
+				srcs/utils_free.c						\
+				srcs/debug.c							\
+				srcs/signals.c							\
+				srcs/builtins.c							\
+				srcs/builtins_utils.c					\
+				srcs/env.c 								\
+				srcs/env_print.c						\
+				srcs/env_utils.c						\
+				srcs/minishell_utils_execute.c			\
+				srcs/minishell_utils_list.c				\
+				srcs/minishell_utils_list2.c			\
+				srcs/minishell.c 						\
+				srcs/execution.c						\
+				srcs/execution_cmd.c					\
+				srcs/execution_cmd_utils.c				\
+				srcs/execution_process.c				\
+				srcs/execution_parent_process_utils.c	\
+				srcs/execution_child_process_utils.c	\
+				srcs/execution_heredoc.c				\
+#				srcs/token_utils_operator.c				\
+#				srcs/token_utils_truncate.c				\
+#				srcs/main-test-token_split.c			\
 
 OBJS		=	$(SRCS:%.c=%.o)
 
@@ -61,7 +69,15 @@ COMPILE		=	gcc
 CCFLAGS		=	-Wall -Wextra -Werror
 DEBUG		=	-ggdb3
 FSAN		=	-fsanitize=address
-READINC		= 	-I/usr/include./	
+READINC		= 	-I/usr/include./
+HEADER		=	includes/minishell.h \
+				includes/token.h \
+				includes/parsing.h \
+				includes/expansion.h \
+				includes/env.h	\
+				includes/builtins.h \
+				includes/execution.h \
+				includes/signals.h
 #READLIB		= 	-L/usr/lib/x86_64-linux-gnu/libreadline.a
 
 # __________readlib paths configs__________
@@ -71,7 +87,7 @@ else ifeq ($(UNAME_S), Darwin)
 	READLIB	:=
 endif
 
-%.o: %.c
+%.o: %.c	$(HEADER)
 			$(COMPILE) $(CCFLAGS) $(DEBUG) $(READINC) -I. -c $< -o $(<:.c=.o)
 
 $(NAME): $(LIBFT) $(OBJS)

@@ -24,7 +24,7 @@ void	free_strarr(char **arr)
 	free(arr);
 }
 
-int	array_len(char **str)
+int		ft_array_len(char **str)
 {
 	int	i;
 
@@ -67,19 +67,23 @@ void	env_init(t_env **env_var, char **env)
 	t_env	*tmp;
 
 	i = 0;
-	len = array_len(env);
+	len = ft_array_len(env);
 	var = malloc(sizeof(char **) * (len + 1));
+	tmp = *env_var;
 	split_env(env, var);
 	while (env[i] != NULL)
 	{
-		if (*env_var == NULL)
+		if (tmp == NULL)
 		{
-			*env_var = ft_lstnew_shenv(var[i], env[i], 1);
+			tmp = ft_lstnew_shenv(var[i], env[i], 1);
 			i++;
 		}
-		tmp = ft_lstnew_shenv(var[i], env[i], 2);
-		if (tmp == NULL)
-			return ;
+		else
+		{
+			tmp = ft_lstnew_shenv(var[i], env[i], 2);
+			if (tmp == NULL)
+				return ;
+		}
 		ft_lstadd_back_env(env_var, tmp);
 		i++;
 	}
@@ -88,9 +92,18 @@ void	env_init(t_env **env_var, char **env)
 
 void	exec_init(t_exec *exec)
 {
-	exec->infile_fd = 0;
-	exec->outfile_fd = 0;
-	exec->here_doc = 0;
+	int	i;
+
+	i = 0;
+	while (i < 1024)
+	{
+		exec->infile_fd[i] = 0;
+		exec->outfile_fd[i] = 1;
+		i++;
+	}
+	exec->path = NULL;
+	exec->cmd = NULL;
+	exec->cmd_args = NULL;
 	exec->cmd_count = 0;
 	exec->index = 0;
 	exec->exit_code = 0;
