@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 17:58:29 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/06 16:29:59 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:56:08 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
  * 
  * exit will have exit code 1 
  */
-void	exit_free(int errno)
+void	exit_free(t_ms *data, int errno)
 {
 	printf("Error: %s\n", strerror(errno));
 	exit(1);
