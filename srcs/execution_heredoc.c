@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/13 18:42:55 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/14 16:22:46 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,15 +118,15 @@ void	infile_parsing_init(t_ms *data, t_token *lst)
 	{
 		if (lst->datatype[i] == PIPE)
 			j++;
-		if (data->exec.infile_fd[j] > 2)
-				close(data->exec.infile_fd[j]);
+		if (data->exec.infile_fd[j] > 2 && (lst->datatype[i] == INFILE || lst->datatype[i] == HEREDOC))
+			close(data->exec.infile_fd[j]);
 		if (lst->datatype[i] == INFILE)
 		{
 			data->exec.infile_fd[j] = open(lst->data[i], O_RDONLY);
 			if (data->exec.infile_fd[j] == -1)
 			{
-				data->exec.infile_fd[j] = 0;
-				printf("File not found!:%s\n", lst->data[i]); //infile open fail, display error message
+				data->exec.infile_fd[j] = open("/dev/null", O_RDONLY);
+				printf("-minishell: %s: %s\n", lst->data[i], strerror(errno)); //infile open fail, display error message
 			}
 		}
 		else if (lst->datatype[i] == HEREDOC)
@@ -146,8 +146,8 @@ void	outfile_parsing_init(t_ms *data, t_token *lst)
 	{
 		if (lst->datatype[i] != PIPE)
 			j++;
-		if (data->exec.outfile_fd[j] > 2)
-			close(data->exec.outfile_fd[j]);
+		if (data->exec.outfile_fd[j] > 2 && (lst->datatype[i] == OUTFILE || lst->datatype[i] == OUTFILE_A))
+				close(data->exec.outfile_fd[j]);
 		if (lst->datatype[i] == OUTFILE)		
 			data->exec.outfile_fd[j] = \
 open(lst->data[i], O_RDWR | O_CREAT | O_TRUNC, 0774);

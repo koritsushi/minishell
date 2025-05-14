@@ -87,8 +87,8 @@ char	*ft_cmdpath(char **cmd_args, char **path)
 			break ;
 		free(cmd_path);
 	}
-	if (i == end - 1)
-		return(NULL);
+	if (i == end)
+		return (NULL);
 	return (cmd_path);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:55 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/13 16:50:50 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/14 15:47:05 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ void	ft_execution(t_ms *data, char *cmd, char **cmd_args, char **envp)
 	}
 	cmd_path = ft_cmdpath(cmd_args, data->exec.path);
 	if (cmd_path == NULL)
+	{
+		printf("./minishell: %s: %s\n", strerror(errno), cmd_args[0]);
 		exit(1); //exit and free all struct in childProcess
+	}
 	if (execve(cmd_path, cmd_args, envp) == -1)
 	{
 		printf("./minishell: execve() error!\n");
@@ -37,7 +40,7 @@ void	ft_execution(t_ms *data, char *cmd, char **cmd_args, char **envp)
 void	close_pipe(t_ms *data, int index)
 {
 	index = index + 1;
-	while (index < data->exec.cmd_count - 1)
+	while (index < data->exec.pipe_count - 1)
 	{
 		close(data->exec.pipes[index][READ]);
 		close(data->exec.pipes[index][WRITE]);
