@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils_count.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/13 08:01:05 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/14 17:00:59 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,22 +88,24 @@ static int	count_infile(char **res)//, char **infile)
 	}
 	return (count);
 }
-// static int	count_infile(char **res, char **infile)
-// {
-// 	int		count;
-// 	char	**in_fin;
+/*
+static int	count_infile(char **res, char **infile)
+{
+	int		count;
+	char	**in_fin;
 
-// 	count = 0;
-// 	in_fin = ft_split_shell(infile[0], ">");
-// 	if (res[0][0] == '<' && !infile[1] && \
-// 		has_more_str(in_fin[0], " \t\n\v\f\r"))
-// 		count++;
-// 	else if (res[0][0] != '<' && infile[1])
-// 		count++;
+	count = 0;
+	in_fin = ft_split_shell(infile[0], ">");
+	if (res[0][0] == '<' && !infile[1] && \
+		has_more_str(in_fin[0], " \t\n\v\f\r"))
+		count++;
+	else if (res[0][0] != '<' && infile[1])
+		count++;
 
-// 	free_chr_ptr((void **)in_fin);
-// 	return (count);
-// }
+	free_chr_ptr((void **)in_fin);
+	return (count);
+}
+*/
 
 /* counts number of chars in cmd_tail for malloc use */
 int	count_cmd_tail_chr(char **outfile)
