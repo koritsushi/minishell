@@ -23,7 +23,7 @@ typedef struct s_token	t_token;
 
 /*__________functions for syntax error checks__________*/
 int		check_syntax(char *str);
-int		check_var_syntax(char *str);//, int *flag);
+int		check_var_syntax(char **str);//, int *flag);
 char	*skip_if_quote(char *str, char symbol, int flag);
 char	*skip_redirs(char *str);
 

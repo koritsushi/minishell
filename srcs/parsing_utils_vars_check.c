@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/12 10:15:15 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/14 08:40:46 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,43 +94,128 @@
 // 	return (res);
 // }
 
+void	copy_leftover(char **str, char **fin)
+{
+	int		k;
+	char	*tmp;
+	char	*tmp2;
+	char	*final;
+
+	k = 0;
+	if (!fin || !fin[0])
+		return ;
+	// s3 = str1 + str2
+	// s3 = s3 + str4
+	final = ft_strdup(fin[k]);
+	while (fin[k] && fin[k + 1])
+	{
+		tmp = ft_strjoin(" ", fin[k + 1]);
+		tmp2 = ft_strjoin(final, tmp);
+		free_multiple_ptr_single(final, tmp, NULL);
+		final = ft_strdup(tmp2);
+		free(tmp2);
+		k++;
+	}
+	free(*str);
+	*str = final;
+}
+
 /*
  * child function in check_var_syntax
  * breaks check if detected keyword: export 'export' "export"
  * checks if str doesnt have '=' (valid_var)
  */
-static int	has_non_var(char *str)
+static int	has_non_var(char **str)
 {
-	char	**tmp;
+	char	*new;
+	// char	**tmp;
 	char	**fin;
 	int		i;
 	int		res;
 
-	str = skip_redirs(str);
-	/*debug*/printf("has_non_var:skip:%s.\n", str);
-	tmp = ft_split_shell(str, "<>");
-	fin = ft_split_shell(tmp[0], " \t\n\v\f\r");
+	new = skip_redirs(*str);
+	/*debug*/printf("has_non_var:skip:%s.\n", new);
+	// tmp = ft_split_shell(new, "<>"); //maybe noneed
+	fin = ft_split_shell(new, " \t\n\v\f\r");
 	res = 0;
 	i = -1;
 	while (fin && fin[++i] && !res)
 	{
 		/*debug*/printf("has_non_var:ent:%s.\n", fin[i]);
-		if (valid_export_keyword(fin[i], 0)) // && has_more_str after export
-		{
-			/*debug*/printf("has_non_var:export! %d\n", res);
-			break ;
-		}
+		// if (valid_export_keyword(fin[i], 0)) // && has_more_str after export
+		// {
+		// 	/*debug*/printf("has_non_var:export! %d\n", res);
+		// 	break ;
+		// }
 		if (!is_target(fin[i], '=') || !ft_isalpha(fin[i][0]))
 		{
+			// if export only, skip process_vars
+			// v=1 export blbla -> res=0 (break)
+			// v=1 export       -> res=1
+			// v=1 cmd abe      -> res=1
+
+			// copy n alloc the rest, 
+			copy_leftover(str, &fin[i]);
+			if (valid_export_keyword(fin[i], 0) && fin[i + 1])
+				break ;
 			res = 1;
+
+			// var=123 var=56      : free later ( valid_var_syntax )
+			// var=123 var=6 cmd   : trim
+			// var=123 1var=6 cmd  : trim
+			// var=123 cmd var=6   : trim to before cmd
+	
+			// /*debug*/printf("has_non_var:str!%s\n", *str);
 			/*debug*/printf("has_non_var:found!%s\n", fin[i]);
 		}
 	}
 	/* var=90 var2=56 ^var=6 */
 	/* ^var=6 */
-	free_multiple_ptr(tmp, fin, NULL);
+	free_chr_ptr((void **)fin);
 	return (res);
 }
+
+// static int	has_non_var(char *str)
+// {
+// 	char	**tmp;
+// 	char	**fin;
+// 	int		i;
+// 	int		res;
+
+// 	str = skip_redirs(str);
+// 	/*debug*/printf("has_non_var:skip:%s.\n", str);
+// 	tmp = ft_split_shell(str, "<>");
+// 	fin = ft_split_shell(tmp[0], " \t\n\v\f\r");
+// 	res = 0;
+// 	i = -1;
+// 	while (fin && fin[++i] && !res)
+// 	{
+// 		/*debug*/printf("has_non_var:ent:%s.\n", fin[i]);
+// 		if (valid_export_keyword(fin[i], 0)) // && has_more_str after export
+// 		{
+// 			/*debug*/printf("has_non_var:export! %d\n", res);
+// 			break ;
+// 		}
+// 		if (!is_target(fin[i], '=') || !ft_isalpha(fin[i][0]))
+// 		{
+// 			res = 1;
+// 			// copy n alloc the rest, 
+// 			// if != export has_more_str, res = 1
+// 			// return new str
+
+// 			// var=123 var=56      : free later ( valid_var_syntax )
+// 			// var=123 var=6 cmd   : trim
+// 			// var=123 1var=6 cmd  : trim
+// 			// var=123 cmd var=6   : trim to before cmd
+	
+// 			/*debug*/printf("has_non_var:found!%s\n", fin[i]);
+// 		}
+// 	}
+// 	/* var=90 var2=56 ^var=6 */
+// 	/* ^var=6 */
+// 	free_multiple_ptr(tmp, fin, NULL);
+// 	return (res);
+// }
 
 // 17 lines!
 /*
@@ -138,18 +223,18 @@ static int	has_non_var(char *str)
  * checks if variable assigned syntax formatted correctly
  * update flag=1 if starts with non_alpha
  */
-int	check_var_syntax(char *str)//, int *flag)
+int	check_var_syntax(char **str)//, int *flag)
 {
 	char	*new;
 
-	new = str;
 	/* if no export && has_more_str , error! */
-	if (has_non_var(new))
+	if (has_non_var(str))
 	{
 		/*debug*/printf("check_var_syntax:\033[93mnon var detected!\033[0m\n");
 		return (0);
 	}
-	
+
+	new = *str;
 	while (new && new[0])// && !(*flag)) //export & default can use flag != 1
 	{
 		// /*debug*/printf("check_var_syntax:ent:%s\n", new);
