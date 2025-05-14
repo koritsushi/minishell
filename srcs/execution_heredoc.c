@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/13 22:32:20 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/14 15:41:40 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ void	infile_parsing_init(t_ms *data, t_token *lst)
 	{
 		if (lst->datatype[i] == PIPE)
 			j++;
-		if (data->exec.infile_fd[j] > 2)
-				close(data->exec.infile_fd[j]);
+		if (data->exec.infile_fd[j] > 2 && (lst->datatype[i] == INFILE || lst->datatype[i] == HEREDOC))
+			close(data->exec.infile_fd[j]);
 		if (lst->datatype[i] == INFILE)
 		{
 			data->exec.infile_fd[j] = open(lst->data[i], O_RDONLY);
@@ -138,7 +138,7 @@ void	outfile_parsing_init(t_ms *data, t_token *lst)
 	{
 		if(lst->datatype[i] != PIPE)
 			j++;
-		if (data->exec.outfile_fd[j] > 2)
+		if (data->exec.outfile_fd[j] > 2 && (lst->datatype[i] == OUTFILE || lst->datatype[i] == OUTFILE_A))
 				close(data->exec.outfile_fd[j]);
 		if (lst->datatype[i] == OUTFILE)		
 			data->exec.outfile_fd[j] = open(lst->data[i], O_RDWR | O_CREAT | O_TRUNC, 0774);
