@@ -138,13 +138,21 @@ void	ft_execs_init(t_ms *data, t_token *lst)
 
 	ft_init_pipe(data, lst);
 	cmd = ft_cmd_init(data, lst);
+	if (cmd == NULL)
+		exit(1); //cmd allocation fail exit minishell program free everything
 	envp = ft_envp(&data->env_var);
+	if (envp == NULL)
+		exit(1); //envp allocation fail exit minishell program free everything
 	// /*debug*/printf("___ft_execs_init___\n");
 	// /*debug*/debug_print(cmd);
 
 	/* execute only if there is cmd */
 	data->exec.path = ft_get_path(envp);
+	if (data->exec.path)
+		exit(1); //get path fail, exit minishell program free everything
 	data->exec.cmd_args = ft_split_cmd(&data->exec, cmd);
+	if (data->exec.cmd_args)
+		exit(1);  //split 3d cmd fail, exit minishell program free everything
 	// //free_chr_ptr((void **) cmd);
 	ft_process(data, envp);
 }
