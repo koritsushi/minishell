@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/14 08:40:46 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/14 18:20:32 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,8 @@ static int	has_non_var(char **str)
 /*
  * child function in get_variable,
  * checks if variable assigned syntax formatted correctly
+ * & trims accordingly if invalid syntax found, eg:
+ * '1var=x var=123 cmd' will be trimmed to 'cmd'
  * update flag=1 if starts with non_alpha
  */
 int	check_var_syntax(char **str)//, int *flag)
