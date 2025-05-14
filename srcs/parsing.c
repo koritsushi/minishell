@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/14 16:18:13 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/14 17:39:14 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,25 +148,35 @@ void	remove_var(t_token *lst)
 	int		k;
 
 	i = -1;
+	debug_print_cmd_line(lst);
 	while (lst->data[++i])
 	{
+		//go to word
 		while (lst->data[i] && lst->datatype[i] != WORD)
 			i++;
 		if (!lst->data[i] || !lst->data[i][0])
 			return ;
+		//trim cmd in check_var_syntax
+		//free cmd if check_var_syntax OK
 		if (check_var_syntax(&lst->data[i]))
 		{
 			k = i;
+			// str k     | str k+1 |  NULL
+			// var=123   : free & NULL
+			/*debug*/printf("remove_var:%s.\n", lst->data[i]);
 			while (lst->data[k + 1])
 			{
-				free (lst->data[k]); //(remove entire char* entry)
+				free(lst->data[k]); //(remove entire char* entry)
+				// if k+1 == pipe && k+2 pass check_var_syntax
+				// free k, if k+1 == pipe, strdup k+2
 				lst->data[k] = ft_strdup(lst->data[k + 1]); //(move entire char* left)
 				lst->datatype[k] = lst->datatype[k + 1]; //(move entire char* left)
 				k++;
 			}
+			free(lst->data[k]); //(remove entire char* entry)
 			lst->data[k] = NULL;
 			lst->datatype[k] = END;
-			//need to handle if single cmd eg var=55
+			// need to handle if single cmd eg var=55
 		}
 	}
 }
@@ -197,12 +207,11 @@ int	get_variable(t_env **vars, t_token lst, char *str, int exit_status)
 	i = 0;
 	while (lst.data[i] && lst.datatype[i] != WORD)
 		i++;
-	new = lst.data[i];
-	if (!new || !new[0])
+	if (!lst.data[i] || !lst.data[i][0])
 		return (0);
-	/*debug*/printf("get_variable:ent:%s.\n", new);
-	if (new[0] && !is_target(new, '=') && 
-!valid_export_keyword(new, 1))
+	/*debug*/printf("get_variable:ent:%s.\n", lst.data[i]);
+	if (lst.data[i][0] && !is_target(lst.data[i], '=') && 
+!valid_export_keyword(lst.data[i], 1))
 	{
 		/*debug*/printf("get_variable:\033[93minvalid var!\033[0m\n");
 		return (0);
@@ -224,7 +233,8 @@ int	get_variable(t_env **vars, t_token lst, char *str, int exit_status)
 			if (!new)
 				return (0);
 			// new = ft_strdup(new);
-			shell_var_expansion(&new, *vars, exit_status);
+			/*debug*/printf("get_var:%s.\n", new);
+			// shell_var_expansion(&new, *vars, exit_status);
 			extract_vars(vars, new, export_id);
 			// process_vars(vars, new, export_id);
 			// free(new);

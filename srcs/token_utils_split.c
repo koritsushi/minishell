@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils_split.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/14 17:01:09 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:13:36 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,6 @@ char	**ft_split_shell(char *str, char *set)
 	// /*debug*/printf("str_count:%d\n", str_count);
 	// res = (char **)malloc(sizeof(char *) * (str_count + 1));
 	res = (char **)malloc(sizeof(char *) * (count_str(str, set) + 1));
-	//x = 0;
 	// /*debug*/printf("\033[102mcount_str= %d+1\033[0m\n", count_str(str, set));
 	while (str[0] && count_str(str, set))
 	{
