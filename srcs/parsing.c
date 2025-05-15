@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/14 19:53:32 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/15 12:21:00 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,9 @@ int	valid_export_keyword(char *str, int flag)
 	/*debug*/printf("valid_export_keyword:ent:%s.\n", str);
 
 	if (\
-	check_export_keyword(str, "export", 6, flag) || \
-	check_export_keyword(str, "\'export\'", 8, flag) || \
-	check_export_keyword(str, "\"export\"", 8, flag))
+check_export_keyword(str, "export", 6, flag) || \
+check_export_keyword(str, "\'export\'", 8, flag) || \
+check_export_keyword(str, "\"export\"", 8, flag))
 		return (1);
 	/*debug*/printf("valid_export_keyword:invalid! %c\n", str[6]);
 	return (0);
@@ -115,109 +115,10 @@ int	valid_export_keyword(char *str, int flag)
  * child function in get_variable
  * skips keyword 'export' & update dependant values
  */
-char	*skip_export_update_val(char *new, int *export_id)//, int *flag_exit)
+static char	*skip_export_update_val(char *new, int *export_id)//, int *flag_exit)
 {
 	*export_id = 2;
-	// *flag_exit = 1;
 	return (skip_if_symbol(new, 'c', 'c'));
-}
-
-/*
- * child funcion in get_variable
- * trims cmd_line til keyword export
- * frees, remalloc & update char pointer
- */
-// static char	*trim_til_export(char **cmd_line)
-// {
-// 	char	*new;
-
-// 	new = ft_strnstr(*cmd_line, "export", ft_strlen(*cmd_line));
-// 	if (new && new[0])
-// 	{
-// 		new = ft_strdup(new);
-// 		free(*cmd_line);
-// 		*cmd_line = new;
-// 	}
-// 	/*debug*/printf("trim_til_export:%s.\n", *cmd_line);
-// 	return (*cmd_line);
-// }
-
-/*
- * child function in remove_var
- * moves strings along char ** to the left & remove entire entry
- */
-static void	remove_var_line(t_token *lst, int i)
-{
-	int	k;
-
-	k = i;
-	// str k     | str k+1 |  NULL
-	// var=123   : free & NULL
-	while (lst->data[k] && lst->data[k + 1])
-	{
-		free(lst->data[k]); //(remove entire char* entry)
-		// if k+1 == pipe && k+2 pass check_var_syntax
-		// free k, if k+1 == pipe, strdup k+2
-		lst->data[k] = ft_strdup(lst->data[k + 1]); //(move entire char* left)
-		lst->datatype[k] = lst->datatype[k + 1]; //(move entire char* left)
-		k++;
-	}
-	free(lst->data[k]); //(remove entire char* entry)
-	lst->data[k] = NULL;
-	lst->datatype[k] = END;
-}
-
-/*
- * child function in get_variable
- * removes any pipes that is in front & back
- */
-void	remove_pipe_front(t_token *lst)
-{
-	int	i;
-
-	i = 0;
-	/*debug*/printf("pikachu.\n");
-	
-	// /*debug*/printf("remove_pipe:%s. %d\n", lst->data[i], lst->datatype[i]);
-	while (lst->data[i] && lst->datatype[i] == PIPE)
-	{
-		/*debug*/printf("remove_pipe_f:%s.\n", lst->data[i]);
-		remove_var_line(lst, i);
-	}
-	while (lst->data[i + 1])
-		i++;
-	while (i >= 0 && lst->datatype[i] == PIPE)
-		remove_var_line(lst, i--);
-}
-
-/*
- * child function in get_variable
- * trims all cmd_line to skip or free valid var assignment (var=123)
- * so that it dont get passed to execution
- */
-void	remove_var(t_token *lst)
-{
-	int		i;
-	// int		k;
-
-	i = -1;
-	debug_print_cmd_line(lst);
-	/*debug*/printf("pika.\n");
-
-	while (lst->data[++i]) //0
-	{
-		//go to word
-		while (lst->data[i] && lst->datatype[i] != WORD)
-			i++;
-		if (!lst->data[i] || !lst->data[i][0])
-			break ;
-		//trim cmd in check_var_syntax
-		//free cmd if check_var_syntax OK
-		/*debug*/printf("remove_var:%s.\n", lst->data[i]);
-		if (check_var_syntax(&lst->data[i]))
-			remove_var_line(lst, i);
-	}
-	remove_pipe_front(lst);
 }
 
 // 24 lines!
@@ -283,39 +184,3 @@ int	get_variable(t_env **vars, t_token lst, char *str, int exit_status)
 	// /*debug*/printf("updated_str:%s.\n", str);
 	return (1);
 }
-
-// int	get_variable(t_env **vars, char *str, int exit_status)
-// {
-// 	char	*new;
-// 	int		export_id;
-
-// 	export_id = 0;
-// 	new = skip_spaces(str, " \t\n\v\f\r");
-// 	if (new[0] == '<' && ft_strrchr(new, '<'))
-// 		new = ft_strrchr(new, '<');
-// 	new = skip_redirs(new);
-
-// 	/*debug*/printf("get_variable:ent:%s.\n", new);
-// 	if (new[0] && !is_target(new, '=') && !valid_export_keyword(new, 1))
-// 	{
-// 		/*debug*/printf("get_variable:\033[93minvalid var!\033[0m\n");
-// 		return (0);
-// 	}
-// 	if (check_var_syntax(new))//, &flag))
-// 	{
-// 		/* if no pipes, copy_vars */
-// 		// /*debug*/printf("check_var_syntax:enter! new:%s, str:%s\n", new, str);
-// 		if (!is_target(new, '|'))// && !flag) //put a flag for multiple_cmd  // && !has_mix_redirs(new)
-// 		{
-// 			// /*debug*/printf("get_variable:flag:%d\n", flag);
-// 			if (valid_export_keyword(new, 1))
-// 				new = skip_export_update_val(new, &export_id);
-// 			new = ft_strdup(new);
-// 			shell_var_expansion(&new, *vars, exit_status);
-// 			process_vars(vars, new, export_id);
-// 			free(new);
-// 		}
-// 	}
-// 	/*debug*/printf("updated_str:%s.\n", str);
-// 	return (1);
-// }

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/14 19:55:34 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/15 12:34:28 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	main(int argc, char **argv, char **env)
 	int		x;
 	t_ms	data;
 	char	*text;
-	// t_token	lst;
 
 	if (argc > 1 && ft_strncmp(argv[0], "minishell", 9) != 0)
 		exit(127);

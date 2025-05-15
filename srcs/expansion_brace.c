@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 15:29:13 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/03 08:26:37 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/15 12:37:06 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ char	*perform_brace_expansion(char *str, char **cmd_line, int *x)
 	len = ft_strlen(*cmd_line) - 2 + get_expansion_count(str - (*x));
 	/*debug*/printf("\033[93mbrace_expansion:\033[0mstr:%s. x:%d\n", str - (*x), *x);
 	/*debug*/printf("\033[93mvalid brace!! %d+1\033[0m\n", len);
-	/* propose to put str in perform_brace_expansion */
 	start_brace_expansion(cmd_line, str - (*x), len);
 	*x = -1;
 	return (*cmd_line);

@@ -29,10 +29,11 @@ char	*skip_redirs(char *str);
 
 /*__________functions to extract variable assignments__________*/
 // int		get_variable(t_env **vars, char *str, int exit_status);
-int 	get_variable(t_env **vars, t_token lst, char *str, int exit_status);
+int		get_variable(t_env **vars, t_token lst, char *str, int exit_status);
 int		get_var_name(char **dest, char *str);
 int		is_valid_var_name(char **str, int export_id);
-void	replace_var_space(char *str);
+// void	replace_var_space(char *str);
+void	remove_var(t_token *lst);
 int		count_malloc_vars(char *str);
 void	copy_vars(char *dest, char *src, int len);
 void	extract_vars(t_env **vars, char *str, int export_id);

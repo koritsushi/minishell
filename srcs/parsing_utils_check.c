@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:28:58 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/03 08:11:48 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/15 12:34:02 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static int	match_condition(char **res, char *tmp, char symbol)
 		return (1);
 	else if (symbol != '|')
 	{
-		// /*debug*/printf("hi= %s\n", tmp);
 		if (tmp[1] && is_target("<>|", tmp[1]))
 			return (1);
 		else if (res[1] && is_target("<>|", res[1][0]))
@@ -59,7 +58,6 @@ int	if_double_symbol(char **res, char symbol, int steps)
 			tmp += steps;
 			// /*debug*/printf("tmp+= %s\n", tmp);
 		}
-		// if (tmp[0] && tmp[1] && !is_target("<>|=& \t\n\v\f\r", tmp[1]))
 		if ((tmp[0] && tmp[1] && !is_target("<>|=&", tmp[1])) || \
 			(tmp[0] == '=' && tmp[1] == '\0'))
 		{
@@ -72,16 +70,20 @@ int	if_double_symbol(char **res, char symbol, int steps)
 			write(2, &symbol, 1);
 			ft_putstr_fd("' or more than 2 '", 2);
 			write(2, &symbol, 1);
-			return ft_perror_fd("' detected!\n", 2, 1);
+			return (ft_perror_fd("' detected!\n", 2, 1));
 		}
 		else if (!res[1] && !tmp[1])
 			return (\
-			ft_perror_fd("🚨 Syntax error! field empty after operator\n", 2, 1));
+ft_perror_fd("🚨 Syntax error! field empty after operator\n", 2, 1));
 		tmp++;
 	}
 	return (0);
 }
 
+/*
+ * child function in check_syntax
+ * check if there are invalid or unclosed symbols
+ */
 int	check_symbols(char **res)
 {
 	int		x;
@@ -89,7 +91,7 @@ int	check_symbols(char **res)
 	x = -1;
 	if (res[0][0] == '|' || res[0][0] == '=')
 		return \
-		(ft_perror_fd("🚨 Syntax error! unexpected symbol detected!\n", 2, 0));
+(ft_perror_fd("🚨 Syntax error! unexpected symbol detected!\n", 2, 0));
 	while (res[++x])
 	{
 		if (is_target(res[x], '&'))
@@ -97,14 +99,14 @@ int	check_symbols(char **res)
 		if (is_target(res[x], ';'))
 			return (ft_perror_fd("🚨 Syntax error! ';' detected!\n", 2, 0));
 		if (if_double_symbol(&res[x], '|', 0) || \
-			if_double_symbol(&res[x], '=', 0) || \
-			if_double_symbol(&res[x], '<', 1) || \
-			if_double_symbol(&res[x], '>', 1))
+if_double_symbol(&res[x], '=', 0) || \
+if_double_symbol(&res[x], '<', 1) || \
+if_double_symbol(&res[x], '>', 1))
 			return (0);
 		if (res[x][0] && res[x][1] && is_target("$", res[x][0]) && \
 			res[x][1] == '{' && !ft_strchr(&res[x][1], '}'))
 			return \
-			(ft_perror_fd("🚨 Syntax error! Brace unclosed after '$'\n", 2, 0));
+(ft_perror_fd("🚨 Syntax error! Brace unclosed after '$'\n", 2, 0));
 	}
 	return (1);
 }
@@ -124,7 +126,8 @@ int	check_unclosed_quote(char *str)
 				/*debug*/printf("check_unclosed_quote:%s.\n", new);
 		}
 		if (!new)
-			return (ft_perror_fd("🚨 Syntax error! unclosed quote detected!\n", 2, 0));
+			return \
+(ft_perror_fd("🚨 Syntax error! unclosed quote detected!\n", 2, 0));
 		new++;
 	}
 	return (1);

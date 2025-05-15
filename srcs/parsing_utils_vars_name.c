@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:57:56 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/12 11:48:35 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/15 12:25:15 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	count_var_name(char *new)
 	int		len;
 	int		flag;
 	char	symbol;
-	
+
 	len = 0;
 	flag = 0;
 	while (new[len])
@@ -56,7 +56,7 @@ static int	count_var_name(char *new)
 		update_flag_quote(&new[len], &symbol, &flag);
 		if (new[len] && ((new[len] == '=') || \
 (!flag && is_target(" \t\n\v\f\r", new[len]))))
-			break;
+			break ;
 		len++;
 	}
 	return (len);
@@ -116,7 +116,7 @@ static int	spaces_in_quote(char *str)
 		update_flag_quote(str, &symbol, &flag);
 		if (flag && str[1] && is_target(" \t\n\v\f\r", str[1]))
 			return (ft_perror_fd \
-			("🚨 Error! Spaces detected in variable name\n", 2, 1));	
+("🚨 Error! Spaces detected in variable name\n", 2, 1));
 		str++;
 	}
 	return (0);

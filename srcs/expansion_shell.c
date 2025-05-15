@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/02 18:50:24 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/15 12:36:32 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void	check_replace_var(char **cmd_line, char *name, char *src, int len_he
 	free(*cmd_line);
 	*cmd_line = new;
 }
+
 /*
  * child function in check_shell_var,
  * clean up $var when it does not exist
@@ -151,27 +152,3 @@ char	*expand_shell_var(t_env *vars, char **cmd_line, char *str, int *index)
 	free_multiple_ptr(tmp, fin, NULL);
 	return (*cmd_line);
 }
-
-// char	*expand_shell_var(t_env *vars, char **cmd_line, char *str, int index)
-// {
-// 	char	**tmp;
-// 	char	**fin;
-
-// 	tmp = ft_split_shell(str, "$");
-// 	// /*debug*/printf("-----\nsplit:fin:\n");
-// 	fin = ft_split_shell(tmp[0], " \'\"\t\n\v\f\r");
-// 	truncate_name_at_symbol(fin[0]);
-// 	// /*debug*/debug_print(tmp);
-// 	// /*debug*/printf(".....\nfin:\n");
-// 	// /*debug*/debug_print(fin);
-// 	// /*debug*/printf("-----\n");
-// 	// /*debug*/printf("expand_shell_var:var_name:%s, str:%s\n", fin[0], str);
-	
-// 	// index = check_shell_var();
-// 	/*debug*/ printf("expand_shell_var:index_ori: %d\n", index);
-// 	index += check_shell_var(vars, fin[0], cmd_line, str);
-// 	/*debug*/ printf("expand_shell_var:index_new: %d\n", index);
-// 	free_multiple_ptr(2, tmp, fin);
-// 	// return &cmd_line[index] (return a pointer to the previous expansion)
-// 	return (*cmd_line);
-// }

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/14 17:13:36 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/15 12:08:29 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static int	count_chr(char *str, char *set)//, int *flag)
 	return (count);
 }
 
-// 24 lines!
+// 22 lines!
 /*
  * set = set of delimiters: " \t\n\v\f\r"
  * splits string into individual char* when *set is detected
@@ -123,7 +123,6 @@ char	**ft_split_shell(char *str, char *set)
 {
 	char	**res;
 	int		i;
-	//int		x;
 	int		count;
 
 	if (!str || !set)
@@ -139,7 +138,6 @@ char	**ft_split_shell(char *str, char *set)
 	while (str[0] && count_str(str, set))
 	{
 		// /*debug*/printf("split_enter:%s\n", str);
-		//x = 0;
 		count = count_chr(str, set);//, &f);
 		if (!malloc_chr_ptr(&res[i], count + 1))
 		{

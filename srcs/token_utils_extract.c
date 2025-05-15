@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 12:06:36 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/13 07:58:16 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/15 12:18:08 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,6 @@ static void	alloc_copy_infile(char **infile, char **lst_data, int *i)
 	x = 0;
 	infile_fin = ft_split_shell(infile[x], ">");
 	fin = ft_split_shell(infile_fin[0], " \t\n\v\f\r");
-
-	// in
-	// in2 in3>out blbl
-	// <in <in3 cmd <in4
-
 	allocate_str(&lst_data[(*i)], fin[0]);
 	ft_strlcpy(lst_data[(*i)++], fin[0], ft_strlen(fin[0]) + 1);
 	free_multiple_ptr(infile_fin, fin, NULL);
@@ -42,7 +37,7 @@ static void	alloc_copy_infile(char **infile, char **lst_data, int *i)
  * jump to where 1st infile occur, split by spaces & malloc+copy
  * uses malloc
  */
-void	extract_infile(char **lst_data, int *i, char *res)//, char **infile)
+void	extract_infile(char **lst_data, int *i, char *res)
 {
 	int		x;
 	char	**infile;
