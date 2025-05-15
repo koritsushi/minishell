@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/15 12:27:33 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/15 12:51:58 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ int	check_var_syntax(char **str)//, int *flag)
 		/*debug*/printf("check_var_syntax:\033[93mnon var detected!\033[0m\n");
 		return (0);
 	}
-
 	new = *str;
 	while (new && new[0])// && !(*flag)) //export & default can use flag != 1
 	{
@@ -169,6 +168,5 @@ int	check_var_syntax(char **str)//, int *flag)
 		if (new)
 			new++;
 	}
-	// if invalid_var_name
 	return (1);
 }
