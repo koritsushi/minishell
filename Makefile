@@ -18,6 +18,7 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/expansion_quote.c					\
 				srcs/expansion_brace_utils_count.c		\
 				srcs/expansion_brace_utils.c			\
+				srcs/expansion_brace_utils2.c			\
 				srcs/expansion_brace.c					\
 				srcs/expansion_shell_exit-status.c		\
 				srcs/expansion_shell.c					\
@@ -35,6 +36,7 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/parsing_utils_vars_name.c			\
 				srcs/parsing_utils_vars_check.c			\
 				srcs/parsing_utils_vars_write.c			\
+				srcs/parsing_utils_vars_remove.c		\
 				srcs/utils_free.c						\
 				srcs/debug.c							\
 				srcs/signals.c							\

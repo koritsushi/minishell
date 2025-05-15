@@ -194,7 +194,7 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 	free_chr_ptr((void **)outfile);
 }
 
-// 18 lines!
+// 22 lines!
 /*
  * scans line and saves valid command into a new char** array, str=new
  * uses malloc
@@ -225,7 +225,13 @@ void	process_cmd(t_token *lst, char **res)//, char **infile)
 
 		// skips to where cmd starts & process cmd
 		// for scenario '< infile cmd'
-		cmd_tail = skip_redirs(cmd_tail);
+		while (cmd_tail && cmd_tail[0] == '<')
+		{
+			cmd_tail = skip_spaces(cmd_tail, "< \t\n\v\f\r");
+			cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
+		}
+
+		// cmd_tail = skip_redirs(cmd_tail);
 		/*debug*/printf("cmd_tail:%s.\n", cmd_tail);
 
 		if (!cmd_tail)

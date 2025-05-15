@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils_count.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/14 17:00:59 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/15 12:15:12 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,77 +88,10 @@ static int	count_infile(char **res)//, char **infile)
 	}
 	return (count);
 }
-/*
-static int	count_infile(char **res, char **infile)
-{
-	int		count;
-	char	**in_fin;
-
-	count = 0;
-	in_fin = ft_split_shell(infile[0], ">");
-	if (res[0][0] == '<' && !infile[1] && \
-		has_more_str(in_fin[0], " \t\n\v\f\r"))
-		count++;
-	else if (res[0][0] != '<' && infile[1])
-		count++;
-
-	free_chr_ptr((void **)in_fin);
-	return (count);
-}
-*/
-
-/* counts number of chars in cmd_tail for malloc use */
-int	count_cmd_tail_chr(char **outfile)
-{
-	int		i;
-	int		len;
-	char	*cmd_tail;
-
-	i = 0;
-	len = 0;
-	
-	// >out cmd >out2 baba
-	// len = ft_strlen(outfile[0]);
-	while (outfile[i + 1])
-	{
-		cmd_tail = outfile[i + 1];
-		cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
-		/* skips to the 1st space detected */
-		cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
-		if (cmd_tail)
-			len += (ft_strlen(cmd_tail) + 1);
-		i++;
-		/*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
-	}
-	return (len);
-}
-
-// int	count_cmd_tail_chr(char **outfile)
-// {
-// 	int		i;
-// 	int		len;
-// 	char	*cmd_tail;
-
-// 	i = 0;
-// 	len = 0;
-	
-// 	// >out cmd >out2 baba
-// 	while (outfile[i + 1])
-// 	{
-// 		cmd_tail = outfile[i + 1];
-// 		cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
-// 		/* skips to the 1st space detected */
-// 		cmd_tail = ft_strchr(cmd_tail, ' ');
-// 		if (cmd_tail)
-// 			len += ft_strlen(cmd_tail);
-// 		i++;
-// 		/*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
-// 	}
-// 	return (len);
-// }
 
 // 24 lines!
 /*
+ * child function in get_malloc_size
  * counts number of words in cmd_tail for malloc use
  * *set = set of spaces to detect: ' \t\n\v\f\r'
  */

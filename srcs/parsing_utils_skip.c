@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 22:05:39 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/13 07:25:02 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/14 17:56:22 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*skip_if_quote(char *str, char symbol, int flag)
  * skips all < infile & > outfile redirections that are at the beginning of str,
  * returns result to char*
  */
-char	*skip_redirs(char *str)//, char **new)
+char	*skip_redirs(char *str)
 {
 	char	*new;
 

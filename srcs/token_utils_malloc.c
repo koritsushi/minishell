@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/12 19:37:38 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/15 12:15:57 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,35 @@ int	malloc_chr_ptr(char **dest, int len)
 	while (x < len)
 		(*dest)[x++] = '\0';
 	return (1);
+}
+
+/*
+ * child function in allocate_cmd_tail
+ * counts number of chars in cmd_tail for malloc use
+ */
+static int	count_cmd_tail_chr(char **outfile)
+{
+	int		i;
+	int		len;
+	char	*cmd_tail;
+
+	i = 0;
+	len = 0;
+	
+	// >out cmd >out2 baba
+	// len = ft_strlen(outfile[0]);
+	while (outfile[i + 1])
+	{
+		cmd_tail = outfile[i + 1];
+		cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
+		/* skips to the 1st space detected */
+		cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
+		if (cmd_tail)
+			len += (ft_strlen(cmd_tail) + 1);
+		i++;
+		/*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
+	}
+	return (len);
 }
 
 // 13 lines!

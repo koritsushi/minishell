@@ -54,7 +54,7 @@ void	process_outfile(char **lst_data, int *i, \
 
 /* -------------------count_&_mallocs---------------------- */
 // int		count_str_array(char **res);
-int		count_cmd_tail_chr(char **outfile);
+// int		count_cmd_tail_chr(char **outfile);
 int		count_str_array(char **res);
 
 
@@ -66,9 +66,8 @@ int		malloc_chr_ptr(char **dest, int len);
 
 char	*skip_if_symbol(char *str, char c, char symbol);
 char	*skip_spaces(char *str, char *set);
-char	*search_rstr(char *str, char c, int len);
-
-char	*truncate_input(char *str);
+// char	*search_rstr(char *str, char c, int len);
+// char	*truncate_input(char *str);
 
 
 /* -----------------free_memory_allocations----------------- */
