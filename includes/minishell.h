@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/13 18:37:20 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/16 09:22:53 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,7 @@ int		ft_lstsize_sh(t_env **lst);
 
 /*______________________free memory allocations______________________*/
 void	free_chr_ptr(void **ptr);
-
+void	free_env(t_env *env);
+void	free_exec(t_exec *exec);
+void	ms_free_all(t_ms *data, int exit_code);
 #endif
