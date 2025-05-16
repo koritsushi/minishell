@@ -6,36 +6,11 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/15 23:44:02 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/16 16:04:00 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/execution.h"
-
-// char	*ft_heredoc(char *delimiter)
-// {
-// 	char	*res;
-// 	char	*tmp;
-// 	char	*final;
-
-// 	while (1)
-// 	{
-// 		write(STDOUT_FILENO, "> ", 3);
-// 		res = get_next_line(STDIN_FILENO);
-// 		if (res == NULL)
-// 			break ;
-// 		else if (ft_strncmp(res, delimiter, ft_strlen(delimiter)) == 0)
-// 		{
-// 			free(res);
-// 			break ;
-// 		}
-// 		tmp = ft_strjoin(res, "\n");
-// 		final = ft_strjoin(final, res);
-// 		free(res);
-// 		free(tmp);
-// 	}
-// 	return (final);
-// }
 
 void	ft_here_doc(t_ms *data, char *delimiter, int parsing_pipe[2])
 {
@@ -145,7 +120,7 @@ void	outfile_parsing_init(t_ms *data, t_token *lst)
 	j = 0;
 	while (lst->data[i] != NULL)
 	{
-		if (lst->datatype[i] != PIPE)
+		if (lst->datatype[i] == PIPE)
 			j++;
 		if (data->exec.outfile_fd[j] > 2 && \
 			(lst->datatype[i] == OUTFILE || lst->datatype[i] == OUTFILE_A))
