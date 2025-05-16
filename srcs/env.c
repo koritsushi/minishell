@@ -161,9 +161,3 @@ int	unset(t_env **lst, char *str)
 	free_chr_ptr((void **)tmp);
 	return (0);
 }
-
-void	msh_init(t_ms *data, char **env)
-{
-	env_init(&data->env_var, env);
-	exec_init(&data->exec);
-}
