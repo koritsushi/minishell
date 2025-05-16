@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils_execute.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/15 13:01:55 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/16 16:48:51 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,13 +137,18 @@ void	execute_functions(t_ms *data, t_token lst)
 	exit_code = &data->exec.exit_code;
 	i = -1;
 	if (strncmp(cmd_line[0], "cd", 2) == 0 && !has_pipes(lst))
+	{
 		*exit_code = ft_cd(&data->env_var, ft_strchr(cmd_line[++i], ' '));
+		return ;
+	}
 	else if (strncmp(cmd_line[0], "unset", 5) == 0 && !has_pipes(lst))
 	{
 		*exit_code = unset(&data->env_var, cmd_line[++i]);
 		/*debug*/printf("\033[93m===========================\033[0m\n");
 		/*debug*/env_print(&data->env_var);
+		return ;
 	}
+	ft_init_pipe(data, &lst);
 	infile_parsing_init(data, &lst);
 	outfile_parsing_init(data, &lst);
 	ft_execs_init(data, &lst);
