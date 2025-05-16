@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:40:41 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/02 16:59:10 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/16 17:19:21 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,29 @@
 // 	}
 // 	return (dest);
 // }
+
+void	dot_expansion(char **cmd_line)
+{
+	int		x;
+	char	*str;
+	char	*new;
+
+	x = 0;
+	str = *cmd_line;
+	if (ft_strncmp(str, "../", 3) == 0)
+		return ;
+	else if (ft_strncmp(str, "./", 2) == 0)
+	{
+		if (str[x + 2])
+		{
+			malloc_chr_ptr(&new, ft_strlen(*cmd_line));
+			ft_strlcpy(new, *cmd_line, x + 1);
+			ft_strlcpy(&new[x], &str[x + 1], ft_strlen(&str[x + 1]) + 1);
+			free(*cmd_line);
+			*cmd_line = new;
+		}
+	}
+}
 
 // 25 lines!
 /*
