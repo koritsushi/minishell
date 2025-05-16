@@ -47,10 +47,10 @@ void	block_signal(int signal)
 	sigaddset(&sigset, signal);
 	sigprocmask(SIG_BLOCK, &sigset, NULL);
 
-	if (signal == SIGQUIT)
-		printf("\e[36mSIGQUIT (ctrl-\\) blocked.\e[0m\n");
-	else if (signal == SIGINT)
+	if (signal == SIGINT)
 		printf("\e[36mSIGINT (ctrl-c) blocked.\e[0m\n");
+	else if (signal == SIGQUIT)
+		printf("\e[36mSIGQUIT (ctrl-\\) blocked.\e[0m\n");
 }
 
 // Unblocks the given signal
@@ -69,7 +69,9 @@ void	unblock_signal(int signal)
 	sigemptyset(&sigset);
 	sigaddset(&sigset, signal);
 	sigprocmask(SIG_UNBLOCK, &sigset, NULL);
-	if (signal == SIGQUIT)
+	if (signal == SIGINT)
+		printf("\e[36mSIGINT (ctrl-c) blocked.\e[0m\n");
+	else if (signal == SIGQUIT)
 		printf("\e[36mSIGQUIT (ctrl-\\) unblocked.\e[0m\n");
 }
 
