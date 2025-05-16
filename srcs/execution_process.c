@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:55 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/16 09:45:41 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/16 16:33:47 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	ft_execution(t_ms *data, char *cmd, char **cmd_args, char **envp)
 {
 	char *cmd_path;
 
+	if (ft_strncmp(cmd, "exit", 4) == 0)
+		ms_free_all(data, 0);
 	if (is_built_in(cmd))
 	{
 		if (execute_built_in(data, cmd_args))
@@ -32,12 +34,13 @@ void	ft_execution(t_ms *data, char *cmd, char **cmd_args, char **envp)
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putstr_fd("\n", 2);
-		ms_free_all(data, 1); //exit and free all struct in childProcess
+		ms_free_all(data, 127); //exit and free all struct in childProcess
 	}
 	if (execve(cmd_path, cmd_args, envp) == -1)
 	{
 		ft_putstr_fd("./minishell: execve() error!\n", 2);
-		ms_free_all(data, 1); //exit and free all struct in childProcess with Minishell then exit minishell
+		free(cmd_path);
+		ms_free_all(data, -1); //exit and free all struct in childProcess with Minishell then exit minishell
 	}
 }
 
