@@ -86,56 +86,15 @@ char	*ft_cmdpath(char **cmd_args, char **path)
 		if (access(cmd_path, F_OK) == 0)
 			break ;
 		free(cmd_path);
+		cmd_path = NULL;
 	}
-	if (i == end)
-		return (NULL);
+	if (i == end && cmd_path == NULL)
+	{
+		cmd_path = ft_strjoin(getpwd(), cmd_args[0]);
+		if (access(cmd_path, F_OK) == 0)
+			return (cmd_path);
+		free (cmd_path);
+		cmd_path = NULL;
+	}
 	return (cmd_path);
 }
-
-// void	ft_cmdpath(t_exec *exec, char **path)
-// {
-// 	int		i;
-// 	int		j;
-// 	int		end;
-
-// 	i = -1;
-// 	end = ft_str_arr(path);
-// 	exec->cmd_paths = malloc(sizeof(char *) * (exec->cmd_count + 1));
-// 	exec->cmd_paths[exec->cmd_count] = NULL;
-// 	while (exec->cmd_args[++i] != NULL)
-// 	{
-// 		j = -1;
-// 		while (path[++j] != NULL)
-// 		{
-// 			exec->cmd_paths[i] = ft_strjoin(path[j], exec->cmd_args[i][0]);
-// 			if (access(exec->cmd_paths[i], F_OK) == 0)
-// 				break ;
-// 			if (j == end - 1)
-// 			{
-// 				exec->index = i;
-// 				ft_cmdpath_error(exec, exec->cmd_args[i][0], path);
-// 			}
-// 			free(exec->cmd_paths[i]);
-// 		}
-// 	}
-// }
-
-// void	ft_cmdpath_error(t_ms *data, char *cmd, char **path)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	printf("./pipex: %s: command not found!\n", cmd);
-// 	if (data->exec.cmd_args != NULL)
-// 	{
-// 		while (data->exec.cmd_args[i] != NULL)
-// 		{
-// 			ft_free(data->exec.cmd_args[i]);
-// 			i++;
-// 		}
-// 		free(data->exec.cmd_args);
-// 	}
-// 	//ft_cmdpath_free(data->exec.cmd_paths, data->exec.index);
-// 	//ft_free(path);
-// 	exit(1);
-// }
