@@ -25,6 +25,26 @@ ans: fork out a child process just for builtin function for
 them to be able redirec in/out for shell commands function
 */
 
+int	ft_isspace(char c)
+{
+
+	if (c == 32 || (c >= 9 && c <= 13))
+			return (0);
+	return (1);
+}
+
+int	ft_isEmpty(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && ft_isspace(str[i]) == 1)
+		i++;
+	if (str[i] == '\0')
+		return (1);
+	return (0);
+}
+
 int	lst_cmd_count(t_token *lst)
 {
 	int	i;
@@ -65,13 +85,16 @@ char	**ft_cmd_init(t_ms *data, t_token *lst)
 
 	i = 0;
 	j = 0;
-	size = lst_cmd_count(lst);
-	data->exec.cmd_count = size;
+	data->exec.cmd_count = lst_cmd_count(lst);
+	size = data->exec.cmd_count;
 	cmd = malloc(sizeof(char **) * (size + 1));
 	while (lst->data[i] != NULL)
 	{
 		if (lst->datatype[i] == WORD)
 			cmd[j++] = ft_strdup(lst->data[i]);
+		// if (lst->datatype[i] == PIPE)
+		// 	if (cmd[j] == NULL)
+		// 		cmd[j++] = ft_strdup("\0");
 		i++;
 	}
 	cmd[j] = NULL;
@@ -139,20 +162,34 @@ void	ft_execs_init(t_ms *data, t_token *lst)
 	ft_init_pipe(data, lst);
 	cmd = ft_cmd_init(data, lst);
 	if (cmd == NULL)
+	{
+		printf("-minishell: command allocation fail!: Critical Error!\n");
 		exit(1); //cmd allocation fail exit minishell program free everything
+	}
 	envp = ft_envp(&data->env_var);
 	if (envp == NULL)
+	{
+		printf("-minishell: environment allocation fail!: Critical Error!\n");
 		exit(1); //envp allocation fail exit minishell program free everything
+	}
 	// /*debug*/printf("___ft_execs_init___\n");
 	// /*debug*/debug_print(cmd);
 
 	/* execute only if there is cmd */
 	data->exec.path = ft_get_path(envp);
-	if (data->exec.path)
+	if (data->exec.path == NULL)
+	{
+		printf("-minishell: environment path allocation fail!: Critical Error!\n");
 		exit(1); //get path fail, exit minishell program free everything
+	}
 	data->exec.cmd_args = ft_split_cmd(&data->exec, cmd);
-	if (data->exec.cmd_args)
+	if (data->exec.cmd_args == NULL)
+	{
+		printf("-minishell: split 3 dimensional command array allocation fail!: Critical Error!\n");
 		exit(1);  //split 3d cmd fail, exit minishell program free everything
+	}
+	free_chr_ptr((void **) cmd);
 	// //free_chr_ptr((void **) cmd);
 	ft_process(data, envp);
+	free_chr_ptr((void **) envp);
 }
