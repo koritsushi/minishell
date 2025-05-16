@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/16 16:48:51 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/16 18:03:15 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	execute_built_in(t_ms *data, char **argv)
 		*exit_code = ft_echo(argv);
 	else if (ft_strncmp(argv[0], "pwd", 3) == 0)
 		*exit_code = ft_pwd();
-	else if (ft_strcmp(argv[0], "env") == 0 && !argv[1])
+	else if (ft_strncmp(argv[0], "env", 3) == 0 && !argv[1])
 		*exit_code = env_print(&data->env_var);
 	else if (ft_strncmp(argv[0], "export", 6) == 0)
 		*exit_code = export_print(&data->env_var);
@@ -148,9 +148,14 @@ void	execute_functions(t_ms *data, t_token lst)
 		/*debug*/env_print(&data->env_var);
 		return ;
 	}
-	ft_init_pipe(data, &lst);
+	if (is_built_in(cmd_line[0]))
+	{
+		execute_built_in(data, cmd_line);
+		return ;
+	}
 	infile_parsing_init(data, &lst);
 	outfile_parsing_init(data, &lst);
+	ft_init_pipe(data, &lst);
 	ft_execs_init(data, &lst);
 
 	// while (cmd_line[++i]) //split into another function here
