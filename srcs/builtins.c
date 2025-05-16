@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/02 15:38:42 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/16 16:49:53 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	ft_cd(t_env **lst, char *dir)
 		return (-1);
 	if (chdir(tmp[0]) != 0)
 	{
-		printf("Minishell: cd : %s: %s\n", tmp[0], strerror(errno));
+		printf("Minishell: cd: %s: %s\n", tmp[0], strerror(errno));
 		exit_code = 1;
 	}
 	else
@@ -115,7 +115,7 @@ int	ft_cd(t_env **lst, char *dir)
 	// 	if (strncmp("../", tmp[0], 3) == 0 || strncmp("..", tmp[0], 2) == 0)
 	// 		free(new);
 	// }
-	/*debug*/debug_print_cd();
+	/*debug*///debug_print_cd();
 	free_chr_ptr((void **)tmp);
 	free(curr_dir);
 	return (exit_code);
@@ -134,9 +134,9 @@ int	ft_echo(char **args)
 	int	i;
 	int	nl;
 
-	/*debug*/printf("\033[93mft_echo:\033[0m\n");
-	/*debug*/debug_print(args);
-	/*debug*/printf("\033[93mft_echo end\033[0m\n");
+	/*debug*///printf("\033[93mft_echo:\033[0m\n");
+	/*debug*///debug_print(args);
+	/*debug*///printf("\033[93mft_echo end\033[0m\n");
 	nl = 0;
 	if (args[1] && ft_strncmp(args[1], "-n", 2) == 0)
 		nl = 1;
@@ -151,33 +151,3 @@ int	ft_echo(char **args)
 		ft_putstr_fd("\n", 1);
 	return (0);
 }
-
-/*debugging and testing purposes
-int	main(int argc, char **argv, char **env)
-{
-	t_ms	data;
-
-	data.env_var = NULL;
-	msh_init(&data, env);
-	if (argc > 1)
-	{
-		if (strcmp(argv[1], "echo") == 0)
-		{
-			ft_echo(argc, argv+1);
-		}
-		else if (strcmp(argv[1], "pwd") == 0)
-		{
-			ft_pwd();
-		}	
-		else if (strcmp(argv[1], "cd") == 0)
-		{
-			ft_pwd();
-			ft_cd(&data.env_var, argv[2]);
-			ft_pwd();
-		}
-		env_print(&data.env_var);
-		export_print(&data.env_var);
-	}
-	return (0);
-}
-*/
