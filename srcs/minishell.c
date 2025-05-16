@@ -3,30 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/15 12:34:28 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/16 09:22:31 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
 int	g_signal = 0;
-
-int	ft_isspace(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-	{
-		if (str[i] > 32)
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 // rmb to handle exit_status
 int	main(int argc, char **argv, char **env)
@@ -41,9 +27,10 @@ int	main(int argc, char **argv, char **env)
 	//block_signal(SIGQUIT);
 	//block_signal(SIGINT);
 	data.env_var = NULL;
-	msh_init(&data, env);
+	env_init(&data.env_var, env);
 	while (1)
 	{
+		exec_init(&data.exec);
 		text = readline("\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m");
 		if (text == NULL)
 		{
@@ -85,6 +72,7 @@ int	main(int argc, char **argv, char **env)
 
 				/* execution here */
 				execute_functions(&data, data.lst); //inject pipex inside
+				free_exec(&data.exec);
 				free_all(&data.lst);
 			}
 		}
