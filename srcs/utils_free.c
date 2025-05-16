@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 17:58:29 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/15 14:08:52 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/16 09:21:38 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,23 @@
  * 
  * exit will have exit code 1 
  */
-void	exit_free(t_ms *data, int errno)
+// void	exit_free(t_ms *data, int errno)
+// {
+// 	printf("Error: %s\n", strerror(errno));
+// 	exit(1);
+// }
+
+void	free_3d_ptr(void ***ptr)
 {
-	printf("Error: %s\n", strerror(errno));
-	exit(1);
+	int	i;
+
+	i = 0;
+	if (ptr == NULL)
+		return ;
+	while (ptr[i] != NULL)
+		free_chr_ptr(ptr[i++]);
+	free(ptr);
+	ptr = NULL;
 }
 
 void	free_chr_ptr(void **ptr)
@@ -80,4 +93,31 @@ void	free_all(t_token *lst)
 		return ;
 	free_chr_ptr((void **)lst->data);
 	free(lst->datatype);
+}
+
+void	free_env(t_env *env)
+{
+	if (env && env->content)
+		ft_lstclear_sh(&env, free);
+}
+
+void	free_exec(t_exec *exec)
+{
+	if (exec->cmd_args)
+		free_3d_ptr((void ***)exec->cmd_args);
+	if (exec->cmd)
+		free_chr_ptr((void **)exec->cmd);
+	if (exec->path)
+		free_chr_ptr((void **)exec->path);
+}
+
+void	ms_free_all(t_ms *data, int exit_code)
+{
+	free_env(data->env_var);
+	free_exec(&data->exec);
+	if (data->lst.data)
+		free_chr_ptr((void **)data->lst.data);
+	if (data->lst.datatype)
+		free(data->lst.datatype);
+	exit(exit_code);
 }
