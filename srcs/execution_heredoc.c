@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_heredoc.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/14 16:22:46 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/15 23:44:02 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,8 @@ void	infile_parsing_init(t_ms *data, t_token *lst)
 	{
 		if (lst->datatype[i] == PIPE)
 			j++;
-		if (data->exec.infile_fd[j] > 2 && (lst->datatype[i] == INFILE || lst->datatype[i] == HEREDOC))
+		if (data->exec.infile_fd[j] > 2 && \
+			(lst->datatype[i] == INFILE || lst->datatype[i] == HEREDOC))
 			close(data->exec.infile_fd[j]);
 		if (lst->datatype[i] == INFILE)
 		{
@@ -146,7 +147,8 @@ void	outfile_parsing_init(t_ms *data, t_token *lst)
 	{
 		if (lst->datatype[i] != PIPE)
 			j++;
-		if (data->exec.outfile_fd[j] > 2 && (lst->datatype[i] == OUTFILE || lst->datatype[i] == OUTFILE_A))
+		if (data->exec.outfile_fd[j] > 2 && \
+			(lst->datatype[i] == OUTFILE || lst->datatype[i] == OUTFILE_A))
 				close(data->exec.outfile_fd[j]);
 		if (lst->datatype[i] == OUTFILE)		
 			data->exec.outfile_fd[j] = \
