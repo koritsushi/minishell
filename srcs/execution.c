@@ -147,11 +147,15 @@ void	ft_process(t_ms *data, char **envp)
 			ft_parent_process(data, i);
 		i++;
 	}
+	block_signal(SIGINT);
+	block_signal(SIGQUIT);
 	while (wait(&p_status) >= 0)
 	{
 		if (WIFEXITED(p_status))
 			data->exec.exit_code = WEXITSTATUS(p_status);
 	}
+	unblock_signal(SIGINT);
+	unblock_signal(SIGQUIT);
 }
 
 void	ft_execs_init(t_ms *data, t_token *lst)
@@ -159,18 +163,18 @@ void	ft_execs_init(t_ms *data, t_token *lst)
 	char	**envp;
 	char	**cmd;
 
-	ft_init_pipe(data, lst);
 	cmd = ft_cmd_init(data, lst);
 	if (cmd == NULL)
 	{
 		printf("-minishell: command allocation fail!: Critical Error!\n");
-		exit(1); //cmd allocation fail exit minishell program free everything
+		ms_free_all(data, 1); //cmd allocation fail exit minishell program free everything
 	}
 	envp = ft_envp(&data->env_var);
 	if (envp == NULL)
 	{
+		free_chr_ptr((void **) cmd);
 		printf("-minishell: environment allocation fail!: Critical Error!\n");
-		exit(1); //envp allocation fail exit minishell program free everything
+		ms_free_all(data, 1); //envp allocation fail exit minishell program free everything
 	}
 	// /*debug*/printf("___ft_execs_init___\n");
 	// /*debug*/debug_print(cmd);
@@ -179,14 +183,18 @@ void	ft_execs_init(t_ms *data, t_token *lst)
 	data->exec.path = ft_get_path(envp);
 	if (data->exec.path == NULL)
 	{
+		free_chr_ptr((void **) cmd);
+		free_chr_ptr((void **) envp);
 		printf("-minishell: environment path allocation fail!: Critical Error!\n");
-		exit(1); //get path fail, exit minishell program free everything
+		ms_free_all(data, 1); //get path fail, exit minishell program free everything
 	}
 	data->exec.cmd_args = ft_split_cmd(&data->exec, cmd);
 	if (data->exec.cmd_args == NULL)
 	{
+		free_chr_ptr((void **) cmd);
+		free_chr_ptr((void **) envp);
 		printf("-minishell: split 3 dimensional command array allocation fail!: Critical Error!\n");
-		exit(1);  //split 3d cmd fail, exit minishell program free everything
+		ms_free_all(data, 1);  //split 3d cmd fail, exit minishell program free everything
 	}
 	free_chr_ptr((void **) cmd);
 	// //free_chr_ptr((void **) cmd);
