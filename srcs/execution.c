@@ -132,7 +132,7 @@ void	ft_process(t_ms *data, char **envp)
 
 	p_status = 0;
 	i = 0;
-	while (i < data->exec.cmd_count)
+	while (i < data->exec.pipe_count * 2)
 	{
 		pid = fork();
 		if (pid == -1)
