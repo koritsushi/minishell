@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:55 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/16 16:33:47 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/18 00:25:45 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	ft_execution(t_ms *data, char *cmd, char **cmd_args, char **envp)
 void	close_pipe(t_ms *data, int index)
 {
 	index = index + 1;
-	while (index < data->exec.pipe_count - 1)
+	while (index < data->exec.pipe_count)
 	{
 		close(data->exec.pipes[index][READ]);
 		close(data->exec.pipes[index][WRITE]);
