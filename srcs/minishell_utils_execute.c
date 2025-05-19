@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/16 18:03:15 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/19 18:32:29 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,21 @@ int	has_pipes(t_token lst)
 	while (lst.data[++i])
 	{
 		if (lst.datatype[i] == PIPE)
+			return (1);
+	}
+	return (0);
+}
+
+int has_infile_outfile(t_token lst)
+{
+	int	i;
+
+	i = -1;
+	while (lst.data[++i])
+	{
+		if (lst.datatype[i] == INFILE || lst.datatype[i] == HEREDOC)
+			return (1);
+		if (lst.datatype[i] == OUTFILE || lst.datatype[i] == OUTFILE_A)
 			return (1);
 	}
 	return (0);
@@ -148,7 +163,7 @@ void	execute_functions(t_ms *data, t_token lst)
 		/*debug*/env_print(&data->env_var);
 		return ;
 	}
-	if (is_built_in(cmd_line[0]))
+	if (has_infile_outfile(lst) == 0)
 	{
 		execute_built_in(data, cmd_line);
 		return ;
