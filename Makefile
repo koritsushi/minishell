@@ -38,6 +38,7 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/parsing_utils_vars_write.c			\
 				srcs/parsing_utils_vars_remove.c		\
 				srcs/utils_free.c						\
+				srcs/utils_free2.c						\
 				srcs/debug.c							\
 				srcs/signals.c							\
 				srcs/builtins.c							\
