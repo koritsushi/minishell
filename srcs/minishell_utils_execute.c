@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/19 18:32:29 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/20 19:37:32 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,14 @@ int has_infile_outfile(t_token lst)
 	str[1] = "pwd";
 	str[2] = "env";
 	str[3] = "export";
-	str[4] = NULL;
+	str[4] = "unset";
+	str[5] = "exit";
+	str[6] = NULL;
  }
 
 int is_built_in(char *str)
 {
-	char	*builtins[4];
+	char	*builtins[6];
 	int		i;
 
 	i = 0;
@@ -98,14 +100,6 @@ int is_built_in(char *str)
 		i++;
 	}
 	return (0);
-	/*
-	if ((strcmp(str, "echo") == 0) || \
-(strncmp(str, "pwd", 3) == 0) || \
-(strcmp(str, "env") == 0) || \
-(strcmp(str, "export") == 0))
-	return (1);
-	return (0);
-	*/
 }
 
 /*
@@ -114,16 +108,11 @@ int is_built_in(char *str)
  */
 int	execute_built_in(t_ms *data, char **argv)
 {
-	//char			**tmp;
+	int				i;
 	unsigned char	*exit_code;
 
+	i = 0;
 	exit_code = &data->exec.exit_code;
-	//tmp = ft_split_shell(argv, " \t\n\v\f\r");
-	if (!is_built_in(argv[0]))
-	{
-		//free_chr_ptr((void **)tmp);
-		return (0);
-	}
 	if (ft_strncmp(argv[0], "echo", 4) == 0)
 		*exit_code = ft_echo(argv);
 	else if (ft_strncmp(argv[0], "pwd", 3) == 0)
@@ -132,8 +121,12 @@ int	execute_built_in(t_ms *data, char **argv)
 		*exit_code = env_print(&data->env_var);
 	else if (ft_strncmp(argv[0], "export", 6) == 0)
 		*exit_code = export_print(&data->env_var);
-	//free_chr_ptr((void **)tmp);
-	return (1);
+	else if (ft_strncmp(argv[0], "cd", 2) == 0)
+		*exit_code = ft_cd(&data->env_var, ft_strchr(argv[0], ' '));
+	else if (ft_strncmp(argv[0], "unset", 5) == 0)
+		while (argv[i] != NULL)
+			*exit_code = unset(&data->env_var, argv[i++]);
+	return (*exit_code);
 }
 
 /*
@@ -142,45 +135,48 @@ int	execute_built_in(t_ms *data, char **argv)
  */
 void	execute_functions(t_ms *data, t_token lst)
 {
-	int				i;
-	char			**cmd_line;
-	unsigned char	*exit_code;
+	char	**envp;
+	char	**cmd;
 
-	if (!lst.data || !lst.data[0] || !lst.data[0][0])
-		return ;
-	cmd_line = lst.data;
-	exit_code = &data->exec.exit_code;
-	i = -1;
-	if (strncmp(cmd_line[0], "cd", 2) == 0 && !has_pipes(lst))
-	{
-		*exit_code = ft_cd(&data->env_var, ft_strchr(cmd_line[++i], ' '));
-		return ;
-	}
-	else if (strncmp(cmd_line[0], "unset", 5) == 0 && !has_pipes(lst))
-	{
-		*exit_code = unset(&data->env_var, cmd_line[++i]);
-		/*debug*/printf("\033[93m===========================\033[0m\n");
-		/*debug*/env_print(&data->env_var);
-		return ;
-	}
-	if (has_infile_outfile(lst) == 0)
-	{
-		execute_built_in(data, cmd_line);
-		return ;
-	}
+	ft_init_pipe(data, &lst);
 	infile_parsing_init(data, &lst);
 	outfile_parsing_init(data, &lst);
-	ft_init_pipe(data, &lst);
-	ft_execs_init(data, &lst);
-
-	// while (cmd_line[++i]) //split into another function here
-	// {
-	// 	/* if there's pipe || if no pipe
-	// 	 * fork & dup2 */
-	// 	// /*debug*/printf("execute_functions:%d\n", data->exec.exit_code);
-	// 	// /*debug*/printf("execute_functions:$?:ent:\033[93m%s\033[0m.\n", cmd_line[i]);
-	// 	/*debug*/printf("execute_functions:$?:\033[92m%s\033[0m.\n", cmd_line[i]);
-	// 	if (lst.datatype[i] == WORD)
-	// 		execute_built_in(data, cmd_line[i]);
-	// }
+	cmd = ft_cmd_init(data, &lst);
+	if (cmd == NULL)
+	{
+		printf("-minishell: command allocation fail!: Critical Error!\n");
+		ms_free_all(data, 1); //cmd allocation fail exit minishell program free everything
+	}
+	envp = ft_envp(&data->env_var);
+	if (envp == NULL)
+	{
+		free_chr_ptr((void **) cmd);
+		printf("-minishell: environment allocation fail!: Critical Error!\n");
+		ms_free_all(data, 1); //envp allocation fail exit minishell program free everything
+	}
+	data->exec.cmd_args = ft_split_cmd(&data->exec, cmd);
+	if (data->exec.cmd_args == NULL)
+	{
+		free_chr_ptr((void **) cmd);
+		free_chr_ptr((void **) envp);
+		printf("-minishell: split 3 dimensional command array allocation fail!: Critical Error!\n");
+		ms_free_all(data, 1);  //split 3d cmd fail, exit minishell program free everything
+	}
+	free_chr_ptr((void **) cmd);
+	if (is_built_in(lst.data[0]) && \
+		(has_pipes(lst) == 0 && has_infile_outfile(lst) == 0))
+	{
+		execute_built_in(data, data->exec.cmd_args[0]);
+		return ;
+	}
+	data->exec.path = ft_get_path(envp);
+	if (data->exec.path == NULL)
+	{
+		free_chr_ptr((void **) cmd);
+		free_chr_ptr((void **) envp);
+		printf("-minishell: environment path allocation fail!: Critical Error!\n");
+		ms_free_all(data, 1); //get path fail, exit minishell program free everything
+	}
+	ft_process(data, envp);
+	free_chr_ptr((void **) envp);
 }
