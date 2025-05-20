@@ -6,10 +6,12 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/16 09:22:53 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/20 16:37:28 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef MINISHELL_H
+# define MINISHELL_H
 /* 
 	common header file such as
 	# include <unistd.h>
@@ -20,18 +22,8 @@
 	# include <stdint.h>
 	are in libft header file
 */
-#ifndef MINISHELL_H
-# define MINISHELL_H
 //libft header
 # include "../libft/libft.h"
-//minishell headers
-# include "parsing.h"
-# include "token.h"
-# include "expansion.h"
-# include "execution.h"
-# include "builtins.h"
-# include "env.h"
-# include "signals.h"
 //included extra c library
 # include <fcntl.h>
 # include <sys/types.h>
@@ -52,6 +44,14 @@ https://man7.org/linux/man-pages/man3/errno.3.html
 # include <strings.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+//minishell headers
+# include "parsing.h"
+# include "token.h"
+# include "expansion.h"
+# include "execution.h"
+# include "builtins.h"
+# include "env.h"
+# include "signals.h"
 
 typedef struct s_exec
 {
@@ -115,6 +115,7 @@ int		ft_lstsize_sh(t_env **lst);
 
 /*______________________free memory allocations______________________*/
 void	free_chr_ptr(void **ptr);
+void	free_3d_ptr(void ***ptr);
 void	free_env(t_env *env);
 void	free_exec(t_exec *exec);
 void	ms_free_all(t_ms *data, int exit_code);
