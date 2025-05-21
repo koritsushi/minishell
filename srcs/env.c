@@ -12,46 +12,6 @@
 
 #include "../includes/env.h"
 
-void	free_strarr(char **arr)
-{
-	int	i;
-
-	i = 0;
-	if (arr == NULL)
-		return ;
-	while (arr[i] != NULL)
-		free(arr[i++]);
-	free(arr);
-}
-
-int		ft_array_len(char **str)
-{
-	int	i;
-
-	i = 0;
-	if (str == NULL)
-		return (i);
-	while (str[i] != NULL)
-		i++;
-	return (i);
-}
-
-void	split_env(char **env, char **var)
-{
-	int		i;
-	char	**temp;
-
-	i = 0;
-	while (env[i] != NULL)
-	{
-		temp = ft_split(env[i], '=');
-		var[i] = ft_strdup(temp[0]);
-		free_strarr(temp);
-		i++;
-	}
-	var[i] = NULL;
-}
-
 /*	env
 	used singly linked-list to store env
 	copy env from bash shell then stored a copy in minishell
@@ -79,11 +39,9 @@ void	env_init(t_env **env_var, char **env)
 			i++;
 		}
 		else
-		{
 			tmp = ft_lstnew_shenv(var[i], env[i], 2);
-			if (tmp == NULL)
-				return ;
-		}
+		if (tmp == NULL)
+			return ;
 		ft_lstadd_back_env(env_var, tmp);
 		i++;
 	}
@@ -110,36 +68,6 @@ void	exec_init(t_exec *exec)
 	exec->exit_code = 0;
 }
 
-/*	export 
-	add variable to env
-*/
-// void	export(t_env **env_var, t_env *lenv)
-// {
-// 	t_env	*iter;
-// 	t_env	*check;
-// 	t_env	*new;
-
-// 	if (env_var == NULL || lenv == NULL)
-// 		return ;
-// 	iter = *env_var;
-// 	check = lenv;
-// 	while (iter != NULL)
-// 	{
-// 		if (ft_strncmp(iter->env, check->env, ft_strlen(iter->env)) == 0)
-// 		{
-// 			free(iter->content);
-// 			iter->content = strdup(check->content);
-// 			break ;
-// 		}
-// 		iter = iter->next;
-// 	}
-// 	if (iter->content == NULL)
-// 	{
-// 		new = ft_lstnew_env(check->env, check->content, check->exported);
-// 		ft_lstadd_back_env(env_var, new);
-// 	}
-// }
-
 /*
  * split input str by spaces ' '
  * iterates entire **lst & free if lst.env (env_name) == str
@@ -153,9 +81,6 @@ int	unset(t_env **lst, char *str)
 
 	i = 0;
 	tmp = ft_split_shell(str, " \t\n\v\f\r");
-	/*debug*/printf("unset_debug_print:\n");
-	debug_print(tmp);
-
 	while (tmp[++i])
 		ft_lst_remove_if(lst, tmp[i], ft_strncmp);
 	free_chr_ptr((void **)tmp);
