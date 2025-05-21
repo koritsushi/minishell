@@ -21,13 +21,16 @@ typedef struct s_exec	t_exec;
 typedef struct s_token	t_token;
 typedef struct s_env	t_env;
 
-int		lst_cmd_count(t_token *lst);
-int		lst_pipe_count(t_token *lst);
+//execution_process.c
 //void	ft_execs_init(t_ms *data, t_token *lst);
 void	ft_init_pipe(t_ms *data, t_token *lst);
 char	**ft_cmd_init(t_ms *data, t_token *lst);
 void	ft_process(t_ms *data, char **envp);
 char	**ft_envp(t_env **lst);
+
+//execution_process2.c
+int		lst_cmd_count(t_token *lst);
+int		lst_pipe_count(t_token *lst);
 
 //execution_cmd.c functions
 char	**ft_get_path(char **envp);
