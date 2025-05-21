@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/15 12:35:13 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/16 17:17:43 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,10 +140,10 @@ void	quote_removal(char **cmd_line)
 	*cmd_line = new;
 }
 
+/* handles brace {,} & shell_var $var expansion */
 int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 {
 	int		x;
-	// char	*ori;
 
 	x = -1;
 	while (lst_data && lst_data[++x])
@@ -153,6 +153,8 @@ int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 		/*debug*/printf("cmd_expansion:brace:%s\n", lst_data[x]);
 		shell_var_expansion(&lst_data[x], vars, exit_status);
 		/*debug*/printf("cmd_expansion:sh_var:%s\n", lst_data[x]);
+		dot_expansion(&lst_data[x]);
+		/*debug*/printf("cmd_expansion:dot:%s\n", lst_data[x]);
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:12:43 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/15 12:51:38 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/16 16:11:26 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,37 @@ static char	*find_next_var(char *str)
 }
 
 /*
+ * child function in get_variable
+ * trims all cmd_line to skip or free valid var assignment (var=123)
+ * so that it dont get passed to execution
+ */
+void	remove_var(t_token *lst)
+{
+	int		i;
+
+	i = -1;
+	debug_print_cmd_line(lst);
+	/*debug*/printf("pika.\n");
+
+	while (lst->data[++i]) //0
+	{
+		//go to word
+		while (lst->data[i] && lst->datatype[i] != WORD)
+			i++;
+		if (!lst->data[i] || !lst->data[i][0])
+			break ;
+		//trim cmd in check_var_syntax
+		//free cmd if check_var_syntax OK
+		/*debug*/printf("remove_var:%s.\n", lst->data[i]);
+		if (check_var_syntax(&lst->data[i]))
+		{
+			free(lst->data[i]);
+			lst->data[i] = ft_strdup("");
+		}
+	}
+}
+
+/*
  * child function in extract_vars,
  * adds new var entry to the end of linked list
  * updates export_id to respective values~
@@ -68,21 +99,6 @@ static void	add_var_entry(t_env **vars, char *name, char *new, int export_id)
 	/*debug*/lst = ft_lstlast_sh(*vars);
 	/*debug*/printf("add_var_entry:env:\033[93m%s\033[0m.\n", lst->env);
 }
-
-/*
- * child function in extract_vars
- * checks if str does not start with 'export' 
- * yet has 'export' keyword, eg:
- * var=123 export var2
- * then it is invalid
- * export export=baba var=baba
- */
-// static void	is_valid_var()
-// {
-// 	//if has export, skip til after 1st export keyword
-// 	//var=baba var=gg   export v=99 export lala
-// 	// trim_if_export
-// }
 
 // 18 lines!
 /*
