@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils_list.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 07:39:22 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/30 14:09:58 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/21 11:39:38 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ t_env	*ft_lstnew_sh(char *name, char *content, int export_id)
 		p->content = ft_strdup("");
 	else if (ft_strchr(content, '='))
 		p->content = ft_strdup(ft_strchr(content, '=') + 1);
-	/*debug*/printf("ft_lstnew_sh:content:%s.\n", p->content);
 	p->next = NULL;
 	return (p);
 }
