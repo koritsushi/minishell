@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/20 16:20:47 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/21 11:45:21 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	ft_pwd(void)
  */
 static void	update_env_path(t_env *lst, char *str, char *curr_dir)
 {
-	char *new;
+	char	*new;
 
 	new = expand_relative_path(str, curr_dir);
 	ft_lst_replace_if(lst, "PWD", new);
@@ -95,7 +95,6 @@ int	ft_cd(t_env **lst, char *dir)
 
 	if (!dir)
 		return (0);
-	/*debug*/printf("ft_cd:ent:%s.\n", dir);
 	exit_code = 0;
 	tmp = ft_split_shell(dir, " \t\n\v\f\r");
 	curr_dir = getpwd();
@@ -108,14 +107,6 @@ int	ft_cd(t_env **lst, char *dir)
 	}
 	else
 		update_env_path(*lst, tmp[0], curr_dir);
-	// {
-	// 	new = expand_relative_path(tmp[0], curr_dir);
-	// 	ft_lst_replace_if(*lst, "PWD", new);
-	// 	ft_lst_replace_if(*lst, "OLDPWD", curr_dir);
-	// 	if (strncmp("../", tmp[0], 3) == 0 || strncmp("..", tmp[0], 2) == 0)
-	// 		free(new);
-	// }
-	/*debug*///debug_print_cd();
 	free_chr_ptr((void **)tmp);
 	free(curr_dir);
 	return (exit_code);
@@ -134,9 +125,6 @@ int	ft_echo(char **args)
 	int	i;
 	int	nl;
 
-	/*debug*///printf("\033[93mft_echo:\033[0m\n");
-	/*debug*///debug_print(args);
-	/*debug*///printf("\033[93mft_echo end\033[0m\n");
 	nl = 0;
 	if (args[1] && ft_strncmp(args[1], "-n", 2) == 0)
 		nl = 1;
