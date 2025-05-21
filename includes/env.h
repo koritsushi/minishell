@@ -35,5 +35,7 @@ int 	unset(t_env **lst, char *str);
 // void	unset(t_env **env_var, t_env *lenv);
 int 	env_print(t_env **lst);
 int 	export_print(t_env **lst);
+void	split_env(char **env, char **var);
+int		ft_array_len(char **str);
 
 #endif
