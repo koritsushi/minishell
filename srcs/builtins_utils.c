@@ -18,19 +18,19 @@
  */
 void	ft_lst_replace_if(t_env *lst, char *name, char *content)
 {
-    t_env   *tmp;
+	t_env	*tmp;
 
-    if (!lst || !content)
-        return ;
-    tmp = lst;
-    if (ft_strncmp(tmp->env, name, ft_strlen(name)) == 0)
-    {
-        free(tmp->content);
-        tmp->content = ft_strdup(content);
-        ft_lst_replace_if(tmp->next, name, content);
-    }
-    else
-        ft_lst_replace_if(tmp->next, name, content);
+	if (!lst || !content)
+		return ;
+	tmp = lst;
+	if (ft_strncmp(tmp->env, name, ft_strlen(name)) == 0)
+	{
+		free(tmp->content);
+		tmp->content = ft_strdup(content);
+		ft_lst_replace_if(tmp->next, name, content);
+	}
+	else
+		ft_lst_replace_if(tmp->next, name, content);
 }
 
 /*
@@ -41,10 +41,10 @@ void	ft_lst_replace_if(t_env *lst, char *name, char *content)
  */
 char	*expand_relative_path(char *str, char *curr_dir)
 {
-	char 	*new;
+	char	*new;
 	int		len;
 	int		len2;
-	
+
 	new = str;
 	len2 = 0;
 	if (strcmp(".", new) == 0)
@@ -58,14 +58,11 @@ char	*expand_relative_path(char *str, char *curr_dir)
 			if (str[1] == '\0')
 				str += 1;
 			len2 = ft_strlen(str);
-			/*debug*/printf("expand_relative_path:str:%s.\n", str);
 		}
-		/*debug*/printf("expand_relative_path:len:%d %d\n", len, len2);
 		malloc_chr_ptr(&new, len + len2 + 1);
 		ft_strlcpy(new, curr_dir, len + 1);
 		if (len2 > 0)
 			ft_strlcpy(&new[len], str, len2 + 1);
-		/*debug*/printf("expand_relative_path:new:\033[93m%s\033[0m.\n", new);
 	}
 	return (new);
 }
