@@ -16,7 +16,7 @@ char	**ft_get_path(char **envp)
 {
 	int		i;
 	char	**path;
-	
+
 	i = 0;
 	path = NULL;
 	while (envp[i] != NULL)
