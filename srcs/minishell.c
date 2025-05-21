@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/16 17:14:29 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/21 14:28:17 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **env)
 
 	if (argc > 1 && ft_strncmp(argv[0], "minishell", 9) != 0)
 		exit(1);
-	set_signal_action();
+	set_signal_action(1);
 	data.env_var = NULL;
 	env_init(&data.env_var, env);
 	while (1)
