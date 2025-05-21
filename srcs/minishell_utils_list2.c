@@ -14,8 +14,8 @@
 
 int	ft_lstsize_sh(t_env **lst)
 {
-	t_env *tmp;
-	int	i;
+	t_env	*tmp;
+	int		i;
 
 	i = 0;
 	tmp = *lst;
