@@ -24,11 +24,8 @@ void	ft_lst_remove_if(t_env **lst, char *target, int (*func)())
 	if (!lst || !*lst)
 		return ;
 	tmp = *lst;
-	// /*debug*/printf("ft_lst_remove_if:ent: %s. %s.\n", tmp->env, target);
-
 	if (func(tmp->env, target, ft_strlen(target)) == 0)
 	{
-		/*debug*/printf("ft_lst_remove_if:%s. %s.", tmp->env, target);
 		(*lst) = tmp->next;
 		free_multiple_ptr_single(tmp->env, tmp->content, NULL);
 		free(tmp);
@@ -65,38 +62,6 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 	}
 }
 
-// void	ft_lstdelone_env(t_env *lst, void (*del)(void*))
-// {
-// 	if (lst == NULL)
-// 		return ;
-// 	if (lst && del != NULL)
-// 	{
-// 		(*del)(lst->env);
-// 		(*del)(lst->content);
-// 		free(lst);
-// 	}
-// }
-
-// void	ft_lstclear_env(t_env **lst, void (*del)(void*))
-// {
-// 	t_env	*next;
-// 	t_env	*tmp;
-
-// 	if (lst == NULL)
-// 		return ;
-// 	if (lst && del != NULL)
-// 	{
-// 		tmp = *lst;
-// 		while (tmp)
-// 		{
-// 			next = tmp->next;
-// 			ft_lstdelone_env(tmp, del);
-// 			tmp = next;
-// 		}
-// 		*lst = NULL;
-// 	}
-// }
-
 /*
  * helper function in saving variable in linked list
  * splits var=123 into var and 123, saves in linked list
@@ -121,21 +86,3 @@ t_env	*ft_lstnew_shenv(char *name, char *content, int export_id)
 	p->next = NULL;
 	return (p);
 }
-
-// t_env	*ft_lstnew_env(char *name, char *content, int export_id)
-// {
-// 	t_env	*p;
-
-// 	p = malloc(sizeof(t_env));
-// 	if (p == NULL)
-// 		return (NULL);
-// 	p->env = ft_strdup(name);
-// 	p->exported = export_id;
-// 	if (!is_target(content, '='))
-// 		p->exported = 1;
-// 	if (!is_target(content, '='))
-// 		p->content = ft_strdup("");
-// 	p->content = ft_strdup(content);
-// 	p->next = NULL;
-// 	return (p);
-// }
