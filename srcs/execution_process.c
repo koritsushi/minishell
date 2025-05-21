@@ -6,25 +6,22 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:55 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/18 00:25:45 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/21 13:04:48 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../includes/execution.h"
 
 void	ft_execution(t_ms *data, char *cmd, char **cmd_args, char **envp)
 {
-	char *cmd_path;
+	char	*cmd_path;
 
-	if (ft_strncmp(cmd, "exit", 4) == 0)
-		ms_free_all(data, 0);
 	if (is_built_in(cmd))
 	{
 		if (execute_built_in(data, cmd_args))
-			ms_free_all(data, 0); //finish builtin function and free all struct in childProcess
+			ms_free_all(data, 0);
 		else
-			ms_free_all(data, 1); //exit and free all struct in childProcess
+			ms_free_all(data, 1);
 	}
 	cmd_path = ft_cmdpath(cmd_args, data->exec.path);
 	if (cmd_path == NULL)
@@ -34,13 +31,13 @@ void	ft_execution(t_ms *data, char *cmd, char **cmd_args, char **envp)
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putstr_fd("\n", 2);
-		ms_free_all(data, 127); //exit and free all struct in childProcess
+		ms_free_all(data, 127);
 	}
 	if (execve(cmd_path, cmd_args, envp) == -1)
 	{
 		ft_putstr_fd("./minishell: execve() error!\n", 2);
 		free(cmd_path);
-		ms_free_all(data, -1); //exit and free all struct in childProcess with Minishell then exit minishell
+		ms_free_all(data, -1);
 	}
 }
 
@@ -74,5 +71,6 @@ void	ft_child_process(t_ms *data, int index, char **envp)
 	else
 		mc_process(data, index);
 	if (data->exec.cmd_args != NULL)
-		ft_execution(data, data->exec.cmd_args[index][0], data->exec.cmd_args[index], envp);
+		ft_execution(data, data->exec.cmd_args[index][0], \
+data->exec.cmd_args[index], envp);
 }
