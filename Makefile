@@ -44,6 +44,7 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/builtins.c							\
 				srcs/builtins_utils.c					\
 				srcs/env.c 								\
+				srcs/env2.c								\
 				srcs/env_print.c						\
 				srcs/env_utils.c						\
 				srcs/minishell_utils_execute.c			\
@@ -54,6 +55,7 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/execution_cmd.c					\
 				srcs/execution_cmd_utils.c				\
 				srcs/execution_process.c				\
+				srcs/execution_process2.c				\
 				srcs/execution_parent_process_utils.c	\
 				srcs/execution_child_process_utils.c	\
 				srcs/execution_heredoc.c				\
