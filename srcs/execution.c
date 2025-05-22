@@ -37,6 +37,8 @@ char	**ft_cmd_init(t_ms *data, t_token *lst)
 	data->exec.cmd_count = lst_cmd_count(lst);
 	size = data->exec.cmd_count;
 	cmd = malloc(sizeof(char **) * (size + 1));
+	if (cmd == NULL)
+		return (NULL);
 	while (lst->data[i] != NULL)
 	{
 		if (lst->datatype[i] == WORD)
