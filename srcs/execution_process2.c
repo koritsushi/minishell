@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:03:43 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/21 11:29:47 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/22 14:51:08 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,12 @@ int	ft_isempty(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] && ft_isspace(str[i]) == 1)
-		i++;
-	if (str[i] == '\0')
+	if (str == NULL)
 		return (1);
-	return (0);
+	while (str[i] != '\0')
+		if (ft_isalpha(str[i++]) == 1)
+			return (0);
+	return (1);
 }
 
 int	lst_cmd_count(t_token *lst)

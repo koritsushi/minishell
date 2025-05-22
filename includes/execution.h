@@ -31,6 +31,7 @@ char	**ft_envp(t_env **lst);
 //execution_process2.c
 int		lst_cmd_count(t_token *lst);
 int		lst_pipe_count(t_token *lst);
+int		ft_isempty(char *str);
 
 //execution_cmd.c functions
 char	**ft_get_path(char **envp);
