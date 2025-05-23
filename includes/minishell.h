@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/23 15:27:45 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/23 16:29:03 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	debug_print_cd(void);
 
 /*__________ helper function detect pipes and builtins_______________*/
 int		has_pipes(t_token lst);
+int		has_infile_outfile(t_token lst);
 int		is_built_in(char *str);
 
 /*___________________helper function executing cmd___________________*/
