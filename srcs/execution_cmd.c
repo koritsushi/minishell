@@ -51,6 +51,7 @@ char	**ft_format_path(char **path, char *format)
 		format_path[i] = ft_strjoin(path[i], format);
 		i++;
 	}
+	free_chr_ptr((void **) path);
 	format_path[i] = NULL;
 	return (format_path);
 }
