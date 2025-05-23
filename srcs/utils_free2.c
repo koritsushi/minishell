@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:33:47 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/23 15:29:01 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/23 17:59:54 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void	free_env(t_env *env)
 
 void	free_exec(t_exec *exec)
 {
-	if (exec->cmd_args)
+	if (exec->cmd_args != NULL)
 		free_3d_ptr((void ***)exec->cmd_args);
-	if (exec->envp)
+	if (exec->envp != NULL)
 		free_chr_ptr((void **)exec->envp);
-	if (exec->path)
+	if (exec->path != NULL)
 		free_chr_ptr((void **)exec->path);
 }
 
