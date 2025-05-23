@@ -71,7 +71,7 @@ void	ft_init_pipe(t_ms *data, t_token *lst)
 	}
 }
 
-void	ft_process(t_ms *data, char **envp)
+void	ft_process(t_ms *data)
 {
 	pid_t	pid;
 	int		p_status;
@@ -79,7 +79,7 @@ void	ft_process(t_ms *data, char **envp)
 
 	p_status = 0;
 	i = 0;
-	while (i < data->exec.cmd_count)
+	while (i < data->exec.pipe_count + data->exec.cmd_count)
 	{
 		pid = fork();
 		if (pid == -1)
@@ -88,7 +88,7 @@ void	ft_process(t_ms *data, char **envp)
 			ms_free_all(data, 1);
 		}
 		if (pid == 0)
-			ft_child_process(data, i, envp);
+			ft_child_process(data, i);
 		else
 			ft_parent_process(data, i);
 		i++;
