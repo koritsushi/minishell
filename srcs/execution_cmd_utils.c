@@ -24,6 +24,8 @@ char	**ft_envp(t_env **lst)
 	i = 0;
 	tmp = *lst;
 	envp = malloc(sizeof(char *) * (ft_lstsize_sh(lst) + 1));
+	if (envp == NULL)
+		return (NULL);
 	while (tmp != NULL)
 	{
 		env = ft_strjoin(tmp->env, "=");

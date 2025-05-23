@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/23 18:17:44 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/23 19:35:42 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,31 +84,19 @@ void	execute_functions(t_ms *data, t_token lst)
 	outfile_parsing_init(data, &lst);
 	cmd = ft_cmd_init(data, &lst);
 	if (cmd == NULL)
-	{
-		printf("-minishell: command allocation fail: %s\n", strerror(errno));
-		ms_free_all(data, 1);
-	}
+		ms_free_all(data, 0, 1);
 	data->exec.cmd_args = ft_split_cmd(&data->exec, cmd);
 	if (data->exec.cmd_args == NULL)
-	{
-		printf("-minishell: command allocation 2 fail: %s\n", strerror(errno));
-		return (free_chr_ptr((void **) cmd), ms_free_all(data, 1));
-	}
+		return (free_chr_ptr((void **) cmd), ms_free_all(data, 1, 1));
 	free_chr_ptr((void **) cmd);
 	if (is_built_in(data->exec.cmd_args[0][0]) && \
 (has_pipes(lst) == 0 || has_infile_outfile(lst) == 0))
-	{
-		execute_built_in(data, data->exec.cmd_args[0]);
-		return ;
-	}
+		return ((void) execute_built_in(data, data->exec.cmd_args[0]));
 	data->exec.envp = ft_envp(&data->env_var);
 	if (data->exec.envp == NULL)
-		return (((void) printf("-minishell: environment allocation fail!: %s\n", strerror(errno))), ms_free_all(data, 1));
+		ms_free_all(data, 2, 1);
 	data->exec.path = ft_get_path(data->exec.envp);
 	if (data->exec.path == NULL)
-	{
-		printf("-minishell: environment path allocation fail!: %s\n", strerror(errno));
-		return (free_chr_ptr((void **) cmd), ms_free_all(data, 1));
-	}
+		return (free_chr_ptr((void **) cmd), ms_free_all(data, 3, 1));
 	ft_process(data);
 }

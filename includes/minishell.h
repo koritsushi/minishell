@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/23 16:29:03 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/23 19:29:18 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,5 @@ void	free_chr_ptr(void **ptr);
 void	free_3d_ptr(void ***ptr);
 void	free_env(t_env *env);
 void	free_exec(t_exec *exec);
-void	ms_free_all(t_ms *data, int exit_code);
+void	ms_free_all(t_ms *data, int errc, int exit_code);
 #endif
