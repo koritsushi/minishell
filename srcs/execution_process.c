@@ -6,13 +6,13 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:55 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/22 16:28:43 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/23 15:31:44 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/execution.h"
 
-void	ft_execution(t_ms *data, char *cmd, char **cmd_args, char **envp)
+void	ft_execution(t_ms *data, char *cmd, char **cmd_args)
 {
 	char	*cmd_path;
 
@@ -33,7 +33,7 @@ void	ft_execution(t_ms *data, char *cmd, char **cmd_args, char **envp)
 		ft_putstr_fd("\n", 2);
 		ms_free_all(data, 127);
 	}
-	if (execve(cmd_path, cmd_args, envp) == -1)
+	if (execve(cmd_path, cmd_args, data->exec.envp) == -1)
 	{
 		ft_putstr_fd("./minishell: execve() error!\n", 2);
 		free(cmd_path);
@@ -62,7 +62,7 @@ void	ft_parent_process(t_ms *data, int index)
 		mp_process(data, index);
 }
 
-void	ft_child_process(t_ms *data, int index, char **envp)
+void	ft_child_process(t_ms *data, int index)
 {
 	if (index == 0)
 		fc_process(data, index);
@@ -70,8 +70,8 @@ void	ft_child_process(t_ms *data, int index, char **envp)
 		lc_process(data, index);
 	else
 		mc_process(data, index);
-	if (ft_isempty(data->exec.cmd_args[index][0]) == 1)
+	if (ft_isempty(data->exec.cmd_args[index][0]) == 0)
 		ft_execution(data, data->exec.cmd_args[index][0], \
-data->exec.cmd_args[index], envp);
+data->exec.cmd_args[index]);
 	ms_free_all(data, 0);
 }
