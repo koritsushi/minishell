@@ -60,12 +60,11 @@ void	exec_init(t_exec *exec)
 		i++;
 	}
 	exec->path = NULL;
-	exec->cmd = NULL;
+	exec->envp = NULL;
 	exec->cmd_args = NULL;
 	exec->cmd_count = 0;
 	exec->pipe_count = 0;
 	exec->index = 0;
-	exec->exit_code = 0;
 }
 
 /*
