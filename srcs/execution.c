@@ -79,7 +79,7 @@ void	ft_process(t_ms *data)
 
 	p_status = 0;
 	i = 0;
-	while (i < data->exec.pipe_count + data->exec.cmd_count)
+	while (i < data->exec.cmd_count)
 	{
 		pid = fork();
 		if (pid == -1)
