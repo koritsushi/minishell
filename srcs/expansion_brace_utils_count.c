@@ -6,12 +6,11 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:41:58 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/15 12:42:05 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/21 21:40:15 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
- *   helper function to count malloc needed for brace_expansions
+/*   helper function to count malloc needed for brace_expansions
  * ************************************************************************** */
 
 #include "includes/expansion.h"
