@@ -111,6 +111,11 @@ void	set_signal_action(int code)
 	struct sigaction	df_act;
 	struct sigaction	ign_act;
 
+	df_act.sa_flags = 0;
+	ign_act.sa_flags = 0;
+	sigemptyset(&df_act.sa_mask);
+	sigemptyset(&ign_act.sa_mask);
+
 	if (code == 1)
 		default_signal_action(df_act, ign_act);
 	else if (code == 2)

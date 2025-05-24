@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/15 12:21:00 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 13:43:39 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ check_export_keyword(str, "\"export\"", 8, flag))
  * child function in get_variable
  * skips keyword 'export' & update dependant values
  */
-static char	*skip_export_update_val(char *new, int *export_id)//, int *flag_exit)
+static char	*skip_export_update_val(char *new, int *export_id)
 {
 	*export_id = 2;
 	return (skip_if_symbol(new, 'c', 'c'));
@@ -125,6 +125,7 @@ static char	*skip_export_update_val(char *new, int *export_id)//, int *flag_exit
 /*
  * checks if variable syntax is correct,
  * overwrite & save if variable exists
+ * removes entire var line after finish get_variable
  * types of export_id values~
  * export_id: 0 (var=text) none
  * export_id: 1 (export var) export only
@@ -150,21 +151,13 @@ int	get_variable(t_env **vars, t_token lst, char *str, int exit_status)
 	if (!lst.data[i] || !lst.data[i][0])
 		return (0);
 	/*debug*/printf("get_variable:ent:%s.\n", lst.data[i]);
-
-// 	if (lst.data[i][0] && !is_target(lst.data[i], '=') && 
-// !valid_export_keyword(lst.data[i], 1))
-// 	{
-// 		/*debug*/printf("get_variable:\033[93minvalid var!\033[0m\n");
-// 		return (0);
-// 	}
 	if (check_var_syntax(&lst.data[i]))
 	{
 		// /* if no pipes, copy_vars */
 		// // /*debug*/printf("check_var_syntax:enter! new:%s, str:%s\n", new, str);
 		new = lst.data[i];
-		if (!is_target(str, '|'))// && !flag) //put a flag for multiple_cmd  // && !has_mix_redirs(new)
+		if (!is_target(str, '|'))
 		{
-			// /*debug*/printf("get_variable:flag:%d\n", flag);
 			if (valid_export_keyword(new, 0))
 			{
 				new = skip_export_update_val(new, &export_id);
@@ -172,12 +165,8 @@ int	get_variable(t_env **vars, t_token lst, char *str, int exit_status)
 			}
 			if (!new)
 				return (0);
-			// new = ft_strdup(new);
 			/*debug*/printf("get_var:%s.\n", new);
-			// shell_var_expansion(&new, *vars, exit_status);
 			extract_vars(vars, new, export_id);
-			// process_vars(vars, new, export_id);
-			// free(new);
 		}
 	}
 	remove_var(&lst);  //remove var frm cmd_line
