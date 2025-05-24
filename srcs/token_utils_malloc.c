@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 13:29:52 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 15:47:58 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ static int	count_cmd_tail_chr(char **outfile)
 		cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
 		/* skips to the 1st space detected */
 		cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
-		if (cmd_tail)
+		cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
+		/*debug*/printf("count_cmd_tail_chr:%s.\n", cmd_tail);
+		if (cmd_tail && cmd_tail[0])
 			len += (ft_strlen(cmd_tail) + 1);
 		// i++;
 		/*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
@@ -130,7 +132,7 @@ int	allocate_cmd_tail(char **dest, char **outfile, char c)
 	if (outfile[i])
 		len += count_cmd_tail_chr(&outfile[i]);
 	/*debug*/printf("alloc_cmd_tail:len:%d+1\n", len);
-	if (!malloc_chr_ptr(dest, len + 1))
+	if (!len || !malloc_chr_ptr(dest, len + 1))
 		return (0);
 	return (1);
 }

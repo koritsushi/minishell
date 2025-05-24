@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 13:43:39 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:02:45 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ int	get_variable(t_env **vars, t_token lst, char *str, int exit_status)
 			extract_vars(vars, new, export_id);
 		}
 	}
-	remove_var(&lst);  //remove var frm cmd_line
+	remove_var(&lst);
 	// /*debug*/printf("updated_str:%s.\n", str);
 	return (1);
 }

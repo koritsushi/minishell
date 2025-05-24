@@ -24,6 +24,7 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/expansion_shell.c					\
 				srcs/token.c							\
 				srcs/token_utils.c						\
+				srcs/token_utils_filler.c				\
 				srcs/token_utils_malloc.c				\
 				srcs/token_utils_count.c				\
 				srcs/token_utils_extract.c				\

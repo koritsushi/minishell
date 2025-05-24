@@ -22,16 +22,8 @@ enum e_type
 	OUTFILE,	// >
 	OUTFILE_A,	// >>
 	PIPE,		// |
-	// ENV,		// $
-	// ERR,		// error
 	END
 };
-
-// enum e_utils
-// {
-// 	IN = 0,
-// 	OUT = 1
-// };
 
 typedef struct s_token	t_token;
 typedef struct s_env	t_env;
@@ -46,17 +38,14 @@ int		has_more_str_all(char **str, char *set);
 /* -------------------extract_cmds---------------------- */
 int		get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status);
 void	assign_datatype(unsigned char *datatype, char **res);
-// void	extract_infile(char **lst_data, char **res, char **infile);
 void	extract_infile(char **lst_data, int *i, char *res);
 void	extract_outfile(char **lst_data, char *str);
 void	process_outfile(char **lst_data, int *i, \
-						char *cmd_tail, char **outfile);
+char *cmd_tail, char **outfile);
+void	add_filler_cmd(t_token *lst);
 
 /* -------------------count_&_mallocs---------------------- */
-// int		count_str_array(char **res);
-// int		count_cmd_tail_chr(char **outfile);
 int		count_str_array(char **res);
-
 
 int		get_malloc_size(char **res);
 int		allocate_str(char **dest, char *str);
@@ -66,8 +55,6 @@ int		malloc_chr_ptr(char **dest, int len);
 
 char	*skip_if_symbol(char *str, char c, char symbol);
 char	*skip_spaces(char *str, char *set);
-// char	*search_rstr(char *str, char c, int len);
-// char	*truncate_input(char *str);
 
 
 /* -----------------free_memory_allocations----------------- */
@@ -80,8 +67,6 @@ int		count_str(char *str, char *set);
 // int		count_chr(char *str, char *set, int *ptr);
 // int		if_target_exist(char *set, char *str);
 // char	*truncate_last_infile(char *str);
-void	debug_print(char **res);
-void	debug_print_lst(t_env *lst);
 
 
 #endif
