@@ -73,7 +73,6 @@ void	signal_handler(int signal)
 
 void	default_signal_action(struct sigaction df_act, struct sigaction ign_act)
 {
-	ft_bzero(&df_act, sizeof(df_act));
 	df_act.sa_handler = &signal_handler;
 	sigemptyset(&df_act.sa_mask);
 	if (ign_act.sa_flags == 0)
@@ -90,8 +89,6 @@ void	default_signal_action(struct sigaction df_act, struct sigaction ign_act)
 
 void	ignore_signal_action(struct sigaction df_act, struct sigaction ign_act)
 {
-	ft_bzero(&ign_act, sizeof(ign_act));
-	ign_act.sa_flags = 0;
 	ign_act.sa_handler = SIG_IGN;
 	sigemptyset(&ign_act.sa_mask);
 	sigaction(SIGINT, &ign_act, &df_act);
@@ -111,11 +108,10 @@ void	set_signal_action(int code)
 	struct sigaction	df_act;
 	struct sigaction	ign_act;
 
-	df_act.sa_flags = 0;
+	ft_bzero(&df_act, sizeof(df_act));
+	ft_bzero(&ign_act, sizeof(ign_act));
+	// df_act.sa_flags = 0;
 	ign_act.sa_flags = 0;
-	sigemptyset(&df_act.sa_mask);
-	sigemptyset(&ign_act.sa_mask);
-
 	if (code == 1)
 		default_signal_action(df_act, ign_act);
 	else if (code == 2)

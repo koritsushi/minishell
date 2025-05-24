@@ -37,6 +37,8 @@ char	**ft_cmd_init(t_ms *data, t_token *lst)
 	data->exec.cmd_count = lst_cmd_count(lst);
 	size = data->exec.cmd_count;
 	cmd = malloc(sizeof(char **) * (size + 1));
+	if (cmd == NULL)
+		return (NULL);
 	while (lst->data[i] != NULL)
 	{
 		if (lst->datatype[i] == WORD)
@@ -61,7 +63,7 @@ void	ft_init_pipe(t_ms *data, t_token *lst)
 		if (pipe(pipe_fd) == -1)
 		{
 			printf("\033[34mminishell: pipe() error!\033[0m\n");
-			ms_free_all(data, 1);
+			ms_free_all(data, 6, 1);
 		}
 		data->exec.pipes[pipe_index][READ] = pipe_fd[READ];
 		data->exec.pipes[pipe_index][WRITE] = pipe_fd[WRITE];
@@ -69,7 +71,7 @@ void	ft_init_pipe(t_ms *data, t_token *lst)
 	}
 }
 
-void	ft_process(t_ms *data, char **envp)
+void	ft_process(t_ms *data)
 {
 	pid_t	pid;
 	int		p_status;
@@ -83,10 +85,10 @@ void	ft_process(t_ms *data, char **envp)
 		if (pid == -1)
 		{
 			printf("\033[34mminishell: fork() error!\033[0m\n");
-			ms_free_all(data, 1);
+			ms_free_all(data, 7, 1);
 		}
 		if (pid == 0)
-			ft_child_process(data, i, envp);
+			ft_child_process(data, i);
 		else
 			ft_parent_process(data, i);
 		i++;

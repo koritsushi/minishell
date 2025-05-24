@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:33:47 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/21 11:40:30 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/23 19:32:33 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,34 @@ void	free_env(t_env *env)
 
 void	free_exec(t_exec *exec)
 {
-	if (exec->cmd_args)
+	if (exec->cmd_args != NULL)
 		free_3d_ptr((void ***)exec->cmd_args);
-	if (exec->cmd)
-		free_chr_ptr((void **)exec->cmd);
-	if (exec->path)
+	if (exec->envp != NULL)
+		free_chr_ptr((void **)exec->envp);
+	if (exec->path != NULL)
 		free_chr_ptr((void **)exec->path);
 }
 
-void	ms_free_all(t_ms *data, int exit_code)
+void	errstr_init(char *str[])
 {
+	str[0] = "-minishell: command allocation fail:";
+	str[1] = "-minishell: command allocation 2 fail:";
+	str[2] = "-minishell: environment allocation fail!:";
+	str[3] = "-minishell: environment path allocation fail!:";
+	str[4] = "-minishell: open() fail!:";
+	str[5] = "-minishell: heredoc fail!:";
+	str[6] = "-minishell: pipe() fail!:";
+	str[7] = "-minishell: fork() fail!:";
+	str[8] = NULL;
+}
+
+void	ms_free_all(t_ms *data, int errc, int exit_code)
+{
+	char	*errstr[9];
+
+	errstr_init(errstr);
+	if (errc >= 0)
+		printf("%s %s\n", errstr[errc], strerror(errno));
 	free_env(data->env_var);
 	free_exec(&data->exec);
 	if (data->lst.data)

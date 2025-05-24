@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/20 16:37:28 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/23 19:29:18 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_exec
 	int				infile_fd[1024];
 	int				outfile_fd[1024];
 	char			**path;
-	char			**cmd;
+	char			**envp;
 	char			***cmd_args;
 	int				cmd_count;
 	int				pipe_count;
@@ -97,6 +97,7 @@ void	debug_print_cd(void);
 
 /*__________ helper function detect pipes and builtins_______________*/
 int		has_pipes(t_token lst);
+int		has_infile_outfile(t_token lst);
 int		is_built_in(char *str);
 
 /*___________________helper function executing cmd___________________*/
@@ -118,5 +119,5 @@ void	free_chr_ptr(void **ptr);
 void	free_3d_ptr(void ***ptr);
 void	free_env(t_env *env);
 void	free_exec(t_exec *exec);
-void	ms_free_all(t_ms *data, int exit_code);
+void	ms_free_all(t_ms *data, int errc, int exit_code);
 #endif

@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/21 13:05:37 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/23 19:30:17 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_here_doc(t_ms *data, char *delimiter, int parsing_pipe[2])
 	}
 	ft_pipe_doc(final, parsing_pipe);
 	free(final);
-	ms_free_all(data, 0);
+	ms_free_all(data, -1, 0);
 }
 
 void	ft_heredoc_init(t_ms *data, char *delimiter, int j)
@@ -56,10 +56,10 @@ void	ft_heredoc_init(t_ms *data, char *delimiter, int j)
 
 	status = pipe(parsing_pipe);
 	if (status == -1)
-		ms_free_all(data, 1);
+		ms_free_all(data, 6, 1);
 	pid = fork();
 	if (pid == -1)
-		ms_free_all(data, 1);
+		ms_free_all(data, 7, 1);
 	if (pid == 0)
 		ft_here_doc(data, delimiter, parsing_pipe);
 	else
@@ -72,7 +72,7 @@ void	ft_heredoc_init(t_ms *data, char *delimiter, int j)
 			hdpstatus = WEXITSTATUS(status);
 	}
 	if (hdpstatus > 0)
-		ms_free_all(data, 1);
+		ms_free_all(data, 5, 1);
 	data->exec.infile_fd[j] = parsing_pipe[READ];
 }
 
@@ -126,7 +126,7 @@ open(lst->data[i], O_RDWR | O_CREAT | O_TRUNC, 0774);
 			data->exec.outfile_fd[j] = \
 open(lst->data[i], O_RDWR | O_CREAT | O_APPEND, 0774);
 		if (data->exec.outfile_fd[j] == -1)
-			ms_free_all(data, 1);
+			ms_free_all(data, 4, 1);
 		i++;
 	}
 }

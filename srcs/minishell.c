@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/24 13:59:31 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 14:26:30 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(int argc, char **argv, char **env)
 		exit(1);
 	set_signal_action(1);
 	data.env_var = NULL;
+	data.exec.exit_code = 0;
 	env_init(&data.env_var, env);
 	while (1)
 	{

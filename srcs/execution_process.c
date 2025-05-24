@@ -6,22 +6,22 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:55 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/21 13:04:48 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/23 19:30:01 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/execution.h"
 
-void	ft_execution(t_ms *data, char *cmd, char **cmd_args, char **envp)
+void	ft_execution(t_ms *data, char *cmd, char **cmd_args)
 {
 	char	*cmd_path;
 
 	if (is_built_in(cmd))
 	{
 		if (execute_built_in(data, cmd_args))
-			ms_free_all(data, 0);
+			ms_free_all(data, -1, 0);
 		else
-			ms_free_all(data, 1);
+			ms_free_all(data, -1, 1);
 	}
 	cmd_path = ft_cmdpath(cmd_args, data->exec.path);
 	if (cmd_path == NULL)
@@ -31,13 +31,13 @@ void	ft_execution(t_ms *data, char *cmd, char **cmd_args, char **envp)
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putstr_fd("\n", 2);
-		ms_free_all(data, 127);
+		ms_free_all(data, -1, 127);
 	}
-	if (execve(cmd_path, cmd_args, envp) == -1)
+	if (execve(cmd_path, cmd_args, data->exec.envp) == -1)
 	{
 		ft_putstr_fd("./minishell: execve() error!\n", 2);
 		free(cmd_path);
-		ms_free_all(data, -1);
+		ms_free_all(data, -1, -1);
 	}
 }
 
@@ -62,7 +62,7 @@ void	ft_parent_process(t_ms *data, int index)
 		mp_process(data, index);
 }
 
-void	ft_child_process(t_ms *data, int index, char **envp)
+void	ft_child_process(t_ms *data, int index)
 {
 	if (index == 0)
 		fc_process(data, index);
@@ -70,7 +70,8 @@ void	ft_child_process(t_ms *data, int index, char **envp)
 		lc_process(data, index);
 	else
 		mc_process(data, index);
-	if (data->exec.cmd_args != NULL)
+	if (ft_isempty(data->exec.cmd_args[index][0]) == 0)
 		ft_execution(data, data->exec.cmd_args[index][0], \
-data->exec.cmd_args[index], envp);
+data->exec.cmd_args[index]);
+	ms_free_all(data, -1, 0);
 }
