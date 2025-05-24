@@ -42,7 +42,7 @@ void	copy_cmd_tail(char **lst_data, int *start, char **outfile)
 	}
 }
 
-// 16 lines!
+// 19 lines!
 /* 
  * child function of process_cmd_tail
  * allocates enough space to store cmd and copies it
@@ -54,9 +54,6 @@ void	extract_cmd_tail(char **lst_data, int *i, char *str, char **outfile)
 	char	**infile_check;
 	int		start;
 	int		k;
-	(void)	lst_data;
-	(void)	str;
-	(void)	outfile;
 
 	/* < infile cmd */
 	/* < infile <infile cmd */

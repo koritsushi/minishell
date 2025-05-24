@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/15 12:08:29 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:37:43 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ int	count_str(char *str, char *set)
 	flag = 0;
 	symbol = '\0';
 	if (str[0] && !is_target(set, str[0]))
-		wc++; //if there's word, count 1st word
+		wc++;
 	while (str[0])
 	{
 		// /*debug*/printf("count_str_enter:%s, flag:%d\n", str, flag);
 		if (str[1] && !flag && is_target(set, str[0]) && \
-			!is_target(set, str[1])) // if !flag && str[0] == spaces, str[1] !spaces
+!is_target(set, str[1])) // if !flag && str[0] == spaces, str[1] !spaces
 			wc++;
 		if (!is_target(set, '\"') && !is_target(set, '\''))
 			update_flag_quote(str, &symbol, &flag);
@@ -76,7 +76,7 @@ static int	increment_val(int flag, int *count, char **str)
  * counts the number of characters and stop when delimiters detected
  * if flag == 1, ignore *set, else: stop upon *set
  */
-static int	count_chr(char *str, char *set)//, int *flag)
+static int	count_chr(char *str, char *set)
 {
 	int		flag;
 	int		count;
@@ -96,7 +96,7 @@ static int	count_chr(char *str, char *set)//, int *flag)
 		/* if flag != 1, stop upon sets */
 
 		if (flag == 0 && str[0] && is_target("'\'\"", str[0]) && \
-		!is_target(set, '\"') && !is_target(set, '\'')) // if is first encounter to '
+!is_target(set, '\"') && !is_target(set, '\'')) // if is first encounter to '
 			symbol = str[0];
 		if (flag == 0 && str[0] == symbol) // if is first encounter to '
 			flag = increment_val(1, &count, &str); // increment & set flag to 1

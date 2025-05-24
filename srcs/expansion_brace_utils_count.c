@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:41:58 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/21 21:40:15 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:32:08 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ void	update_flag_quote(char *target, char *symbol, int *flag_quote)
 		*symbol = target[0];
 	}
 	else if (*flag_quote && target[0] == *symbol)
-	{
 		*flag_quote = 0;
-		// *symbol = '\0';
-	}
 }
 
 /*
@@ -79,13 +76,12 @@ static int	count_brace_comma(char *str)
 	comma = 0;
 	while (str[0])
 	{
-		if (str[0] == '{' && is_valid_brace_start(str + 1))		
+		if (str[0] == '{' && is_valid_brace_start(str + 1))
 			break ;
 		str++;
 	}
 	// 'v'{,}e
 	/*debug*/printf("count_brace_comma:ent:%s.\n", str);
-	// str = ft_strchr(str, '{');
 	while (str && str[0] && str[0] != '}')
 	{
 		if (str[0] && is_target("\'\"", str[0]))

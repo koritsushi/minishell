@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:57:56 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/15 12:25:15 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:33:26 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static int	count_var_name(char *new)
 	return (len);
 }
 
+// 19 lines
 /*
  * child function in extract_vars,
  * searches in str for var_name & save til before '='
@@ -95,7 +96,6 @@ int	get_var_name(char **dest, char *str)
 		free(*dest);
 		return (0);
 	}
-
 	/*debug*/printf("get_var_name:copied name!\033[93m%s\033[0m.\n", *dest);
 	return (1);
 }
@@ -145,13 +145,13 @@ int	is_valid_var_name(char **str, int export_id)
 	name = *str;
 	if (!ft_isalpha(name[0]))
 		return (ft_perror_fd \
-		("🚨 Error! Variable name should start with alphabet\n", 2, 0));
+("🚨 Error! Variable name should start with alphabet\n", 2, 0));
 	while (name[0] && !is_target(" \t\n\v\f\r", name[0]))
 	{
 		/*debug*/printf("is_valid_var_name:while:%s.\n", name);
 		if (!ft_isalnum(name[0]))
 			return (ft_perror_fd \
-			("🚨 Error! Symbols detected in variable name\n", 2, 0));
+("🚨 Error! Symbols detected in variable name\n", 2, 0));
 		name++;
 
 		/* normal encounter spaces -> return 1 */

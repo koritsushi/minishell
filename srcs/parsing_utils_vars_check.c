@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/15 12:51:58 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:37:01 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	copy_leftover(char **str, char **fin)
 	k = 0;
 	if (!fin || !fin[0])
 		return ;
-	// s3 = str1 + str2
-	// s3 = s3 + str4
 	final = ft_strdup(fin[k]);
 	while (fin[k] && fin[k + 1])
 	{
@@ -55,18 +53,12 @@ static int	has_non_var(char **str)
 
 	new = skip_redirs(*str);
 	/*debug*/printf("has_non_var:skip:%s.\n", new);
-	// tmp = ft_split_shell(new, "<>"); //maybe noneed
 	fin = ft_split_shell(new, " \t\n\v\f\r");
 	res = 0;
 	i = -1;
 	while (fin && fin[++i] && !res)
 	{
 		/*debug*/printf("has_non_var:ent:%s.\n", fin[i]);
-		// if (valid_export_keyword(fin[i], 0)) // && has_more_str after export
-		// {
-		// 	/*debug*/printf("has_non_var:export! %d\n", res);
-		// 	break ;
-		// }
 		if (!is_target(fin[i], '=') || !ft_isalpha(fin[i][0]))
 		{
 			// if export only, skip process_vars
@@ -74,7 +66,6 @@ static int	has_non_var(char **str)
 			// v=1 export       -> res=1
 			// v=1 cmd abe      -> res=1
 
-			// copy n alloc the rest, 
 			copy_leftover(str, &fin[i]);
 			if (valid_export_keyword(fin[i], 0) && fin[i + 1])
 				break ;
@@ -84,60 +75,14 @@ static int	has_non_var(char **str)
 			// var=123 var=6 cmd   : trim
 			// var=123 1var=6 cmd  : trim
 			// var=123 cmd var=6   : trim to before cmd
-	
-			// /*debug*/printf("has_non_var:str!%s\n", *str);
 			/*debug*/printf("has_non_var:found!%s\n", fin[i]);
 		}
 	}
-	/* var=90 var2=56 ^var=6 */
-	/* ^var=6 */
 	free_chr_ptr((void **)fin);
 	return (res);
 }
 
-// static int	has_non_var(char *str)
-// {
-// 	char	**tmp;
-// 	char	**fin;
-// 	int		i;
-// 	int		res;
-
-// 	str = skip_redirs(str);
-// 	/*debug*/printf("has_non_var:skip:%s.\n", str);
-// 	tmp = ft_split_shell(str, "<>");
-// 	fin = ft_split_shell(tmp[0], " \t\n\v\f\r");
-// 	res = 0;
-// 	i = -1;
-// 	while (fin && fin[++i] && !res)
-// 	{
-// 		/*debug*/printf("has_non_var:ent:%s.\n", fin[i]);
-// 		if (valid_export_keyword(fin[i], 0)) // && has_more_str after export
-// 		{
-// 			/*debug*/printf("has_non_var:export! %d\n", res);
-// 			break ;
-// 		}
-// 		if (!is_target(fin[i], '=') || !ft_isalpha(fin[i][0]))
-// 		{
-// 			res = 1;
-// 			// copy n alloc the rest, 
-// 			// if != export has_more_str, res = 1
-// 			// return new str
-
-// 			// var=123 var=56      : free later ( valid_var_syntax )
-// 			// var=123 var=6 cmd   : trim
-// 			// var=123 1var=6 cmd  : trim
-// 			// var=123 cmd var=6   : trim to before cmd
-	
-// 			/*debug*/printf("has_non_var:found!%s\n", fin[i]);
-// 		}
-// 	}
-// 	/* var=90 var2=56 ^var=6 */
-// 	/* ^var=6 */
-// 	free_multiple_ptr(tmp, fin, NULL);
-// 	return (res);
-// }
-
-// 17 lines!
+// 18 lines!
 /*
  * child function in get_variable,
  * checks if variable assigned syntax formatted correctly
@@ -156,13 +101,14 @@ int	check_var_syntax(char **str)//, int *flag)
 		return (0);
 	}
 	new = *str;
-	while (new && new[0])// && !(*flag)) //export & default can use flag != 1
+	while (new && new[0])
 	{
 		// /*debug*/printf("check_var_syntax:ent:%s\n", new);
 		if (new[1] == '=' && \
-			((new[0] && is_target(" \t\n\v\f\r<>|&", new[0])) || \
-			(new[2] && is_target(" \t\n\v\f\r<>|&", new[2]))))
-			return (ft_perror_fd("🚨 Syntax error! spaces before or after '='!\n", 2, 0));
+((new[0] && is_target(" \t\n\v\f\r<>|&", new[0])) || \
+(new[2] && is_target(" \t\n\v\f\r<>|&", new[2]))))
+			return \
+(ft_perror_fd("🚨 Syntax error! spaces before or after '='!\n", 2, 0));
 		else if (new[1] == '=' && (new[2] == '\'' || new[2] == '\"'))
 			new = skip_if_quote(new + 2, new[2], 1);
 		if (new)

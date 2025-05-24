@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:02:45 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:30:15 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
  * checks syntax error & replace processed vars with spaces ' '
  ---------------------------------------------------------------------------- */
 
- #include "includes/parsing.h"
+#include "includes/parsing.h"
 
 // 19 lines!
 /*
@@ -61,7 +61,7 @@
 // 		/*debug*/debug_print(tmp);
 // 		/*debug*/printf("--------\nfin:\n");
 // 		/*debug*/debug_print(fin);
-	
+
 // 		while (fin && fin[x])
 // 			extract_vars(vars, fin[x++], export_id);
 

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 15:47:58 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:11:25 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,8 @@ static int	count_cmd_tail_chr(char **outfile)
 
 	i = -1;
 	len = 0;
-	
 	// >out cmd >out2 baba
-	// len = ft_strlen(outfile[0]);
-	while (outfile[++i])// && outfile[i + 1])
+	while (outfile[++i])
 	{
 		cmd_tail = outfile[i];
 		cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
@@ -78,7 +76,6 @@ static int	count_cmd_tail_chr(char **outfile)
 		/*debug*/printf("count_cmd_tail_chr:%s.\n", cmd_tail);
 		if (cmd_tail && cmd_tail[0])
 			len += (ft_strlen(cmd_tail) + 1);
-		// i++;
 		/*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
 	}
 	return (len);
@@ -136,53 +133,6 @@ int	allocate_cmd_tail(char **dest, char **outfile, char c)
 		return (0);
 	return (1);
 }
-
-// int	allocate_cmd_tail(char **dest, char **outfile, char c)
-// {
-// 	int		len;
-// 	char	*cmd_tail;
-// 	char	**infile_check;
-// 	(void)	dest;
-// 	(void)	c;
-
-// 	/* skip_cmd_head */
-// 	// /*debug*/printf("aloc_cmd_tail:\n");
-// 	// /*debug*/debug_print(outfile);
-
-// 	cmd_tail = skip_spaces(outfile[0], " \t\n\v\f\r");
-// 	/*debug*/printf("allocate_cmd_tail:0:%s.\n", cmd_tail);
-
-// 	cmd_tail = skip_if_symbol(cmd_tail, c, '>'); //skip to next spaces if >o1 cmd
-// 	/*debug*/printf("allocate_cmd_tail:skip:%s.\n", cmd_tail);
-// 	// if (!cmd_tail)
-// 	// 	return (0);
-
-// 	// >o1>o2
-// 	/* split,skip by infiles */
-// 	len = 0;
-// 	infile_check = ft_split_shell(cmd_tail, "<");
-// 	if (is_target(cmd_tail, '<'))
-// 		len = ft_strlen(infile_check[0]);
-// 	len += count_cmd_tail_chr(infile_check);
-
-// 	// cmd <in1 cmd2 <in2
-// 	// cmd <in1 cmd2 <in2 > out -flag
-// 	// cmd
-// 	// in1 cmd2
-// 	// in2
-
-// 	/*debug*/printf("____alloc_cmd_tail:infile:____\n");
-// 	/*debug*/debug_print(infile_check);
-// 	/*debug*/printf("tail=%s| %d\n", infile_check[0], len);
-// 	free_chr_ptr((void **)infile_check);
-	
-// 	/* count outfile & cmd_tail */
-// 	len += count_cmd_tail_chr(&outfile[1]);
-// 	/*debug*/printf("alloc_cmd_tail:len:%d+1\n", len);
-// 	if (!malloc_chr_ptr(dest, len + 1))
-// 		return (0);
-// 	return (1);
-// }
 
 /*
  * wrapper function to calculate length of str,

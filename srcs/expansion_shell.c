@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/15 12:36:32 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:34:34 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ static void	check_replace_var(char **cmd_line, char *name, char *src, int len_he
 	/*debug*/printf("check_replace_var:tail:%s. %d\n", &(*cmd_line)[i], i);
 	ft_strlcpy(&new[len_head], &(*cmd_line)[i], ft_strlen(&(*cmd_line)[i]) + 1); //copy tail
 
-	// copy_shell_var(&(*cmd_line)[len_head], &new[len_head], src, ft_strlen(name) + 1);
 	// /*debug*/printf("res:%s, %d\n", new, i);
-
 	free(*cmd_line);
 	*cmd_line = new;
 }
@@ -61,7 +59,6 @@ static void	copy_remove_var(char **cmd_line, int index, int name_len)
 	ft_strlcpy(dest, (*cmd_line), index + 1);
 	tail = ft_strlen(&(*cmd_line)[index + name_len + 1]) + 1;
 	ft_strlcpy(&dest[index], &(*cmd_line)[index + name_len + 1], tail);
-	// /*debug*/printf("\033[93mnotfound!\033[0m new:%s. len:%zu\n", content, ft_strlen(content));
 	free(*cmd_line);
 	*cmd_line = dest;
 }
@@ -85,7 +82,7 @@ static int	check_shell_var(t_env *vars, char *name, char **cmd_line, char *str)
 	{
 		// /*debug*/printf("93mcheck_shell_var:check_replace_dup name:%s, %s\n", vars->env, name);
 		if (ft_strlen(vars->env) == ft_strlen(name) && \
-			ft_strncmp(vars->env, name, ft_strlen(name)) == 0)
+ft_strncmp(vars->env, name, ft_strlen(name)) == 0)
 		{
 			flag_exist = 1;
 			len = ft_strlen(vars->content);
@@ -145,10 +142,8 @@ char	*expand_shell_var(t_env *vars, char **cmd_line, char *str, int *index)
 	/*debug*/ printf("expand_shell_var:\033[93mindex_ori:\033[0m %d %ld\n", *index, str - (*cmd_line));
 
 	(*index) += check_shell_var(vars, fin[0], cmd_line, str);
+	free_multiple_ptr(tmp, fin, NULL);
 
 	/*debug*/ printf("expand_shell_var:index_new: %d\n", *index);
-	// /*debug*/ printf("expand_shell_var:%s.\n", &(*cmd_line)[index]);
-
-	free_multiple_ptr(tmp, fin, NULL);
 	return (*cmd_line);
 }

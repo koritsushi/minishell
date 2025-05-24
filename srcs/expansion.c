@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/16 17:17:43 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:23:24 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ void	brace_expansion(char **cmd_line)
 		if (str[0] == '$' && str[1] == '{')
 			str += 2;
 		/* have to be beginning of str: r"{,} , then enter immediately*/
-		// else if (has_valid_brace_content(str) && flag < 1)
 		else if (str[0] == '{' && str[1] != '{' && !flag_quote && \
-		has_valid_brace_content(str))
+has_valid_brace_content(str))
 			str = perform_brace_expansion(str, cmd_line, &x);
 		else
 			str++;
@@ -96,7 +95,7 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 	{
 		// /*debug*/printf("shell_var_expansion:ent:%s. flag:%d\n", &str[x], flag);
 		update_flag_quote(&str[x], &symbol, &flag);
-		if (flag && symbol == '\'' && str[x] == symbol)// && ft_strchr(&str[x + 1], '\''))
+		if (flag && symbol == '\'' && str[x] == symbol)
 			skip_quote_update_flag(str, &symbol, &flag, &x);
 		else if (str[x] == '$' && ft_isalpha(str[x + 1]))
 		{
@@ -105,15 +104,11 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 			// /*debug*/printf("shell_var_expansion:new:%s.\n", &str[x]);
 		}
 		else if (str[x] == '$' && str[x + 1] && str[x + 1] == '?')
-		{
 			str = expand_exit_status(cmd_line, exit_status, &x);
-			// /*debug*/printf("shell_var_expansion:exit:%s. %d\n", &str[x], exit_status);
-		}
 		else if (str[x] == '$' && str[x + 1] && str[x + 1] == '$')
 			x += 2;
 		else
 			x++;
-		// k++;
 	}
 }
 
@@ -129,7 +124,7 @@ void	quote_removal(char **cmd_line)
 	char	*new;
 
 	if (!(*cmd_line) || \
-	(!is_target(*cmd_line, '\'') && !is_target(*cmd_line, '\"')))
+(!is_target(*cmd_line, '\'') && !is_target(*cmd_line, '\"')))
 		return ;
 	len = count_malloc_quote_removal(*cmd_line);
 	/*debug*/printf("quote_removal:len:%d\n", len);

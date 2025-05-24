@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 07:55:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/13 07:31:12 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:38:31 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ static void	assign_datatype_outfile(char *str, unsigned char *datatype, int *i)
  * child function in assign_datatype_infile
  * checks if str[0] is '<' or '<<' , returns result
  */
-static void	assign_infile_now(char **infile, char *cmd_tail, unsigned char *datatype, int *i)
+static void	assign_infile_now(char **infile, char *cmd_tail, \
+unsigned char *datatype, int *i)
 {
 	int		x;
 
-	// <<in1 <in2 in3
 	x = -1;
 	if (!cmd_tail)
 		return ;
@@ -70,16 +70,6 @@ static void	assign_infile_now(char **infile, char *cmd_tail, unsigned char *data
 		}
 	}
 }
-// static void	assign_datatype_infile(char *str, unsigned char *datatype, int *i)
-// {
-// 	char	*cmd_tail;
-
-// 	cmd_tail = str;
-// 	if (cmd_tail[0] == '<' && cmd_tail[1] == '<')
-// 		datatype[(*i)++] = HEREDOC;
-// 	else if (cmd_tail[0] == '<' && cmd_tail[1] != '<')
-// 		datatype[(*i)++] = INFILE;
-// }
 
 /* child function in assign_datatype */
 static void	assign_datatype_infile(char *cmd_tail, unsigned char *datatype, int *i)
@@ -101,7 +91,10 @@ static void	assign_datatype_infile(char *cmd_tail, unsigned char *datatype, int 
 	free_chr_ptr((void **)infile);
 }
 
-/* checks if str[0] is WORD, str[0] = cmd_tail */
+/*
+ * child function in assign_datatype
+ * checks if str[0] is WORD, str[0] = cmd_tail
+ */
 static void	assign_datatype_cmd_tail(char *str, unsigned char *datatype, int *i, char **outfile)
 {
 	char	*cmd_tail;
@@ -109,7 +102,7 @@ static void	assign_datatype_cmd_tail(char *str, unsigned char *datatype, int *i,
 	cmd_tail = str;	
 	/* if splittable */
 	if (outfile[1] && (cmd_tail[0] != '>' || \
-		(cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r"))))
+(cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r"))))
 		datatype[(*i)++] = WORD;
 		/* if not splittable && has_more_str_all */
 		// else if (!outfile[1] && has_more_str_all(outfile, " \t\n\v\f\r"))
@@ -185,11 +178,7 @@ void	assign_datatype(unsigned char *datatype, char **res)//, char **infile_f)
 			/*debug*/printf("!outfile assign_datatype!\n");
 			break ;
 		}
-
-		/*--------------assign_cmd_tail--------------*/
 		assign_datatype_cmd_tail(cmd_tail, datatype, &i, outfile);
-
-		/*--------------assign_outfiles--------------*/
 		assign_datatype_outfile(res[x], datatype, &i);
 		if (res[x + 1])
 			datatype[i++] = PIPE;

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:12:43 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/16 16:11:26 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:18:40 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,9 @@ void	remove_var(t_token *lst)
 	int		i;
 
 	i = -1;
-	debug_print_cmd_line(lst);
-	/*debug*/printf("pika.\n");
-
-	while (lst->data[++i]) //0
+	// debug_print_cmd_line(lst);
+	while (lst->data[++i])
 	{
-		//go to word
 		while (lst->data[i] && lst->datatype[i] != WORD)
 			i++;
 		if (!lst->data[i] || !lst->data[i][0])

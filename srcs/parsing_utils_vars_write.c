@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:02:51 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/02 18:42:41 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:19:00 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	copy_vars(char *dest, char *src, int len)
 		return ;
 	x = 0;
 	flag = 0;
-	// symbol = '\0';
 	// /*debug*/printf("copy_vars:src:%s, len:%d\n", src, len);
 	while (src[0] && x < len)
 	{
@@ -82,7 +81,6 @@ static int	overwrite_existing_var(t_env *head, char *str, int export_id)
 	/*debug*/printf("overwrite_existing_var:strchr:%s.\n", ft_strchr(str, '=') + 1);
 	if (ft_strchr(str, '=') + 1)
 		head->content = ft_strdup(ft_strchr(str, '=') + 1);
-	// head->content = ft_strdup(str);
 	/*debug*/printf("def:export_id:%d\n", export_id);
 	if (head->exported < 1 && export_id >= 1)
 		head->exported = export_id;

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:40:41 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/16 17:19:21 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:24:56 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*expand_exit_status(char **cmd_line, int exit_status, int *index)
 	ft_strlcpy(new, *cmd_line, *index + 1);
 	ft_strlcpy(&new[(*index)], exit_code, ft_strlen(exit_code) + 1);
 	ft_strlcpy(&new[(*index) + ft_strlen(exit_code)], \
-	&(*cmd_line)[(*index) + 2], ft_strlen(&(*cmd_line)[(*index) + 2]) + 1);
+&(*cmd_line)[(*index) + 2], ft_strlen(&(*cmd_line)[(*index) + 2]) + 1);
 
 	/*debug*/printf("expand_exit_status:new:%s.\n", new);
 

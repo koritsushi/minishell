@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 12:06:36 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 15:23:04 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:13:13 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,34 +57,6 @@ void	extract_infile(char **lst_data, int *i, char *res)
 	free_chr_ptr((void **)infile);
 }
 
-// void	extract_infile(char **lst_data, char **res, char **infile)
-// {
-// 	int		i;
-// 	char	**infile_fin;
-
-// 	i = 0;
-// 	/*get to the last infile index*/
-// 	while (infile && infile[i + 1])
-// 		i++;
-// 	infile_fin = ft_split_shell(infile[i], " \t\n\v\f\r");
-// 	i = 0;
-// 	if (res[0][0] != '<' && infile[1])
-// 	{
-// 		while (infile_fin[i + 1] && infile_fin[i + 1][0] != '>')
-// 			i++;
-// 	}
-// 	allocate_str(lst_data, infile_fin[i]);
-// 	ft_strlcpy(*lst_data, infile_fin[i], ft_strlen(infile_fin[i]) + 1);
-
-//     /*debug*/
-// 	// printf("------\ninfile:\n");
-// 	// debug_print(infile);
-// 	// printf("------\nINFILE=%s\n", *lst_data);
-//     /*debug_end*/
-
-// 	free_chr_ptr((void **)infile_fin);
-// }
-
 /* get & saves outfile string into lst_data */
 void	extract_outfile(char **lst_data, char *str)
 {
@@ -106,11 +78,9 @@ void	process_outfile(char **lst_data, int *i, char *cmd_tail, char **outfile)
 	int	k;
 
 	k = 1;
-	/* if start with '>' */
-	/*debug*/printf("process_outfile:%s.\n", cmd_tail);
+	// /*debug*/printf("process_outfile:%s.\n", cmd_tail);
 	if (cmd_tail[0] == '>')
 		extract_outfile(&lst_data[(*i)++], outfile[0]);
-	/* if not start with '>' */
 	while (outfile[k])
 		extract_outfile(&lst_data[(*i)++], outfile[k++]);
 }

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:28:58 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/15 12:34:02 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:22:17 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	if_double_symbol(char **res, char symbol, int steps)
 			// /*debug*/printf("tmp+= %s\n", tmp);
 		}
 		if ((tmp[0] && tmp[1] && !is_target("<>|=&", tmp[1])) || \
-			(tmp[0] == '=' && tmp[1] == '\0'))
+(tmp[0] == '=' && tmp[1] == '\0'))
 		{
 			// /*debug*/printf("tmp[0]=%c, tmp[1]=%c, break!\n", tmp[0], tmp[1]);
 			break ;
@@ -104,7 +104,7 @@ if_double_symbol(&res[x], '<', 1) || \
 if_double_symbol(&res[x], '>', 1))
 			return (0);
 		if (res[x][0] && res[x][1] && is_target("$", res[x][0]) && \
-			res[x][1] == '{' && !ft_strchr(&res[x][1], '}'))
+res[x][1] == '{' && !ft_strchr(&res[x][1], '}'))
 			return \
 (ft_perror_fd("🚨 Syntax error! Brace unclosed after '$'\n", 2, 0));
 	}
@@ -122,7 +122,7 @@ int	check_unclosed_quote(char *str)
 		if (new[0] && is_target("\'\"", new[0]))
 		{
 			new = skip_if_quote(new, new[0], 0);
-			if (new)
+			if (new) /*debug*/
 				/*debug*/printf("check_unclosed_quote:%s.\n", new);
 		}
 		if (!new)

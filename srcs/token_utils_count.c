@@ -6,16 +6,15 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/15 12:15:12 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:16:55 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* 
- * In general these functions & child functions counts
+/* In general these functions & child functions counts
  * number of arguments for malloc use later
  * ************************************************************************** */
 
- #include "includes/token.h"
+#include "includes/token.h"
 
 /* counts total string count in a double char array */
 int	count_str_array(char **res)
