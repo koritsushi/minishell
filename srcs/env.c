@@ -80,8 +80,10 @@ int	unset(t_env **lst, char *str)
 
 	i = 0;
 	tmp = ft_split_shell(str, " \t\n\v\f\r");
-	while (tmp[++i])
-		ft_lst_remove_if(lst, tmp[i], ft_strncmp);
+	if (tmp == NULL)
+		return (-1);
+	while (tmp[i] != NULL)
+		ft_lst_remove_if(lst, tmp[i++], ft_strncmp);
 	free_chr_ptr((void **)tmp);
 	return (0);
 }
