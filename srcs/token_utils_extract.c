@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 12:06:36 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:13:13 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/26 19:40:27 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	process_outfile(char **lst_data, int *i, char *cmd_tail, char **outfile)
 	int	k;
 
 	k = 1;
-	// /*debug*/printf("process_outfile:%s.\n", cmd_tail);
+	/*debug*/printf("process_outfile:%s.\n", cmd_tail);
 	if (cmd_tail[0] == '>')
 		extract_outfile(&lst_data[(*i)++], outfile[0]);
 	while (outfile[k])

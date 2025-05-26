@@ -36,6 +36,7 @@ void	copy_cmd_tail(char **lst_data, int *start, char **outfile)
 		/* copy to array */
 		if (cmd_tail && cmd_tail[0])
 		{
+			cmd_tail -= 1;
 			ft_strlcpy(&(*lst_data)[(*start)], cmd_tail, ft_strlen(cmd_tail) + 1);
 			(*start) += ft_strlen(cmd_tail);
 		}
@@ -69,6 +70,7 @@ void	extract_cmd_tail(char **lst_data, int *i, char *str, char **outfile)
 	// skip space
 	// skip symbol '>'
 	// skip redirs '<>'
+	/*debug*/printf("extract_cmd_tail:ent:%s.\n", str);
 	if (!allocate_cmd_tail(&lst_data[*i], outfile, str[0]))
 		return ;
 	k = 0;
@@ -161,7 +163,7 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 	free_chr_ptr((void **)outfile);
 }
 
-// 20 lines!
+// 23 lines!
 /*
  * scans line and saves valid command into a new char** array, str=new
  * uses malloc
@@ -192,10 +194,14 @@ void	process_cmd(t_token *lst, char **res)
 
 		// skips to where cmd starts & process cmd
 		// for scenario '< infile cmd'
+
 		while (cmd_tail && cmd_tail[0] == '<')
 		{
 			cmd_tail = skip_spaces(cmd_tail, "< \t\n\v\f\r");
-			cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
+			if (!skip_if_symbol(cmd_tail, 'c', 'c') && is_target(cmd_tail, '>'))
+				cmd_tail = ft_strchr(cmd_tail, '>');
+			else
+				cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
 		}
 		/*debug*/printf("cmd_tail:%s.\n", cmd_tail);
 		process_cmd_tail(lst->data, &i, cmd_tail); //include process outfile
@@ -237,10 +243,10 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 	/*debug*/debug_print(res);
 	/* ---------------- extract_cmd ---------------- */
 	process_cmd(lst, res);
-	cmd_expansion(lst->data, vars, exit_status);
-	assign_datatype(lst->datatype, res);
+	// cmd_expansion(lst->data, vars, exit_status);
+	// assign_datatype(lst->datatype, res);
 
-	add_filler_cmd(lst);
+	// add_filler_cmd(lst);
 	free_chr_ptr((void **)res);
 	return (1);
 }

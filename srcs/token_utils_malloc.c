@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:11:25 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/26 19:36:24 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	count_cmd_tail_chr(char **outfile)
 		/*debug*/printf("count_cmd_tail_chr:%s.\n", cmd_tail);
 		if (cmd_tail && cmd_tail[0])
 			len += (ft_strlen(cmd_tail) + 1);
-		/*debug*/printf("otail=%s| %d+1\n", cmd_tail, len);
+		/*debug*/printf("otail=%s| %d\n", cmd_tail, len);
 	}
 	return (len);
 }
@@ -102,7 +102,8 @@ int	allocate_cmd_tail(char **dest, char **outfile, char c)
 	// /*debug*/printf("aloc_cmd_tail:\n");
 	// /*debug*/debug_print(outfile);
 
-	cmd_tail = skip_spaces(outfile[0], " \t\n\v\f\r");
+	// cmd_tail = skip_spaces(outfile[0], " \t\n\v\f\r");
+	cmd_tail = outfile[0];
 	/*debug*/printf("allocate_cmd_tail:0:%s.\n", cmd_tail);
 
 	// >o1>o2
@@ -116,9 +117,12 @@ int	allocate_cmd_tail(char **dest, char **outfile, char c)
 	len = 0;
 	if (c != '>')
 	{
+		//<infile bla
+		//bla <infile
 		infile_check = ft_split_shell(cmd_tail, "<");
 		len = ft_strlen(infile_check[0]);
-		len += count_cmd_tail_chr(infile_check);
+		/*debug*/printf("tail_len=%s| %d\n", infile_check[0], len);
+		len += count_cmd_tail_chr(&infile_check[1]);
 		i = 1;
 		/*debug*/printf("____alloc_cmd_tail:infile:____\n");
 		/*debug*/debug_print(infile_check);
