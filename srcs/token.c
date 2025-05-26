@@ -332,11 +332,11 @@ static int	count_realloc(t_token lst)
  */
 void	add_filler_cmd(t_token *lst)
 {
-	int		x;
+	//int		x;
 	int		count;
 	t_token	dest;
 
-	x = -1;
+	//x = -1;
 	count = count_realloc(*lst);
 	/*debug*/printf("add_filler_cmd:%d\n", count);
 	if (!count)
