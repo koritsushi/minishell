@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:40:41 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:24:56 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/24 18:51:58 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ char	*expand_exit_status(char **cmd_line, int exit_status, int *index)
 
 	/*debug*/printf("expand_exit_status:new:%s.\n", new);
 
-	// start_exit_expansion(*cmd_line, new, exit_code, len);
 	*index += ft_strlen(exit_code);
 	free_multiple_ptr_single(*cmd_line, exit_code, NULL);
 	*cmd_line = new;
