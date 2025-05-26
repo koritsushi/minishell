@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/23 19:35:42 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/26 11:54:05 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	execute_built_in(t_ms *data, char **argv)
 		*exit_code = ft_cd(&data->env_var, argv[++i]);
 	else if (ft_strncmp(argv[0], "unset", 5) == 0)
 		while (argv[i] != NULL)
-			*exit_code = unset(&data->env_var, argv[i++]);
+			*exit_code = unset(&data->env_var, argv[++i]);
 	return (*exit_code);
 }
 
