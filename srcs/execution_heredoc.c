@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/23 19:30:17 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/27 18:20:41 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,25 +78,31 @@ void	ft_heredoc_init(t_ms *data, char *delimiter, int j)
 
 void	infile_parsing_init(t_ms *data, t_token *lst)
 {
+	int	flag;
 	int	i;
 	int	j;
 
+	flag = 0;
 	i = 0;
 	j = 0;
 	while (lst->data[i] != NULL)
 	{
 		if (lst->datatype[i] == PIPE)
+		{
+			flag = 0;
 			j++;
-		if (lst->datatype[i] == INFILE || lst->datatype[i] == HEREDOC)
-			if (data->exec.infile_fd[j] > 2)
-				close(data->exec.infile_fd[j]);
+		}
+		if ((lst->datatype[i] == INFILE || lst->datatype[i] == HEREDOC) &&\
+data->exec.infile_fd[j] > 2)
+			close(data->exec.infile_fd[j]);
 		if (lst->datatype[i] == INFILE)
 		{
 			data->exec.infile_fd[j] = open(lst->data[i], O_RDONLY);
 			if (data->exec.infile_fd[j] == -1)
 			{
 				data->exec.infile_fd[j] = open("/dev/null", O_RDONLY);
-				printf("-minishell: %s: %s\n", lst->data[i], strerror(errno));
+				if (flag++ == 0)
+					printf("-minishell: %s: %s\n", lst->data[i], strerror(errno));
 			}
 		}
 		else if (lst->datatype[i] == HEREDOC)
