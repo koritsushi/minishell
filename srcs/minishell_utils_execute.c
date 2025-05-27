@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/26 11:54:05 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/27 19:04:36 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ int	execute_built_in(t_ms *data, char **argv)
 	else if (ft_strncmp(argv[0], "cd", 2) == 0)
 		*exit_code = ft_cd(&data->env_var, argv[++i]);
 	else if (ft_strncmp(argv[0], "unset", 5) == 0)
-		while (argv[i] != NULL)
-			*exit_code = unset(&data->env_var, argv[++i]);
+		while (argv[++i] != NULL)
+			*exit_code = unset(&data->env_var, argv[i]);
 	return (*exit_code);
 }
 
@@ -89,8 +89,8 @@ void	execute_functions(t_ms *data, t_token lst)
 	if (data->exec.cmd_args == NULL)
 		return (free_chr_ptr((void **) cmd), ms_free_all(data, 1, 1));
 	free_chr_ptr((void **) cmd);
-	if (is_built_in(data->exec.cmd_args[0][0]) && \
-(has_pipes(lst) == 0 || has_infile_outfile(lst) == 0))
+	if ((has_pipes(lst) == 0 && has_infile_outfile(lst) == 0) /
+is_built_in(data->exec.cmd_args[0][0]) == 1)
 		return ((void) execute_built_in(data, data->exec.cmd_args[0]));
 	data->exec.envp = ft_envp(&data->env_var);
 	if (data->exec.envp == NULL)
