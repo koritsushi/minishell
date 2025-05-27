@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 16:08:52 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 22:07:29 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 
 #include "includes/parsing.h"
 
-void	copy_leftover(char **str, char **fin)
+/*
+ * child function in has_non_var
+ * joins & copies remaining text
+ */
+static void	copy_leftover(char **str, char **fin)
 {
 	int		k;
 	char	*tmp;

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 15:00:07 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 16:00:35 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 21:43:06 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	add_filler_cmd(t_token *lst)
 	if (!init_token_list(&dest, count + 1))
 		return ;
 	check_copy_data(lst, &dest, 0);
-	free_all(lst);
+	free_parsing(lst);
 	lst->data = dest.data;
 	lst->datatype = dest.datatype;
 }

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 12:06:36 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 16:00:47 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 18:09:00 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	extract_outfile(char **lst_data, char *str)
 }
 
 /* child function in process_cmd_tail, *i = lst_data index number */
-void	process_outfile(char **lst_data, int *i, char *cmd_tail)//, char **outfile)
+void	process_outfile(char **lst_data, int *i, char *cmd_tail)
 {
 	int		k;
 	char	*tmp;

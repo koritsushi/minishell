@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 07:55:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 16:01:01 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 22:10:54 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,10 @@ unsigned char *datatype, int *i)
 }
 
 /* child function in assign_datatype */
-static void	assign_datatype_infile(char *cmd_tail, unsigned char *datatype, int *i)
+static void	assign_datatype_infile(char *cmd_tail, unsigned char *datatype, \
+int *i)
 {
-	char **infile;
+	char	**infile;
 
 	infile = ft_split_shell(cmd_tail, "<");
 	if (!infile)
@@ -95,7 +96,8 @@ static void	assign_datatype_infile(char *cmd_tail, unsigned char *datatype, int 
  * child function in assign_datatype
  * checks if str[0] is WORD, str[0] = cmd_tail
  */
-static void	assign_datatype_cmd_tail(char *str, unsigned char *datatype, int *i, char **outfile)
+static void	assign_datatype_cmd_tail(char *str, unsigned char *datatype, \
+int *i, char **outfile)
 {
 	char	*cmd_tail;
 
@@ -126,7 +128,7 @@ static void	assign_datatype_cmd_tail(char *str, unsigned char *datatype, int *i,
  * considered as lexing process
  * scans input and assigns datatype according to operator sign
  */
-void	assign_datatype(unsigned char *datatype, char **res)//, char **infile_f)
+void	assign_datatype(unsigned char *datatype, char **res)
 {
 	int		x;
 	int		i;

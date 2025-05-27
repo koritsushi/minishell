@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 11:11:53 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 22:14:00 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ char	**ft_split_shell(char *str, char *set)
 	while (str[0] && count_str(str, set))
 	{
 		// /*debug*/printf("split_enter:%s\n", str);
-		count = count_chr(str, set);//, &f);
+		count = count_chr(str, set);
 		if (!malloc_chr_ptr(&res[i], count + 1))
 		{
 			ft_perror_fd("malloc_failed!\n", 2, 0);
@@ -146,9 +146,6 @@ char	**ft_split_shell(char *str, char *set)
 		}
 		ft_strlcpy(res[i++], str, count + 1);
 		// /*debug*/printf("split_shell:str:%s.\n", str);
-		// while (x < count)
-		// 	res[i][x++] = *str++;
-		// i++;
 		str = skip_spaces(str + count, set);
 	}
 	res[i] = NULL;

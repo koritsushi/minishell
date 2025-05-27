@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:02:51 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 16:02:26 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 22:08:18 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ static int	overwrite_existing_var(t_env *head, char *str, int export_id)
 {
 	// /*debug*/printf("overwrite_existing_var:found! str:%s\n", (char *)head->content);
 	free(head->content);
-	/*overwrite*/
 	// /*debug*/printf("overwrite_existing_var:str:%s.\n", str);
 	// /*debug*/printf("overwrite_existing_var:strchr:%s.\n", ft_strchr(str, '=') + 1);
 	if (ft_strchr(str, '=') + 1)

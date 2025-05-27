@@ -6,31 +6,11 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:40:41 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 16:05:24 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 22:01:05 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/expansion.h"
-
-// char	*start_exit_expansion(char *src, char *dest, char *exit_code, int len)
-// {
-// 	int	x;
-
-// 	x = 0;
-// 	while (src && src[0] && x < len)
-// 	{
-// 		/*debug*/printf("start_exit_expansion:%s\n", src);
-// 		if (src[0] == '$' && src[1] && src[1] == '?')
-// 		{
-// 			x += ft_strlcpy(&dest[x], exit_code,
-// 						ft_strlen(exit_code) + 1);
-// 			src += 2;
-// 		}
-// 		else
-// 			dest[x++] = *src++;
-// 	}
-// 	return (dest);
-// }
 
 void	dot_expansion(char **cmd_line)
 {

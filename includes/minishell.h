@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/23 19:29:18 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/27 17:58:18 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@
 	# include <stdint.h>
 	are in libft header file
 */
-//libft header
 # include "../libft/libft.h"
-//included extra c library
+/* included extra c library */
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -44,7 +43,7 @@ https://man7.org/linux/man-pages/man3/errno.3.html
 # include <strings.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-//minishell headers
+/* minishell headers */
 # include "parsing.h"
 # include "token.h"
 # include "expansion.h"
@@ -72,13 +71,13 @@ typedef struct s_env
 	int				exported;
 	char			*env;
 	char			*content;
-	struct s_env 	*next;
+	struct s_env	*next;
 }					t_env;
 
 typedef struct s_token
 {
 	unsigned char	*datatype;
-	char			**data; //string: "infile" "cmd1 -f -g -h" "cmd2" "outfile"
+	char			**data;
 }					t_token;
 
 typedef struct s_ms
@@ -104,7 +103,11 @@ int		is_built_in(char *str);
 void	execute_functions(t_ms *data, t_token lst);
 int		execute_built_in(t_ms *data, char **argv);
 
-// void	execute_built_in(t_ms data, t_env *env, int argc, char **argv);
+/*___________________utils function for skips___________________*/
+char	*skip_if_quote(char *str, char symbol, int flag);
+char	*skip_redirs(char *str);
+char	*skip_consecutive_redir(char *outfile, int flag);
+
 
 /*______________modified linked_lst function from libft______________*/
 t_env	*ft_lstlast_sh(t_env *lst);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 17:58:29 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/20 16:36:39 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/27 21:43:03 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	free_multiple_ptr_single(char *p1, char *p2, char *p3)
 		free(p3);
 }
 
-void	free_all(t_token *lst)
+void	free_parsing(t_token *lst)
 {
 	if (!lst)
 		return ;

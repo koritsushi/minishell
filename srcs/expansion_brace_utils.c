@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 22:54:34 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 16:06:34 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 22:00:19 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ static char	*get_brace_tail(char *str, char *set)
 	int		len;
 	char	*new;
 
-	/*debug*/printf("get_brace_tail:ent:%s\n", str);
+	// /*debug*/printf("get_brace_tail:ent:%s\n", str);
 	if (!str)
 		return (str);
 	len = 0;
 	while (str[len] && !is_target(set, str[len]))
 	{
-		/*debug*/printf("get_brace_tail:char:%c\n", str[len]);
+		// /*debug*/printf("get_brace_tail:char:%c\n", str[len]);
 		if (is_target("\'\"", str[len]))
 		{
 			len += skip_if_quote(&str[len], str[len], 0) - &str[len] + 1;
@@ -63,7 +63,7 @@ static char	*get_brace_tail(char *str, char *set)
 		else
 			len++;
 	}
-	/*debug*/printf("get_brace_tail:malloc:%d+1\n", len);
+	// /*debug*/printf("get_brace_tail:malloc:%d+1\n", len);
 	if (!malloc_chr_ptr(&new, len + 1))
 		return (0);
 	x = 0;
@@ -123,7 +123,6 @@ static char	*copy_brace_body(char *src, char *dest, int *x)
 
 	while (src[0] && !is_target(",{}", src[0]))
 	{
-		//copy body {' ',}
 		if (src[0] && is_target("\'\"", src[0]))
 		{
 			len = (skip_if_quote(src, src[0], 0) + 1) - src;
@@ -158,7 +157,7 @@ char	*copy_brace_expansion(char *src, char *dest, int *x, int malloc_size)
 	src = move_to_valid_brace_start(src);
 	tail = get_brace_tail(ft_strchr(src, '}') + 1, " \t\n\v\f\r");
 	// /*debug*/printf("src=%s.\nget_brace_head:\033[93m%s\033[0m.\nget_brace_tail:\033[93m%s\033[0m.\n", src, head, tail);
-	while (src && src[0] && *x < malloc_size) //src && src[0] &&
+	while (src && src[0] && *x < malloc_size)
 	{
 		if (flag)
 			dest[(*x)++] = ' ';

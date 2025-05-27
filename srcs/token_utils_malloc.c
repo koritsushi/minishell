@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 16:00:26 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 22:12:47 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static int	count_cmd_tail_chr(char **outfile)
  * str = the entire line of cmd/pipeline before splitted by outfile '>'
  * uses malloc
  */
-int	allocate_cmd_tail(char **dest, char **outfile, char *cmd_tail)//, char c)
+int	allocate_cmd_tail(char **dest, char **outfile, char *cmd_tail)
 {
 	int		len;
 	// char	*cmd_tail;

@@ -24,24 +24,18 @@ typedef struct s_token	t_token;
 /*__________functions for syntax error checks__________*/
 int		check_syntax(char *str);
 int		check_var_syntax(char **str);//, int *flag);
-char	*skip_if_quote(char *str, char symbol, int flag);
-char	*skip_redirs(char *str);
 
 /*__________functions to extract variable assignments__________*/
-// int		get_variable(t_env **vars, char *str, int exit_status);
 int		get_variable(t_env **vars, t_token lst, char *str, int exit_status);
 int		get_var_name(char **dest, char *str);
 int		is_valid_var_name(char **str, int export_id);
-// void	replace_var_space(char *str);
-void	remove_var(t_token *lst);
+int		valid_export_keyword(char *str, int flag);
 int		count_malloc_vars(char *str);
 void	copy_vars(char *dest, char *src, int len);
 void	extract_vars(t_env **vars, char *str, int export_id);
 int		check_replace_dup(t_env *vars, char *name, char *new, int export_id);
-int		valid_export_keyword(char *str, int flag);
 
 /*__________functions to clear variable assignments__________*/
-char	*overwrite_export_line(char *str);
-
+void	remove_var(t_token *lst);
 
 #endif

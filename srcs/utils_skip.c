@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_utils_skip.c                               :+:      :+:    :+:   */
+/*   utils_skip.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 22:05:39 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 16:03:10 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 17:58:05 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/parsing.h"
+#include "includes/minishell.h"
 
 /*
  * if str[0] == symbol, will skip to the next occurence of symbol
@@ -62,3 +62,54 @@ char	*skip_redirs(char *str)
 	}
 	return (new);
 }
+
+/*
+ * child function in skip_consecutive_infile
+ * skips all spaces after c
+ * breaks if found spaces when flag is off
+ */
+static char	*skip_consecutive(char *str, char *c)
+{
+	char	symbol;
+	int		flag_quote;
+
+	flag_quote = 0;
+	while (str && str[0])
+	{
+		// /*debug*/printf("skip_cons:%s.\n", str);
+		update_flag_quote(str, "\'\"", &symbol, &flag_quote);
+		// if (str[0] == c[0] || str[0] == '>')
+		if (is_target("<>", str[0]))
+			str = skip_spaces(str, "<> \t\n\v\f\r");
+		else if (is_target(" \t\n\v\f\r", str[0]))
+		{
+			str = skip_spaces(str, " \t\n\v\f\r");
+			if (!flag_quote && str[0] != c[0])
+				return (str);
+		}
+		else
+			str++;
+	}
+	return (str);
+}
+
+/*
+ * skips all consecutive infiles
+ * if flag=1, skip >outfile
+ */
+char	*skip_consecutive_redir(char *outfile, int flag)
+{
+	char	*str;
+
+	if (!outfile || !outfile[0])
+		return (outfile);
+	if (flag)
+		str = skip_consecutive(outfile, ">");
+	else
+		str = outfile;
+	if (str[0] == '<')
+		str = skip_consecutive(str, "<");
+	return (str);
+
+}
+
