@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 15:29:13 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/15 12:37:06 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 08:42:20 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	expand_brace_content(char *src, char *dest, int malloc_size)
 	flag_quote = 0;
 	while (src && src[0] && x < malloc_size)
 	{
-		update_flag_quote(src, &symbol, &flag_quote);
+		update_flag_quote(src, &symbol, "\'\"", &flag_quote);
 		if (src[0] && is_target(" \t\n\v\f\r", src[0]) && !flag_quote)
 			len = -1;
 		if (src[0] == '{' && is_valid_brace_start(src + 1))

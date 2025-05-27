@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:41:58 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:32:08 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 08:46:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@
 /*
  * checks if flag_quote is on, update status accordingly
  * target = str[0], symbol = &symbol, flag_quote = &flag_quote
+ * set = a set of chars that'll raise the flag
  */
-void	update_flag_quote(char *target, char *symbol, int *flag_quote)
+void	update_flag_quote(char *target, char *set, char *symbol, int *flag_quote)
 {
 	// /*debug*/printf("update_flag_quote:%c\n", target[0]);
-	if (!(*flag_quote) && is_target("\'\"", target[0]))
+	// if (!(*flag_quote) && is_target("\'\"", target[0]))
+	if (!(*flag_quote) && is_target(set, target[0]))
 	{
+		/*debug*/printf("update_flag_quote:%c\n", target[0]);
 		*flag_quote = 1;
 		*symbol = target[0];
 	}
@@ -50,7 +53,7 @@ int	is_valid_brace_start(char *str)
 	/*debug*/printf("is_valid_brace_start:ent:%s, %c\n", str, str[0]);
 	while (str && str[0])
 	{
-		update_flag_quote(str, &symbol, &flag_quote);
+		update_flag_quote(str, "\'\"", &symbol, &flag_quote);
 		// /*debug*/printf("is_valid_brace_start:%c. flag_q:%d\n", str[0], flag_quote);
 		if (str[0] && is_target(" \t\n\v\f\r{", str[0]) && !flag_quote)
 			break ;
@@ -113,7 +116,7 @@ static int	count_brace_content(char *str)
 	while (str && str[0] && (!is_target(" \t\n\v\f\r", str[0]) || flag_quote))
 	{
 		/*debug*/printf("\033[100mcount_brace_content:ent:%s\033[0m\n", str);
-		update_flag_quote(str, &symbol, &flag_quote);
+		update_flag_quote(str, "\'\"", &symbol, &flag_quote);
 		/* identify if its the correct brace set , if true, strchr it*/
 		/*debug*/printf("count_brace_content!\n");
 		if (str[1] && str[0] == '{' && is_valid_brace_start(str + 1) && !flag)

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/24 16:23:24 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 08:42:16 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	brace_expansion(char **cmd_line)
 		// /*debug*/printf("\033[93mbrace_expansion:ent:\033[0m%s.\n", str);
 		if (str[0] && (is_target(" \t\n\v\f\r", str[0]) && !flag_quote))
 			x = -1;
-		update_flag_quote(str, &symbol, &flag_quote);
+		update_flag_quote(str, "\'\"", &symbol, &flag_quote);
 		// /*debug*/printf("str:%s, flag_q:%d\n", str, flag_quote);
 
 		if (str[0] == '$' && str[1] == '{')
@@ -65,7 +65,7 @@ static void	skip_quote_update_flag(char *str, char *symbol, int *flag, int *x)
 	// /*debug*/printf("\033[93mshell_var_expansion:sym:\033[0m%s.\n", &str[x + 1]);
 	/*debug*/printf("x: %ld, x_ori:%d\n", (ft_strchr(&str[(*x) + 1], '\'') - &str[(*x)]), *x);
 	*x += ft_strchr(&str[(*x) + 1], '\'') - &str[(*x)];
-	update_flag_quote(&str[(*x)], symbol, flag);
+	update_flag_quote(&str[(*x)], "\'\"", symbol, flag);
 	(*x)++;
 	if (&str[(*x)])
 	/*debug*/printf("\033[skip_quote_update_flag:skip:\033[0m%s. %d\n", &str[(*x)], *flag);
@@ -94,7 +94,7 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 	while (str && str[x])// && k < 3)
 	{
 		// /*debug*/printf("shell_var_expansion:ent:%s. flag:%d\n", &str[x], flag);
-		update_flag_quote(&str[x], &symbol, &flag);
+		update_flag_quote(&str[x], "\'\"", &symbol, &flag);
 		if (flag && symbol == '\'' && str[x] == symbol)
 			skip_quote_update_flag(str, &symbol, &flag, &x);
 		else if (str[x] == '$' && ft_isalpha(str[x + 1]))

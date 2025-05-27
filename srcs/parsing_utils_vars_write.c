@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:02:51 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:19:00 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 08:42:59 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	count_malloc_vars(char *str)
 	flag = 0;
 	while (str && str[0])
 	{
-		update_flag_quote(str, &symbol, &flag);
+		update_flag_quote(str, "\'\"", &symbol, &flag);
 		if (!flag && is_target(" \t\n\v\f\r", str[0]))
 			return (i);
 		if (str[0] != symbol)
@@ -59,7 +59,7 @@ void	copy_vars(char *dest, char *src, int len)
 	while (src[0] && x < len)
 	{
 		/* 'po"$var' "p'$var" */
-		update_flag_quote(src, &symbol, &flag);
+		update_flag_quote(src, "\'\"", &symbol, &flag);
 		if (src[0] != symbol)
 			dest[x++] = src[0];
 		/*debug*/printf("copy_vars:%s.\n", dest);

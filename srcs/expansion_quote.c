@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 20:30:48 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/03 08:29:25 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 08:42:40 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	expand_quote_removal(char *src, char *dest)
 	symbol = '\0';
 	while (src && src[0])
 	{
-		update_flag_quote(src, &symbol, &flag);
+		update_flag_quote(src, "\'\"", &symbol, &flag);
 		if (src[0] != symbol)
 			dest[x++] = src[0];
 		src++;

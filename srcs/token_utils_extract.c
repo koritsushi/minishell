@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 12:06:36 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/26 19:40:27 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 13:45:38 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,25 @@ void	extract_outfile(char **lst_data, char *str)
 }
 
 /* child function in process_cmd_tail, *i = lst_data index number */
-void	process_outfile(char **lst_data, int *i, char *cmd_tail, char **outfile)
+void	process_outfile(char **lst_data, int *i, char *cmd_tail)//, char **outfile)
 {
-	int	k;
+	int		k;
+	char	*tmp;
+	char	**outfile;
 
+	outfile = ft_split_shell(cmd_tail, ">");
+	if (!outfile || !outfile[0])
+		return ;
+	/*debug*/printf("process_outfile:ent:%s.\n", cmd_tail);
 	k = 1;
-	/*debug*/printf("process_outfile:%s.\n", cmd_tail);
+	if (cmd_tail[0] != '>' && skip_consecutive_redir(outfile[0], 0))
+		tmp = skip_consecutive_redir(outfile[0], 0);
+	else
+		tmp = outfile[0];
+	/*debug*/printf("process_outfile:%s.\n", tmp);
 	if (cmd_tail[0] == '>')
-		extract_outfile(&lst_data[(*i)++], outfile[0]);
+		extract_outfile(&lst_data[(*i)++], tmp);
 	while (outfile[k])
 		extract_outfile(&lst_data[(*i)++], outfile[k++]);
+	free_chr_ptr((void **)outfile);
 }

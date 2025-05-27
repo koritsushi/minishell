@@ -41,7 +41,7 @@ void	assign_datatype(unsigned char *datatype, char **res);
 void	extract_infile(char **lst_data, int *i, char *res);
 void	extract_outfile(char **lst_data, char *str);
 void	process_outfile(char **lst_data, int *i, \
-char *cmd_tail, char **outfile);
+char *cmd_tail);//, char **outfile);
 void	add_filler_cmd(t_token *lst);
 
 /* -------------------count_&_mallocs---------------------- */
@@ -49,12 +49,14 @@ int		count_str_array(char **res);
 
 int		get_malloc_size(char **res);
 int		allocate_str(char **dest, char *str);
-int		allocate_cmd_tail(char **dest, char **outfile, char c);
+int		allocate_cmd_tail(char **dest, char **outfile, char *cmd_tail);
+// int		allocate_cmd_tail(char **dest, char **outfile, char c);
 int		init_token_list(t_token *lst, int size);
 int		malloc_chr_ptr(char **dest, int len);
 
 char	*skip_if_symbol(char *str, char c, char symbol);
 char	*skip_spaces(char *str, char *set);
+char	*skip_consecutive_redir(char *outfile, int flag);
 
 
 /* -----------------free_memory_allocations----------------- */

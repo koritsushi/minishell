@@ -51,7 +51,6 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/minishell_utils_execute.c			\
 				srcs/minishell_utils_list.c				\
 				srcs/minishell_utils_list2.c			\
-				srcs/minishell.c 						\
 				srcs/execution.c						\
 				srcs/execution_cmd.c					\
 				srcs/execution_cmd_utils.c				\
@@ -60,10 +59,11 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/execution_parent_process_utils.c	\
 				srcs/execution_child_process_utils.c	\
 				srcs/execution_heredoc.c				\
+				srcs/minishell.c 						\
+#				srcs/main-test-token_split.c			\
 #				srcs/parsing_utils_replace.c			\
 #				srcs/token_utils_operator.c				\
 #				srcs/token_utils_truncate.c				\
-#				srcs/main-test-token_split.c			\
 
 OBJS		=	$(SRCS:%.c=%.o)
 

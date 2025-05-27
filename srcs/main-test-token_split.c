@@ -4,9 +4,11 @@ int	main(int ac, char **av)
 {
 	(void) ac;
 	(void) av;
-	// char str[] = "< infile cmd1 'some flags' | no | cmd3 > outfile";
+	// char str[] = "<infile cmd1 'some flags' | no | cmd3 > outfile";
 	// char str[] = "hello cat's cat meow "; // 2
-	// char str[] = "'cat meow  ' yes loop"; // 2
+	// char str[] = "'cat meow  ' yes loop"; // 3
+	// char str[] = "'cat meow >  out' yes"; // 2
+	char str[] = "'cat meow >  out'> baba"; // 2
 	// char *str = ft_strdup("cat's meow  ' yes loop"); // 2
 	// char str[] = "'''"; // 1
 	// char str[] = "'' '"; // 2
@@ -15,10 +17,11 @@ int	main(int ac, char **av)
 
 	
 	/*-------------------ft_split_shell-------------------*/
-	// char **res = ft_split_shell(str , "|");
-	// int i = 0;
-	// while (res[i])
-	// 	printf("%s\n", res[i++]);
+	// char **res = ft_split_shell(str, "\'>\"");
+	char **res = ft_split_shell(str, ">");
+	int i = 0;
+	while (res[i])
+		printf("%s\n", res[i++]);
 
 	// int x = 0;
 	// int y = count_chr(str, del, &x);
@@ -54,12 +57,12 @@ int	main(int ac, char **av)
 	// char str[] = "cmd1| var=123";
 	// char str[] = "var      = 123";
 	// char str[] = "echo $var\" hello\"";
-	char str[] = "echo '$r'$var";
-	char str[] = "$var'$var yu'";
-	char str[] = " $var'$var'$var "$var'$var yu'" ";
-	char str[] = " $var'$var'$var"$var'$var yu'” ";
-	char str[] = " "$var'$var'"$var ";
-	char str[] = " 'a'b"c'dd'” ";
+	// char str[] = "echo '$r'$var";
+	// char str[] = "$var'$var yu'";
+	// char str[] = " $var'$var'$var "$var'$var yu'" ";
+	// char str[] = " $var'$var'$var"$var'$var yu'” ";
+	// char str[] = " "$var'$var'"$var ";
+	// char str[] = " 'a'b"c'dd'” ";
 	// char str[] = "'rr$r'$var$r";
 	// char str[] = "$var\" hello\"";
 	// char str[] = "var=123 | echo $var";
@@ -138,6 +141,8 @@ int	main(int ac, char **av)
 // /*********/char str[] = "cmd1 << infile infile2 infile3 > out -k -l";// HIGHLIGHT
 
 // 	/* ________________________outfiles_tests________________________ */
+// char str[] = ">out <in<in2 cmd1 <in3 cmd2 >out2"; // HIGHLIGHT
+// char str[] = ">out cmd1 >o2 cmd2 <in cmd3 >o3"; // HIGHLIGHT
 // /*********/char str[] = "cmd1 -f -g >> out -k";// HIGHLIGHT
 			// char str[] = "cmd1 -f -g > outfile -k| cmd2 > outfile2";
 // 	char str[] = "cmd1 -f -g > outfile1 > outfile2 >> out3 -p";
@@ -147,7 +152,10 @@ int	main(int ac, char **av)
 	// char str[] = "  <    infile cmd -f -g << infile2 -k | >>out";
 
 // 	/* ________________________infiles_tests________________________ */
-// /*********/char str[] = "< infile cmd1 -f -g > out >>out2 -k";// HIGHLIGHT
+// /*********/char str[] = "<infile cmd1 -f -g > out >>out2 -k";// HIGHLIGHT
+// 	char str[] = "<infile'<'bla <in2";
+// 	char str[] = "< in> o";
+// 	char str[] = "<in> o";
 // 	char str[] = "<< infile cmd1 -f -g > out";
 // 	char str[] = "<< infile cmd1 -f -g <in2 ";
 // 			char str[] = "< infile < infile2     << infile3 | cmd1 |cmd2 |cmd3 ";
@@ -231,9 +239,9 @@ int	main(int ac, char **av)
 	// check_syntax(str);
 	
 	/*---------------------ft_strchr_test-----------------------*/
-	char str[] = "\"ar e\"{,}e";
-	int	x = ft_strchr(str + 1, str[0]) - str;
-	/*debug*/printf("str:%s. x:%d\n", &str[x], x);
+	// char str[] = "\"ar e\"{,}e";
+	// int	x = ft_strchr(str + 1, str[0]) - str;
+	// /*debug*/printf("str:%s. x:%d\n", &str[x], x);
 
 	
 	/*---------------------ft_strncmp_test-----------------------*/

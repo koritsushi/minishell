@@ -41,7 +41,7 @@ int		is_valid_brace_start(char *str);
 int		get_expansion_count(char *str);
 char	*perform_brace_expansion(char *str, char **cmd_line, int *x);
 char	*copy_brace_expansion(char *src, char *dest, int *x, int malloc_size);
-void	update_flag_quote(char *target, char *symbol, int *flag_quote);
+void	update_flag_quote(char *target, char *set, char *symbol, int *flag_quote);
 
 
 /* __________functions for quote removal expansion__________*/

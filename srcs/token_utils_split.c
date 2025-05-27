@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:37:43 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 11:11:53 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	count_str(char *str, char *set)
 !is_target(set, str[1])) // if !flag && str[0] == spaces, str[1] !spaces
 			wc++;
 		if (!is_target(set, '\"') && !is_target(set, '\''))
-			update_flag_quote(str, &symbol, &flag);
+			update_flag_quote(str, "\'\"", &symbol, &flag);
 		str++;
 	}
 	return (wc);
