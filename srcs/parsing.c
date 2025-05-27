@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:30:15 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 16:01:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,14 @@ int	valid_export_keyword(char *str, int flag)
 	if (!str)
 		return (0);
 	str = skip_spaces(str, " \t\n\v\f\r");
-	/*debug*/printf("valid_export_keyword:ent:%s.\n", str);
+	// /*debug*/printf("valid_export_keyword:ent:%s.\n", str);
 
 	if (\
 check_export_keyword(str, "export", 6, flag) || \
 check_export_keyword(str, "\'export\'", 8, flag) || \
 check_export_keyword(str, "\"export\"", 8, flag))
 		return (1);
-	/*debug*/printf("valid_export_keyword:invalid! %c\n", str[6]);
+	// /*debug*/printf("valid_export_keyword:invalid! %c\n", str[6]);
 	return (0);
 }
 
@@ -150,7 +150,7 @@ int	get_variable(t_env **vars, t_token lst, char *str, int exit_status)
 		i++;
 	if (!lst.data[i] || !lst.data[i][0])
 		return (0);
-	/*debug*/printf("get_variable:ent:%s.\n", lst.data[i]);
+	// /*debug*/printf("get_variable:ent:%s.\n", lst.data[i]);
 	if (check_var_syntax(&lst.data[i]))
 	{
 		// /* if no pipes, copy_vars */
@@ -161,11 +161,11 @@ int	get_variable(t_env **vars, t_token lst, char *str, int exit_status)
 			if (valid_export_keyword(new, 0))
 			{
 				new = skip_export_update_val(new, &export_id);
-				/*debug*/printf("valid export! %s\n", new);
+				// /*debug*/printf("valid export! %s\n", new);
 			}
 			if (!new)
 				return (0);
-			/*debug*/printf("get_var:%s.\n", new);
+			// /*debug*/printf("get_var:%s.\n", new);
 			extract_vars(vars, new, export_id);
 		}
 	}

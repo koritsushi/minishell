@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/27 15:48:33 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 16:31:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	main(int argc, char **argv, char **env)
 				int x = -1;
 				while (data.lst.data[++x])
 					quote_removal(&data.lst.data[x]);
-				/*debug*/debug_print_cmd_line(&data.lst);
+				// /*debug*/debug_print_cmd_line(&data.lst);
 
 				/* execution here */
 				execute_functions(&data, data.lst); //inject pipex inside

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/27 08:42:16 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 16:07:58 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,12 @@ static void	skip_quote_update_flag(char *str, char *symbol, int *flag, int *x)
 {
 	// 'var' e
 	// /*debug*/printf("\033[93mshell_var_expansion:sym:\033[0m%s.\n", &str[x + 1]);
-	/*debug*/printf("x: %ld, x_ori:%d\n", (ft_strchr(&str[(*x) + 1], '\'') - &str[(*x)]), *x);
+	// /*debug*/printf("x: %ld, x_ori:%d\n", (ft_strchr(&str[(*x) + 1], '\'') - &str[(*x)]), *x);
 	*x += ft_strchr(&str[(*x) + 1], '\'') - &str[(*x)];
 	update_flag_quote(&str[(*x)], "\'\"", symbol, flag);
 	(*x)++;
-	if (&str[(*x)])
-	/*debug*/printf("\033[skip_quote_update_flag:skip:\033[0m%s. %d\n", &str[(*x)], *flag);
+	// if (&str[(*x)]) /*debug*/
+	// /*debug*/printf("\033[skip_quote_update_flag:skip:\033[0m%s. %d\n", &str[(*x)], *flag);
 }
 
 // 22 lines!
@@ -127,7 +127,7 @@ void	quote_removal(char **cmd_line)
 (!is_target(*cmd_line, '\'') && !is_target(*cmd_line, '\"')))
 		return ;
 	len = count_malloc_quote_removal(*cmd_line);
-	/*debug*/printf("quote_removal:len:%d\n", len);
+	// /*debug*/printf("quote_removal:len:%d\n", len);
 	if (!malloc_chr_ptr(&new, len + 1))
 		return ;
 	expand_quote_removal(*cmd_line, new);
@@ -143,13 +143,13 @@ int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 	x = -1;
 	while (lst_data && lst_data[++x])
 	{
-		/*debug*/printf("cmd_expansion:ent:%s\n", lst_data[x]);
+		// /*debug*/printf("cmd_expansion:ent:%s\n", lst_data[x]);
 		brace_expansion(&lst_data[x]);
-		/*debug*/printf("cmd_expansion:brace:%s\n", lst_data[x]);
+		// /*debug*/printf("cmd_expansion:brace:%s\n", lst_data[x]);
 		shell_var_expansion(&lst_data[x], vars, exit_status);
-		/*debug*/printf("cmd_expansion:sh_var:%s\n", lst_data[x]);
+		// /*debug*/printf("cmd_expansion:sh_var:%s\n", lst_data[x]);
 		dot_expansion(&lst_data[x]);
-		/*debug*/printf("cmd_expansion:dot:%s\n", lst_data[x]);
+		// /*debug*/printf("cmd_expansion:dot:%s\n", lst_data[x]);
 	}
 	return (1);
 }

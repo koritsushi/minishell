@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:37:01 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 16:08:52 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ static int	has_non_var(char **str)
 	char	**fin;
 
 	new = skip_redirs(*str);
-	/*debug*/printf("has_non_var:skip:%s.\n", new);
+	// /*debug*/printf("has_non_var:skip:%s.\n", new);
 	fin = ft_split_shell(new, " \t\n\v\f\r");
 	res = 0;
 	i = -1;
 	while (fin && fin[++i] && !res)
 	{
-		/*debug*/printf("has_non_var:ent:%s.\n", fin[i]);
+		// /*debug*/printf("has_non_var:ent:%s.\n", fin[i]);
 		if (!is_target(fin[i], '=') || !ft_isalpha(fin[i][0]))
 		{
 			// if export only, skip process_vars
@@ -75,7 +75,7 @@ static int	has_non_var(char **str)
 			// var=123 var=6 cmd   : trim
 			// var=123 1var=6 cmd  : trim
 			// var=123 cmd var=6   : trim to before cmd
-			/*debug*/printf("has_non_var:found!%s\n", fin[i]);
+			// /*debug*/printf("has_non_var:found!%s\n", fin[i]);
 		}
 	}
 	free_chr_ptr((void **)fin);
@@ -97,7 +97,7 @@ int	check_var_syntax(char **str)//, int *flag)
 	/* if no export && has_more_str , error! */
 	if (has_non_var(str))
 	{
-		/*debug*/printf("check_var_syntax:\033[93mnon var detected!\033[0m\n");
+		// /*debug*/printf("check_var_syntax:\033[93mnon var detected!\033[0m\n");
 		return (0);
 	}
 	new = *str;

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:12:43 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:18:40 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 16:02:09 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*find_next_var(char *str)
 		{
 			// /*debug*/printf("\nbf_new=%s, str[0]=%c\n", str + 1, str[0]);
 			str = skip_if_quote(str, str[0], 0); //wont it still skip regardless equal sign
-			/*debug*/printf("find_next_var:skip=%s\n\n", str);
+			// /*debug*/printf("find_next_var:skip=%s\n\n", str);
 			if (str[1] && is_target(" \t\n\v\f\r", str[1]))
 				return (skip_spaces(str + 1, " \t\n\v\f\r"));
 			if (f_equal_sign && (str[0] == '\'' || str[0] == '\"'))
@@ -66,7 +66,7 @@ void	remove_var(t_token *lst)
 			break ;
 		//trim cmd in check_var_syntax
 		//free cmd if check_var_syntax OK
-		/*debug*/printf("remove_var:%s.\n", lst->data[i]);
+		// /*debug*/printf("remove_var:%s.\n", lst->data[i]);
 		if (check_var_syntax(&lst->data[i]))
 		{
 			free(lst->data[i]);
@@ -89,12 +89,12 @@ static void	add_var_entry(t_env **vars, char *name, char *new, int export_id)
 	t_env	*lst;
 
 	/*if !found && !flag*/
-	/*debug*/printf("add_var_entry:ent:content:\033[96m%s\033[0m.\n", new);
+	// /*debug*/printf("add_var_entry:ent:content:\033[96m%s\033[0m.\n", new);
 	lst = ft_lstnew_sh(name, new, export_id);
 	ft_lstadd_back_sh(vars, lst);
 
 	/*debug*/lst = ft_lstlast_sh(*vars);
-	/*debug*/printf("add_var_entry:env:\033[93m%s\033[0m.\n", lst->env);
+	// /*debug*/printf("add_var_entry:env:\033[93m%s\033[0m.\n", lst->env);
 }
 
 // 18 lines!
@@ -114,7 +114,7 @@ void	extract_vars(t_env **vars, char *str, int export_id)
 
 	/* scan through string */
 	/* search for name in linked list, if found, replace */
-	/*debug*/printf("extract_vars:ent:\033[93m%s\033[0m.\n", str);
+	// /*debug*/printf("extract_vars:ent:\033[93m%s\033[0m.\n", str);
 	while (str && str[0])
 	{
 		str = skip_spaces(str, " \t\n\v\f\r");
@@ -130,11 +130,11 @@ void	extract_vars(t_env **vars, char *str, int export_id)
 		{
 			//trim_if_export
 			// var=baba export uu
-			/*debug*/printf("var_name=%s, var_len=%d+1, str=%s\n", name, count_malloc_vars(str), str);
+			// /*debug*/printf("var_name=%s, var_len=%d+1, str=%s\n", name, count_malloc_vars(str), str);
 			malloc_chr_ptr(&new, count_malloc_vars(str) + 1);
 			copy_vars(new, str, count_malloc_vars(str));
 			// ft_strlcpy(new, str, count_malloc_vars(str) + 1);
-			/*debug*/printf("\033[93mcopy_vars:\033[0mfinal:%s\n", new);
+			// /*debug*/printf("\033[93mcopy_vars:\033[0mfinal:%s\n", new);
 			// /*debug*/printf("---------\ncheck_replace_dup:\n");
 			// /*debug*/printf("---------\n");
 

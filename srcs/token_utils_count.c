@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:16:55 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 16:01:11 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,13 +152,13 @@ int	get_malloc_size(char **res)//, char **infile)
 	/* <infile >outfile*/
 	i = 0;
 	i = count_str_array(res); /* splitted by '|' */
-	/*debug*/printf("------\ncount_res: %d\n", i);
+	// /*debug*/printf("------\ncount_res: %d\n", i);
 	i += count_str_array(&res[1]); /*count pipes*/
-	/*debug*/printf("count_pipe: %d\n", i);
+	// /*debug*/printf("count_pipe: %d\n", i);
 	i += count_infile(res);
-	/*debug*/printf("count_infile: %d\n", i);
+	// /*debug*/printf("count_infile: %d\n", i);
 	i += count_cmd_tail(res, " \t\n\v\f\r");
-	/*debug*/printf("count_cmd_tail: %d\n", i);
+	// /*debug*/printf("count_cmd_tail: %d\n", i);
 
 	// /*debug*/printf("------\nres:\n");
 	// /*debug*/debug_print(res);

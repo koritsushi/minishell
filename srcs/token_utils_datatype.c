@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 07:55:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:38:31 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 16:01:01 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,11 +171,11 @@ void	assign_datatype(unsigned char *datatype, char **res)//, char **infile_f)
 		/* skip spaces & infile symbol */
 		cmd_tail = skip_redirs(cmd_tail);
 
-		/*debug*/printf("assign_datatype:tail:%s.\n", cmd_tail);
+		// /*debug*/printf("assign_datatype:tail:%s.\n", cmd_tail);
 		outfile = ft_split_shell(cmd_tail, ">");
 		if (!outfile)
 		{
-			/*debug*/printf("!outfile assign_datatype!\n");
+			// /*debug*/printf("!outfile assign_datatype!\n");
 			break ;
 		}
 		assign_datatype_cmd_tail(cmd_tail, datatype, &i, outfile);

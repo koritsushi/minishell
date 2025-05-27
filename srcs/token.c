@@ -73,7 +73,7 @@ void	copy_cmd_tail(char **lst_data, int *start, char **outfile)
 		// in2
 
 		// /*debug*/printf("***cmd_tail=%s| %zu\n", cmd_tail, ft_strlen(cmd_tail));
-		/*debug*/printf("copy_cmd_tail:%s.\n", cmd_tail);
+		// /*debug*/printf("copy_cmd_tail:%s.\n", cmd_tail);
 		if (cmd_tail && cmd_tail[0])
 		{
 			cmd_tail -= 1;
@@ -160,11 +160,11 @@ void	extract_cmd_tail(char **lst_data, int *i, char *str, char **outfile)
 	// skip space
 	// skip symbol '>'
 	// skip redirs '<>'
-	/*debug*/printf("extract_cmd_tail:ent:%s.\n", str);
+	// /*debug*/printf("extract_cmd_tail:ent:%s.\n", str);
 	start = 0;
 	if (str[0] == '>')
 	{
-		/*debug*/printf("ext_cmdt:out:%s.\n", outfile[0]);
+		// /*debug*/printf("ext_cmdt:out:%s.\n", outfile[0]);
 		cmd_tail = skip_spaces(outfile[0], " \t\n\v\f\r");
 		cmd_tail = skip_consecutive_redir(cmd_tail, 1);
 		if (!cmd_tail || !cmd_tail[0])
@@ -172,7 +172,7 @@ void	extract_cmd_tail(char **lst_data, int *i, char *str, char **outfile)
 	}
 	else
 		cmd_tail = outfile[0];
-	/*debug*/printf("extract_cmd_tail:%s.\n", cmd_tail);
+	// /*debug*/printf("extract_cmd_tail:%s.\n", cmd_tail);
 
 	if (!allocate_cmd_tail(&lst_data[*i], outfile, cmd_tail))
 		return ;
@@ -181,8 +181,8 @@ void	extract_cmd_tail(char **lst_data, int *i, char *str, char **outfile)
 	// {
 	infile_check = ft_split_shell(cmd_tail, "<");
 	// infile_check = ft_split_shell(outfile[0], "<");
-	/*debug*/printf("___infile_check:___\n");
-	/*debug*/debug_print(infile_check);
+	// /*debug*/printf("___infile_check:___\n");
+	// /*debug*/debug_print(infile_check);
 	start = ft_strlcpy(lst_data[(*i)], infile_check[0], ft_strlen(infile_check[0]) + 1);
 	copy_cmd_tail(&lst_data[(*i)], &start, &infile_check[1]);
 	free_chr_ptr((void **)infile_check);
@@ -190,7 +190,7 @@ void	extract_cmd_tail(char **lst_data, int *i, char *str, char **outfile)
 	/* copy cmd_tail*/
 	if (outfile[1])
 		copy_cmd_tail(&lst_data[(*i)], &start, &outfile[1]);
-	/*debug*/printf("tail_fin=%s.\n", lst_data[(*i)]);
+	// /*debug*/printf("tail_fin=%s.\n", lst_data[(*i)]);
 	*i += 1;
 }
 
@@ -210,12 +210,12 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 	cmd_tail = skip_consecutive_redir(cmd_tail, 0);
 	if (!cmd_tail || !cmd_tail[0])
 		return ;
-	/*debug*/printf("cmd_tail:%s.\n", cmd_tail);
+	// /*debug*/printf("cmd_tail:%s.\n", cmd_tail);
 
 	outfile = ft_split_shell(cmd_tail, ">");
-	/*debug*/printf("------\np_cmd_t:outfile:\n");
-	/*debug*/debug_print(outfile);
-	/*debug*/printf("------\nprocess_cmd_tail:%s.\n", cmd_tail);
+	// /*debug*/printf("------\np_cmd_t:outfile:\n");
+	// /*debug*/debug_print(outfile);
+	// /*debug*/printf("------\nprocess_cmd_tail:%s.\n", cmd_tail);
 
 	if (!outfile || !outfile[0])
 		return ;
@@ -240,7 +240,7 @@ void	process_cmd(t_token *lst, char **res)
 	{
 		/*----------- get_infiles -----------*/
 		cmd_tail = skip_spaces(res[x], " \t\n\v\f\r");
-		/*debug*/printf("cmd_tail:ent:%s.\n", cmd_tail);
+		// /*debug*/printf("cmd_tail:ent:%s.\n", cmd_tail);
 
 		if (ft_strchr(cmd_tail, '<'))
 			extract_infile(lst->data, &i, cmd_tail);
@@ -278,9 +278,9 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 	if (!init_token_list(lst, (count + 1)))
 		return (0);
 
-	/*debug*/printf("get_cmd_line:\033[93mcount=%d+1\033[0m, %s.\n", count, str);
-	/*debug*/printf("------\nres:\n");
-	/*debug*/debug_print(res);
+	// /*debug*/printf("get_cmd_line:\033[93mcount=%d+1\033[0m, %s.\n", count, str);
+	// /*debug*/printf("------\nres:\n");
+	// /*debug*/debug_print(res);
 	/* ---------------- extract_cmd ---------------- */
 	process_cmd(lst, res);
 	cmd_expansion(lst->data, vars, exit_status);

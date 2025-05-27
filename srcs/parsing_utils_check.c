@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:28:58 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/24 16:22:17 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 16:11:53 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,8 @@ int	check_unclosed_quote(char *str)
 		if (new[0] && is_target("\'\"", new[0]))
 		{
 			new = skip_if_quote(new, new[0], 0);
-			if (new) /*debug*/
-				/*debug*/printf("check_unclosed_quote:%s.\n", new);
+			// if (new) /*debug*/
+				// /*debug*/printf("check_unclosed_quote:%s.\n", new);
 		}
 		if (!new)
 			return \
@@ -143,9 +143,9 @@ int	check_syntax(char *str)
 	if (!str[0])
 		return (0);
 	res = ft_split_shell(str, " \t\n\v\f\r");
-	/*debug*/printf("check_syntax\n--------\nres:\n");
-	/*debug*/debug_print(res);
-	/*debug*/printf("--------\n");
+	// /*debug*/printf("check_syntax\n--------\nres:\n");
+	// /*debug*/debug_print(res);
+	// /*debug*/printf("--------\n");
 
 	if (res && (!check_symbols(res) || !check_unclosed_quote(str)))
 		flag = 0;

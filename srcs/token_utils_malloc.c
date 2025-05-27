@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 14:47:49 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 16:00:26 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ static int	count_cmd_tail_chr(char **outfile)
 		cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
 		cmd_tail = skip_consecutive_redir(cmd_tail, 0);
 
-		/*debug*/printf("count_cmd_tail_chr:%s.\n", cmd_tail);
+		// /*debug*/printf("count_cmd_tail_chr:%s.\n", cmd_tail);
 		if (cmd_tail && cmd_tail[0])
 			len += (ft_strlen(cmd_tail) + 1);
-		/*debug*/printf("otail=%s| %d\n", cmd_tail, len);
+		// /*debug*/printf("otail=%s| %d\n", cmd_tail, len);
 	}
 	return (len);
 }
@@ -127,18 +127,18 @@ int	allocate_cmd_tail(char **dest, char **outfile, char *cmd_tail)//, char c)
 		//bla <infile
 		infile_check = ft_split_shell(cmd_tail, "<");
 		len = ft_strlen(infile_check[0]);
-		/*debug*/printf("tail_len=%s| %d\n", infile_check[0], len);
+		// /*debug*/printf("tail_len=%s| %d\n", infile_check[0], len);
 		len += count_cmd_tail_chr(&infile_check[1]);
 		// i = 1;
-		/*debug*/printf("____alloc_cmd_tail:infile:____\n");
-		/*debug*/debug_print(infile_check);
-		/*debug*/printf("tail=%s| %d\n", infile_check[0], len);
+		// /*debug*/printf("____alloc_cmd_tail:infile:____\n");
+		// /*debug*/debug_print(infile_check);
+		// /*debug*/printf("tail=%s| %d\n", infile_check[0], len);
 		free_chr_ptr((void **)infile_check);
 	// }
 	/* count outfile & cmd_tail */
 	if (outfile[1])
 		len += count_cmd_tail_chr(&outfile[1]);
-	/*debug*/printf("alloc_cmd_tail:len:%d+1\n", len);
+	// /*debug*/printf("alloc_cmd_tail:len:%d+1\n", len);
 	if (!len || !malloc_chr_ptr(dest, len + 1))
 		return (0);
 	return (1);

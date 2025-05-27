@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 15:00:07 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:28:38 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 16:00:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,11 @@ void	add_filler_cmd(t_token *lst)
 
 	x = -1;
 	count = count_realloc(*lst);
-	/*debug*/printf("add_filler_cmd:%d\n", count);
+	// /*debug*/printf("add_filler_cmd:%d\n", count);
 	if (!count)
 		return ;
 	count += count_str_array(lst->data);
-	/*debug*/printf("add_filler:malloc: %d+1\n", count);
+	// /*debug*/printf("add_filler:malloc: %d+1\n", count);
 
 	if (!init_token_list(&dest, count + 1))
 		return ;

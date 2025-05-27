@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:02:51 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 08:42:59 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/27 16:02:26 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	copy_vars(char *dest, char *src, int len)
 		update_flag_quote(src, "\'\"", &symbol, &flag);
 		if (src[0] != symbol)
 			dest[x++] = src[0];
-		/*debug*/printf("copy_vars:%s.\n", dest);
+		// /*debug*/printf("copy_vars:%s.\n", dest);
 		src++;
 	}
 	dest[x] = '\0';
@@ -77,11 +77,11 @@ static int	overwrite_existing_var(t_env *head, char *str, int export_id)
 	// /*debug*/printf("overwrite_existing_var:found! str:%s\n", (char *)head->content);
 	free(head->content);
 	/*overwrite*/
-	/*debug*/printf("overwrite_existing_var:str:%s.\n", str);
-	/*debug*/printf("overwrite_existing_var:strchr:%s.\n", ft_strchr(str, '=') + 1);
+	// /*debug*/printf("overwrite_existing_var:str:%s.\n", str);
+	// /*debug*/printf("overwrite_existing_var:strchr:%s.\n", ft_strchr(str, '=') + 1);
 	if (ft_strchr(str, '=') + 1)
 		head->content = ft_strdup(ft_strchr(str, '=') + 1);
-	/*debug*/printf("def:export_id:%d\n", export_id);
+	// /*debug*/printf("def:export_id:%d\n", export_id);
 	if (head->exported < 1 && export_id >= 1)
 		head->exported = export_id;
 	else if (head->exported == 1)
