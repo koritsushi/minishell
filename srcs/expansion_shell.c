@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 08:35:57 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:34:34 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 09:41:44 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static void	truncate_name_at_symbol(char *str)
 {
 	while (str && str[0])
 	{
-		if (!ft_isalnum(str[0]) && !is_target("\'\"", str[0]))
+		if (!ft_isalnum(str[0]) && !is_target("_\'\"", str[0]))
 		{
 			str[0] = '\0';
 			break ;

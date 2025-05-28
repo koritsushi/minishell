@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/27 15:48:33 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 09:33:55 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ int	main(int argc, char **argv, char **env)
 				/*debug*/debug_print_cmd_line(&data.lst);
 
 				/* execution here */
-				execute_functions(&data, data.lst); //inject pipex inside
-				free_exec(&data.exec);
+				// execute_functions(&data, data.lst); //inject pipex inside
+				// free_exec(&data.exec);
 				free_all(&data.lst);
 			}
 		}
