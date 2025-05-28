@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/26 11:54:05 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/28 12:47:11 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void	execute_functions(t_ms *data, t_token lst)
 {
 	char	**cmd;
 
+	if (ft_isempty(lst.data[0]) || lst.data == NULL)
+		return ;
 	ft_init_pipe(data, &lst);
 	infile_parsing_init(data, &lst);
 	outfile_parsing_init(data, &lst);
@@ -89,8 +91,8 @@ void	execute_functions(t_ms *data, t_token lst)
 	if (data->exec.cmd_args == NULL)
 		return (free_chr_ptr((void **) cmd), ms_free_all(data, 1, 1));
 	free_chr_ptr((void **) cmd);
-	if (is_built_in(data->exec.cmd_args[0][0]) && \
-(has_pipes(lst) == 0 || has_infile_outfile(lst) == 0))
+	if ((has_pipes(lst) == 0 && has_infile_outfile(lst) == 0) && \
+is_built_in(data->exec.cmd_args[0][0]))
 		return ((void) execute_built_in(data, data->exec.cmd_args[0]));
 	data->exec.envp = ft_envp(&data->env_var);
 	if (data->exec.envp == NULL)
