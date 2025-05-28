@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/28 21:53:19 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 22:06:58 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,9 @@ static int	count_cmd_tail(char **res, char *set)
 	{
 		cmd_tail = skip_spaces(res[x], " \t\n\v\f\r");
 		tmp = ft_split_shell(cmd_tail, ">");
-		/*debug*/printf("count_cmd_t:%s.\n", cmd_tail);
-		/*debug*/printf("------\ncount:outfile:\n");
-		/*debug*/debug_print(tmp);
+		// /*debug*/printf("count_cmd_t:%s.\n", cmd_tail);
+		// /*debug*/printf("------\ncount:outfile:\n");
+		// /*debug*/debug_print(tmp);
 
 		/* cmd1 > out2 > out3 */
 		/* > out1 > out2 cmd1*/
