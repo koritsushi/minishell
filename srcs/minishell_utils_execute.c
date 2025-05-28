@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 19:04:36 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/28 12:40:15 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	is_built_in(char *str)
 
 	i = 0;
 	builtins_init(builtins);
-	while (builtins[i] != NULL)
+	while (i < 7)
 	{
 		if (ft_strncmp(str, builtins[i], ft_strlen(builtins[i])) == 0)
 			return (1);
@@ -79,6 +79,8 @@ void	execute_functions(t_ms *data, t_token lst)
 {
 	char	**cmd;
 
+	if (ft_isempty(lst.data[0]) || lst.data[0] == NULL)
+		return ;
 	ft_init_pipe(data, &lst);
 	infile_parsing_init(data, &lst);
 	outfile_parsing_init(data, &lst);
@@ -89,7 +91,7 @@ void	execute_functions(t_ms *data, t_token lst)
 	if (data->exec.cmd_args == NULL)
 		return (free_chr_ptr((void **) cmd), ms_free_all(data, 1, 1));
 	free_chr_ptr((void **) cmd);
-	if ((has_pipes(lst) == 0 && has_infile_outfile(lst) == 0) /
+	if ((has_pipes(lst) == 0 && has_infile_outfile(lst) == 0) && \
 is_built_in(data->exec.cmd_args[0][0]) == 1)
 		return ((void) execute_built_in(data, data->exec.cmd_args[0]));
 	data->exec.envp = ft_envp(&data->env_var);
