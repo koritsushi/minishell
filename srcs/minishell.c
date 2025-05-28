@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/28 09:33:55 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 12:10:47 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			if (get_cmd_line(text, &data.lst, data.env_var, data.exec.exit_code))
 			{
+				// /*debug*/debug_print_cmd_line(&data.lst);
 				get_variable(&data.env_var, data.lst, text, data.exec.exit_code);
 				int x = -1;
 				while (data.lst.data[++x])

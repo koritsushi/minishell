@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/23 19:29:18 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/28 12:23:44 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ int		is_built_in(char *str);
 void	execute_functions(t_ms *data, t_token lst);
 int		execute_built_in(t_ms *data, char **argv);
 
-// void	execute_built_in(t_ms data, t_env *env, int argc, char **argv);
+/*___________________helper function for skip___________________*/
+char	*skip_consecutive_redir(char *outfile, int flag);
 
 /*______________modified linked_lst function from libft______________*/
 t_env	*ft_lstlast_sh(t_env *lst);

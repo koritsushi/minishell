@@ -6,31 +6,11 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:40:41 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 18:51:58 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 10:25:46 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/expansion.h"
-
-// char	*start_exit_expansion(char *src, char *dest, char *exit_code, int len)
-// {
-// 	int	x;
-
-// 	x = 0;
-// 	while (src && src[0] && x < len)
-// 	{
-// 		/*debug*/printf("start_exit_expansion:%s\n", src);
-// 		if (src[0] == '$' && src[1] && src[1] == '?')
-// 		{
-// 			x += ft_strlcpy(&dest[x], exit_code,
-// 						ft_strlen(exit_code) + 1);
-// 			src += 2;
-// 		}
-// 		else
-// 			dest[x++] = *src++;
-// 	}
-// 	return (dest);
-// }
 
 void	dot_expansion(char **cmd_line)
 {
@@ -72,18 +52,18 @@ char	*expand_exit_status(char **cmd_line, int exit_status, int *index)
 	exit_code = ft_itoa(exit_status);
 	len = ft_strlen(*cmd_line) - 2;
 	len += ft_strlen(exit_code);
-	/*debug*/printf("expand_exit_status:malloc_len:%d+1\n", len);
+	// /*debug*/printf("expand_exit_status:malloc_len:%d+1\n", len);
 	if (!malloc_chr_ptr(&new, len + 1))
 		return (0);
-	/*debug*/printf("expand_exit_status:ent:%s.\n", *cmd_line);
-	/*debug*/printf("expand_exit_status:str:%s. %d\n", &(*cmd_line)[*index], *index);
-	/*debug*/printf("expand_exit_status:index:%lu\n", (*index) + ft_strlen(exit_code));
+	// /*debug*/printf("expand_exit_status:ent:%s.\n", *cmd_line);
+	// /*debug*/printf("expand_exit_status:str:%s. %d\n", &(*cmd_line)[*index], *index);
+	// /*debug*/printf("expand_exit_status:index:%lu\n", (*index) + ft_strlen(exit_code));
 	ft_strlcpy(new, *cmd_line, *index + 1);
 	ft_strlcpy(&new[(*index)], exit_code, ft_strlen(exit_code) + 1);
 	ft_strlcpy(&new[(*index) + ft_strlen(exit_code)], \
 &(*cmd_line)[(*index) + 2], ft_strlen(&(*cmd_line)[(*index) + 2]) + 1);
 
-	/*debug*/printf("expand_exit_status:new:%s.\n", new);
+	// /*debug*/printf("expand_exit_status:new:%s.\n", new);
 
 	*index += ft_strlen(exit_code);
 	free_multiple_ptr_single(*cmd_line, exit_code, NULL);
