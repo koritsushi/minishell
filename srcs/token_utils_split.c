@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/28 14:38:44 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 21:29:43 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,9 @@ static int	count_chr(char *str, char *set)
 			flag = increment_val(1, &count, &str); // increment & set flag to 1
 		else if (flag == 1 && str[0] == symbol)
 			flag = 0;
-		if (flag)
+		if (flag && str[0])
 			increment_val(-1, &count, &str);
-		else if (!flag && !is_target(set, str[0]))
+		else if (!flag && str[0] && !is_target(set, str[0]))
 			increment_val(-1, &count, &str);
 	}
 	// /*debug*/printf("count_chr:flag:%d, stopped:%s, %d\n", *flag, str, count);
