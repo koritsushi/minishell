@@ -140,7 +140,7 @@ int	check_syntax(char *str)
 
 	flag = 1;
 	str = skip_spaces(str, " \t\n\v\f\r");
-	if (!str[0])
+	if (!str || !str[0])
 		return (0);
 	res = ft_split_shell(str, " \t\n\v\f\r");
 	// /*debug*/printf("check_syntax\n--------\nres:\n");

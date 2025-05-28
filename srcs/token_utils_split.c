@@ -63,7 +63,7 @@ int	count_str(char *str, char *set)
 static int	increment_val(int flag, int *count, char **str)
 {
 	(*count)++;
-	if (str)
+	if (str && *str)
 		(*str)++;
 	if (flag != -1)
 		return (flag);
@@ -90,21 +90,21 @@ static int	count_chr(char *str, char *set)
 	flag = 0;
 	count = 0;
 	symbol = '\0';
-	while (str[0] && (!is_target(set, str[0]) || (flag == 1)))
+	while (str && str[0] && (!is_target(set, str[0]) || (flag == 1)))
 	{
 		/* if flag == 1, ignore sets */
 		/* if flag != 1, stop upon sets */
 
-		if (flag == 0 && str[0] && is_target("'\'\"", str[0]) && \
+		if (flag == 0 && str[0] && is_target("'\'\"", str[0]) && 
 !is_target(set, '\"') && !is_target(set, '\'')) // if is first encounter to '
 			symbol = str[0];
 		if (flag == 0 && str[0] == symbol) // if is first encounter to '
 			flag = increment_val(1, &count, &str); // increment & set flag to 1
 		else if (flag == 1 && str[0] == symbol)
 			flag = 0;
-		if (flag)
+		if (flag && str[0])
 			increment_val(-1, &count, &str);
-		else if (!flag && !is_target(set, str[0]))
+		else if (!flag && str[0] && !is_target(set, str[0]))
 			increment_val(-1, &count, &str);
 	}
 	// /*debug*/printf("count_chr:flag:%d, stopped:%s, %d\n", *flag, str, count);
