@@ -90,12 +90,6 @@ char	*ft_cmdpath(char **cmd_args, char **path)
 		cmd_path = NULL;
 	}
 	if (i == end && cmd_path == NULL)
-	{
-		cmd_path = ft_strjoin(getpwd(), cmd_args[0]);
-		if (access(cmd_path, F_OK) == 0)
-			return (cmd_path);
-		free (cmd_path);
-		cmd_path = NULL;
-	}
+		cmd_path = ft_absolute_path(cmd_args[0]);
 	return (cmd_path);
 }

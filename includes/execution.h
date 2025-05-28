@@ -26,7 +26,6 @@ typedef struct s_env	t_env;
 void	ft_init_pipe(t_ms *data, t_token *lst);
 char	**ft_cmd_init(t_ms *data, t_token *lst);
 void	ft_process(t_ms *data);
-char	**ft_envp(t_env **lst);
 
 //execution_process2.c
 int		lst_cmd_count(t_token *lst);
@@ -39,6 +38,10 @@ char	**ft_format_path(char **path, char *format);
 char	***ft_split_cmd(t_exec *exec, char **argv);
 char	*ft_cmdpath(char **cmd_args, char **path);
 void	ft_cmdpath_error(t_ms *data, char *cmd, char **path);
+
+//execution_cmd_utils.c
+char	**ft_envp(t_env **lst);
+char	*ft_absolute_path(char *cmd);
 
 //execution_process.c
 void	ft_execution(t_ms *data, char *cmd, char **cmd_args);

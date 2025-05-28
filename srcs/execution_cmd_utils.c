@@ -37,3 +37,18 @@ char	**ft_envp(t_env **lst)
 	envp[i] = NULL;
 	return (envp);
 }
+
+char	*ft_absolute_path(char *cmd)
+{
+	char	*pwd;
+	char	*cmd_path;
+
+	if (access(cmd, F_OK) == 0)
+		return (cmd);
+	pwd = getpwd();
+	cmd_path = ft_strjoin(pwd, cmd);
+	if (access(cmd_path, F_OK) == 0)
+		return (cmd_path);
+	free_multiple_ptr_single(cmd_path, pwd, NULL);
+	return (NULL);
+}
