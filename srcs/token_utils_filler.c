@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils_filler.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 15:00:07 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 21:43:06 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 12:29:57 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,11 @@ lst.datatype[x] == OUTFILE_A))
  */
 void	add_filler_cmd(t_token *lst)
 {
-	int		x;
+	//int		x;
 	int		count;
 	t_token	dest;
 
-	x = -1;
+	//x = -1;
 	count = count_realloc(*lst);
 	// /*debug*/printf("add_filler_cmd:%d\n", count);
 	if (!count)
