@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/27 16:07:58 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 21:48:59 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 		update_flag_quote(&str[x], "\'\"", &symbol, &flag);
 		if (flag && symbol == '\'' && str[x] == symbol)
 			skip_quote_update_flag(str, &symbol, &flag, &x);
-		else if (str[x] == '$' && ft_isalpha(str[x + 1]))
+		else if (str[x] == '$' && (ft_isalpha(str[x + 1]) || str[x + 1] == '_'))
 		{
 			// /*debug*/printf("shell_var_expansion:flag:%d\n", flag);
 			str = expand_shell_var(vars, cmd_line, &str[x], &x); //actually return x is better

@@ -154,6 +154,7 @@ int	main(int ac, char **av)
 // 	/* ________________________infiles_tests________________________ */
 // /*********/char str[] = "<infile cmd1 -f -g > out >>out2 -k";// HIGHLIGHT
 // 	char str[] = "<infile'<'bla <in2";
+// 	char str[] = "<infile'>'bla <in2";
 // 	char str[] = "< in> o";
 // 	char str[] = "<in> o";
 // 	char str[] = "<< infile cmd1 -f -g > out";

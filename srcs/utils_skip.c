@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 22:05:39 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 17:58:05 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 22:01:29 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,4 @@ char	*skip_consecutive_redir(char *outfile, int flag)
 	if (str[0] == '<')
 		str = skip_consecutive(str, "<");
 	return (str);
-
 }
-

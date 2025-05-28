@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:57:56 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 17:17:40 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 21:52:12 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,13 +143,13 @@ int	is_valid_var_name(char **str, int export_id)
 		// /*debug*/printf("is_valid_var_name:quote:%s.\n", *str);
 	}
 	name = *str;
-	if (!ft_isalpha(name[0]))
+	if (!ft_isalpha(name[0]) && name[0] != '_')
 		return (ft_perror_fd \
 ("🚨 Error! Variable name should start with alphabet\n", 2, 0));
 	while (name[0] && !is_target(" \t\n\v\f\r", name[0]))
 	{
-		// /*debug*/printf("is_valid_var_name:while:%s.\n", name);
-		if (!ft_isalnum(name[0]))
+		/*debug*/printf("is_valid_var_name:while:%s.\n", name);
+		if (!ft_isalnum(name[0]) && name[0] != '_')
 			return (ft_perror_fd \
 ("🚨 Error! Symbols detected in variable name\n", 2, 0));
 		name++;

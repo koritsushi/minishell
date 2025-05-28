@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 16:01:11 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 21:53:19 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	count_str_array(char **res)
 	return (i);
 }
 
-//24 lines!
+//23 lines!
 /*
  * child function in count_infile
  * helper function to start counting
@@ -42,6 +42,11 @@ static int	start_count_infile(char *str)
 	count = 0;
 	infile = ft_split_shell(str, "<");
 	count += count_str_array(&infile[1]);
+
+	// if infile_split_out !has_more_str
+	// && has_out && out has_more_str
+	// i++;
+
 	//<infile in2 in3
 	// cmd <in1 in2 <in3
 	// cmd <<h1 in2 <in3
@@ -50,7 +55,8 @@ static int	start_count_infile(char *str)
 	while (str[0] == '<' && infile[++x])
 	{
 		fin = ft_split_shell(infile[x], ">");
-		if (str[0] == '<' && has_more_str(fin[0], " \t\n\v\f\r"))
+		if ((str[0] == '<' && has_more_str(fin[0], " \t\n\v\f\r")) || \
+(fin[1] && has_more_str_all(&fin[1], " \t\n\v\f\r")))
 		{
 			count += 1;
 			free_chr_ptr((void **)fin);
@@ -88,7 +94,7 @@ static int	count_infile(char **res)//, char **infile)
 	return (count);
 }
 
-// 24 lines!
+// 22 lines!
 /*
  * child function in get_malloc_size
  * counts number of words in cmd_tail for malloc use
@@ -99,17 +105,17 @@ static int	count_cmd_tail(char **res, char *set)
 	int		i;
 	int		x;
 	char	**tmp;
-	char	*line;
+	char	*cmd_tail;
 
-	x = 0;
+	x = -1;
 	i = 0;
-	while (res[x])
+	while (res[++x])
 	{
-		line = res[x];
-		line = skip_spaces(line, set);
-		tmp = ft_split_shell(line, ">");
-		// printf("------\noutfile:\n");
-		// debug_print(tmp);
+		cmd_tail = skip_spaces(res[x], " \t\n\v\f\r");
+		tmp = ft_split_shell(cmd_tail, ">");
+		/*debug*/printf("count_cmd_t:%s.\n", cmd_tail);
+		/*debug*/printf("------\ncount:outfile:\n");
+		/*debug*/debug_print(tmp);
 
 		/* cmd1 > out2 > out3 */
 		/* > out1 > out2 cmd1*/
@@ -128,12 +134,11 @@ static int	count_cmd_tail(char **res, char *set)
 		if (tmp && tmp[1])
 		{
 			i += count_str_array(&tmp[1]);
-			if (line[0] == '>' && has_more_str_all(tmp, set))
+			if (cmd_tail[0] == '>' && has_more_str_all(tmp, set))
 				i++;
 		}
-		else if (!tmp[1] && line[0] == '>' && has_more_str_all(tmp, set))
+		else if (!tmp[1] && cmd_tail[0] == '>' && has_more_str_all(tmp, set))
 			i++;
-		x++;
 		free_chr_ptr((void **)tmp);
 	}
 	return (i);

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/27 22:18:41 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 21:51:21 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	start_cmd(char *text, t_ms *data)
 	if (get_cmd_line(text, &data->lst, data->env_var, data->exec.exit_code))
 	{
 		get_variable(&data->env_var, data->lst, text, data->exec.exit_code);
+		add_filler_cmd(&data->lst);
 		while (data->lst.data[++x])
 			quote_removal(&data->lst.data[x]);
 		// /*debug*/debug_print_cmd_line(&data->lst);
