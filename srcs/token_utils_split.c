@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 11:11:53 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 14:38:44 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static int	count_chr(char *str, char *set)
 	flag = 0;
 	count = 0;
 	symbol = '\0';
-	while (str[0] && (!is_target(set, str[0]) || (flag == 1)))
+	while (str && str[0] && (!is_target(set, str[0]) || (flag == 1)))
 	{
 		/* if flag == 1, ignore sets */
 		/* if flag != 1, stop upon sets */

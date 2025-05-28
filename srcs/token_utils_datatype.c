@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 07:55:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/24 16:38:31 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 14:14:07 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,13 @@ unsigned char *datatype, int *i)
 }
 
 /* child function in assign_datatype */
-static void	assign_datatype_infile(char *cmd_tail, unsigned char *datatype, int *i)
+static void	assign_datatype_infile(char *cmd_tail, unsigned char *datatype, \
+int *i)
 {
-	char **infile;
+	char	**infile;
 
+	if (!cmd_tail || !cmd_tail[0])
+		return ;
 	infile = ft_split_shell(cmd_tail, "<");
 	if (!infile)
 		return ;
@@ -95,10 +98,13 @@ static void	assign_datatype_infile(char *cmd_tail, unsigned char *datatype, int 
  * child function in assign_datatype
  * checks if str[0] is WORD, str[0] = cmd_tail
  */
-static void	assign_datatype_cmd_tail(char *str, unsigned char *datatype, int *i, char **outfile)
+static void	assign_datatype_cmd_tail(\
+char *str, unsigned char *datatype, int *i, char **outfile)
 {
 	char	*cmd_tail;
 
+	if (!str || !str[0] || !outfile)
+		return ;
 	cmd_tail = str;	
 	/* if splittable */
 	if (outfile[1] && (cmd_tail[0] != '>' || \
@@ -147,41 +153,28 @@ void	assign_datatype(unsigned char *datatype, char **res)//, char **infile_f)
 	i = 0;
 	x = -1;
 	/* _____________get infile_____________ */
-	/* if infile[1], travel to the last infile '<' */
-
-	// <in1 in2 in3   <in4 cmd
-	// cmd            <in1 in2 in3 <in4
-	// <in4 cmd
-	// cmd_tail = search_rstr(res[0], '<', ft_strlen(res[0]));
-	// /*debug*/printf("assign_datatype:%s.\n", cmd_tail);
-	// if (infile[1])
-	// 	assign_datatype_infile(cmd_tail, datatype, &i);
-	// else if (!infile[1] && cmd_tail[0] == '<')
-	// 	assign_datatype_infile(cmd_tail, datatype, &i);
-
-		/* get the rest */
-	// <in1 in2 cmd | <in3 blabla
 	while (res[++x])
 	{
 		//get infile here
 		// <in1 in2  <in4  cmd    splittable
 		// cmd <in1 in2 in3 <in4
 		cmd_tail = skip_spaces(res[x], " \t\n\v\f\r");
+		/*debug*/printf("assign_datatype:ent:%s.\n", cmd_tail);
+
 		assign_datatype_infile(cmd_tail, datatype, &i);
 		/* skip spaces & infile symbol */
-		cmd_tail = skip_redirs(cmd_tail);
-
+		// cmd_tail = skip_redirs(cmd_tail);
+		cmd_tail = skip_consecutive_redir(cmd_tail, 0);
 		/*debug*/printf("assign_datatype:tail:%s.\n", cmd_tail);
-		outfile = ft_split_shell(cmd_tail, ">");
-		if (!outfile)
+		if (cmd_tail && cmd_tail[0])
 		{
-			/*debug*/printf("!outfile assign_datatype!\n");
-			break ;
+			outfile = ft_split_shell(cmd_tail, ">");
+			assign_datatype_cmd_tail(cmd_tail, datatype, &i, outfile);
+			/*debug*/printf("assign_datatype:%d\n", i);
+			assign_datatype_outfile(res[x], datatype, &i);
+			free_chr_ptr((void **)outfile);
 		}
-		assign_datatype_cmd_tail(cmd_tail, datatype, &i, outfile);
-		assign_datatype_outfile(res[x], datatype, &i);
 		if (res[x + 1])
 			datatype[i++] = PIPE;
-		free_chr_ptr((void **)outfile);
 	}
 }

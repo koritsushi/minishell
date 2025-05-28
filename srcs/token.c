@@ -232,7 +232,6 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 	process_cmd(lst, res);
 	cmd_expansion(lst->data, vars, exit_status);
 	assign_datatype(lst->datatype, res);
-	add_filler_cmd(lst);
 	free_chr_ptr((void **)res);
 	return (1);
 }
