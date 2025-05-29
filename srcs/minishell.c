@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/27 22:18:41 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 14:15:34 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,6 @@ static int	check_ifs(char *text, t_ms *data)
 	if (text == NULL)
 	{
 		ft_putstr_fd("\e[0;31mlogout\e[0;0m\n", 1);
-		return (0);
-	}
-	if (ft_strncmp(text, "exit", 4) == 0)
-	{
-		ft_putstr_fd("\033[36mminishell exited!\033[0m\n", 1);
 		return (0);
 	}
 	if (g_signal == 130)
