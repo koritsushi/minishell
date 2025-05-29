@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 16:01:35 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 16:04:46 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@
  */
 static int	check_export_keyword(char *str, char *keyword, int len, int flag)
 {
+	if (!str || !keyword)
+		return (0);
 	if (ft_strncmp(str, keyword, len) == 0)
 	{
 		if ((flag && str[len] && is_target(" \t\n\v\f\r", str[len])) || !flag)

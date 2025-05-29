@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:33:47 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/23 19:32:33 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/29 14:19:50 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,13 @@ void	ms_free_all(t_ms *data, int errc, int exit_code)
 	char	*errstr[9];
 
 	errstr_init(errstr);
-	if (errc >= 0)
-		printf("%s %s\n", errstr[errc], strerror(errno));
+	if (errc >= 0 && errc < 8)
+	{
+		ft_putstr_fd(errstr[errc], 2);
+		ft_putstr_fd(" ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
+	}
 	free_env(data->env_var);
 	free_exec(&data->exec);
 	if (data->lst.data)

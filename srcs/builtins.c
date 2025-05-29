@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/21 11:45:21 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/29 16:15:09 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	ft_echo(char **args)
 	int	nl;
 
 	nl = 0;
-	if (args[1] && ft_strncmp(args[1], "-n", 2) == 0)
+	if (args[1] && ft_strcmp(args[1], "-n") == 0)
 		nl = 1;
 	i = 1 + nl;
 	while (args[i] != NULL)

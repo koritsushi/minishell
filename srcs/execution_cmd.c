@@ -61,6 +61,7 @@ char	***ft_split_cmd(t_exec *exec, char **argv)
 	char	***cmd;
 	int		i;
 	int		j;
+	int		k;
 
 	i = 0;
 	j = 0;
@@ -68,7 +69,13 @@ char	***ft_split_cmd(t_exec *exec, char **argv)
 	if (cmd == NULL)
 		return (NULL);
 	while (argv[i] != NULL && j < exec->cmd_count)
-		cmd[j++] = ft_split(argv[i++], ' ');
+	{
+		cmd[j] = ft_split_shell(argv[i++], " \t\n\v\f\r");
+		k = -1;
+		while (cmd[j][++k])
+			quote_removal(&cmd[j][k]);
+		j++;
+	}
 	cmd[j] = NULL;
 	return (cmd);
 }
