@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 22:07:29 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 14:33:29 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ static int	has_non_var(char **str)
 	while (fin && fin[++i] && !res)
 	{
 		// /*debug*/printf("has_non_var:ent:%s.\n", fin[i]);
-		if (!is_target(fin[i], '=') || !ft_isalpha(fin[i][0]))
+		if (!is_target(fin[i], '=') || \
+(!ft_isalpha(fin[i][0]) && fin[i][0] != '_'))
 		{
 			// if export only, skip process_vars
 			// v=1 export blbla -> res=0 (break)

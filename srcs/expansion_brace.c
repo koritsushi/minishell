@@ -66,6 +66,7 @@ static void	expand_brace_content(char *src, char *dest, int malloc_size)
 	x = 0;
 	len = 0;
 	flag_quote = 0;
+	symbol = '\0';
 	while (src && src[0] && x < malloc_size)
 	{
 		update_flag_quote(src, &symbol, "\'\"", &flag_quote);

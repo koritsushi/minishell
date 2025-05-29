@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 22:05:39 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 17:58:05 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 14:44:15 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,23 +68,24 @@ char	*skip_redirs(char *str)
  * skips all spaces after c
  * breaks if found spaces when flag is off
  */
-static char	*skip_consecutive(char *str, char *c)
+static char	*skip_consecutive(char *str, char c, char *stop)
 {
 	char	symbol;
 	int		flag_quote;
 
+	symbol = '\0';
 	flag_quote = 0;
 	while (str && str[0])
 	{
 		// /*debug*/printf("skip_cons:%s.\n", str);
 		update_flag_quote(str, "\'\"", &symbol, &flag_quote);
 		// if (str[0] == c[0] || str[0] == '>')
-		if (is_target("<>", str[0]))
+		if (str[0] == c)
 			str = skip_spaces(str, "<> \t\n\v\f\r");
-		else if (is_target(" \t\n\v\f\r", str[0]))
+		else if (is_target(stop, str[0]) && !flag_quote)
 		{
 			str = skip_spaces(str, " \t\n\v\f\r");
-			if (!flag_quote && str[0] != c[0])
+			if (str[0] != c)
 				return (str);
 		}
 		else
@@ -104,12 +105,10 @@ char	*skip_consecutive_redir(char *outfile, int flag)
 	if (!outfile || !outfile[0])
 		return (outfile);
 	if (flag)
-		str = skip_consecutive(outfile, ">");
+		str = skip_consecutive(outfile, '>', "< \t\n\v\f\r");
 	else
 		str = outfile;
 	if (str[0] == '<')
-		str = skip_consecutive(str, "<");
+		str = skip_consecutive(str, '<', "> \t\n\v\f\r");
 	return (str);
-
 }
-

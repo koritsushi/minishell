@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/29 16:16:49 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/29 16:37:20 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	start_cmd(char *text, t_ms *data)
 	if (get_cmd_line(text, &data->lst, data->env_var, data->exec.exit_code))
 	{
 		get_variable(&data->env_var, data->lst, text, data->exec.exit_code);
+		add_filler_cmd(&data->lst);
 		execute_functions(data, data->lst);
 		free_exec(&data->exec);
 		free_parsing(&data->lst);
@@ -33,10 +34,7 @@ void	start_cmd(char *text, t_ms *data)
 static int	check_ifs(char *text, t_ms *data)
 {
 	if (text == NULL)
-	{
-		ft_putstr_fd("\e[0;31mlogout\e[0;0m\n", 1);
-		return (0);
-	}
+		return (ft_perror_fd("\e[0;31mlogout\e[0;0m\n", 1, 0));
 	if (g_signal == 130)
 	{
 		data->exec.exit_code = g_signal;

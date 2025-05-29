@@ -19,7 +19,7 @@
  * str = the entire line of cmd/pipeline before splitted by outfile '>'
  * uses malloc
  */
-void	extract_cmd_tail(char **lst_data, int *i, char *str, char **outfile)
+void	extract_cmd_tail(char **lst_data, int *i, char **outfile)
 {
 	char	**infile_check;
 	int		start;
@@ -41,16 +41,7 @@ void	extract_cmd_tail(char **lst_data, int *i, char *str, char **outfile)
 	// skip redirs '<>'
 	// /*debug*/printf("extract_cmd_tail:ent:%s.\n", str);
 	start = 0;
-	if (str[0] == '>')
-	{
-		// /*debug*/printf("ext_cmdt:out:%s.\n", outfile[0]);
-		cmd_tail = skip_spaces(outfile[0], " \t\n\v\f\r");
-		cmd_tail = skip_consecutive_redir(cmd_tail, 1);
-		if (!cmd_tail || !cmd_tail[0])
-			return ;
-	}
-	else
-		cmd_tail = outfile[0];
+	cmd_tail = outfile[0];
 	// /*debug*/printf("extract_cmd_tail:%s.\n", cmd_tail);
 
 	if (!allocate_cmd_tail(&lst_data[*i], outfile, cmd_tail))
@@ -59,7 +50,6 @@ void	extract_cmd_tail(char **lst_data, int *i, char *str, char **outfile)
 	// if (str[0] != '>')
 	// {
 	infile_check = ft_split_shell(cmd_tail, "<");
-	// infile_check = ft_split_shell(outfile[0], "<");
 	// /*debug*/printf("___infile_check:___\n");
 	// /*debug*/debug_print(infile_check);
 	start = ft_strlcpy(lst_data[(*i)], infile_check[0], ft_strlen(infile_check[0]) + 1);
@@ -84,9 +74,13 @@ void	extract_cmd_tail(char **lst_data, int *i, char *str, char **outfile)
 void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 {
 	char	**outfile;
+	(void)	i;
+	(void)	lst_data;
 
 	/*__________start_here_________*/
 	cmd_tail = skip_consecutive_redir(cmd_tail, 0);
+	if (cmd_tail[0] == '>')
+		cmd_tail = skip_consecutive_redir(cmd_tail, 1);
 	if (!cmd_tail || !cmd_tail[0])
 		return ;
 	// /*debug*/printf("cmd_tail:%s.\n", cmd_tail);
@@ -98,7 +92,7 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 
 	if (!outfile || !outfile[0])
 		return ;
-	extract_cmd_tail(lst_data, i, cmd_tail, outfile);
+	extract_cmd_tail(lst_data, i, outfile);
 	free_chr_ptr((void **)outfile);
 }
 
@@ -125,6 +119,7 @@ void	process_cmd(t_token *lst, char **res)
 			extract_infile(lst->data, &i, cmd_tail);
 
 		process_cmd_tail(lst->data, &i, cmd_tail);
+		// /*debug*/printf("process_cmd:i:%d\n", i);
 		process_outfile(lst->data, &i, cmd_tail);
 		/*------------ add_pipes ------------*/
 		if (res[x + 1])
@@ -142,6 +137,8 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 	int		count;
 	char	**res;
 
+	(void) vars;
+	(void) exit_status;
 	str = skip_spaces(str, " \t\n\v\f\r");
 	if (!str || !str[0])
 		return (0);
@@ -164,7 +161,6 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 	process_cmd(lst, res);
 	cmd_expansion(lst->data, vars, exit_status);
 	assign_datatype(lst->datatype, res);
-	add_filler_cmd(lst);
 	free_chr_ptr((void **)res);
 	return (1);
 }
