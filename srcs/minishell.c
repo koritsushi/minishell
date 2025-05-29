@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/29 14:15:34 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/29 16:16:49 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,13 @@ int	g_signal = 0;
 /*
  * helper function for minishell main
  * starts all cmd
+ * lexing, get_vars, execution function call
  */
 void	start_cmd(char *text, t_ms *data)
 {
-	int	x;
-
-	x = -1;
 	if (get_cmd_line(text, &data->lst, data->env_var, data->exec.exit_code))
 	{
 		get_variable(&data->env_var, data->lst, text, data->exec.exit_code);
-		while (data->lst.data[++x])
-			quote_removal(&data->lst.data[x]);
-		// /*debug*/debug_print_cmd_line(&data->lst);
 		execute_functions(data, data->lst);
 		free_exec(&data->exec);
 		free_parsing(&data->lst);
@@ -57,7 +52,6 @@ static int	check_ifs(char *text, t_ms *data)
 	return (1);
 }
 
-// rmb to handle exit_status
 int	main(int argc, char **argv, char **env)
 {
 	t_ms	data;
@@ -70,52 +64,15 @@ int	main(int argc, char **argv, char **env)
 	data.exec.exit_code = 0;
 	env_init(&data.env_var, env);
 	while (1)
-	{ //11
+	{
 		exec_init(&data.exec);
 		text = readline("\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m");
 		if (*text)
 			add_history(text);
 		if (!check_ifs(text, &data))
 			break ;
-		// if (text == NULL)
-		// {
-		// 	ft_putstr_fd("\e[0;31mlogout\e[0;0m\n", 1);
-		// 	break ;
-		// }
-		// if (ft_strncmp(text, "exit", 4) == 0)
-		// {
-		// 	ft_putstr_fd("\033[36mminishell exited!\033[0m\n", 1);
-		// 	break ;
-		// }
-		// if (g_signal == 130)
-		// {
-		// 	data.exec.exit_code = g_signal;
-		// 	g_signal = 0;
-		// }
-		// if (ft_strncmp(text, "print", 5) == 0)
-		// {
-		// 	if (data.env_var && data.env_var->content)
-		// 		debug_print_var_lst(data.env_var);
-		// 	else
-		// 		printf("\033[103m_____vars_list:_____\033[0m\n");
-		// }
-		/*lexing & get_vars*/
 		if (*text && check_syntax(text))
 			start_cmd(text, &data);
-		// {
-		// 	if (get_cmd_line(text, &data.lst, data.env_var, data.exec.exit_code))
-		// 	{
-		// 		get_variable(&data.env_var, data.lst, text, data.exec.exit_code);
-		// 		int x = -1;
-		// 		while (data.lst.data[++x])
-		// 			quote_removal(&data.lst.data[x]);
-		// 		// /*debug*/debug_print_cmd_line(&data.lst);
-
-		// 		execute_functions(&data, data.lst);
-		// 		free_exec(&data.exec);
-		// 		free_parsing(&data.lst);
-		// 	}
-		// }
 		free(text);
 	}
 	free(text);
