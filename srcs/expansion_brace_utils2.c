@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 12:40:04 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/15 12:41:19 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 18:37:02 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ int	has_valid_brace_content(char *str)
 	if (!str)
 		return (0);
 	flag = 0;
-	// /*debug*/printf("has_valid_brace_content:ent:%s\n", str);
-	/* increment until is_valid_brace_start */
 	while (str && str[0] && !is_target(" \t\n\v\f\r", str[0]))
 	{
 		if (str[0] == '{' && str[1] && is_valid_brace_start(str + 1))
@@ -36,6 +34,5 @@ int	has_valid_brace_content(char *str)
 	}
 	if (str && str[0] && !is_target(" \t\n\v\f\r", str[0]))
 		flag = 1;
-	// /*debug*/printf("has_valid_brace_content:end:%s. flag:%d\n", str, flag);
 	return (flag);
 }

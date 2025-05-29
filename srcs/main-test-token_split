@@ -54,7 +54,7 @@ int	main(int ac, char **av)
 	// char str[] = "var=123 cmd1 | cmd2 var=123 | var=123";
 	// char str[] = "var=123 ^var=5 var=8";
 	// char str[] = "var=99 ^var=123 cmd1 v=1 | cmd2 var=123 | var=123";
-	// char str[] = "cmd1| var=123";
+	// char str[] = "cat| var=123";
 	// char str[] = "var      = 123";
 	// char str[] = "echo $var\" hello\"";
 	// char str[] = "echo '$r'$var";

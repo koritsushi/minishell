@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:05:05 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/29 14:34:07 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 18:18:04 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	count_str_array(char **res)
 	return (i);
 }
 
-//23 lines!
 /*
  * child function in count_infile
  * helper function to start counting
@@ -42,15 +41,6 @@ static int	start_count_infile(char *str)
 	count = 0;
 	infile = ft_split_shell(str, "<");
 	count += count_str_array(&infile[1]);
-
-	// if infile_split_out !has_more_str
-	// && has_out && out has_more_str
-	// i++;
-
-	//<infile in2 in3
-	// cmd <in1 in2 <in3
-	// cmd <<h1 in2 <in3
-	// if < && any <infile has_more_str, += 1 (do once)
 	x = -1;
 	while (str[0] == '<' && infile[++x])
 	{
@@ -72,18 +62,13 @@ static int	start_count_infile(char *str)
  * child function in get_malloc_size
  * gets the correct infile count for malloc use
  */
-static int	count_infile(char **res)//, char **infile)
+static int	count_infile(char **res)
 {
 	int		x;
 	char	*tmp;
 	int		count;
 
 	count = 0;
-	// in_fin = ft_split_shell(infile[0], ">");
-	/* <in1 <in2 cmd >out | <in3 <in4 */
-	// 2 types: cmd<in1 in2 | cmd<in3
-	// <in1 cmd | <in2 cmd
-	// if_has_str after <in1 , +1
 	x = -1;
 	while (res[++x])
 	{
@@ -94,7 +79,6 @@ static int	count_infile(char **res)//, char **infile)
 	return (count);
 }
 
-// 22 lines!
 /*
  * child function in get_malloc_size
  * counts number of words in cmd_tail for malloc use
@@ -113,24 +97,6 @@ static int	count_cmd_tail(char **res, char *set)
 	{
 		cmd_tail = skip_spaces(res[x], " \t\n\v\f\r");
 		tmp = ft_split_shell(cmd_tail, ">");
-		// /*debug*/printf("count_cmd_t:%s.\n", cmd_tail);
-		// /*debug*/printf("------\ncount:outfile:\n");
-		// /*debug*/debug_print(tmp);
-
-		/* cmd1 > out2 > out3 */
-		/* > out1 > out2 cmd1*/
-		/* > out1 cmd1 > out2*/
-		
-		/* > out1 > out2 > out3 */
-		/* > out1 */
-
-		/* if splittable '>' */
-			/* pass_all++ */
-			/*if line[0] == '>' && has_more_str_all, i++ */
-
-		/* if not splittable '>' */
-			/*if line[0] == '>' && has_more_str_all, i++ */
-
 		if (tmp && tmp[1])
 		{
 			i += count_str_array(&tmp[1]);
@@ -149,26 +115,14 @@ static int	count_cmd_tail(char **res, char *set)
  * checks if < << is at beginning, process entire line til pipe
  * if infile at middle, all strings after < are filenames
  */
-int	get_malloc_size(char **res)//, char **infile)
+int	get_malloc_size(char **res)
 {
 	int		i;
-	// (void)	infile;
 
-	/* <infile >outfile*/
 	i = 0;
-	i = count_str_array(res); /* splitted by '|' */
-	// /*debug*/printf("------\ncount_res: %d\n", i);
-	i += count_str_array(&res[1]); /*count pipes*/
-	// /*debug*/printf("count_pipe: %d\n", i);
+	i = count_str_array(res);
+	i += count_str_array(&res[1]);
 	i += count_infile(res);
-	// /*debug*/printf("count_infile: %d\n", i);
 	i += count_cmd_tail(res, " \t\n\v\f\r");
-	// /*debug*/printf("count_cmd_tail: %d\n", i);
-
-	// /*debug*/printf("------\nres:\n");
-	// /*debug*/debug_print(res);
-	// /*debug*/printf("------\ninfile:\n");
-	// /*debug*/debug_print(infile);
-
 	return (i);
 }

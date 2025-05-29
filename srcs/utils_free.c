@@ -6,28 +6,11 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 17:58:29 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 21:43:03 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 18:06:31 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/token.h"
-
-/**
- * exit program if encounter any error
- * return from major function such as
- * fork, pipe, malloc, and etc
- * 
- * free all of the structs in the program
- * and print error message according to 
- * set errno message
- * 
- * exit will have exit code 1 
- */
-// void	exit_free(t_ms *data, int errno)
-// {
-// 	printf("Error: %s\n", strerror(errno));
-// 	exit(1);
-// }
 
 void	free_3d_ptr(void ***ptr)
 {

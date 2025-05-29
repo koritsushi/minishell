@@ -6,12 +6,11 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 22:54:34 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 22:00:19 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 18:38:24 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
- *   utils function to get content of brace_head & brace_tail,
+/*   utils function to get content of brace_head & brace_tail,
  *   then copy to dest
  * ************************************************************************** */
 
@@ -31,11 +30,9 @@ skip_if_quote(src, src[0], 0))
 		else
 			src++;
 	}
-	// /*debug*/printf("move_to_valid_brace_start:%s.\n", src);
 	return (src);
 }
 
-// 20 lines!
 /*
  * child function in copy_brace_expansion
  * gets expansion content outside of brace: 
@@ -48,22 +45,16 @@ static char	*get_brace_tail(char *str, char *set)
 	int		len;
 	char	*new;
 
-	// /*debug*/printf("get_brace_tail:ent:%s\n", str);
 	if (!str)
 		return (str);
 	len = 0;
 	while (str[len] && !is_target(set, str[len]))
 	{
-		// /*debug*/printf("get_brace_tail:char:%c\n", str[len]);
 		if (is_target("\'\"", str[len]))
-		{
 			len += skip_if_quote(&str[len], str[len], 0) - &str[len] + 1;
-			// /*debug*/printf("get_brace_tail:quote:%d\n", res);
-		}
 		else
 			len++;
 	}
-	// /*debug*/printf("get_brace_tail:malloc:%d+1\n", len);
 	if (!malloc_chr_ptr(&new, len + 1))
 		return (0);
 	x = 0;
@@ -72,7 +63,6 @@ static char	*get_brace_tail(char *str, char *set)
 	return (new);
 }
 
-// 20 lines!
 /*
  * child function in copy_brace_expansion
  * gets expansion content outside of brace: 
@@ -88,14 +78,7 @@ static char	*get_brace_head(char *str)
 	if (!str)
 		return (str);
 	len = 0;
-	// flag_quote = 0;
-	// symbol = '\0';
-	/* {a{a,e}e*/
-	/* a{a,e}e */ //previous
-	/* "a p"{a,e}e*/ //future
-	// /*debug*/printf("get_brace_head\n");
-	// if current !brace_start, len++
-	while (str[len])// && (!is_valid_brace_start(&str[len])))
+	while (str[len])
 	{
 		if (str[len] == '{' && is_valid_brace_start(&str[len + 1]))
 			break ;
@@ -103,12 +86,7 @@ static char	*get_brace_head(char *str)
 			len += ft_strchr(&str[len + 1], str[len]) - &str[len] + 1;
 		else
 			len++;
-		// /*debug*/printf("get_brace_head::len:%d\n", len);
-		/* can use ft_strchr instead and len += */
-		/* len += ft_strchr() - &str[len] */
-		// update_flag_quote(str[len], &symbol, &flag_quote);
 	}
-	// /*debug*/printf("get_brace_head:str:%s. len:%d+1\n", str, len);
 	if (!malloc_chr_ptr(&new, len + 1))
 		return (0);
 	x = 0;
@@ -126,11 +104,9 @@ static char	*copy_brace_body(char *src, char *dest, int *x)
 		if (src[0] && is_target("\'\"", src[0]))
 		{
 			len = (skip_if_quote(src, src[0], 0) + 1) - src;
-			// /*debug*/printf("d:%d\n", d);
 			ft_strlcpy(&dest[(*x)], src, len + 1);
 			(*x) += len;
 			src = skip_if_quote(src, src[0], 0) + 1;
-			// /*debug*/printf("copy_brace_body:%s. %d\n", dest, *x);
 		}
 		else
 			dest[(*x)++] = *src++;
@@ -138,7 +114,6 @@ static char	*copy_brace_body(char *src, char *dest, int *x)
 	return (src);
 }
 
-// 23 lines!
 /*
  * expands brace part accordingly
  * (copy head, copy content in brace, copy tail, repeat)
@@ -149,14 +124,11 @@ char	*copy_brace_expansion(char *src, char *dest, int *x, int malloc_size)
 	int		flag;
 	char	*head;
 	char	*tail;
-	(void)	malloc_size;
 
-	// /*debug*/printf("copy_brace_expansion:ent:\033[93m%s\033[0m.\n", src);
 	flag = 0;
 	head = get_brace_head(src);
 	src = move_to_valid_brace_start(src);
 	tail = get_brace_tail(ft_strchr(src, '}') + 1, " \t\n\v\f\r");
-	// /*debug*/printf("src=%s.\nget_brace_head:\033[93m%s\033[0m.\nget_brace_tail:\033[93m%s\033[0m.\n", src, head, tail);
 	while (src && src[0] && *x < malloc_size)
 	{
 		if (flag)
@@ -165,13 +137,11 @@ char	*copy_brace_expansion(char *src, char *dest, int *x, int malloc_size)
 			flag = 1;
 		*x += ft_strlcpy(&dest[*x], head, ft_strlen(head) + 1);
 		src = copy_brace_body(src, dest, x);
-		// /*debug*/printf("half:\033[93m%s\033[0m, x=%d, src[0]=%c\n", dest, *x, src[0]);
 		*x += ft_strlcpy(&dest[*x], tail, ft_strlen(tail) + 1);
 		if (src[0] == '}')
 			break ;
 		src++;
 	}
 	free_multiple_ptr_single(head, tail, NULL);
-	// /*debug*/printf("copy_brace_expansion:end:\033[93m%s\033[0m.\n", dest);
 	return (dest);
 }

@@ -6,13 +6,13 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:28:58 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/27 16:11:53 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 18:30:39 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/parsing.h"
-
 /* syntax checking for main cmd lines */
+
+#include "includes/parsing.h"
 
 /*
  * child function in if_double_symbol
@@ -38,7 +38,6 @@ static int	match_condition(char **res, char *tmp, char symbol)
 	return (0);
 }
 
-// 25 lines!
 /*
  * checks res[0] string if has double char symbols
  * int steps = steps to skip after found symbol (for symbol repeats > 2)
@@ -52,18 +51,11 @@ int	if_double_symbol(char **res, char symbol, int steps)
 	while (tmp && tmp[0] && is_target(tmp, symbol))
 	{
 		tmp = ft_strchr(tmp, symbol);
-		// /*debug*/printf("*******tmp:%s.\n", tmp);
 		if (tmp[1] && tmp[1] == symbol)
-		{
 			tmp += steps;
-			// /*debug*/printf("tmp+= %s\n", tmp);
-		}
 		if ((tmp[0] && tmp[1] && !is_target("<>|=&", tmp[1])) || \
 (tmp[0] == '=' && tmp[1] == '\0'))
-		{
-			// /*debug*/printf("tmp[0]=%c, tmp[1]=%c, break!\n", tmp[0], tmp[1]);
 			break ;
-		}
 		if (match_condition(res, tmp, symbol))
 		{
 			ft_putstr_fd("🚨 Syntax error! field empty after '", 2);
@@ -118,13 +110,8 @@ int	check_unclosed_quote(char *str)
 	new = str;
 	while (new[0])
 	{
-		// /*debug*/printf("check_unclosed_quote:ent:%s\n", new);
 		if (new[0] && is_target("\'\"", new[0]))
-		{
 			new = skip_if_quote(new, new[0], 0);
-			// if (new) /*debug*/
-				// /*debug*/printf("check_unclosed_quote:%s.\n", new);
-		}
 		if (!new)
 			return \
 (ft_perror_fd("🚨 Syntax error! unclosed quote detected!\n", 2, 0));
@@ -143,10 +130,6 @@ int	check_syntax(char *str)
 	if (!str || !str[0])
 		return (0);
 	res = ft_split_shell(str, " \t\n\v\f\r");
-	// /*debug*/printf("check_syntax\n--------\nres:\n");
-	// /*debug*/debug_print(res);
-	// /*debug*/printf("--------\n");
-
 	if (res && (!check_symbols(res) || !check_unclosed_quote(str)))
 		flag = 0;
 	free_chr_ptr((void **)res);

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 15:00:07 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/29 14:36:07 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 18:14:30 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ static void	check_copy_data(t_token *lst, t_token *dest, int flag)
 	k = 0;
 	while (lst->data[++x])
 	{
-		// flag_cmd refresh by pipes
-		// <infile | cmd | >outfile >out2 | cmd
-		// <infile “” | cmd | >outfile >out2 | cmd
 		if (lst->datatype[x] == WORD)
 			flag = 1;
 		if (!flag && (lst->datatype[x] == PIPE || \
@@ -58,7 +55,7 @@ static void	check_copy_data(t_token *lst, t_token *dest, int flag)
 			copy_data(dest, &k, lst->data[x], lst->datatype[x]);
 		if (!flag && lst->data[x + 1] == NULL)
 			copy_data(dest, &k, "", WORD);
-		if (flag && lst->datatype[x] == PIPE) //reset
+		if (flag && lst->datatype[x] == PIPE)
 			flag = 0;
 	}
 }
@@ -90,7 +87,6 @@ lst.datatype[x] == OUTFILE_A))
 			count++;
 		if (flag && lst.datatype[x] == PIPE)
 			flag = 0;
-		// /*debug*/printf("x:%d  count:%d  f:%d\n", x, count, flag);
 	}
 	return (count);
 }
@@ -106,12 +102,9 @@ void	add_filler_cmd(t_token *lst)
 	t_token	dest;
 
 	count = count_realloc(*lst);
-	// /*debug*/printf("add_filler_cmd:%d\n", count);
 	if (!count)
 		return ;
 	count += count_str_array(lst->data);
-	// /*debug*/printf("add_filler:malloc: %d+1\n", count);
-
 	if (!init_token_list(&dest, count + 1))
 		return ;
 	check_copy_data(lst, &dest, 0);

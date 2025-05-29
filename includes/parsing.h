@@ -26,7 +26,7 @@ int		check_syntax(char *str);
 int		check_var_syntax(char **str);//, int *flag);
 
 /*__________functions to extract variable assignments__________*/
-int		get_variable(t_env **vars, t_token lst, char *str, int exit_status);
+int		get_variable(t_env **vars, t_token lst, char *str);
 int		get_var_name(char **dest, char *str);
 int		is_valid_var_name(char **str, int export_id);
 int		valid_export_keyword(char *str, int flag);

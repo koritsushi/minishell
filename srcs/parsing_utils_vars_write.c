@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:02:51 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 22:08:18 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 18:27:57 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,11 @@ void	copy_vars(char *dest, char *src, int len)
 	x = 0;
 	flag = 0;
 	symbol = '\0';
-	// /*debug*/printf("copy_vars:src:%s, len:%d\n", src, len);
 	while (src[0] && x < len)
 	{
-		/* 'po"$var' "p'$var" */
 		update_flag_quote(src, "\'\"", &symbol, &flag);
 		if (src[0] != symbol)
 			dest[x++] = src[0];
-		// /*debug*/printf("copy_vars:%s.\n", dest);
 		src++;
 	}
 	dest[x] = '\0';
@@ -76,13 +73,9 @@ void	copy_vars(char *dest, char *src, int len)
  */
 static int	overwrite_existing_var(t_env *head, char *str, int export_id)
 {
-	// /*debug*/printf("overwrite_existing_var:found! str:%s\n", (char *)head->content);
 	free(head->content);
-	// /*debug*/printf("overwrite_existing_var:str:%s.\n", str);
-	// /*debug*/printf("overwrite_existing_var:strchr:%s.\n", ft_strchr(str, '=') + 1);
 	if (ft_strchr(str, '=') + 1)
 		head->content = ft_strdup(ft_strchr(str, '=') + 1);
-	// /*debug*/printf("def:export_id:%d\n", export_id);
 	if (head->exported < 1 && export_id >= 1)
 		head->exported = export_id;
 	else if (head->exported == 1)
@@ -90,7 +83,6 @@ static int	overwrite_existing_var(t_env *head, char *str, int export_id)
 	return (1);
 }
 
-// 22 lines
 /*
  * child function in extract_vars,
  * search for *name in var_name t_env linked list,
@@ -106,15 +98,12 @@ int	check_replace_dup(t_env *vars, char *name, char *new, int export_id)
 	while (vars && !flag)
 	{
 		len = 0;
-		// /*debug*/printf("check_replace_dup name:%s, %s.\n", (*vars).env, name);
 		while (name[len] && !is_target(" \t\n\v\f\r", name[len]))
 			len++;
-		// /*debug*/printf("h:%s, %zu %zu\n", name, ft_strlen((*vars).env), len);
 		if (ft_strlen((*vars).env) > len)
 			len = ft_strlen((*vars).env);
 		if (ft_strncmp(vars->env, name, len) == 0 && !is_target(new, '='))
 		{
-			// if exists but no content assigned
 			flag = 1;
 			if (vars->exported == 0)
 				vars->exported = 2;

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:01:53 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 18:03:24 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 18:45:02 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static void	overwrite_infile(char **cmd_tail)
 	}
 }
 
-// 15 lines!
 /*
  * child function in extract_cmd_tail
  * scans through line and copies the correct cmds
@@ -55,20 +54,16 @@ void	copy_cmd_tail(char **lst_data, int *start, char **outfile)
 		return ;
 	while (outfile[++i])
 	{
-		/* travel to the first space detected */
 		cmd_tail = skip_spaces(outfile[i], " \t\n\v\f\r");
 		cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
 		cmd_tail = skip_consecutive_redir(cmd_tail, 0);
-
 		if (is_target(cmd_tail, '<'))
 			overwrite_infile(&cmd_tail);
-
-		// /*debug*/printf("***cmd_tail=%s| %zu\n", cmd_tail, ft_strlen(cmd_tail));
-		// /*debug*/printf("copy_cmd_tail:%s.\n", cmd_tail);
 		if (cmd_tail && cmd_tail[0])
 		{
 			cmd_tail -= 1;
-			ft_strlcpy(&(*lst_data)[(*start)], cmd_tail, ft_strlen(cmd_tail) + 1);
+			ft_strlcpy(\
+&(*lst_data)[(*start)], cmd_tail, ft_strlen(cmd_tail) + 1);
 			(*start) += ft_strlen(cmd_tail);
 		}
 	}

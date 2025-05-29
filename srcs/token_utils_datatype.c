@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 07:55:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/29 14:42:50 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 18:16:57 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,10 @@ static void	assign_datatype_outfile(char *str, unsigned char *datatype, int *i)
 {
 	char	*cmd_tail;
 
-	/* use ft_strchr */
-	/* > out1 cmd */
-	/* > out1 > out2 cmd */
-	/* cmd > out1 > out2 */
-
-	/* check the entire string */
 	cmd_tail = str;
 	while (cmd_tail && cmd_tail[0])
 	{
 		cmd_tail = ft_strchr(cmd_tail, '>');
-		// /*debug*/printf("datatype=%s\n", cmd_tail);
 		if (!cmd_tail)
 			break ;
 		if (cmd_tail[1] == '>')
@@ -82,9 +75,6 @@ int *i)
 	infile = ft_split_shell(cmd_tail, "<");
 	if (!infile)
 		return ;
-	// <in cmd <in2
-	// cmd <in cmd <in2
-	// <in cmd
 	if (infile[1] && cmd_tail[0] == '<')
 		assign_infile_now(infile, cmd_tail, datatype, i);
 	else if (infile[1] && cmd_tail[0] != '<')
@@ -108,21 +98,11 @@ char *str, unsigned char *datatype, int *i, char **outfile)
 	cmd_tail = skip_redirs(str);
 	if (!cmd_tail || !cmd_tail[0])
 		return ;
-	// /*debug*/printf("assign_datatype_ctail:%s.\n", cmd_tail);
-	/* if splittable */
 	if (outfile[1] && (cmd_tail[0] != '>' || \
 (cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r"))))
 		datatype[(*i)++] = WORD;
-		/* if not splittable && has_more_str_all */
-		// else if (!outfile[1] && has_more_str_all(outfile, " \t\n\v\f\r"))
 	else if (!outfile[1])
 	{
-		/* cmd1 cmd2 */
-		/* cmd1 */
-		/* > out1 cmd */
-		/* if begin with >, check if has_more_str_all */
-		/* if theres no <>, only single cmd, copy over */
-		/* if begin with < (one_line_condition), do not extract */
 		if (cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r"))
 			datatype[(*i)++] = WORD;
 		else if (cmd_tail[0] && cmd_tail[0] != '>')
@@ -142,38 +122,17 @@ void	assign_datatype(unsigned char *datatype, char **res)
 	char	*cmd_tail;
 	char	**outfile;
 
-	/* cmd1 -f -g < infile */
-	/* cmd1 -f -g < infile < infile2 */
-	/* < infile < infile2 cmd */
-	/* < infile cmd1 -f -g */
-	/* < infile | cmd1 -f -g */
-	/* < infile cmd > outfile */
-	/* cmd */
-
-	/* cmd < infile > outfile */
-	/* < infile */
-
 	i = 0;
 	x = -1;
-	/* _____________get infile_____________ */
 	while (res[++x])
 	{
-		//get infile here
-		// <in1 in2  <in4  cmd    splittable
-		// cmd <in1 in2 in3 <in4
 		cmd_tail = skip_spaces(res[x], " \t\n\v\f\r");
-		// /*debug*/printf("assign_datatype:ent:%s.\n", cmd_tail);
-
 		assign_datatype_infile(cmd_tail, datatype, &i);
-		/* skip spaces & infile symbol */
-		// cmd_tail = skip_redirs(cmd_tail);
 		cmd_tail = skip_consecutive_redir(cmd_tail, 0);
-		// /*debug*/printf("assign_datatype:tail:%s.\n", cmd_tail);
 		if (cmd_tail && cmd_tail[0])
 		{
 			outfile = ft_split_shell(cmd_tail, ">");
 			assign_datatype_cmd_tail(cmd_tail, datatype, &i, outfile);
-			// /*debug*/printf("assign_datatype:%d\n", i);
 			assign_datatype_outfile(res[x], datatype, &i);
 			free_chr_ptr((void **)outfile);
 		}
