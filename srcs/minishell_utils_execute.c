@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/28 12:47:11 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/29 14:19:42 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,11 @@ int	is_built_in(char *str)
 
 	i = 0;
 	builtins_init(builtins);
+	if (ft_isempty(str))
+		return (0);
 	while (builtins[i] != NULL)
 	{
-		if (ft_strncmp(str, builtins[i], ft_strlen(builtins[i])) == 0)
+		if (ft_strcmp(str, builtins[i]) == 0)
 			return (1);
 		i++;
 	}
@@ -68,6 +70,9 @@ int	execute_built_in(t_ms *data, char **argv)
 	else if (ft_strncmp(argv[0], "unset", 5) == 0)
 		while (argv[i] != NULL)
 			*exit_code = unset(&data->env_var, argv[++i]);
+	else if (ft_strncmp(argv[0], "exit", 4) == 0)
+		return (ft_putstr_fd("\033[36mminishell exited!\033[0m\n", 1), \
+ms_free_all(data, -1, 0), 0);
 	return (*exit_code);
 }
 
@@ -79,7 +84,7 @@ void	execute_functions(t_ms *data, t_token lst)
 {
 	char	**cmd;
 
-	if (ft_isempty(lst.data[0]) || lst.data == NULL)
+	if (lst.data == NULL || lst.data[0] == NULL)
 		return ;
 	ft_init_pipe(data, &lst);
 	infile_parsing_init(data, &lst);
