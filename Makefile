@@ -40,7 +40,6 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/utils_skip.c						\
 				srcs/utils_free.c						\
 				srcs/utils_free2.c						\
-				srcs/debug.c							\
 				srcs/signals.c							\
 				srcs/builtins.c							\
 				srcs/builtins_utils.c					\
@@ -61,6 +60,7 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/execution_child_process_utils.c	\
 				srcs/execution_heredoc.c				\
 				srcs/minishell.c 						\
+				srcs/_debug.c							\
 #				srcs/main-test-token_split.c			\
 #				srcs/parsing_utils_replace.c			\
 #				srcs/token_utils_operator.c				\
