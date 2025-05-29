@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/28 21:29:43 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/28 21:36:59 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	count_str(char *str, char *set)
 static int	increment_val(int flag, int *count, char **str)
 {
 	(*count)++;
-	if (str)
+	if (str && *str && **str)
 		(*str)++;
 	if (flag != -1)
 		return (flag);
