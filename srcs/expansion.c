@@ -33,6 +33,7 @@ void	brace_expansion(char **cmd_line)
 	 */
 	x = 0;
 	flag_quote = 0;
+	symbol = '\0';
 	if (!is_target(*cmd_line, '{'))
 		return ;
 	while (str && str[0])
@@ -89,6 +90,7 @@ void	shell_var_expansion(char **cmd_line, t_env *vars, int exit_status)
 
 	x = 0;
 	flag = 0;
+	symbol = '\0';
 	str = *cmd_line;
 	// int	k = 0;
 	while (str && str[x])// && k < 3)

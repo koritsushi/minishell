@@ -51,6 +51,7 @@ static int	count_var_name(char *new)
 
 	len = 0;
 	flag = 0;
+	symbol = '\0';
 	while (new[len])
 	{
 		update_flag_quote(&new[len], "\'\"", &symbol, &flag);
@@ -111,6 +112,7 @@ static int	spaces_in_quote(char *str)
 	char	symbol;
 
 	flag = 0;
+	symbol = '\0';
 	while (str && str[0] && !is_target(" \t\n\v\f\r", str[0]))
 	{
 		update_flag_quote(str, "\'\"", &symbol, &flag);

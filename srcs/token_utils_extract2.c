@@ -23,6 +23,7 @@ static void	overwrite_infile(char **cmd_tail)
 	int		flag;
 
 	str = *cmd_tail;
+	symbol = '\0';
 	flag = 0;
 	while (str[0])
 	{

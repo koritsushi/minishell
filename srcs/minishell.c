@@ -29,9 +29,9 @@ void	start_cmd(char *text, t_ms *data)
 		add_filler_cmd(&data->lst);
 		while (data->lst.data[++x])
 			quote_removal(&data->lst.data[x]);
-		// /*debug*/debug_print_cmd_line(&data->lst);
-		execute_functions(data, data->lst);
-		free_exec(&data->exec);
+		/*debug*/debug_print_cmd_line(&data->lst);
+		// execute_functions(data, data->lst);
+		// free_exec(&data->exec);
 		free_parsing(&data->lst);
 	}
 }

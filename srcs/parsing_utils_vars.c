@@ -131,7 +131,9 @@ void	extract_vars(t_env **vars, char *str, int export_id)
 			//trim_if_export
 			// var=baba export uu
 			// /*debug*/printf("var_name=%s, var_len=%d+1, str=%s\n", name, count_malloc_vars(str), str);
-			malloc_chr_ptr(&new, count_malloc_vars(str) + 1);
+			new = NULL;
+			if (!malloc_chr_ptr(&new, count_malloc_vars(str) + 1))
+				return ;
 			copy_vars(new, str, count_malloc_vars(str));
 			// ft_strlcpy(new, str, count_malloc_vars(str) + 1);
 			// /*debug*/printf("\033[93mcopy_vars:\033[0mfinal:%s\n", new);

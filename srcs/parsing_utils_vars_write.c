@@ -28,6 +28,7 @@ int	count_malloc_vars(char *str)
 
 	i = 0;
 	flag = 0;
+	symbol = '\0';
 	while (str && str[0])
 	{
 		update_flag_quote(str, "\'\"", &symbol, &flag);
@@ -55,6 +56,7 @@ void	copy_vars(char *dest, char *src, int len)
 		return ;
 	x = 0;
 	flag = 0;
+	symbol = '\0';
 	// /*debug*/printf("copy_vars:src:%s, len:%d\n", src, len);
 	while (src[0] && x < len)
 	{
