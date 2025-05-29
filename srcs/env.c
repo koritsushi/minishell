@@ -83,7 +83,7 @@ int	unset(t_env **lst, char *str)
 	if (tmp == NULL)
 		return (-1);
 	while (tmp[i] != NULL)
-		ft_lst_remove_if(lst, tmp[i++], ft_strncmp);
+		ft_lst_remove_if(lst, tmp[i++], ft_strcmp);
 	free_chr_ptr((void **)tmp);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/29 16:37:20 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/29 17:57:18 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	start_cmd(char *text, t_ms *data)
 	{
 		get_variable(&data->env_var, data->lst, text, data->exec.exit_code);
 		add_filler_cmd(&data->lst);
+		// /*debug*/debug_print_cmd_line(&data->lst);
 		execute_functions(data, data->lst);
 		free_exec(&data->exec);
 		free_parsing(&data->lst);
