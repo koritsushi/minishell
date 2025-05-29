@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:55 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/23 19:30:01 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:10:41 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,14 @@ void	ft_execution(t_ms *data, char *cmd, char **cmd_args)
 	cmd_path = ft_cmdpath(cmd_args, data->exec.path);
 	if (cmd_path == NULL)
 	{
-		ft_putstr_fd("./minishell: ", 2);
-		ft_putstr_fd(cmd_args[0], 2);
-		ft_putstr_fd(": ", 2);
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd("\n", 2);
+		char	*str1 = ft_strjoin("./minishell: ", cmd_args[0]);
+		char	*str2 = ft_strjoin(": ", strerror(errno));
+		char	*nl = ft_strjoin(str2, "\n");
+		char	*error = ft_strjoin(str1, nl);
+		ft_putstr_fd(error, 2);
+		free(error);
+		char *testShits = malloc(sizeof(char) * 329);
+		(void)testShits;
 		ms_free_all(data, -1, 127);
 	}
 	if (execve(cmd_path, cmd_args, data->exec.envp) == -1)
@@ -70,7 +73,7 @@ void	ft_child_process(t_ms *data, int index)
 		lc_process(data, index);
 	else
 		mc_process(data, index);
-	if (ft_isempty(data->exec.cmd_args[index][0]) == 0)
+	if (ft_isempty2(data->exec.cmd_args[index][0]) == 0)
 		ft_execution(data, data->exec.cmd_args[index][0], \
 data->exec.cmd_args[index]);
 	ms_free_all(data, -1, 0);
