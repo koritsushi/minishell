@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/29 15:52:51 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 16:27:29 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,15 @@ int	g_signal = 0;
 /*
  * helper function for minishell main
  * starts all cmd
+ * lexing, get_vars, execution function call
  */
 void	start_cmd(char *text, t_ms *data)
 {
-	// int	x;
-
-	// x = -1;
 	if (get_cmd_line(text, &data->lst, data->env_var, data->exec.exit_code))
 	{
 		get_variable(&data->env_var, data->lst, text, data->exec.exit_code);
 		add_filler_cmd(&data->lst);
-		// while (data->lst.data[++x])
-			// quote_removal(&data->lst.data[x]);
-		/*debug*/debug_print_cmd_line(&data->lst);
+		// /*debug*/debug_print_cmd_line(&data->lst);
 		execute_functions(data, data->lst);
 		free_exec(&data->exec);
 		free_parsing(&data->lst);
@@ -57,7 +53,6 @@ static int	check_ifs(char *text, t_ms *data)
 	return (1);
 }
 
-// rmb to handle exit_status
 int	main(int argc, char **argv, char **env)
 {
 	t_ms	data;

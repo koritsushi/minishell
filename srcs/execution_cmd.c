@@ -71,9 +71,9 @@ char	***ft_split_cmd(t_exec *exec, char **argv)
 	while (argv[i] != NULL && j < exec->cmd_count)
 	{
 		cmd[j] = ft_split_shell(argv[i++], " \t\n\v\f\r");
-		k = -1;
-		while (cmd[j][++k])
-			quote_removal(&cmd[j][k]);
+		k = 0;
+		while (cmd[j][k] != NULL)
+			quote_removal(&cmd[j][k++]);
 		j++;
 	}
 	cmd[j] = NULL;
