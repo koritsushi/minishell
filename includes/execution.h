@@ -31,6 +31,7 @@ void	ft_process(t_ms *data);
 int		lst_cmd_count(t_token *lst);
 int		lst_pipe_count(t_token *lst);
 int		ft_isempty(char *str);
+int		ft_isempty2(char *str);
 
 //execution_cmd.c functions
 char	**ft_get_path(char **envp);
