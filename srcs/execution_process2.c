@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:03:43 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/29 14:09:40 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:40:30 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,25 @@ int	ft_isempty(char *str)
 		else
 			return (0);
 	}
+	return (1);
+}
+
+int	ft_isempty2(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str == NULL)
+		return (1);
+	while (str[i] != '\0')
+	{
+		if (ft_isspace(str[i]))
+			i++;
+		else
+			return (0);
+	}
+	if (i <= 1)
+		return (0);
 	return (1);
 }
 
