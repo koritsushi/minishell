@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 12:06:36 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/28 21:55:06 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 14:35:56 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,19 @@ void	extract_infile(char **lst_data, int *i, char *res)
 void	extract_outfile(char **lst_data, char *str)
 {
 	char	**outfile_fin;
+	char	**fin;
 
 	outfile_fin = ft_split_shell(str, " \t\n\v\f\r");
-	allocate_str(lst_data, outfile_fin[0]);
-	ft_strlcpy(*lst_data, outfile_fin[0], ft_strlen(outfile_fin[0]) + 1);
+	fin = ft_split_shell(outfile_fin[0], "<");
+	allocate_str(lst_data, fin[0]);
+	ft_strlcpy(*lst_data, fin[0], ft_strlen(fin[0]) + 1);
+
+	// /*debug*/ printf("fin:%s.\n", fin[0]);
 	// /*debug*/ printf("------\noutfile_fin:\n");
 	// /*debug*/ debug_print(outfile_fin);
 
-	free_chr_ptr((void **)outfile_fin);
+	free_multiple_ptr(outfile_fin, fin, NULL);
+	// free_chr_ptr((void **)outfile_fin);
 }
 
 /* child function in process_cmd_tail, *i = lst_data index number */
@@ -81,9 +86,10 @@ void	process_outfile(char **lst_data, int *i, char *cmd_tail)
 	if (!outfile || !outfile[0])
 		return ;
 	// /*debug*/printf("process_outfile:ent:%s.\n", cmd_tail);
-	k = 1;
+	// /*debug*/printf("process_outfile:%s.\n", outfile[0]);
 	if (cmd_tail[0] == '>')
 		extract_outfile(&lst_data[(*i)++], outfile[0]);
+	k = 1;
 	while (outfile[k])
 		extract_outfile(&lst_data[(*i)++], outfile[k++]);
 	free_chr_ptr((void **)outfile);

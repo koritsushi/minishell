@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 07:55:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/28 22:08:21 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 14:42:50 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,10 @@ char *str, unsigned char *datatype, int *i, char **outfile)
 
 	if (!str || !str[0] || !outfile)
 		return ;
-	cmd_tail = str;	
+	cmd_tail = skip_redirs(str);
+	if (!cmd_tail || !cmd_tail[0])
+		return ;
+	// /*debug*/printf("assign_datatype_ctail:%s.\n", cmd_tail);
 	/* if splittable */
 	if (outfile[1] && (cmd_tail[0] != '>' || \
 (cmd_tail[0] == '>' && has_more_str_all(outfile, " \t\n\v\f\r"))))
