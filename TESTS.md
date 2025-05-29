@@ -54,6 +54,9 @@
 	var=1 <in >out
 	<in var=1 >out
 
+### shell-expansion
+	echo $var" hello"
+
 
 ### infile redir
 	<infile'<'bla <in2
