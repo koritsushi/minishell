@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:33:47 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/29 14:19:50 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/30 10:16:15 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ void	free_exec(t_exec *exec)
 
 void	errstr_init(char *str[])
 {
-	str[0] = "-minishell: command allocation fail:";
-	str[1] = "-minishell: command allocation 2 fail:";
-	str[2] = "-minishell: environment allocation fail!:";
-	str[3] = "-minishell: environment path allocation fail!:";
-	str[4] = "-minishell: open() fail!:";
-	str[5] = "-minishell: heredoc fail!:";
-	str[6] = "-minishell: pipe() fail!:";
-	str[7] = "-minishell: fork() fail!:";
+	str[0] = "-minishell: command allocation fail";
+	str[1] = "-minishell: command allocation 2 fail";
+	str[2] = "-minishell: environment allocation fail!";
+	str[3] = "-minishell: environment path allocation fail!";
+	str[4] = "-minishell: open() fail!";
+	str[5] = "-minishell: heredoc fail!";
+	str[6] = "-minishell: pipe() fail!";
+	str[7] = "-minishell: fork() fail!";
 	str[8] = NULL;
 }
 
@@ -47,12 +47,7 @@ void	ms_free_all(t_ms *data, int errc, int exit_code)
 
 	errstr_init(errstr);
 	if (errc >= 0 && errc < 8)
-	{
-		ft_putstr_fd(errstr[errc], 2);
-		ft_putstr_fd(" ", 2);
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd("\n", 2);
-	}
+		perror(errstr[errc]);
 	free_env(data->env_var);
 	free_exec(&data->exec);
 	if (data->lst.data)
