@@ -52,6 +52,7 @@ int		allocate_str(char **dest, char *str);
 int		allocate_cmd_tail(char **dest, char **outfile, char *cmd_tail);
 int		init_token_list(t_token *lst, int size);
 int		malloc_chr_ptr(char **dest, int len);
+int		count_str(char *str, char *set);
 
 char	*skip_if_symbol(char *str, char c, char symbol);
 char	*skip_spaces(char *str, char *set);
@@ -60,12 +61,5 @@ char	*skip_spaces(char *str, char *set);
 void	free_parsing(t_token *lst);
 void	free_multiple_ptr(char **p1, char **p2, char **p3);
 void	free_multiple_ptr_single(char *p1, char *p2, char *p3);
-
-/*debug testing only*/
-int		count_str(char *str, char *set);
-// int		count_chr(char *str, char *set, int *ptr);
-// int		if_target_exist(char *set, char *str);
-// char	*truncate_last_infile(char *str);
-
 
 #endif
