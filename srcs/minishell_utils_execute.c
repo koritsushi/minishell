@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/30 17:17:23 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/30 17:36:31 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,6 @@ int	execute_built_in(t_ms *data, char **argv)
 	i = 0;
 	builtins_init(builtins);
 	exit_code = &data->exec.exit_code;
-	if (ft_strncmp(argv[0], "exit", 4) == 0)
-	{
-		ft_putstr_fd("\033[36mminishell exited!\033[0m\n", 1);
-		ms_free_all(data, -1, 0);
-	}
 	while (builtins[i] != NULL)
 	{
 		if (ft_strncmp(argv[0], builtins[i], ft_strlen(argv[0])) == 0 && i <= 2)
