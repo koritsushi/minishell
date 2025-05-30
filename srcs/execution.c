@@ -61,10 +61,7 @@ void	ft_init_pipe(t_ms *data, t_token *lst)
 	while (pipe_index < pipe_count)
 	{
 		if (pipe(pipe_fd) == -1)
-		{
-			printf("\033[34mminishell: pipe() error!\033[0m\n");
 			ms_free_all(data, 6, 1);
-		}
 		data->exec.pipes[pipe_index][READ] = pipe_fd[READ];
 		data->exec.pipes[pipe_index][WRITE] = pipe_fd[WRITE];
 		pipe_index++;
@@ -83,10 +80,7 @@ void	ft_process(t_ms *data)
 	{
 		pid = fork();
 		if (pid == -1)
-		{
-			printf("\033[34mminishell: fork() error!\033[0m\n");
 			ms_free_all(data, 7, 1);
-		}
 		if (pid == 0)
 			ft_child_process(data, i);
 		else
