@@ -55,10 +55,11 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/execution_cmd.c					\
 				srcs/execution_cmd_utils.c				\
 				srcs/execution_process.c				\
-				srcs/execution_process2.c				\
+				srcs/execution_process_utils.c			\
 				srcs/execution_parent_process_utils.c	\
 				srcs/execution_child_process_utils.c	\
 				srcs/execution_heredoc.c				\
+				srcs/execution_heredoc_utils.c			\
 				srcs/minishell.c 						\
 				srcs/_debug.c							\
 #				srcs/main-test-token_split.c			\
