@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:12:43 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/30 16:16:10 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/30 16:27:32 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	remove_var(t_token *lst)
 			i++;
 		if (!lst->data[i] || !lst->data[i][0])
 			break ;
-	if (((valid_export_keyword(lst->data[i], 0)) && !valid_fd) || \
+		if (((valid_export_keyword(lst->data[i], 0)) && !valid_fd) || \
 check_var_syntax(&lst->data[i]))
 		{
 			free(lst->data[i]);

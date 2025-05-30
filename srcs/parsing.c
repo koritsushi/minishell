@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:54:11 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/30 16:13:33 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/30 16:46:01 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int	check_infile_fd(t_token lst)
 			fd = open(lst.data[i], O_RDONLY);
 			if (fd == -1)
 				flag = 0;
-			close(fd);
+			else
+				close(fd);
 		}
 		else if (lst.datatype[i] == PIPE)
 			break ;
@@ -59,23 +60,22 @@ int	check_infile_fd(t_token lst)
  * skips 1st export keyword, checks if infile_fd is valid
  * extract_vars/env & save to t_env
  */
-static int	start_get_variable(t_env **vars, t_token lst, char *new, int *flag)
+static int	start_get_variable(t_env **vars, t_token lst, char *new)
 {
 	int	export_id;
+	int	valid_fd;
 
+	valid_fd = 1;
 	export_id = 0;
 	if (valid_export_keyword(new, 0))
 	{
 		new = skip_export_update_val(new, &export_id);
 		if (!check_infile_fd(lst))
-			*flag = 1;
+			valid_fd = 0;
 	}
-	if (!new && !(*flag))
-	{
-		/*debug*/printf("start_get_var:%d\n", *flag);
+	if (!new && valid_fd)
 		return (0);
-	}
-	else if (!(*flag))
+	else if (valid_fd)
 		extract_vars(vars, new, export_id);
 	return (1);
 }
@@ -92,11 +92,9 @@ static int	start_get_variable(t_env **vars, t_token lst, char *new, int *flag)
 int	get_variable(t_env **vars, t_token lst, char *str)
 {
 	char	*new;
-	int		flag;
 	int		i;
 
 	i = 0;
-	flag = 0;
 	while (lst.data[i] && lst.datatype[i] != WORD)
 		i++;
 	if (!lst.data[i] || !lst.data[i][0])
@@ -105,10 +103,9 @@ int	get_variable(t_env **vars, t_token lst, char *str)
 	{
 		new = lst.data[i];
 		if (!is_target(str, '|'))
-			if (!start_get_variable(vars, lst, new, &flag))
+			if (!start_get_variable(vars, lst, new))
 				return (0);
 	}
-	/*debug*/printf("flag:%d\n", flag);
 	remove_var(&lst);
 	return (1);
 }
