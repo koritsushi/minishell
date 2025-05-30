@@ -27,7 +27,7 @@ void	ft_init_pipe(t_ms *data, t_token *lst);
 char	**ft_cmd_init(t_ms *data, t_token *lst);
 void	ft_process(t_ms *data);
 
-//execution_process2.c
+//execution_process_utils.c
 int		lst_cmd_count(t_token *lst);
 int		lst_pipe_count(t_token *lst);
 int		ft_isempty(char *str);
@@ -52,6 +52,9 @@ void	close_pipe(t_ms *data, int index);
 //execution_heredoc.c
 void	infile_parsing_init(t_ms *data, t_token *lst);
 void	outfile_parsing_init(t_ms *data, t_token *lst);
+
+//execution_heredoc_utils.c
+void	ft_infile_init(int *infile_fd, char *data, int *flag);
 
 //execution_parent_process_utils.c
 void	fp_process(t_ms *data, int index);
