@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/30 15:47:22 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/30 17:24:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ int	main(int argc, char **argv, char **env)
 	{
 		exec_init(&data.exec);
 		text = readline("\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m");
-		if (*text)
-			add_history(text);
 		if (!check_ifs(text, &data))
 			break ;
+		if (*text)
+			add_history(text);
 		if (*text && check_syntax(text))
 			start_cmd(text, &data);
 		free(text);
