@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/23 19:30:17 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/30 00:08:37 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,25 +80,23 @@ void	infile_parsing_init(t_ms *data, t_token *lst)
 {
 	int	i;
 	int	j;
+	int	flag;
 
 	i = 0;
 	j = 0;
+	flag = 0;
 	while (lst->data[i] != NULL)
 	{
 		if (lst->datatype[i] == PIPE)
-			j++;
-		if (lst->datatype[i] == INFILE || lst->datatype[i] == HEREDOC)
-			if (data->exec.infile_fd[j] > 2)
-				close(data->exec.infile_fd[j]);
-		if (lst->datatype[i] == INFILE)
 		{
-			data->exec.infile_fd[j] = open(lst->data[i], O_RDONLY);
-			if (data->exec.infile_fd[j] == -1)
-			{
-				data->exec.infile_fd[j] = open("/dev/null", O_RDONLY);
-				printf("-minishell: %s: %s\n", lst->data[i], strerror(errno));
-			}
+			flag = 0;
+			j++;
 		}
+		if ((lst->datatype[i] == INFILE || lst->datatype[i] == HEREDOC) && \
+data->exec.infile_fd[j] > 2)
+			close(data->exec.infile_fd[j]);
+		if (lst->datatype[i] == INFILE)
+			ft_infile_init(&data->exec.infile_fd[j], lst->data[i], &flag);
 		else if (lst->datatype[i] == HEREDOC)
 			ft_heredoc_init(data, lst->data[i], j);
 		i++;
