@@ -49,6 +49,7 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/env_utils.c						\
 				srcs/minishell_utils.c					\
 				srcs/minishell_utils_execute.c			\
+				srcs/minishell_utils_execute_utils.c	\
 				srcs/minishell_utils_list.c				\
 				srcs/minishell_utils_list2.c			\
 				srcs/execution.c						\
