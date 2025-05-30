@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/29 14:32:12 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/30 17:21:10 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -88,7 +87,6 @@ typedef struct s_ms
 	t_token			lst;
 }					t_ms;
 
-
 /*__________for debug purposes only, can remove during eval__________*/
 void	debug_print(char **res);
 void	debug_print_var_lst(t_env *lst);
@@ -104,11 +102,14 @@ int		is_built_in(char *str);
 void	execute_functions(t_ms *data, t_token lst);
 int		execute_built_in(t_ms *data, char **argv);
 
+/*___________________helper function executing builtins___________________*/
+int		singular_args_builtins(t_ms *data, char **argv);
+int		multiple_args_builtins(t_ms *data, char **argv);
+
 /*___________________utils function for skips___________________*/
 char	*skip_if_quote(char *str, char symbol, int flag);
 char	*skip_redirs(char *str);
 char	*skip_consecutive_redir(char *outfile, int flag);
-
 
 /*______________modified linked_lst function from libft______________*/
 t_env	*ft_lstlast_sh(t_env *lst);
