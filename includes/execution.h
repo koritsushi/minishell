@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #ifndef EXECUTION_H
-#define EXECUTION_H
+# define EXECUTION_H
 # include "minishell.h"
 # define READ 0
 # define WRITE 1
