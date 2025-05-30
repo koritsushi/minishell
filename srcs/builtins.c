@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/29 16:01:08 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/30 17:19:48 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	ft_cd(t_env **lst, char *dir)
 		return (-1);
 	if (chdir(tmp[0]) != 0)
 	{
-		printf("Minishell: cd: %s: %s\n", tmp[0], strerror(errno));
+		printf("-minishell: cd: %s: %s\n", tmp[0], strerror(errno));
 		exit_code = 1;
 	}
 	else
