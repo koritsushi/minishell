@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/29 14:19:42 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/30 17:17:23 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
  */
 void	builtins_init(char *str[])
 {
-	str[0] = "echo";
-	str[1] = "cd";
-	str[2] = "pwd";
-	str[3] = "env";
-	str[4] = "export";
-	str[5] = "unset";
-	str[6] = "exit";
+	str[0] = "exit";
+	str[1] = "pwd";
+	str[2] = "env";
+	str[3] = "cd";
+	str[4] = "echo";
+	str[5] = "export";
+	str[6] = "unset";
 	str[7] = NULL;
 }
 
@@ -53,26 +53,26 @@ int	is_built_in(char *str)
 int	execute_built_in(t_ms *data, char **argv)
 {
 	int				i;
+	char			*builtins[8];		
 	unsigned char	*exit_code;
 
 	i = 0;
+	builtins_init(builtins);
 	exit_code = &data->exec.exit_code;
-	if (ft_strncmp(argv[0], "echo", 4) == 0)
-		*exit_code = ft_echo(argv);
-	else if (ft_strncmp(argv[0], "pwd", 3) == 0)
-		*exit_code = ft_pwd();
-	else if (ft_strncmp(argv[0], "env", 3) == 0 && !argv[1])
-		*exit_code = env_print(&data->env_var);
-	else if (ft_strncmp(argv[0], "export", 6) == 0)
-		*exit_code = export_print(&data->env_var);
-	else if (ft_strncmp(argv[0], "cd", 2) == 0)
-		*exit_code = ft_cd(&data->env_var, argv[++i]);
-	else if (ft_strncmp(argv[0], "unset", 5) == 0)
-		while (argv[i] != NULL)
-			*exit_code = unset(&data->env_var, argv[++i]);
-	else if (ft_strncmp(argv[0], "exit", 4) == 0)
-		return (ft_putstr_fd("\033[36mminishell exited!\033[0m\n", 1), \
-ms_free_all(data, -1, 0), 0);
+	if (ft_strncmp(argv[0], "exit", 4) == 0)
+	{
+		ft_putstr_fd("\033[36mminishell exited!\033[0m\n", 1);
+		ms_free_all(data, -1, 0);
+	}
+	while (builtins[i] != NULL)
+	{
+		if (ft_strncmp(argv[0], builtins[i], ft_strlen(argv[0])) == 0 && i <= 2)
+			return (*exit_code = singular_args_builtins(data, argv));
+		else if (ft_strncmp(argv[0], builtins[i], ft_strlen(argv[0])) == 0 \
+&& i > 2)
+			return (*exit_code = multiple_args_builtins(data, argv));
+		i++;
+	}
 	return (*exit_code);
 }
 
