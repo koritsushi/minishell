@@ -1,87 +1,54 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution_process2.c                               :+:      :+:    :+:   */
+/*   execution_process_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:03:43 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/29 19:40:30 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/30 14:36:56 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/execution.h"
 
-int	ft_isspace(char c)
+char	**ft_envp(t_env **lst)
 {
-	if (c == 32 || (c >= 9 && c <= 13))
-		return (1);
-	return (0);
-}
+	char	**envp;
+	char	*env;
+	t_env	*tmp;
+	int		i;
 
-int	ft_isempty(char *str)
-{
-	int	i;
-
+	if (lst == NULL)
+		return (NULL);
 	i = 0;
-	if (str == NULL)
-		return (1);
-	while (str[i] != '\0')
+	tmp = *lst;
+	envp = malloc(sizeof(char *) * (ft_lstsize_sh(lst) + 1));
+	if (envp == NULL)
+		return (NULL);
+	while (tmp != NULL)
 	{
-		if (ft_isspace(str[i]))
-			i++;
-		else
-			return (0);
-	}
-	return (1);
-}
-
-int	ft_isempty2(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str == NULL)
-		return (1);
-	while (str[i] != '\0')
-	{
-		if (ft_isspace(str[i]))
-			i++;
-		else
-			return (0);
-	}
-	if (i <= 1)
-		return (0);
-	return (1);
-}
-
-int	lst_cmd_count(t_token *lst)
-{
-	int	i;
-	int	size;
-
-	i = 0;
-	size = 0;
-	while (lst->data[i] != NULL)
-	{
-		if (lst->datatype[i++] == WORD)
-			size++;
-	}
-	return (size);
-}
-
-int	lst_pipe_count(t_token *lst)
-{
-	int	i;
-	int	size;
-
-	i = 0;
-	size = 0;
-	while (lst->data[i] != NULL)
-	{
-		if (lst->datatype[i] == PIPE)
-			size++;
+		env = ft_strjoin(tmp->env, "=");
+		envp[i] = ft_strjoin(env, tmp->content);
+		free(env);
 		i++;
+		tmp = tmp->next;
 	}
-	return (size);
+	envp[i] = NULL;
+	return (envp);
+}
+
+char	*ft_absolute_path(char *cmd)
+{
+	char	*pwd;
+	char	*cmd_path;
+
+	if (access(cmd, F_OK) == 0)
+		return (cmd);
+	pwd = getpwd();
+	cmd_path = ft_strjoin(pwd, cmd);
+	if (access(cmd_path, F_OK) == 0)
+		return (cmd_path);
+	free_multiple_ptr_single(cmd_path, pwd, NULL);
+	return (NULL);
 }
