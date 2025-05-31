@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/30 17:36:31 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/31 18:33:54 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,5 @@ is_built_in(data->exec.cmd_args[0][0]))
 	if (data->exec.envp == NULL)
 		ms_free_all(data, 2, 1);
 	data->exec.path = ft_get_path(data->exec.envp);
-	if (data->exec.path == NULL)
-		return (free_chr_ptr((void **) cmd), ms_free_all(data, 3, 1));
 	ft_process(data);
 }
