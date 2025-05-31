@@ -80,15 +80,12 @@ char	***ft_split_cmd(t_exec *exec, char **argv)
 	return (cmd);
 }
 
-char	*ft_cmdpath(char **cmd_args, char **path)
+char	*ft_relative_path(char **cmd_args, char **path)
 {
 	int				i;
-	int				end;
 	char			*cmd_path;
-	struct stat		sb;
 
 	i = -1;
-	end = ft_array_len(path);
 	while (path[++i] != NULL)
 	{
 		cmd_path = ft_strjoin(path[i], cmd_args[0]);
@@ -97,10 +94,5 @@ char	*ft_cmdpath(char **cmd_args, char **path)
 		free(cmd_path);
 		cmd_path = NULL;
 	}
-	if (i == end && cmd_path == NULL)
-		cmd_path = ft_absolute_path(cmd_args[0]);
-	if ((stat(cmd_path, &sb) >= 0 && sb.st_mode & S_IXUSR))
-		return (cmd_path);
-	free(cmd_path);
-	return (NULL);
+	return (cmd_path);
 }
