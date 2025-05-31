@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:55 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/30 23:48:06 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/31 17:50:22 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,11 @@ void	ft_execution(t_ms *data, char *cmd, char **cmd_args)
 	char	*err;
 
 	ft_process_built_in(data, cmd, cmd_args);
-	cmd_path = ft_cmdpath(cmd_args, data->exec.path);
+	if (ft_strncmp(cmd_args[0], "./", 2) != 0 && \
+ft_strncmp(cmd_args[0], "/", 1) != 0)
+		cmd_path = ft_relative_path(cmd_args, data->exec.path);
+	else
+		cmd_path = ft_absolute_path(cmd_args[0]);
 	if (cmd_path == NULL)
 	{
 		err = ft_strjoin("-minishell: ", cmd_args[0]);
