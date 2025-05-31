@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:29:17 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/29 18:40:42 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/31 18:15:47 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ int	cmd_expansion(char **lst_data, t_env *vars, int exit_status)
 	{
 		brace_expansion(&lst_data[x]);
 		shell_var_expansion(&lst_data[x], vars, exit_status);
-		dot_expansion(&lst_data[x]);
 	}
 	return (1);
 }
