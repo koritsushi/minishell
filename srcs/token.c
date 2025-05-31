@@ -91,8 +91,6 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 {
 	int		count;
 	char	**res;
-	(void)	exit_status;
-	(void)	vars;
 
 	str = skip_spaces(str, " \t\n\v\f\r");
 	if (!str || !str[0])
@@ -104,7 +102,7 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 	if (!init_token_list(lst, (count + 1)))
 		return (0);
 	process_cmd(lst, res);
-	// cmd_expansion(lst->data, vars, exit_status);
+	cmd_expansion(lst->data, vars, exit_status);
 	assign_datatype(lst->datatype, res);
 	free_chr_ptr((void **)res);
 	return (1);

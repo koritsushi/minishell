@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/31 18:27:34 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/31 18:50:13 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,6 @@ char	*skip_redirs(char *str);
 char	*skip_consecutive_redir(char *outfile, int flag);
 char	*skip_redir(char *outfile);
 char	*skip_to_next_space(char *str);
-
-
 
 /*______________modified linked_lst function from libft______________*/
 t_env	*ft_lstlast_sh(t_env *lst);
