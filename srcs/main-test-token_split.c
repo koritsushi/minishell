@@ -8,7 +8,8 @@ int	main(int ac, char **av)
 	// char str[] = "hello cat's cat meow "; // 2
 	// char str[] = "'cat meow  ' yes loop"; // 3
 	// char str[] = "'cat meow >  out' yes"; // 2
-	char str[] = "'cat meow >  out'> baba"; // 2
+	// char str[] = "\"cat meow >  out\"> baba"; // 2
+	char str[] = "echo -n \" -n cat meow >  out\" baba"; // 2
 	// char *str = ft_strdup("cat's meow  ' yes loop"); // 2
 	// char str[] = "'''"; // 1
 	// char str[] = "'' '"; // 2
@@ -18,7 +19,7 @@ int	main(int ac, char **av)
 	
 	/*-------------------ft_split_shell-------------------*/
 	// char **res = ft_split_shell(str, "\'>\"");
-	char **res = ft_split_shell(str, ">");
+	char **res = ft_split_shell(str, " ");
 	int i = 0;
 	while (res[i])
 		printf("%s\n", res[i++]);

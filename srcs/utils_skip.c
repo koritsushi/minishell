@@ -6,11 +6,28 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 22:05:39 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/28 12:22:20 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/31 18:10:28 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
+
+char	*skip_to_next_space(char *str)
+{
+	char	symbol;
+	int		flag_quote;
+
+	symbol = '\0';
+	flag_quote = 0;
+	while (str && str[0])
+	{
+		update_flag_quote(str, "\'\"", &symbol, &flag_quote);
+		if (!flag_quote && is_target(" \t\n\v\f\r", str[0]))
+			return (skip_spaces(str, " \t\n\v\f\r"));
+		str++;
+	}
+	return (str);
+}
 
 /*
  * if str[0] == symbol, will skip to the next occurence of symbol
@@ -40,28 +57,28 @@ char	*skip_if_quote(char *str, char symbol, int flag)
  * skips all < infile & > outfile redirections that are at the beginning of str,
  * returns result to char*
  */
-char	*skip_redirs(char *str)
-{
-	char	*new;
+// char	*skip_redirs(char *str)
+// {
+// 	char	*new;
 
-	new = str;
-	while (str[0] == '<' || str[0] == '>')
-	{
-		new = skip_spaces(new, "<> \t\n\v\f\r");
-		// /*debug*/printf("skip_spaces=%s\n", new);
-		new = skip_if_symbol(new, str[0], '<');
-		// /*debug*/printf("skip_< =%s\n", new);
-		new = skip_if_symbol(new, str[0], '>');
-		// /*debug*/printf("skip_> =%s\n", new);
-		str = skip_spaces(str, "<> \t\n\v\f\r");
-		while (str[0] && !is_target(" \t\n\v\f\r", str[0]))
-			str++;
-		str = skip_spaces(str, " \t\n\v\f\r");
-		// /*debug*/printf("str =%s\n", str);
-		new = str;
-	}
-	return (new);
-}
+// 	new = str;
+// 	while (str[0] == '<' || str[0] == '>')
+// 	{
+// 		new = skip_spaces(new, "<> \t\n\v\f\r");
+// 		// /*debug*/printf("skip_spaces=%s\n", new);
+// 		new = skip_if_symbol(new, str[0], '<');
+// 		// /*debug*/printf("skip_< =%s\n", new);
+// 		new = skip_if_symbol(new, str[0], '>');
+// 		// /*debug*/printf("skip_> =%s\n", new);
+// 		str = skip_spaces(str, "<> \t\n\v\f\r");
+// 		while (str[0] && !is_target(" \t\n\v\f\r", str[0]))
+// 			str++;
+// 		str = skip_spaces(str, " \t\n\v\f\r");
+// 		// /*debug*/printf("str =%s\n", str);
+// 		new = str;
+// 	}
+// 	return (new);
+// }
 
 /*
  * child function in skip_consecutive_infile
@@ -73,12 +90,13 @@ static char	*skip_consecutive(char *str, char c, char *stop)
 	char	symbol;
 	int		flag_quote;
 
+	symbol = '\0';
 	flag_quote = 0;
 	while (str && str[0])
 	{
 		// /*debug*/printf("skip_cons:%s.\n", str);
 		update_flag_quote(str, "\'\"", &symbol, &flag_quote);
-		// if (str[0] == c[0] || str[0] == '>')
+		/*debug*/printf("sym:%c %d\n", symbol, flag_quote);
 		if (str[0] == c)
 			str = skip_spaces(str, "<> \t\n\v\f\r");
 		else if (is_target(stop, str[0]) && !flag_quote)
@@ -109,5 +127,20 @@ char	*skip_consecutive_redir(char *outfile, int flag)
 		str = outfile;
 	if (str[0] == '<')
 		str = skip_consecutive(str, '<', "> \t\n\v\f\r");
+	return (str);
+}
+
+char	*skip_redir(char *outfile)
+{
+	char	*str;
+
+	if (!outfile || !outfile[0])
+		return (outfile);
+	str = outfile;
+	while (str && str[0] && is_target("<>", str[0]))
+	{
+		str = skip_consecutive(str, '>', "< \t\n\v\f\r");
+		str = skip_consecutive(str, '<', "> \t\n\v\f\r");
+	}
 	return (str);
 }

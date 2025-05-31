@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:41:58 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/27 08:46:35 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/31 18:19:23 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 void	update_flag_quote(char *target, char *set, char *symbol, int *flag_quote)
 {
 	// /*debug*/printf("update_flag_quote:%c\n", target[0]);
-	// if (!(*flag_quote) && is_target("\'\"", target[0]))
+	if (!target)
+		return ;
 	if (!(*flag_quote) && is_target(set, target[0]))
 	{
 		/*debug*/printf("update_flag_quote:%c\n", target[0]);

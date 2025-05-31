@@ -56,7 +56,11 @@ void	copy_cmd_tail(char **lst_data, int *start, char **outfile)
 	{
 		/* travel to the first space detected */
 		cmd_tail = skip_spaces(outfile[i], " \t\n\v\f\r");
-		cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
+		/*debug*/printf("copy_cmd_tail:ent:%s.\n", cmd_tail);
+		cmd_tail = skip_to_next_space(cmd_tail);
+		// cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
+		
+		/*debug*/printf("copy_cmd_tail:sk:%s.\n", cmd_tail);
 		cmd_tail = skip_consecutive_redir(cmd_tail, 0);
 
 		if (is_target(cmd_tail, '<'))
@@ -149,12 +153,10 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 	(void)	lst_data;
 
 	/*__________start_here_________*/
-	cmd_tail = skip_consecutive_redir(cmd_tail, 0);
-	if (cmd_tail[0] == '>')
-		cmd_tail = skip_consecutive_redir(cmd_tail, 1);
+	cmd_tail = skip_redir(cmd_tail);
 	if (!cmd_tail || !cmd_tail[0])
 		return ;
-	// /*debug*/printf("cmd_tail:%s.\n", cmd_tail);
+	/*debug*/printf("cmd_tail:%s.\n", cmd_tail);
 
 	outfile = ft_split_shell(cmd_tail, ">");
 	// /*debug*/printf("------\np_cmd_t:outfile:\n");
@@ -191,7 +193,7 @@ void	process_cmd(t_token *lst, char **res)
 
 		process_cmd_tail(lst->data, &i, cmd_tail);
 		/*debug*/printf("process_cmd:i:%d\n", i);
-		process_outfile(lst->data, &i, cmd_tail);
+		// process_outfile(lst->data, &i, cmd_tail);
 		/*------------ add_pipes ------------*/
 		if (res[x + 1])
 			extract_outfile(&lst->data[i++], "|");
@@ -230,8 +232,8 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 	/*debug*/debug_print(res);
 	/* ---------------- extract_cmd ---------------- */
 	process_cmd(lst, res);
-	cmd_expansion(lst->data, vars, exit_status);
-	assign_datatype(lst->datatype, res);
+	// cmd_expansion(lst->data, vars, exit_status);
+	// assign_datatype(lst->datatype, res);
 	free_chr_ptr((void **)res);
 	return (1);
 }

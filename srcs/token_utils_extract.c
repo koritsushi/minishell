@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 12:06:36 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/29 13:53:22 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/29 21:02:58 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,12 @@ void	extract_infile(char **lst_data, int *i, char *res)
 	x = -1;
 	//extract all infiles
 	/*get to the last infile index*/
+	// cmd <infile
 	infile = ft_split_shell(res, "<");
 	if (res[0] != '<')
 		x++;
+	// if (!'<', start with infile[1], else start with infile[0])
+	// x=0 ++x=1 , else ++x=0
 	// <in1 in2 <in3 cmd | <in3 cmd
 	// cmd -k <in1 <in2 in3 | <in3 cmd
 	// jump to where 1st infile occur

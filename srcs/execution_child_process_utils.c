@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_child_process_utils.c                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:33:47 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/21 11:51:20 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/31 17:04:13 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	mc_process(t_ms *data, int index)
 	close_pipe(data, index);
 	if (data->exec.outfile_fd[index] != 1)
 	{
-		dup2(data->exec.infile_fd[index], STDOUT_FILENO);
-		close(data->exec.infile_fd[index]);
+		dup2(data->exec.outfile_fd[index], STDOUT_FILENO);
+		close(data->exec.outfile_fd[index]);
 	}
 }
