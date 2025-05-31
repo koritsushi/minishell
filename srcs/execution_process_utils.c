@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:03:43 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/30 22:24:45 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/31 17:49:48 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,24 @@ char	**ft_envp(t_env **lst)
 
 char	*ft_absolute_path(char *cmd)
 {
-	char	*pwd;
-	char	*cmd_path;
+	char			*cmd_path;
+	struct stat		sb;
 
-	if (access(cmd, F_OK) == 0)
+	cmd_path = ft_strdup(cmd);
+	if (cmd_path == NULL)
+		return (NULL);
+	if ((stat(cmd_path, &sb) == 0 && (sb.st_mode & S_IXUSR)))
 	{
-		cmd_path = ft_strdup(cmd);
-		return (cmd_path);
+		if (S_ISDIR(sb.st_mode) != 0)
+			errno = EISDIR;
+		else
+			return (cmd_path);
 	}
-	pwd = getpwd();
-	cmd_path = ft_strjoin(pwd, cmd);
-	if (access(cmd_path, F_OK) == 0)
-		return (cmd_path);
-	free_multiple_ptr_single(cmd_path, pwd, NULL);
+	else
+	{
+		if (access(cmd_path, F_OK) == 0)
+			errno = EACCES;
+	}
+	free(cmd_path);
 	return (NULL);
 }
