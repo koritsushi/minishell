@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/31 12:40:10 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/31 18:56:41 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	start_cmd(char *text, t_ms *data)
 		get_variable(&data->env_var, data->lst, text);
 		add_filler_cmd(&data->lst);
 		remove_redir_quote(&data->lst);
-		// /*debug*/debug_print_cmd_line(&data->lst);
+		/*debug*/debug_print_cmd_line(&data->lst);
 		execute_functions(data, data->lst);
 		free_exec(&data->exec);
 		free_parsing(&data->lst);
@@ -61,6 +61,10 @@ static int	check_ifs(char *text, t_ms *data)
 		else
 			printf("\033[103m_____vars_list:_____\033[0m\n");
 	}
+	if (*text)
+		add_history(text);
+	if (*text && check_syntax(text))
+		start_cmd(text, data);
 	return (1);
 }
 
@@ -81,13 +85,10 @@ int	main(int argc, char **argv, char **env)
 		text = readline("\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m");
 		if (!check_ifs(text, &data))
 			break ;
-		if (*text)
-			add_history(text);
-		if (*text && check_syntax(text))
-			start_cmd(text, &data);
 		free(text);
 	}
 	free(text);
+	rl_clear_history();
 	if (data.env_var && data.env_var->content)
 		ft_lstclear_sh(&data.env_var, free);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 07:55:00 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/29 18:16:57 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/31 18:30:04 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char *str, unsigned char *datatype, int *i, char **outfile)
 
 	if (!str || !str[0] || !outfile)
 		return ;
-	cmd_tail = skip_redirs(str);
+	cmd_tail = skip_redir(str);
 	if (!cmd_tail || !cmd_tail[0])
 		return ;
 	if (outfile[1] && (cmd_tail[0] != '>' || \

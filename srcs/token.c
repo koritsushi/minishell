@@ -49,7 +49,7 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 {
 	char	**outfile;
 
-	cmd_tail = skip_redirs(cmd_tail);
+	cmd_tail = skip_redir(cmd_tail);
 	if (!cmd_tail || !cmd_tail[0])
 		return ;
 	outfile = ft_split_shell(cmd_tail, ">");
@@ -59,7 +59,6 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 	free_chr_ptr((void **)outfile);
 }
 
-// 16 lines!
 /*
  * scans line and saves valid command into a new char** array, str=new
  * uses malloc
@@ -84,7 +83,6 @@ void	process_cmd(t_token *lst, char **res)
 	}
 }
 
-// 18 lines so far
 /*
  * splits input by PIPE & REDIR, stores result in allocated t_token pointer
  * uses malloc
