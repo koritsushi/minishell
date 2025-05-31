@@ -37,7 +37,7 @@ int		ft_isempty2(char *str);
 char	**ft_get_path(char **envp);
 char	**ft_format_path(char **path, char *format);
 char	***ft_split_cmd(t_exec *exec, char **argv);
-char	*ft_cmdpath(char **cmd_args, char **path);
+char	*ft_relative_path(char **cmd_args, char **path);
 
 //execution_cmd_utils.c
 char	**ft_envp(t_env **lst);
