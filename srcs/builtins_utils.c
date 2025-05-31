@@ -47,9 +47,9 @@ char	*expand_relative_path(char *str, char *curr_dir)
 
 	new = str;
 	len2 = 0;
-	if (strcmp(".", new) == 0)
+	if (ft_strcmp(".", new) == 0)
 		return (curr_dir);
-	else if (strncmp("../", new, 3) == 0 || strncmp("..", new, 2) == 0)
+	else if (ft_strncmp("../", new, 3) == 0 || ft_strncmp("..", new, 2) == 0)
 	{
 		len = ft_strrchr(curr_dir, '/') - curr_dir;
 		if (ft_strchr(str, '/') && *(ft_strchr(str, '/') + 1) != '\0')

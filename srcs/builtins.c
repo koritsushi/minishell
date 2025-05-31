@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:34 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/30 17:19:48 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/31 19:18:48 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	update_env_path(t_env *lst, char *str, char *curr_dir)
 	new = expand_relative_path(str, curr_dir);
 	ft_lst_replace_if(lst, "PWD", new);
 	ft_lst_replace_if(lst, "OLDPWD", curr_dir);
-	if (strncmp("../", str, 3) == 0 || strncmp("..", str, 2) == 0)
+	if (ft_strncmp("../", str, 3) == 0 || ft_strncmp("..", str, 2) == 0)
 		free(new);
 }
 
