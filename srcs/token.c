@@ -49,9 +49,7 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 {
 	char	**outfile;
 
-	cmd_tail = skip_consecutive_redir(cmd_tail, 0);
-	if (cmd_tail[0] == '>')
-		cmd_tail = skip_consecutive_redir(cmd_tail, 1);
+	cmd_tail = skip_redirs(cmd_tail);
 	if (!cmd_tail || !cmd_tail[0])
 		return ;
 	outfile = ft_split_shell(cmd_tail, ">");

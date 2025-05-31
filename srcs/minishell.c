@@ -6,13 +6,25 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/29 19:08:52 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/31 12:40:10 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
 int	g_signal = 0;
+
+void	remove_redir_quote(t_token *lst)
+{
+	int	i;
+
+	i = -1;
+	while (lst->data[++i])
+	{
+		if (lst->datatype[i] != WORD)
+			quote_removal(&lst->data[i]);
+	}
+}
 
 /*
  * helper function for minishell main
@@ -25,6 +37,7 @@ void	start_cmd(char *text, t_ms *data)
 	{
 		get_variable(&data->env_var, data->lst, text);
 		add_filler_cmd(&data->lst);
+		remove_redir_quote(&data->lst);
 		// /*debug*/debug_print_cmd_line(&data->lst);
 		execute_functions(data, data->lst);
 		free_exec(&data->exec);
@@ -66,10 +79,10 @@ int	main(int argc, char **argv, char **env)
 	{
 		exec_init(&data.exec);
 		text = readline("\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m");
-		if (*text)
-			add_history(text);
 		if (!check_ifs(text, &data))
 			break ;
+		if (*text)
+			add_history(text);
 		if (*text && check_syntax(text))
 			start_cmd(text, &data);
 		free(text);

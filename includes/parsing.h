@@ -23,7 +23,8 @@ typedef struct s_token	t_token;
 
 /*__________functions for syntax error checks__________*/
 int		check_syntax(char *str);
-int		check_var_syntax(char **str);//, int *flag);
+int		check_var_syntax(char **str);
+int		check_infile_fd(t_token lst);
 
 /*__________functions to extract variable assignments__________*/
 int		get_variable(t_env **vars, t_token lst, char *str);

@@ -62,7 +62,7 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/execution_heredoc.c				\
 				srcs/execution_heredoc_utils.c			\
 				srcs/minishell.c 						\
-				srcs/_debug.c							\
+				srcs/debug.c							\
 #				srcs/main-test-token_split.c			\
 #				srcs/parsing_utils_replace.c			\
 #				srcs/token_utils_operator.c				\

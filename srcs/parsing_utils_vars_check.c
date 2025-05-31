@@ -6,13 +6,49 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:10:01 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/29 18:29:43 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/30 16:01:35 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* syntax checking for variable assignments (var=some_data) */
 
 #include "includes/parsing.h"
+
+/*
+ * child function in valid_export_keyword
+ * checks if str == keyword up to len
+ * flag = 0: no spaces after keyword
+ * flag = 1: has spaces after keyword
+ */
+static int	check_export_keyword(char *str, char *keyword, int len, int flag)
+{
+	if (ft_strncmp(str, keyword, len) == 0)
+	{
+		if ((flag && str[len] && is_target(" \t\n\v\f\r", str[len])) || !flag)
+			return (1);
+	}
+	return (0);
+}
+
+/*
+ * child function in get_variable & is_valid_var_name
+ * checks if string starts with export 'export' or "export"
+ * return 1 if valid
+ * flag 0 = only checks if it is keyword export
+ * flag 1 = checks keyword + if has spaces ' ' after keyword
+ */
+int	valid_export_keyword(char *str, int flag)
+{
+	if (!str)
+		return (0);
+	str = skip_spaces(str, " \t\n\v\f\r");
+	if (\
+check_export_keyword(str, "export", 6, flag) || \
+check_export_keyword(str, "\'export\'", 8, flag) || \
+check_export_keyword(str, "\"export\"", 8, flag))
+		return (1);
+	return (0);
+}
 
 /*
  * child function in has_non_var
