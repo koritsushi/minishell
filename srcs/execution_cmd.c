@@ -86,6 +86,11 @@ char	*ft_relative_path(char **cmd_args, char **path)
 	char			*cmd_path;
 
 	i = -1;
+	if (path == NULL)
+	{
+		errno = ENOENT;
+		return (NULL);
+	}
 	while (path[++i] != NULL)
 	{
 		cmd_path = ft_strjoin(path[i], cmd_args[0]);
