@@ -51,6 +51,51 @@ fork()
 ## multiple pipe with no cmd with redirection in and out only
     << h1 << h2 << h3 > out | << h1 << h2 > out1 | << h4 
 
+### minishell behaviour
+	minishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  >     << h1 << h2 << h3 > out | << h1 << h2 > out1 | << h4 
+	> awd     
+	> h1
+	> awk
+	> h2
+	> awdapkwod
+	> h3
+	> apwodkapwo
+	> h1
+	> awdjawdipj
+	> h2
+	> awdpawpod
+	> h4
+	minishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  >     ls
+	LICENSE  Makefile  README.md  TESTS.md  debug  includes  libft  minishell  minishell.a  out  out1  srcs
+	minishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  >     cat out
+	minishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  >     cat ou1
+	cat: ou1: No such file or directory
+	minishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  >     cat out1
+### bash behaviour
+
+	mah@DESKTOP-BBTN5LK:/mnt/c/Users/Yuan/Documents/C Programming$     << h1 << h2 << h3 > out | << h1 << h2 > out1 | << h4 
+	>
+	> awdawd
+	> h1
+	> awdadwa
+	> g2
+	> h2
+	> awduaiowd
+	> h3
+	> awodaiowdaiodjw
+	> h1
+	> awoiudoaiwdo
+	> h2
+	> 
+	> h4
+	mah@DESKTOP-BBTN5LK:/mnt/c/Users/Yuan/Documents/C Programming$ ls
+	a.out            gnl                    lcw.c       other_42_peer_code  out1     outfile1  outfile3  test.js
+	examshell-linux  interesting_c_program  my_42_core  out                 outfile  outfile2  test
+	mah@DESKTOP-BBTN5LK:/mnt/c/Users/Yuan/Documents/C Programming$ cat out
+	mah@DESKTOP-BBTN5LK:/mnt/c/Users/Yuan/Documents/C Programming$ cat out1
+	mah@DESKTOP-BBTN5LK:/mnt/c/Users/Yuan/Documents/C Programming$ 
+
+
 ## multiple pipe with partial cmd
 	
 
