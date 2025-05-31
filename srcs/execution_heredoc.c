@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/30 00:08:37 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/30 23:37:37 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,10 @@ void	outfile_parsing_init(t_ms *data, t_token *lst)
 				close(data->exec.outfile_fd[j]);
 		if (lst->datatype[i] == OUTFILE)
 			data->exec.outfile_fd[j] = \
-open(lst->data[i], O_RDWR | O_CREAT | O_TRUNC, 0774);
+open(lst->data[i], O_RDWR | O_CREAT | O_TRUNC, 0664);
 		else if (lst->datatype[i] == OUTFILE_A)
 			data->exec.outfile_fd[j] = \
-open(lst->data[i], O_RDWR | O_CREAT | O_APPEND, 0774);
+open(lst->data[i], O_RDWR | O_CREAT | O_APPEND, 0664);
 		if (data->exec.outfile_fd[j] == -1)
 			ms_free_all(data, 4, 1);
 		i++;

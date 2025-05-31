@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:03:43 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/30 14:36:56 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/30 22:24:45 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,10 @@ char	*ft_absolute_path(char *cmd)
 	char	*cmd_path;
 
 	if (access(cmd, F_OK) == 0)
-		return (cmd);
+	{
+		cmd_path = ft_strdup(cmd);
+		return (cmd_path);
+	}
 	pwd = getpwd();
 	cmd_path = ft_strjoin(pwd, cmd);
 	if (access(cmd_path, F_OK) == 0)
