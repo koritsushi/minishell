@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/31 12:40:10 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/31 14:38:16 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	start_cmd(char *text, t_ms *data)
 		get_variable(&data->env_var, data->lst, text);
 		add_filler_cmd(&data->lst);
 		remove_redir_quote(&data->lst);
-		// /*debug*/debug_print_cmd_line(&data->lst);
+		/*debug*/debug_print_cmd_line(&data->lst);
 		execute_functions(data, data->lst);
 		free_exec(&data->exec);
 		free_parsing(&data->lst);
