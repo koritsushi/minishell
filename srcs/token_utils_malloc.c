@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:11:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/29 18:45:25 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/31 18:31:13 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	count_cmd_tail_chr(char **outfile)
 	{
 		cmd_tail = outfile[i];
 		cmd_tail = skip_spaces(cmd_tail, " \t\n\v\f\r");
-		cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
+		cmd_tail = skip_to_next_space(cmd_tail);
 		cmd_tail = skip_consecutive_redir(cmd_tail, 0);
 		if (cmd_tail && cmd_tail[0])
 			len += (ft_strlen(cmd_tail) + 1);

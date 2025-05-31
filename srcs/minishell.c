@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/31 17:01:02 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/31 18:41:21 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	start_cmd(char *text, t_ms *data)
 		add_filler_cmd(&data->lst);
 		remove_redir_quote(&data->lst);
 		/*debug*/debug_print_cmd_line(&data->lst);
-		// execute_functions(data, data->lst);
-		// free_exec(&data->exec);
+		execute_functions(data, data->lst);
+		free_exec(&data->exec);
 		free_parsing(&data->lst);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:20:44 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/30 19:45:04 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/31 18:27:34 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,10 @@ int		multiple_args_builtins(t_ms *data, char **argv);
 char	*skip_if_quote(char *str, char symbol, int flag);
 char	*skip_redirs(char *str);
 char	*skip_consecutive_redir(char *outfile, int flag);
+char	*skip_redir(char *outfile);
+char	*skip_to_next_space(char *str);
+
+
 
 /*______________modified linked_lst function from libft______________*/
 t_env	*ft_lstlast_sh(t_env *lst);

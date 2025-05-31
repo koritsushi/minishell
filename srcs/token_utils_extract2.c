@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:01:53 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/29 18:45:02 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/31 18:39:58 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	copy_cmd_tail(char **lst_data, int *start, char **outfile)
 	while (outfile[++i])
 	{
 		cmd_tail = skip_spaces(outfile[i], " \t\n\v\f\r");
-		cmd_tail = skip_if_symbol(cmd_tail, 'c', 'c');
+		cmd_tail = skip_to_next_space(cmd_tail);
 		cmd_tail = skip_consecutive_redir(cmd_tail, 0);
 		if (is_target(cmd_tail, '<'))
 			overwrite_infile(&cmd_tail);

@@ -49,7 +49,7 @@ void	process_cmd_tail(char **lst_data, int *i, char *cmd_tail)
 {
 	char	**outfile;
 
-	cmd_tail = skip_redirs(cmd_tail);
+	cmd_tail = skip_redir(cmd_tail);
 	if (!cmd_tail || !cmd_tail[0])
 		return ;
 	outfile = ft_split_shell(cmd_tail, ">");
@@ -91,6 +91,8 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 {
 	int		count;
 	char	**res;
+	(void)	exit_status;
+	(void)	vars;
 
 	str = skip_spaces(str, " \t\n\v\f\r");
 	if (!str || !str[0])
@@ -102,7 +104,7 @@ int	get_cmd_line(char *str, t_token *lst, t_env *vars, int exit_status)
 	if (!init_token_list(lst, (count + 1)))
 		return (0);
 	process_cmd(lst, res);
-	cmd_expansion(lst->data, vars, exit_status);
+	// cmd_expansion(lst->data, vars, exit_status);
 	assign_datatype(lst->datatype, res);
 	free_chr_ptr((void **)res);
 	return (1);
