@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:55 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/31 17:50:22 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/06/01 12:44:49 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	ft_execution(t_ms *data, char *cmd, char **cmd_args)
 	char	*err;
 
 	ft_process_built_in(data, cmd, cmd_args);
-	if (ft_strncmp(cmd_args[0], "./", 2) != 0 && \
+	if (ft_strncmp(cmd_args[0], "../", 3) != 0 && \
+ft_strncmp(cmd_args[0], "./", 2) != 0 && \
 ft_strncmp(cmd_args[0], "/", 1) != 0)
 		cmd_path = ft_relative_path(cmd_args, data->exec.path);
 	else
