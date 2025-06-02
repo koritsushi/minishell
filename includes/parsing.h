@@ -10,8 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+/*   does syntax checking for general & variable assignment ($var)
+ *   saves valid variable assignment ($var) to linked list
+ * ************************************************************************** */
+
 #ifndef PARSING_H
 # define PARSING_H
-# include "includes/minishell.h"
+# include "minishell.h"
+
+typedef struct s_env	t_env;
+typedef struct s_token	t_token;
+
+/*__________functions for syntax error checks__________*/
+int		check_syntax(char *str);
+int		check_var_syntax(char **str);
+int		check_infile_fd(t_token lst);
+
+/*__________functions to extract variable assignments__________*/
+int		get_variable(t_env **vars, t_token lst, char *str);
+int		get_var_name(char **dest, char *str);
+int		is_valid_var_name(char **str, int export_id);
+int		valid_export_keyword(char *str, int flag);
+int		count_malloc_vars(char *str);
+void	copy_vars(char *dest, char *src, int len);
+void	extract_vars(t_env **vars, char *str, int export_id);
+int		check_replace_dup(t_env *vars, char *name, char *new, int export_id);
+
+/*__________functions to clear variable assignments__________*/
+void	remove_var(t_token *lst);
 
 #endif

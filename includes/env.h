@@ -1,0 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/18 15:47:44 by mliyuan           #+#    #+#             */
+/*   Updated: 2025/02/18 15:47:44 by mliyuan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef ENV_H
+# define ENV_H
+# include "minishell.h"
+
+typedef struct s_ms		t_ms;
+typedef struct s_env	t_env;
+typedef struct s_exec	t_exec;
+
+t_env	*ft_lstlast_env(t_env *lst);
+void	ft_lstadd_back_env(t_env **lst, t_env *new);
+void	ft_lstdelone_env(t_env *lst, void (*del)(void*));
+void	ft_lstclear_env(t_env **lst, void (*del)(void*));
+t_env	*ft_lstnew_shenv(char *name, char *content, int export_id);
+t_env	*ft_lstnew_env(char *name, char *content, int export_id);
+void	ft_lst_remove_if(t_env **lst, char *target, int (*func)());
+
+int		ft_array_len(char **arr);
+void	msh_init(t_ms *data, char **env);
+void	env_init(t_env **env_var, char **env);
+void	exec_init(t_exec *exec);
+int		unset(t_env **lst, char *str);
+int		env_print(t_env **lst);
+int		export_print(t_env **lst);
+void	split_env(char **env, char **var);
+int		ft_array_len(char **str);
+
+#endif

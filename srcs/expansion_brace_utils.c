@@ -1,0 +1,147 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion_brace_utils.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/29 22:54:34 by hsim              #+#    #+#             */
+/*   Updated: 2025/05/29 18:38:24 by hsim             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/*   utils function to get content of brace_head & brace_tail,
+ *   then copy to dest
+ * ************************************************************************** */
+
+#include "includes/expansion.h"
+
+/*
+ * child function in copy_brace_expansion
+ * moves char* pointer to where the valid brace start is {,}
+ */
+static char	*move_to_valid_brace_start(char *src)
+{
+	while (src && !is_valid_brace_start(src))
+	{
+		if (src[0] && is_target("\'\"", src[0]) && \
+skip_if_quote(src, src[0], 0))
+			src = skip_if_quote(src, src[0], 0) + 1;
+		else
+			src++;
+	}
+	return (src);
+}
+
+/*
+ * child function in copy_brace_expansion
+ * gets expansion content outside of brace: 
+ * eg a{,}z, content= a or z
+ * mallocs & return the content in a new string
+ */
+static char	*get_brace_tail(char *str, char *set)
+{
+	int		x;
+	int		len;
+	char	*new;
+
+	if (!str)
+		return (str);
+	len = 0;
+	while (str[len] && !is_target(set, str[len]))
+	{
+		if (is_target("\'\"", str[len]))
+			len += skip_if_quote(&str[len], str[len], 0) - &str[len] + 1;
+		else
+			len++;
+	}
+	if (!malloc_chr_ptr(&new, len + 1))
+		return (0);
+	x = 0;
+	while (str[0] && x < len)
+		new[x++] = *str++;
+	return (new);
+}
+
+/*
+ * child function in copy_brace_expansion
+ * gets expansion content outside of brace: 
+ * eg a{,}z, content= a or z
+ * mallocs & return the content in a new string
+ */
+static char	*get_brace_head(char *str)
+{
+	char	*new;
+	int		len;
+	int		x;
+
+	if (!str)
+		return (str);
+	len = 0;
+	while (str[len])
+	{
+		if (str[len] == '{' && is_valid_brace_start(&str[len + 1]))
+			break ;
+		if (is_target("\'\"", str[len]))
+			len += ft_strchr(&str[len + 1], str[len]) - &str[len] + 1;
+		else
+			len++;
+	}
+	if (!malloc_chr_ptr(&new, len + 1))
+		return (0);
+	x = 0;
+	while (str[0] && x < len)
+		new[x++] = *str++;
+	return (new);
+}
+
+static char	*copy_brace_body(char *src, char *dest, int *x)
+{
+	int	len;
+
+	while (src[0] && !is_target(",{}", src[0]))
+	{
+		if (src[0] && is_target("\'\"", src[0]))
+		{
+			len = (skip_if_quote(src, src[0], 0) + 1) - src;
+			ft_strlcpy(&dest[(*x)], src, len + 1);
+			(*x) += len;
+			src = skip_if_quote(src, src[0], 0) + 1;
+		}
+		else
+			dest[(*x)++] = *src++;
+	}
+	return (src);
+}
+
+/*
+ * expands brace part accordingly
+ * (copy head, copy content in brace, copy tail, repeat)
+ * int x = the index number to copy to in *dest
+ */
+char	*copy_brace_expansion(char *src, char *dest, int *x, int malloc_size)
+{
+	int		flag;
+	char	*head;
+	char	*tail;
+
+	flag = 0;
+	head = get_brace_head(src);
+	src = move_to_valid_brace_start(src);
+	tail = get_brace_tail(ft_strchr(src, '}') + 1, " \t\n\v\f\r");
+	while (src && src[0] && *x < malloc_size)
+	{
+		if (flag)
+			dest[(*x)++] = ' ';
+		else if (!flag)
+			flag = 1;
+		*x += ft_strlcpy(&dest[*x], head, ft_strlen(head) + 1);
+		src = copy_brace_body(src, dest, x);
+		*x += ft_strlcpy(&dest[*x], tail, ft_strlen(tail) + 1);
+		if (src[0] == '}')
+			break ;
+		src++;
+	}
+	free_multiple_ptr_single(head, tail, NULL);
+	return (dest);
+}

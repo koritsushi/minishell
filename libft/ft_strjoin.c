@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 01:24:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2024/01/16 13:34:17 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/05/13 12:31:28 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/* uses malloc */
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	i;

@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_perror_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/14 11:34:13 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/07 17:23:01 by hsim             ###   ########.fr       */
+/*   Created: 2025/01/03 07:51:12 by hsim              #+#    #+#             */
+/*   Updated: 2025/04/29 09:52:16 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+/*
+ * prints message in destination pointed by fd
+ * value = its return value
+ * have to include \n everytime
+ */
+int	ft_perror_fd(char *s, int fd, int value)
 {
-	while (*s != '\0')
-	{
-		if (*s == (char) c)
-			return ((char *)s);
-		s++;
-	}
-	if ((char) c == '\0')
-		return ((char *)s);
-	return (NULL);
+	if (!s)
+		return (0);
+	write(fd, s, ft_strlen(s));
+	return (value);
 }

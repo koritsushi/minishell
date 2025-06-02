@@ -12,12 +12,12 @@
 
 #ifndef SIGNALS_H
 # define SIGNALS_H
-# include "includes/minishell.h"
+# include "minishell.h"
 # include <signal.h>
 
-void	set_signal_action(void);
-void	block_signal(int signal);
-void	unblock_signal(int signal);
-void	sigint_handler(int signal);
+//void	block_signal(int signal);
+//void	unblock_signal(int signal);
+void	signal_handler(int signal);
+void	set_signal_action(int code);
 
 #endif

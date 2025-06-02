@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/14 11:34:13 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/07 17:23:01 by hsim             ###   ########.fr       */
+/*   Created: 2025/02/14 14:55:59 by mliyuan           #+#    #+#             */
+/*   Updated: 2025/04/30 15:11:30 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef BUILTINS_H
+# define BUILTINS_H
+# define PATHMX 4096
+# include "minishell.h"
 
-char	*ft_strchr(const char *s, int c)
-{
-	while (*s != '\0')
-	{
-		if (*s == (char) c)
-			return ((char *)s);
-		s++;
-	}
-	if ((char) c == '\0')
-		return ((char *)s);
-	return (NULL);
-}
+typedef struct s_env	t_env;
+
+char	*getpwd(void);
+int		ft_pwd(void);
+int		ft_cd(t_env **lst, char *dir);
+int		ft_echo(char **args);
+
+void	ft_lst_replace_if(t_env *lst, char *name, char *content);
+char	*expand_relative_path(char *str, char *curr_dir);
+
+#endif

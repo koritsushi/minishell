@@ -3,50 +3,85 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/01/16 16:07:22 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/06/02 14:52:19 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "includes/minishell.h"
 
-int	ft_isspace(char *str)
+int	g_signal = 0;
+
+void	remove_redir_quote(t_token *lst)
 {
 	int	i;
 
-	i = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+	i = -1;
+	while (lst->data[++i])
 	{
-		if (str[i] > 32)
-			return (0);
-		i++;
+		if (lst->datatype[i] != WORD)
+			quote_removal(&lst->data[i]);
 	}
+}
+
+/*
+ * helper function for minishell main
+ * starts all cmd
+ * lexing, get_vars, execution function call
+ */
+void	start_cmd(char *text, t_ms *data)
+{
+	if (get_cmd_line(text, &data->lst, data->env_var, data->exec.exit_code))
+	{
+		get_variable(&data->env_var, data->lst, text);
+		add_filler_cmd(&data->lst);
+		remove_redir_quote(&data->lst);
+		execute_functions(data, data->lst);
+		free_exec(&data->exec);
+		free_parsing(&data->lst);
+	}
+}
+
+static int	check_ifs(char *text, t_ms *data)
+{
+	if (text == NULL)
+		return (ft_perror_fd("\e[0;31mlogout\e[0;0m\n", 1, 0));
+	if (g_signal == 130)
+	{
+		data->exec.exit_code = g_signal;
+		g_signal = 0;
+	}
+	if (*text)
+		add_history(text);
+	if (*text && check_syntax(text))
+		start_cmd(text, data);
 	return (1);
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **env)
 {
+	t_ms	data;
 	char	*text;
 
 	if (argc > 1 && ft_strncmp(argv[0], "minishell", 9) != 0)
-		exit(127);
-	set_signal_action();
-	block_signal(SIGQUIT);
+		exit(1);
+	set_signal_action(1);
+	data.env_var = NULL;
+	data.exec.exit_code = 0;
+	env_init(&data.env_var, env);
 	while (1)
 	{
-		text = readline("\033[34mminishell> \033[0m");
-		if (text == NULL)
-			exit(ENOMEM);
-		if (ft_strncmp(text, "exit", 4) == 0)
-		{
-			free(text);
-			ft_putstr_fd("\033[32mminishell exited!\033[0m\n", 1);
+		exec_init(&data.exec);
+		text = readline("\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m");
+		if (!check_ifs(text, &data))
 			break ;
-		}
-		ft_putstr_fd(text, 1);
-		ft_putstr_fd("\n", 1);
+		free(text);
 	}
+	free(text);
+	rl_clear_history();
+	if (data.env_var && data.env_var->content)
+		ft_lstclear_sh(&data.env_var, free);
 	return (0);
 }
