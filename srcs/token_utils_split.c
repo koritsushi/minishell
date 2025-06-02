@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 08:10:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/29 18:45:50 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/02 21:43:51 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static int	count_chr(char *str, char *set)
 		if (flag == 0 && str[0] && is_target("'\'\"", str[0]) && \
 !is_target(set, '\"') && !is_target(set, '\''))
 			symbol = str[0];
-		if (flag == 0 && str[0] == symbol)
+		else if (flag == 0 && str[0] == symbol)
 			flag = increment_val(1, &count, &str);
 		else if (flag == 1 && str[0] == symbol)
 			flag = 0;
