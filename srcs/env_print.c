@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 16:39:33 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/05/02 15:49:23 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/02 19:41:41 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ int	export_print(t_env **lst)
 	export_str = "declare -x";
 	while (iter != NULL)
 	{
-		if (iter->exported >= 1)
-			printf("%s %s=%s\n", export_str, iter->env, iter->content);
+		if (iter->exported == 1)
+			printf("%s %s\n", export_str, iter->env);
+		if (iter->exported == 2)
+			printf("%s %s=\"%s\"\n", export_str, iter->env, iter->content);
 		iter = iter->next;
 	}
 	return (0);
