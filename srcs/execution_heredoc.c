@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/06/02 14:47:48 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/06/02 22:02:23 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,30 +50,31 @@ void	ft_here_doc(t_ms *data, char *delimiter, int parsing_pipe[2])
 void	ft_heredoc_init(t_ms *data, char *delimiter, int j)
 {
 	int				status;
-	int				hdpstatus;
 	int				parsing_pipe[2];
 	pid_t			pid;
 
-	status = pipe(parsing_pipe);
-	if (status == -1)
+	if (pipe(parsing_pipe) == -1)
 		ms_free_all(data, 6, 1);
 	pid = fork();
 	if (pid == -1)
 		ms_free_all(data, 7, 1);
 	if (pid == 0)
+	{
+		set_signal_action(4);
 		ft_here_doc(data, delimiter, parsing_pipe);
+	}
 	else
 		close(parsing_pipe[WRITE]);
+	set_signal_action(2);
 	status = 0;
-	hdpstatus = 0;
 	if (wait(&status))
-	{
 		if (WIFEXITED(status))
-			hdpstatus = WEXITSTATUS(status);
-	}
-	if (hdpstatus > 0)
-		ms_free_all(data, 5, 1);
-	data->exec.infile_fd[j] = parsing_pipe[READ];
+			data->exec.exit_code = WEXITSTATUS(status);
+	set_signal_action(1);
+	if (data->exec.exit_code == 0)
+		data->exec.infile_fd[j] = parsing_pipe[READ];
+	else
+		data->exec.infile_fd[j] = 0;
 }
 
 void	infile_parsing_init(t_ms *data, t_token *lst)

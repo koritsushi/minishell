@@ -19,5 +19,6 @@
 //void	unblock_signal(int signal);
 void	signal_handler(int signal);
 void	set_signal_action(int code);
+void	set_heredoc_signal_handler(struct sigaction act);
 
 #endif
