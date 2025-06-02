@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/06/02 20:13:11 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/02 21:51:44 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,30 +19,16 @@ void	ft_pipe_doc(char *final, int parsing_pipe[2])
 	close(parsing_pipe[WRITE]);
 }
 
-void	ft_here_doc(t_ms *data, char *del, int parsing_pipe[2])
+void	ft_here_doc(t_ms *data, char *deli, int parsing_pipe[2])
 {
-	char	*res;
-	char	*tmp;
 	char	*final;
+	int		flag_quote;
 
 	final = ft_strdup("");
-	while (1)
-	{
-		write(STDOUT_FILENO, "> ", 3);
-		res = get_next_line(STDIN_FILENO);
-		if (res == NULL || (!ft_strncmp(res, del, ft_strlen(del)) && \
-res[ft_strlen(del)] == '\n' && res[ft_strlen(del) + 1] == '\0'))
-		{
-			if (res != NULL)
-				free(res);
-			break ;
-		}
-		shell_var_expansion(&res, data->env_var, data->exec.exit_code);
-		tmp = ft_strjoin(final, res);
-		free(final);
-		final = ft_strdup(tmp);
-		free_multiple_ptr_single(res, tmp, NULL);
-	}
+	flag_quote = 0;
+	if (deli && (is_target(deli, '\'') || is_target(deli, '\"')))
+		flag_quote = 1;
+	retrieve_here_doc(data, deli, flag_quote, &final);
 	ft_pipe_doc(final, parsing_pipe);
 	free(final);
 	ms_free_all(data, -1, 0);

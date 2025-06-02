@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:12:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/06/02 14:52:19 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/02 20:23:34 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	remove_redir_quote(t_token *lst)
 	i = -1;
 	while (lst->data[++i])
 	{
-		if (lst->datatype[i] != WORD)
+		if (lst->datatype[i] != WORD && lst->datatype[i] != HEREDOC)
 			quote_removal(&lst->data[i]);
 	}
 }

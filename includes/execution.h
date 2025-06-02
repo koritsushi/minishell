@@ -56,6 +56,7 @@ void	outfile_parsing_init(t_ms *data, t_token *lst);
 //execution_heredoc_utils.c
 void	ft_infile_init(t_ms *data, int *infile_fd, char *infile, int *flag);
 void	ft_outfile_init(t_ms *data, int *outfile_fd, char *outfile, int *flag);
+void	retrieve_here_doc(t_ms *data, char *del, int flag_quote, char **final);
 
 //execution_parent_process_utils.c
 void	fp_process(t_ms *data, int index);
