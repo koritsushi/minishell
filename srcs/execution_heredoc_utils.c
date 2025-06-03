@@ -47,3 +47,47 @@ void	ft_outfile_init(t_ms *data, int *outfile_fd, char *outfile, int *flag)
 		data->exec.exit_code = 1;
 	}
 }
+
+/*
+ * child function in ft_here_doc
+ * checks if res matches delimiter,
+ * if true, free res
+ */
+static int	match_delimiter(char **res, char *del)
+{
+	char	*str;
+
+	str = *res;
+	if (str == NULL || (!ft_strncmp(str, del, ft_strlen(del)) && \
+str[ft_strlen(del)] == '\n' && str[ft_strlen(del) + 1] == '\0'))
+	{
+		if (str != NULL)
+			free(str);
+		return (1);
+	}
+	return (0);
+}
+
+void	retrieve_here_doc(t_ms *data, char *del, int flag_quote, char **final)
+{
+	char	*res;
+	char	*tmp;
+	char	*tmp_del;
+
+	tmp_del = ft_strdup(del);
+	quote_removal(&tmp_del);
+	while (1)
+	{
+		write(STDOUT_FILENO, "> ", 3);
+		res = get_next_line(STDIN_FILENO);
+		if (match_delimiter(&res, tmp_del))
+			break ;
+		if (!flag_quote)
+			shell_var_expansion(&res, data->env_var, data->exec.exit_code);
+		tmp = ft_strjoin(*final, res);
+		free(*final);
+		*final = ft_strdup(tmp);
+		free_multiple_ptr_single(res, tmp, NULL);
+	}
+	free(tmp_del);
+}
