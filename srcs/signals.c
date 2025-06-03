@@ -30,6 +30,7 @@ void	signal_handler(int signal)
 
 void	default_signal_action(struct sigaction act)
 {
+	act.sa_flags = SA_RESETHAND;
 	act.sa_handler = &signal_handler;
 	sigemptyset(&act.sa_mask);
 	sigaction(SIGINT, &act, NULL);
@@ -39,6 +40,7 @@ void	default_signal_action(struct sigaction act)
 
 void	ignore_signal_action(struct sigaction act)
 {
+	act.sa_flags = SA_RESETHAND;
 	act.sa_handler = SIG_IGN;
 	sigemptyset(&act.sa_mask);
 	sigaction(SIGINT, &act, NULL);
@@ -47,6 +49,7 @@ void	ignore_signal_action(struct sigaction act)
 
 void	reset_signal_action(struct sigaction act)
 {
+	act.sa_flags = SA_RESETHAND;
 	act.sa_handler = SIG_DFL;
 	sigemptyset(&act.sa_mask);
 	sigaction(SIGINT, &act, NULL);
@@ -75,5 +78,5 @@ void	set_signal_action(int code)
 	else if (code == 3)
 	 	reset_signal_action(act);
 	else 
-		set_heredoc_signal_handler(act);
+		heredoc_signal_action(act);
 }
