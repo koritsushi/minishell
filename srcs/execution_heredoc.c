@@ -6,7 +6,7 @@
 /*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/06/03 10:49:07 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/06/03 13:17:09 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,16 @@ void	ft_heredoc_init(t_ms *data, char *delimiter, int j)
 	int				parsing_pipe[2];
 	pid_t			pid;
 
-	set_signal_action(4);
 	if (pipe(parsing_pipe) == -1)
 		ms_free_all(data, 6, 1);
 	pid = fork();
 	if (pid == -1)
 		ms_free_all(data, 7, 1);
 	if (pid == 0)
+	{
+		set_signal_action(4);
 		ft_here_doc(data, delimiter, parsing_pipe);
+	}
 	else
 		close(parsing_pipe[WRITE]);
 	set_signal_action(2);
@@ -79,7 +81,7 @@ void	ft_heredoc_init(t_ms *data, char *delimiter, int j)
 	if (data->exec.exit_code == 0)
 		data->exec.infile_fd[j] = parsing_pipe[READ];
 	else
-		data->exec.infile_fd[j] = 0;
+		data->exec.infile_fd[j] = open("/dev/null", O_RDONLY);
 	set_signal_action(1);
 }
 
