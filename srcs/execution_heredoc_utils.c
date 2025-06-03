@@ -12,6 +12,8 @@
 
 #include "../includes/execution.h"
 
+extern int	g_signal;
+
 void	ft_infile_init(t_ms *data, int *infile_fd, char *infile, int *flag)
 {
 	char	*error;
@@ -58,8 +60,7 @@ static int	match_delimiter(char **res, char *del)
 	char	*str;
 
 	str = *res;
-	if (str == NULL || (!ft_strncmp(str, del, ft_strlen(del)) && \
-str[ft_strlen(del)] == '\n' && str[ft_strlen(del) + 1] == '\0'))
+	if (str == NULL || (!ft_strcmp(str, del)))
 	{
 		if (str != NULL)
 			free(str);
@@ -68,26 +69,40 @@ str[ft_strlen(del)] == '\n' && str[ft_strlen(del) + 1] == '\0'))
 	return (0);
 }
 
-void	retrieve_here_doc(t_ms *data, char *del, int flag_quote, char **final)
+int	g_signal_130(int *status)
+{
+	if (g_signal == 130)
+	{
+		*status = 130;
+		return (1);
+	}
+	return (0);
+}
+
+int	retrieve_here_doc(t_ms *data, char *del, int flag_quote, char **final)
 {
 	char	*res;
 	char	*tmp;
 	char	*tmp_del;
+	int		status;
 
+	status = 0;
 	tmp_del = ft_strdup(del);
 	quote_removal(&tmp_del);
 	while (1)
 	{
-		write(STDOUT_FILENO, "> ", 3);
-		res = get_next_line(STDIN_FILENO);
+		res = readline("> ");
+		if (g_signal_130(&status))
+			break ;
 		if (match_delimiter(&res, tmp_del))
 			break ;
 		if (!flag_quote)
 			shell_var_expansion(&res, data->env_var, data->exec.exit_code);
 		tmp = ft_strjoin(*final, res);
 		free(*final);
-		*final = ft_strdup(tmp);
+		*final = ft_strjoin(tmp, "\n");
 		free_multiple_ptr_single(res, tmp, NULL);
 	}
 	free(tmp_del);
+	return (status);
 }

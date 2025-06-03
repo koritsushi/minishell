@@ -42,6 +42,7 @@ SRCS 		=	srcs/expansion.c						\
 				srcs/utils_free.c						\
 				srcs/utils_free2.c						\
 				srcs/signals.c							\
+				srcs/signals_utils.c					\
 				srcs/builtins.c							\
 				srcs/builtins2.c						\
 				srcs/builtins_utils.c					\

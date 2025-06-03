@@ -19,39 +19,38 @@ void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 		ft_putstr_fd("\n\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m", 1);
 		g_signal = 130;
 		return ;
 	}
-	if (signal == SIGQUIT)
-	{
-		ft_putstr_fd("\033[34mminishell ˚𓆝 ⋆｡𓆟 ⋆｡𓆞˚ 𓇼  > \033[0m", 1);
-		return ;
-	}
 }
 
-void	default_signal_action(struct sigaction df_act, struct sigaction ign_act)
+void	default_signal_action(struct sigaction act)
 {
-	df_act.sa_handler = &signal_handler;
-	sigemptyset(&df_act.sa_mask);
-	if (ign_act.sa_flags == 0)
-	{
-		sigaction(SIGINT, &df_act, NULL);
-		sigaction(SIGQUIT, &df_act, NULL);
-	}
-	else
-	{
-		sigaction(SIGINT, &df_act, &ign_act);
-		sigaction(SIGQUIT, &df_act, &ign_act);
-	}
+	act.sa_handler = &signal_handler;
+	sigemptyset(&act.sa_mask);
+	sigaction(SIGINT, &act, NULL);
+	act.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &act, NULL);
 }
 
-void	ignore_signal_action(struct sigaction df_act, struct sigaction ign_act)
+void	ignore_signal_action(struct sigaction act)
 {
-	ign_act.sa_handler = SIG_IGN;
-	sigemptyset(&ign_act.sa_mask);
-	sigaction(SIGINT, &ign_act, &df_act);
-	sigaction(SIGQUIT, &ign_act, &df_act);
+	act.sa_handler = SIG_IGN;
+	sigemptyset(&act.sa_mask);
+	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGQUIT, &act, NULL);
+}
+
+void	reset_signal_action(struct sigaction act)
+{
+	act.sa_handler = SIG_DFL;
+	sigemptyset(&act.sa_mask);
+	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGQUIT, &act, NULL);
 }
 
 /*
@@ -66,14 +65,15 @@ void	ignore_signal_action(struct sigaction df_act, struct sigaction ign_act)
  */
 void	set_signal_action(int code)
 {
-	struct sigaction	df_act;
-	struct sigaction	ign_act;
+	struct sigaction	act;
 
-	ft_bzero(&df_act, sizeof(df_act));
-	ft_bzero(&ign_act, sizeof(ign_act));
-	ign_act.sa_flags = 0;
+	ft_bzero(&act, sizeof(act));
 	if (code == 1)
-		default_signal_action(df_act, ign_act);
+		default_signal_action(act);
 	else if (code == 2)
-		ignore_signal_action(df_act, ign_act);
+		ignore_signal_action(act);
+	else if (code == 3)
+	 	reset_signal_action(act);
+	else 
+		heredoc_signal_action(act);
 }

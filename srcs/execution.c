@@ -76,6 +76,7 @@ void	ft_process(t_ms *data)
 
 	p_status = 0;
 	i = 0;
+	set_signal_action(3);
 	while (i < data->exec.cmd_count)
 	{
 		pid = fork();
