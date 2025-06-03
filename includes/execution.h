@@ -52,6 +52,7 @@ void	close_pipe(t_ms *data, int index);
 //execution_heredoc.c
 void	infile_parsing_init(t_ms *data, t_token *lst);
 void	outfile_parsing_init(t_ms *data, t_token *lst);
+void	ft_heredoc_init(t_ms *data, char *delimiter, int j);
 
 //execution_heredoc_utils.c
 void	ft_infile_init(t_ms *data, int *infile_fd, char *infile, int *flag);
