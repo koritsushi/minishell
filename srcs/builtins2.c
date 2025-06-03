@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 08:30:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/03 12:15:27 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/03 14:14:23 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ static int	is_all_num(char *str)
 {
 	while (str && str[0])
 	{
-		if (!ft_isdigit(str[0]))
+		if (str[0] == '-')
+			str++;
+		else if (!ft_isdigit(str[0]))
 			return (0);
 		str++;
 	}

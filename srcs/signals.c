@@ -73,7 +73,7 @@ void	set_signal_action(int code)
 	else if (code == 2)
 		ignore_signal_action(act);
 	else if (code == 3)
-	 	reset_signal_action(act);
-	else 
+		reset_signal_action(act);
+	else
 		heredoc_signal_action(act);
 }
