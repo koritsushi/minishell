@@ -25,6 +25,7 @@ typedef struct s_token	t_token;
 int		check_syntax(char *str);
 int		check_var_syntax(char **str);
 int		check_infile_fd(t_token lst);
+int		if_double_symbol(char **res, char symbol, int steps);
 
 /*__________functions to extract variable assignments__________*/
 int		get_variable(t_env **vars, t_token lst, char *str);
