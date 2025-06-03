@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils_execute.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:30:54 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/31 18:44:48 by mliyuan          ###   ########.fr       */
+/*   Updated: 2025/06/02 23:11:43 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
  */
 void	builtins_init(char *str[])
 {
-	str[0] = "exit";
-	str[1] = "pwd";
-	str[2] = "env";
+	str[0] = "pwd";
+	str[1] = "env";
+	str[2] = "exit";
 	str[3] = "cd";
 	str[4] = "echo";
 	str[5] = "export";
@@ -39,7 +39,8 @@ int	is_built_in(char *str)
 		return (0);
 	while (builtins[i] != NULL)
 	{
-		if (ft_strcmp(str, builtins[i]) == 0)
+		if ((ft_strcmp(str, builtins[i]) == 0) || \
+(ft_strncmp(str, "exit", 4) == 0))
 			return (1);
 		i++;
 	}
@@ -61,10 +62,10 @@ int	execute_built_in(t_ms *data, char **argv)
 	exit_code = &data->exec.exit_code;
 	while (builtins[i] != NULL)
 	{
-		if (ft_strncmp(argv[0], builtins[i], ft_strlen(argv[0])) == 0 && i <= 2)
+		if (ft_strncmp(argv[0], builtins[i], ft_strlen(argv[0])) == 0 && i <= 1)
 			return (*exit_code = singular_args_builtins(data, argv));
 		else if (ft_strncmp(argv[0], builtins[i], ft_strlen(argv[0])) == 0 \
-&& i > 2)
+&& i > 1)
 			return (*exit_code = multiple_args_builtins(data, argv));
 		i++;
 	}
