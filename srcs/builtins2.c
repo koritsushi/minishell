@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 08:30:46 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/03 08:33:58 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/03 12:15:27 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,9 @@ static int	is_all_num(char *str)
 static int	assign_exit_code(char **argv)
 {
 	int	i;
-	int	exit_code;
 	int	num;
 
 	i = 0;
-	exit_code = 0;
 	while (argv[++i])
 	{
 		if (is_all_num(argv[i]))
