@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_heredoc.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mliyuan <mliyuan@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:17:37 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/06/03 13:52:30 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/03 14:15:37 by mliyuan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_heredoc_init(t_ms *data, char *delimiter, int j)
 		ms_free_all(data, 7, 1);
 	if (pid == 0)
 	{
-		//set_signal_action(4);
+		set_signal_action(4);
 		ft_here_doc(data, delimiter, parsing_pipe);
 	}
 	else
