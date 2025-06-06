@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:59 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/04/30 15:11:30 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/03 10:57:17 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@
 # include "minishell.h"
 
 typedef struct s_env	t_env;
+typedef struct s_ms     t_ms;
 
 char	*getpwd(void);
 int		ft_pwd(void);
 int		ft_cd(t_env **lst, char *dir);
 int		ft_echo(char **args);
+void	ft_exit(t_ms *data, char **argv);
 
 void	ft_lst_replace_if(t_env *lst, char *name, char *content);
 char	*expand_relative_path(char *str, char *curr_dir);
