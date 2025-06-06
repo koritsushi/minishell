@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:55:59 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/06/03 10:57:17 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/06 08:55:53 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "minishell.h"
 
 typedef struct s_env	t_env;
-typedef struct s_ms     t_ms;
+typedef struct s_ms		t_ms;
 
 char	*getpwd(void);
 int		ft_pwd(void);

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:33:47 by mliyuan           #+#    #+#             */
-/*   Updated: 2025/06/03 10:54:58 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/06 08:57:32 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,6 @@ void	ms_free_all(t_ms *data, int errc, int exit_code)
 		free_chr_ptr((void **)data->lst.data);
 	if (data->lst.datatype)
 		free(data->lst.datatype);
-	// rl_clear_history();
+	rl_clear_history();
 	exit(exit_code);
 }
